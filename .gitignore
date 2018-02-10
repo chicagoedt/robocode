@@ -31,6 +31,7 @@ $RECYCLE.BIN/
 
 # Gradle:
 .gradle/
+gradle/
 gradlew*
 
 # CMake
