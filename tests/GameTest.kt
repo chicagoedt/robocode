@@ -1,33 +1,37 @@
-import main.Game
-import main.Level
-import main.LevelProperties
+import main.*
 import kotlin.test.*
 
 class BackendTests {
     private lateinit var game : Game
 
-    private lateinit var levelProp1 : LevelProperties
-    private lateinit var levelProp2 : LevelProperties
-
-    private lateinit var level1 : Level
-    private lateinit var level2 : Level
-
     @BeforeTest
     fun SetUp(){
-        game = Game()
-        levelProp1 = LevelProperties(0)
-        levelProp2 = LevelProperties(1)
-        level1 = Level(levelProp1)
-        level2 = Level(levelProp2)
-
-        game.levels.add(level1)
-        game.levels.add(level2)
+        game = Game(getLevels(), getRobots())
     }
 
     @Test
-    fun GameStart() {
-        game.start()
+    fun GameRobots() {
+        assertEquals(game.currentLevel.properties.players[0].name, "Surus")
+        assertEquals(game.currentLevel.properties.players[0].x, 0)
+        assertEquals(game.currentLevel.properties.players[0].y, 0)
 
-        assertEquals(game.currentLevel, level1)
+        assertEquals(game.currentLevel.properties.players[1].name, "Hushpuppy")
+        assertEquals(game.currentLevel.properties.players[1].x, 0)
+        assertEquals(game.currentLevel.properties.players[1].y, 1)
+
+        game.nextLevel()
+
+        assertEquals(game.currentLevel.properties.players[0].name, "Hushpuppy")
+        assertEquals(game.currentLevel.properties.players[0].x, 0)
+        assertEquals(game.currentLevel.properties.players[0].y, 1)
+    }
+
+    @Test
+    fun GameLevels() {
+        assertEquals(game.currentLevel.properties.name, "Level 1")
+
+        game.nextLevel()
+
+        assertEquals(game.currentLevel.properties.name, "Level 2")
     }
 }
