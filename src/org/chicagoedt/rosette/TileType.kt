@@ -1,4 +1,4 @@
-package main
+package org.chicagoedt.rosette
 
 class TileType {
     val TYPE_NEUTRAL = 0

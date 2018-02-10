@@ -1,4 +1,4 @@
-package main
+package org.chicagoedt.rosette
 
 class Game (val levels: ArrayList<Level>,
             val robots: ArrayList<Robot>){
