@@ -1,4 +1,6 @@
-import main.*
+import org.chicagoedt.rosette.Game
+import org.chicagoedt.rosette.getLevels
+import org.chicagoedt.rosette.getRobots
 import kotlin.test.*
 
 class BackendTests {

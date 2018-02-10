@@ -31,6 +31,7 @@ $RECYCLE.BIN/
 
 # Gradle:
 .gradle/
+gradle/
 gradlew*
 
 # CMake
@@ -112,3 +113,6 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+# Node.js
+node_modules/

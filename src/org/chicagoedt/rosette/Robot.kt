@@ -1,4 +1,4 @@
-package main
+package org.chicagoedt.rosette
 
 class Robot(val name: String,
             val graphic: String,

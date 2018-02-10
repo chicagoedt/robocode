@@ -1,4 +1,4 @@
-package main
+package org.chicagoedt.rosette
 
 
 fun getRobots() : ArrayList<Robot>{
@@ -12,7 +12,7 @@ fun getRobots() : ArrayList<Robot>{
 fun getLevels() : ArrayList<Level>{
     val levels = ArrayList<Level>()
 
-    val robotPlayer1 = RobotPlayer("Surus",0,0);
+    val robotPlayer1 = RobotPlayer("Surus", 0, 0);
     val robotPlayer2 = RobotPlayer("Hushpuppy", 0, 1)
 
     val list1 = ArrayList<RobotPlayer>()
