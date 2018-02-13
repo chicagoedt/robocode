@@ -25,8 +25,8 @@ fun getLevels() : HashMap<String, Level>{
     list1[robotPlayer2.name] = robotPlayer2
     list2[robotPlayer2.name] = robotPlayer2
 
-    val level1 = Level(LevelProperties("Level 1", 0), list1)
-    val level2 = Level(LevelProperties("Level 2", 0), list2)
+    val level1 = Level(LevelProperties("Level 1", 0, 10, 15), list1)
+    val level2 = Level(LevelProperties("Level 2", 0, 14, 19), list2)
 
     levels[level1.properties.name] = level1
     levels[level2.properties.name] = level2

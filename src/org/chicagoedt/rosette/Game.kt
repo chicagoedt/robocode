@@ -22,14 +22,18 @@ class Game (val levels: HashMap<String, Level>,
         robots[name]!!.instructions.add(inst)
     }
 
+    fun removeInstruction(name: String, inst: Instruction){
+        robots[name]!!.instructions.remove(inst)
+    }
+
     fun getInstructionsFor(name: String) : List<Instruction>{
         return robots[name]!!.instructions
     }
 
     fun runInstructionsFor(name: String){
-        val robot = robots[name]
-        for(inst: Instruction in robot!!.instructions){
-            INSTRUCTION_LIST[inst.type].invoke(currentLevel.properties.grid, currentLevel.players[name]!!)
+        val robot = robots[name]!!
+        for(inst: Instruction in robot.instructions){
+            inst.function.invoke(currentLevel.grid, currentLevel.players[name]!!)
         }
     }
 

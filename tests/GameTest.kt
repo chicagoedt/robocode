@@ -37,6 +37,17 @@ class BackendTests {
     }
 
     @Test
+    fun GameGrid() {
+        assertEquals(game.currentLevel.properties.width, 10)
+        assertEquals(game.currentLevel.properties.height, 15)
+
+        game.nextLevel()
+
+        assertEquals(game.currentLevel.properties.width, 14)
+        assertEquals(game.currentLevel.properties.height, 19)
+    }
+
+    @Test
     fun RobotInstructionAttach() {
         val instruction1 = Instruction(INSTRUCTION_MOVE)
         val instruction2 = Instruction(INSTRUCTION_TURN)
@@ -46,10 +57,25 @@ class BackendTests {
         assertEquals(list[0].type, INSTRUCTION_MOVE)
         assertEquals(list[1].type, INSTRUCTION_TURN)
     }
+
+    @Test
     fun RobotInstructionMove() {
-        val instruction = Instruction(INSTRUCTION_MOVE)
+        var instruction = Instruction(INSTRUCTION_MOVE)
         game.attachInstruction("Surus", instruction)
         game.runInstructionsFor("Surus")
-
+        assertEquals(game.currentLevel.players["Surus"]!!.y, 1)
+    }
+    @Test
+    fun RobotInstructionTurn() {
+        val instruction = Instruction(INSTRUCTION_TURN)
+        game.attachInstruction("Surus", instruction)
+        game.runInstructionsFor("Surus")
+        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_RIGHT)
+        game.runInstructionsFor("Surus")
+        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_DOWN)
+        game.runInstructionsFor("Surus")
+        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_LEFT)
+        game.runInstructionsFor("Surus")
+        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_UP)
     }
 }
