@@ -12,19 +12,19 @@ class BackendTests {
 
     @Test
     fun GameRobots() {
-        assertEquals(game.currentLevel.properties.players[0].name, "Surus")
-        assertEquals(game.currentLevel.properties.players[0].x, 0)
-        assertEquals(game.currentLevel.properties.players[0].y, 0)
+        assertEquals(game.currentLevel.players["Surus"]!!.name, "Surus")
+        assertEquals(game.currentLevel.players["Surus"]!!.x, 0)
+        assertEquals(game.currentLevel.players["Surus"]!!.y, 0)
 
-        assertEquals(game.currentLevel.properties.players[1].name, "Hushpuppy")
-        assertEquals(game.currentLevel.properties.players[1].x, 0)
-        assertEquals(game.currentLevel.properties.players[1].y, 1)
+        assertEquals(game.currentLevel.players["Hushpuppy"]!!.name, "Hushpuppy")
+        assertEquals(game.currentLevel.players["Hushpuppy"]!!.x, 0)
+        assertEquals(game.currentLevel.players["Hushpuppy"]!!.y, 1)
 
         game.nextLevel()
 
-        assertEquals(game.currentLevel.properties.players[0].name, "Hushpuppy")
-        assertEquals(game.currentLevel.properties.players[0].x, 0)
-        assertEquals(game.currentLevel.properties.players[0].y, 1)
+        assertEquals(game.currentLevel.players["Hushpuppy"]!!.name, "Hushpuppy")
+        assertEquals(game.currentLevel.players["Hushpuppy"]!!.x, 0)
+        assertEquals(game.currentLevel.players["Hushpuppy"]!!.y, 1)
     }
 
     @Test
@@ -46,9 +46,10 @@ class BackendTests {
         assertEquals(list[0].type, INSTRUCTION_MOVE)
         assertEquals(list[1].type, INSTRUCTION_TURN)
     }
-    fun RobotInstructionTurn() {
-        val instruction = Instruction(INSTRUCTION_TURN)
+    fun RobotInstructionMove() {
+        val instruction = Instruction(INSTRUCTION_MOVE)
         game.attachInstruction("Surus", instruction)
+        game.runInstructionsFor("Surus")
 
     }
 }

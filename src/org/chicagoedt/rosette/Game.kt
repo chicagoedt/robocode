@@ -26,4 +26,11 @@ class Game (val levels: HashMap<String, Level>,
         return robots[name]!!.instructions
     }
 
+    fun runInstructionsFor(name: String){
+        val robot = robots[name]
+        for(inst: Instruction in robot!!.instructions){
+            INSTRUCTION_LIST[inst.type].invoke(currentLevel.properties.grid, currentLevel.players[name]!!)
+        }
+    }
+
 }
