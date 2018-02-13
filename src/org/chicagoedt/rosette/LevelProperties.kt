@@ -1,4 +1,4 @@
-package main
+package org.chicagoedt.rosette
 
 class LevelProperties(val name: String,
                       val difficulty : Int,
@@ -8,7 +8,8 @@ class LevelProperties(val name: String,
 }
 
 class RobotPlayer(val name: String,
-                  val x: Int,
-                  val y: Int){
+                  var x: Int,
+                  var y: Int,
+                  var direction: Int){
 
 }

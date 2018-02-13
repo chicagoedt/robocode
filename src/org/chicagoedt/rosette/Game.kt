@@ -1,12 +1,25 @@
-package main
+package org.chicagoedt.rosette
 
-class Game (val levels: ArrayList<Level>,
-            val robots: ArrayList<Robot>){
-    var currentLevel = levels[0]
+class Game (val levels: HashMap<String, Level>,
+            val robots: HashMap<String, Robot>){
+    lateinit var currentLevel : Level
     internal var levelNumber = 0
 
-    fun nextLevel(){
-        levelNumber++
-        currentLevel = levels[levelNumber]
+    init{
+        //robots.ke
     }
+
+    fun nextLevel(){
+        //levelNumber++
+        //currentLevel = levels[levelNumber]
+    }
+
+    fun attachInstruction(name: String, inst: Instruction){
+
+    }
+
+    fun getInstructionsFor(name: String) : List<Instruction>{
+        return listOf()
+    }
+
 }

@@ -1,5 +1,6 @@
-import main.*
 import kotlin.test.*
+import org.chicagoedt.rosette.*
+
 
 class BackendTests {
     private lateinit var game : Game
@@ -36,13 +37,18 @@ class BackendTests {
     }
 
     @Test
-    fun RobotInstructionRead() {
-        val instruction = Instruction(INSTRUCTION_MOVE)
-        val instruction = Instruction(INSTRUCTION_TURN)
-        game.attachInstruction("Surus", instruction)
+    fun RobotInstructionAttach() {
+        val instruction1 = Instruction(INSTRUCTION_MOVE)
+        val instruction2 = Instruction(INSTRUCTION_TURN)
+        game.attachInstruction("Surus", instruction1)
+        game.attachInstruction("Surus", instruction2)
         val list = game.getInstructionsFor("Surus")
         assertEquals(list[0].type, INSTRUCTION_MOVE)
-        assertEquals(list[0].type, INSTRUCTION_TURN)
+        assertEquals(list[1].type, INSTRUCTION_TURN)
+    }
+    fun RobotInstructionTurn() {
+        val instruction = Instruction(INSTRUCTION_TURN)
+        game.attachInstruction("Surus", instruction)
 
     }
 }
