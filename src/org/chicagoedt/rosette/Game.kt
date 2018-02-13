@@ -19,11 +19,11 @@ class Game (val levels: HashMap<String, Level>,
     }
 
     fun attachInstruction(name: String, inst: Instruction){
-
+        robots[name]!!.instructions.add(inst)
     }
 
     fun getInstructionsFor(name: String) : List<Instruction>{
-        return listOf()
+        return robots[name]!!.instructions
     }
 
 }
