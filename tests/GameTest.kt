@@ -34,4 +34,15 @@ class BackendTests {
 
         assertEquals(game.currentLevel.properties.name, "Level 2")
     }
+
+    @Test
+    fun RobotInstructionRead() {
+        val instruction = Instruction(INSTRUCTION_MOVE)
+        val instruction = Instruction(INSTRUCTION_TURN)
+        game.attachInstruction("Surus", instruction)
+        val list = game.getInstructionsFor("Surus")
+        assertEquals(list[0].type, INSTRUCTION_MOVE)
+        assertEquals(list[0].type, INSTRUCTION_TURN)
+
+    }
 }
