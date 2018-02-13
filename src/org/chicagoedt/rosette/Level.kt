@@ -1,6 +1,6 @@
 package org.chicagoedt.rosette
 
-class Level(var properties: LevelProperties, val players: HashMap<String, RobotPlayer>) {
+class Level(var properties: LevelProperties, val players: HashMap<String, RobotPlayer>, val playerOrder: ArrayList<String>) {
     internal val grid = arrayListOf<ArrayList<Tile>>()//ArrayList<ArrayList<Tile>>()
     init{
         for (i in 0..properties.height - 1){
