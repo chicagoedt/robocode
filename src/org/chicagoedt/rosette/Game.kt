@@ -2,16 +2,20 @@ package org.chicagoedt.rosette
 
 class Game (val levels: HashMap<String, Level>,
             val robots: HashMap<String, Robot>){
-    lateinit var currentLevel : Level
+    var currentLevel : Level
     internal var levelNumber = 0
+    val levelNames = arrayListOf<String>()
 
     init{
-        //robots.ke
+        for (level: MutableMap.MutableEntry<String, Level> in levels){
+            levelNames.add(level.key)
+        }
+        currentLevel = levels[levelNames[levelNumber]]!!
     }
 
     fun nextLevel(){
-        //levelNumber++
-        //currentLevel = levels[levelNumber]
+        levelNumber++
+        currentLevel = levels[levelNames[levelNumber]]!!
     }
 
     fun attachInstruction(name: String, inst: Instruction){
