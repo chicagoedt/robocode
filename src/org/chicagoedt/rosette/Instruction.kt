@@ -22,6 +22,7 @@ internal fun loadInstructions(){
         }
         else if (pair.first == INSTRUCTION_TURN){
             instructionList[pair.first] = { grid, robot ->
+                //only clockwise for now
                 if (robot.direction == DIRECTION_UP) robot.direction = DIRECTION_RIGHT
                 else if (robot.direction == DIRECTION_DOWN) robot.direction = DIRECTION_LEFT
                 else if (robot.direction == DIRECTION_LEFT) robot.direction = DIRECTION_UP

@@ -45,31 +45,33 @@ class BackendTests {
 
     @Test
     fun RobotInstructionAttach() {
-        val instruction1 = Instruction(INSTRUCTION_MOVE)
-        val instruction2 = Instruction(INSTRUCTION_TURN)
-        game.attachInstruction("Surus", instruction1)
-        game.attachInstruction("Surus", instruction2)
-        val list = game.getInstructions("Surus")
-        assertEquals(list[0].type, INSTRUCTION_MOVE)
-        assertEquals(list[1].type, INSTRUCTION_TURN)
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                for (inst: Pair<Int, String> in availableInstructions){
+                    val instruction = Instruction(inst.first)
+                    game.attachInstruction(robotName, instruction)
+                }
+                val list = game.getInstructions(robotName)
+                for (inst: Pair<Int, String> in availableInstructions){
+                    assertEquals(list[0].type, INSTRUCTION_MOVE)
+                }
+            }
+        }
     }
 
     @Test
     fun RobotInstructionTurn() {
         val instruction = Instruction(INSTRUCTION_TURN)
-        game.attachInstruction("Surus", instruction)
-
-        game.runInstructionsFor("Surus")
-        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_RIGHT)
-
-        game.runInstructionsFor("Surus")
-        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_DOWN)
-
-        game.runInstructionsFor("Surus")
-        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_LEFT)
-
-        game.runInstructionsFor("Surus")
-        assertEquals(game.currentLevel.players["Surus"]!!.direction, DIRECTION_UP)
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                game.attachInstruction(robotName, instruction)
+                for (i in 0..0) {
+                    val next = nextDirection(game.currentLevel.players[robotName]!!.direction, TURN_DIRECTION_CLOCKWISE)
+                    game.runInstructionsFor(robotName)
+                    assertEquals(game.currentLevel.players[robotName]!!.direction, next)
+                }
+            }
+        }
     }
 
     fun turn(name: String){

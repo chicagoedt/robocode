@@ -18,19 +18,19 @@ class Game (val levels: HashMap<String, Level>,
     }
 
     fun attachInstruction(name: String, inst: Instruction){
-        robots[name]!!.instructions.add(inst)
+        currentLevel.players[name]!!.instructions.add(inst)
     }
 
     fun removeInstruction(name: String, inst: Instruction){
-        robots[name]!!.instructions.remove(inst)
+        currentLevel.players[name]!!.instructions.remove(inst)
     }
 
     fun getInstructions(name: String) : List<Instruction>{
-        return robots[name]!!.instructions
+        return currentLevel.players[name]!!.instructions
     }
 
     fun runInstructionsFor(name: String){
-        val robot = robots[name]!!
+        val robot = currentLevel.players[name]!!
         for(inst: Instruction in robot.instructions){
             inst.function!!.invoke(currentLevel.grid, currentLevel.players[name]!!)
         }
