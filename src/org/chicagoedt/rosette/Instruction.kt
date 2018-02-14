@@ -36,4 +36,18 @@ internal fun loadInstructions(){
 
 class Instruction(val type: Int) {
     internal val function = instructionList[type]
+
+    lateinit var parameter : Any
+
+    init{
+        if (type == INSTRUCTION_MOVE) {
+            //parameter as Int
+            parameter = 1
+        }
+        else if (type == INSTRUCTION_TURN) {
+            //parameter as Int
+            parameter = TURN_DIRECTION_CLOCKWISE
+        }
+        else parameter = 0 //just to initialize it to something, because it's lateinit
+    }
 }
