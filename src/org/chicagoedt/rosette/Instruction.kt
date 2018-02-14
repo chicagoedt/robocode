@@ -1,9 +1,9 @@
 package org.chicagoedt.rosette
 
-val availableInstructions = ArrayList<Pair<Int, String>>()
+internal const val INSTRUCTION_MOVE = 0
+internal const val INSTRUCTION_TURN = 1
 
-internal val INSTRUCTION_MOVE = 0;
-internal val INSTRUCTION_TURN = 1;
+val availableInstructions = ArrayList<Pair<Int, String>>()
 
 private val instructionList = hashMapOf<Int, (ArrayList<ArrayList<Tile>>, RobotPlayer) -> Unit>()
 
@@ -23,15 +23,17 @@ internal fun loadInstructions(){
         else if (pair.first == INSTRUCTION_TURN){
             instructionList[pair.first] = { grid, robot ->
                 //only clockwise for now
-                if (robot.direction == DIRECTION_UP) robot.direction = DIRECTION_RIGHT
-                else if (robot.direction == DIRECTION_DOWN) robot.direction = DIRECTION_LEFT
-                else if (robot.direction == DIRECTION_LEFT) robot.direction = DIRECTION_UP
-                else if (robot.direction == DIRECTION_RIGHT) robot.direction = DIRECTION_DOWN
+                when (robot.direction){
+                    DIRECTION_UP -> robot.direction = DIRECTION_RIGHT
+                    DIRECTION_DOWN -> robot.direction = DIRECTION_LEFT
+                    DIRECTION_LEFT -> robot.direction = DIRECTION_UP
+                    DIRECTION_RIGHT -> robot.direction = DIRECTION_DOWN
+                }
             }
         }
     }
 }
 
 class Instruction(val type: Int) {
-    val function = instructionList[type]
+    internal val function = instructionList[type]
 }

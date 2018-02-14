@@ -75,14 +75,14 @@ class BackendTests {
         }
     }
 
-    fun turn(name: String){
-        var turn = Instruction(INSTRUCTION_TURN)
+    private fun turn(name: String){
+        val turn = Instruction(INSTRUCTION_TURN)
         game.attachInstruction(name, turn)
         game.runInstructionsFor(name)
         game.removeInstruction(name, turn)
     }
 
-    fun move(name: String, direction: Int) {
+    private fun move(name: String, direction: Int) {
         val instruction = Instruction(INSTRUCTION_MOVE)
         val y = game.currentLevel.players[name]!!.y
         val x = game.currentLevel.players[name]!!.x

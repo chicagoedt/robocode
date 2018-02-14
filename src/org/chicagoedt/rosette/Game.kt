@@ -1,9 +1,9 @@
 package org.chicagoedt.rosette
 
-class Game (val levels: HashMap<String, Level>,
+class Game (private val levels: HashMap<String, Level>,
             val robots: HashMap<String, Robot>,
-            val levelOrder: ArrayList<String>){
-    internal var levelNumber = 0
+            private val levelOrder: ArrayList<String>){
+    private var levelNumber = 0
     var currentLevel = levels[levelOrder[levelNumber]]!!
 
     init{
