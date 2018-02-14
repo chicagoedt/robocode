@@ -29,8 +29,12 @@ $RECYCLE.BIN/
 .idea/
 *.iml
 
+#Node.js
+node_modules/
+
 # Gradle:
 .gradle/
+gradle/
 gradlew*
 
 # CMake
