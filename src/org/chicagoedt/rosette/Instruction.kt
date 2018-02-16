@@ -15,10 +15,10 @@ internal fun loadInstructions(){
         if (pair.first == INSTRUCTION_MOVE){
             instructionList[pair.first] = { grid, robot, parameter ->
                 for (i in 1..parameter as Int) {
-                    if (robot.direction == DIRECTION_UP && robot.y + 1 < grid[0].size /*height*/) robot.y++
-                    else if (robot.direction == DIRECTION_DOWN && robot.y - 1 >= 0 /*bottom*/) robot.y--
-                    else if (robot.direction == DIRECTION_LEFT && robot.x - 1 >= 0 /*left*/) robot.x--
-                    else if (robot.direction == DIRECTION_RIGHT && robot.x + 1 < grid.size /*left*/) robot.x++
+                    if (robot.direction == DIRECTION_UP && robot.y + 1 < grid[0].size && grid[robot.x][robot.y + 1].type != TILE_TYPE_OBSTACLE /*height*/) robot.y++
+                    else if (robot.direction == DIRECTION_DOWN && robot.y - 1 >= 0 && grid[robot.x][robot.y - 1].type != TILE_TYPE_OBSTACLE /*bottom*/) robot.y--
+                    else if (robot.direction == DIRECTION_LEFT && robot.x - 1 >= 0 && grid[robot.x - 1][robot.y].type != TILE_TYPE_OBSTACLE /*left*/) robot.x--
+                    else if (robot.direction == DIRECTION_RIGHT && robot.x + 1 < grid.size && grid[robot.x + 1][robot.y].type != TILE_TYPE_OBSTACLE/*left*/) robot.x++
                 }
             }
         }

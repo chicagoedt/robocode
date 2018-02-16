@@ -1,4 +1,4 @@
 package org.chicagoedt.rosette
 
-class Tile (type: Int){
+class Tile (val type: Int){
 }

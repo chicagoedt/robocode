@@ -33,7 +33,17 @@ class Game (private val levels: HashMap<String, Level>,
         val robot = currentLevel.players[name]!!
         for(inst: Instruction in robot.instructions){
             inst.function!!.invoke(currentLevel.grid, currentLevel.players[name]!!, inst.parameter)
+            if (!checkRobotStatus(name)) break
         }
+    }
+
+    private fun checkRobotStatus(name: String): Boolean{
+        val robot = currentLevel.players[name]!!
+        when (currentLevel.grid[robot.x][robot.y].type){
+            TILE_TYPE_VICTORY -> return false
+            TILE_TYPE_OBSTACLE -> return false
+        }
+        return true
     }
 
 }
