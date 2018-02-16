@@ -32,7 +32,7 @@ class Game (private val levels: HashMap<String, Level>,
     fun runInstructionsFor(name: String){
         val robot = currentLevel.players[name]!!
         for(inst: Instruction in robot.instructions){
-            inst.function!!.invoke(currentLevel.grid, currentLevel.players[name]!!)
+            inst.function!!.invoke(currentLevel.grid, currentLevel.players[name]!!, inst.parameter)
         }
     }
 
