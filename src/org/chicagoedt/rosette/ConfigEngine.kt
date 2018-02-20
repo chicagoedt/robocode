@@ -16,8 +16,8 @@ fun getRobots() : HashMap<String, Robot>{
 fun getLevels() : HashMap<String, Level>{
     val levels = HashMap<String, Level>()
 
-    val robotPlayer1 = RobotPlayer("Surus",5,5, DIRECTION_UP)
-    val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, DIRECTION_UP)
+    val robotPlayer1 = RobotPlayer("Surus",5,5, RobotOrientation.DIRECTION_UP)
+    val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP)
 
     val list1 = HashMap<String, RobotPlayer>()
     val list2 = HashMap<String, RobotPlayer>()

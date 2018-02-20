@@ -16,6 +16,6 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
 class RobotPlayer(val name: String,
                   var x: Int,
                   var y: Int,
-                  var direction: Int){
+                  var direction: RobotOrientation){
     val instructions = arrayListOf<Instruction>()
 }
