@@ -1,28 +1,35 @@
 package org.chicagoedt.rosette
 
-const val DIRECTION_UP = 0
-const val DIRECTION_DOWN = 1
-const val DIRECTION_LEFT = 2
-const val DIRECTION_RIGHT = 3
-const val TURN_DIRECTION_CLOCKWISE = 10
-const val TURN_DIRECTION_COUNTERCLOCKWISE = 11
+enum class RobotOrientation {
+    DIRECTION_UP,
+    DIRECTION_DOWN,
+    DIRECTION_LEFT,
+    DIRECTION_RIGHT,
+    DIRECTION_NONE
+}
 
-fun nextDirection(direction: Int, turnDirection: Int) : Int{
-    if (turnDirection == TURN_DIRECTION_CLOCKWISE) {
-        when(direction) {
-            DIRECTION_UP -> return DIRECTION_RIGHT
-            DIRECTION_RIGHT -> return DIRECTION_DOWN
-            DIRECTION_DOWN -> return DIRECTION_LEFT
-            DIRECTION_LEFT -> return DIRECTION_UP
+enum class RobotRotation {
+    CLOCKWISE,
+    COUNTERCLOCKWISE
+}
+
+fun nextDirection(orientation: RobotOrientation, turnDirection: RobotRotation): RobotOrientation {
+    if (turnDirection == RobotRotation.CLOCKWISE) {
+        when (orientation) {
+            RobotOrientation.DIRECTION_UP    -> RobotOrientation.DIRECTION_RIGHT
+            RobotOrientation.DIRECTION_RIGHT -> RobotOrientation.DIRECTION_DOWN
+            RobotOrientation.DIRECTION_DOWN  -> RobotOrientation.DIRECTION_LEFT
+            RobotOrientation.DIRECTION_LEFT  -> RobotOrientation.DIRECTION_UP
         }
     }
-    else if (turnDirection == TURN_DIRECTION_COUNTERCLOCKWISE) {
-        when(direction) {
-            DIRECTION_UP -> return DIRECTION_LEFT
-            DIRECTION_RIGHT -> return DIRECTION_UP
-            DIRECTION_DOWN -> return DIRECTION_RIGHT
-            DIRECTION_LEFT -> return DIRECTION_DOWN
+    else if (turnDirection == RobotRotation.COUNTERCLOCKWISE) {
+        when (orientation) {
+            RobotOrientation.DIRECTION_UP    -> RobotOrientation.DIRECTION_LEFT
+            RobotOrientation.DIRECTION_RIGHT -> RobotOrientation.DIRECTION_UP
+            RobotOrientation.DIRECTION_DOWN  -> RobotOrientation.DIRECTION_RIGHT
+            RobotOrientation.DIRECTION_LEFT  -> RobotOrientation.DIRECTION_DOWN
         }
     }
-    return -1
+
+    return RobotOrientation.DIRECTION_NONE
 }
