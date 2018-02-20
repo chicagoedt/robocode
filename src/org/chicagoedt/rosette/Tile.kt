@@ -1,4 +1,11 @@
 package org.chicagoedt.rosette
 
-class Tile (type: Int){
+enum class TileType {
+    NEUTRAL,
+    OBSTACLE,
+    VICTORY
+}
+
+
+class Tile (type: TileType){
 }
