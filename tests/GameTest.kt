@@ -89,32 +89,61 @@ class BackendTests {
         game.attachInstruction(name, instruction)
         game.runInstructionsFor(name)
 
-        val difference : Int
+        val difference = distanceCanMove(x, y, orientation, parameter, game.currentLevel.grid)
         if (orientation == RobotOrientation.DIRECTION_UP) {
-            if (y + parameter >= game.currentLevel.properties.height) difference = game.currentLevel.properties.height - y - 1
-            else difference = parameter
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y + difference)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_DOWN) {
-            if (y - parameter < 0) difference =  y
-            else difference = parameter
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y - difference)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_LEFT) {
-            if (x - parameter < 0) difference =  x
-            else difference = parameter
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x - difference)
         }
         else if (orientation == RobotOrientation.DIRECTION_RIGHT) {
-            if (x + parameter >= game.currentLevel.properties.width) difference = game.currentLevel.properties.width - x - 1
-            else difference = parameter
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x + difference)
         }
         game.removeInstruction(name, instruction)
+    }
+
+    fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, grid: ArrayList<ArrayList<Tile>>): Int{
+        var currentX = x
+        var currentY = y
+        var possibleDistance = 0
+        for (i in 0..distance-1){
+            if (orientation == RobotOrientation.DIRECTION_UP){
+                if (currentY + 1 >= grid[0].size || grid[currentX][currentY+1].type == TileType.OBSTACLE) return possibleDistance
+                else {
+                    possibleDistance++
+                    currentY++
+                }
+            }
+            else if (orientation == RobotOrientation.DIRECTION_DOWN){
+                if (currentY - 1 < 0 || grid[currentX][currentY-1].type == TileType.OBSTACLE) return possibleDistance
+                else {
+                    possibleDistance++
+                    currentY--
+                }
+            }
+            else if (orientation == RobotOrientation.DIRECTION_RIGHT){
+                if (currentX + 1 >= grid.size || grid[currentX+1][currentY].type == TileType.OBSTACLE) return possibleDistance
+                else {
+                    possibleDistance++
+                    currentX++
+                }
+            }
+            else if (orientation == RobotOrientation.DIRECTION_DOWN){
+                if (currentX - 1 < 0 || grid[currentX - 1][currentY].type == TileType.OBSTACLE) return possibleDistance
+                else {
+                    possibleDistance++
+                    currentX--
+                }
+            }
+        }
+        return possibleDistance
     }
 
     @Test

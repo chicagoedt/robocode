@@ -40,8 +40,8 @@ class Game (private val levels: HashMap<String, Level>,
     private fun checkRobotStatus(name: String): Boolean{
         val robot = currentLevel.players[name]!!
         when (currentLevel.grid[robot.x][robot.y].type){
-            TILE_TYPE_VICTORY -> return false
-            TILE_TYPE_OBSTACLE -> return false
+            TileType.VICTORY -> return false
+            TileType.OBSTACLE -> return false
         }
         return true
     }

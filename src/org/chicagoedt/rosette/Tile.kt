@@ -7,5 +7,5 @@ enum class TileType {
 }
 
 
-class Tile (type: TileType){
+class Tile (val type: TileType){
 }
