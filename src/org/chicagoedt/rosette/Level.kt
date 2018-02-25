@@ -6,7 +6,7 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
             for (j in 0..properties.width - 1){
-                list.add(Tile(TILE_TYPE_NEUTRAL))
+                list.add(Tile(TileType.NEUTRAL))
             }
             grid.add(list)
         }
@@ -17,7 +17,7 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
             for (j in 0..properties.width - 1){
-                list.add(Tile(newGrid[i][properties.width - j]))
+                list.add(Tile(newGrid[i][properties.width - j].type))
             }
             grid.add(list)
         }
@@ -27,6 +27,6 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
 class RobotPlayer(val name: String,
                   var x: Int,
                   var y: Int,
-                  var direction: Int){
+                  var direction: RobotOrientation){
     val instructions = arrayListOf<Instruction>()
 }

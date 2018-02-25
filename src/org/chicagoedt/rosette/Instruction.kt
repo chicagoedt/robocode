@@ -15,16 +15,16 @@ internal fun loadInstructions(){
         if (pair.first == INSTRUCTION_MOVE){
             instructionList[pair.first] = { grid, robot, parameter ->
                 for (i in 1..parameter as Int) {
-                    if (robot.direction == DIRECTION_UP && robot.y + 1 < grid[0].size && grid[robot.x][robot.y + 1].type != TILE_TYPE_OBSTACLE /*height*/) robot.y++
-                    else if (robot.direction == DIRECTION_DOWN && robot.y - 1 >= 0 && grid[robot.x][robot.y - 1].type != TILE_TYPE_OBSTACLE /*bottom*/) robot.y--
-                    else if (robot.direction == DIRECTION_LEFT && robot.x - 1 >= 0 && grid[robot.x - 1][robot.y].type != TILE_TYPE_OBSTACLE /*left*/) robot.x--
-                    else if (robot.direction == DIRECTION_RIGHT && robot.x + 1 < grid.size && grid[robot.x + 1][robot.y].type != TILE_TYPE_OBSTACLE/*left*/) robot.x++
+                    if (robot.direction == RobotOrientation.DIRECTION_UP && robot.y + 1 < grid[0].size /*height*/) robot.y++
+                    else if (robot.direction == RobotOrientation.DIRECTION_DOWN && robot.y - 1 >= 0 /*bottom*/) robot.y--
+                    else if (robot.direction == RobotOrientation.DIRECTION_LEFT && robot.x - 1 >= 0 /*left*/) robot.x--
+                    else if (robot.direction == RobotOrientation.DIRECTION_RIGHT && robot.x + 1 < grid.size /*left*/) robot.x++
                 }
             }
         }
         else if (pair.first == INSTRUCTION_TURN){
             instructionList[pair.first] = { grid, robot, parameter ->
-                robot.direction = nextDirection(robot.direction, parameter as Int)
+                robot.direction = nextDirection(robot.direction, parameter as RobotRotation)
             }
         }
     }
@@ -38,7 +38,7 @@ class Instruction(val type: Int) {
     init{
         when(type){
             INSTRUCTION_MOVE -> parameter = 1
-            INSTRUCTION_TURN -> parameter = TURN_DIRECTION_CLOCKWISE
+            INSTRUCTION_TURN -> parameter = RobotRotation.CLOCKWISE
             else -> parameter = 0
         }
     }
