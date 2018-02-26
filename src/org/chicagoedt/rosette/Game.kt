@@ -1,13 +1,23 @@
 package org.chicagoedt.rosette
 
+enum class Event {
+    LEVEL_VICTORY
+}
+
 class Game (private val levels: HashMap<String, Level>,
             val robots: HashMap<String, Robot>,
             private val levelOrder: ArrayList<String>){
     private var levelNumber = 0
     var currentLevel = levels[levelOrder[levelNumber]]!!
+    private var eventListener: (Event) -> Unit
 
     init{
         loadInstructions()
+        eventListener = {}
+    }
+
+    fun attachEventListener(newEventListener: (Event) -> Unit){
+        eventListener = newEventListener
     }
 
     fun nextLevel(){
@@ -32,18 +42,13 @@ class Game (private val levels: HashMap<String, Level>,
     fun runInstructionsFor(name: String){
         val robot = currentLevel.players[name]!!
         for(inst: Instruction in robot.instructions){
-            inst.function!!.invoke(currentLevel.grid, currentLevel.players[name]!!, inst.parameter)
-            if (!checkRobotStatus(name)) break
+            inst.function!!.invoke(currentLevel, currentLevel.players[name]!!, inst.parameter)
+
+            //check to see if the player won after the instruction
+            if (currentLevel.tileAt(currentLevel.players[name]!!.x, currentLevel.players[name]!!.y).type == TileType.VICTORY){
+                eventListener.invoke(Event.LEVEL_VICTORY)
+                break
+            }
         }
     }
-
-    private fun checkRobotStatus(name: String): Boolean{
-        val robot = currentLevel.players[name]!!
-        when (currentLevel.grid[robot.x][robot.y].type){
-            TileType.VICTORY -> return false
-            TileType.OBSTACLE -> return false
-        }
-        return true
-    }
-
 }

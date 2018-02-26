@@ -89,7 +89,7 @@ class BackendTests {
         game.attachInstruction(name, instruction)
         game.runInstructionsFor(name)
 
-        val difference = distanceCanMove(x, y, orientation, parameter, game.currentLevel.grid)
+        val difference = distanceCanMove(x, y, orientation, parameter, game.currentLevel)
         if (orientation == RobotOrientation.DIRECTION_UP) {
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y + difference)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
@@ -109,34 +109,34 @@ class BackendTests {
         game.removeInstruction(name, instruction)
     }
 
-    fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, grid: ArrayList<ArrayList<Tile>>): Int{
+    fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, level: Level): Int{
         var currentX = x
         var currentY = y
         var possibleDistance = 0
         for (i in 0..distance-1){
             if (orientation == RobotOrientation.DIRECTION_UP){
-                if (currentY + 1 >= grid[0].size || grid[currentX][currentY+1].type == TileType.OBSTACLE) return possibleDistance
+                if (currentY + 1 >= level.properties.height || level.tileAt(currentX, currentY+1).type == TileType.OBSTACLE) return possibleDistance
                 else {
                     possibleDistance++
                     currentY++
                 }
             }
             else if (orientation == RobotOrientation.DIRECTION_DOWN){
-                if (currentY - 1 < 0 || grid[currentX][currentY-1].type == TileType.OBSTACLE) return possibleDistance
+                if (currentY - 1 < 0 || level.tileAt(currentX, currentY-1).type == TileType.OBSTACLE) return possibleDistance
                 else {
                     possibleDistance++
                     currentY--
                 }
             }
             else if (orientation == RobotOrientation.DIRECTION_RIGHT){
-                if (currentX + 1 >= grid.size || grid[currentX+1][currentY].type == TileType.OBSTACLE) return possibleDistance
+                if (currentX + 1 >= level.properties.width || level.tileAt(currentX+1, currentY).type == TileType.OBSTACLE) return possibleDistance
                 else {
                     possibleDistance++
                     currentX++
                 }
             }
             else if (orientation == RobotOrientation.DIRECTION_DOWN){
-                if (currentX - 1 < 0 || grid[currentX - 1][currentY].type == TileType.OBSTACLE) return possibleDistance
+                if (currentX - 1 < 0 || level.tileAt(currentX-1, currentY).type == TileType.OBSTACLE) return possibleDistance
                 else {
                     possibleDistance++
                     currentX--
@@ -159,5 +159,118 @@ class BackendTests {
                 move(robotName, game.currentLevel.players[robotName]!!.direction, 3, true)
             }
         }
+    }
+
+    @Test
+    fun MoveEdge(){
+        val testRobots = HashMap<String, Robot>()
+        val surus = Robot("Surus", "", 1, 1)
+        testRobots[surus.name] = surus
+
+        val testLevels = HashMap<String, Level>()
+
+        val robotPlayer1 = RobotPlayer("Surus",0,0, RobotOrientation.DIRECTION_DOWN)
+
+        val list1 = HashMap<String, RobotPlayer>()
+        list1[robotPlayer1.name] = robotPlayer1
+
+        val level1 = Level(LevelProperties("Level 1", 0, 3, 3), list1, arrayListOf(surus.name))
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL)))
+
+        testLevels[level1.properties.name] = level1
+        game = Game(testLevels, testRobots, levelOrder)
+
+        val instruction = Instruction(INSTRUCTION_MOVE)
+        instruction.parameter = 1
+        game.attachInstruction(surus.name, instruction)
+        game.runInstructionsFor(surus.name)
+        assertEquals(level1.players[surus.name]!!.x, 0)
+        assertEquals(level1.players[surus.name]!!.y, 0)
+
+        game.removeInstruction(surus.name, instruction)
+        val turnInstruction = Instruction(INSTRUCTION_TURN)
+        turnInstruction.parameter = RobotRotation.CLOCKWISE
+        game.attachInstruction(surus.name, turnInstruction)
+        game.runInstructionsFor(surus.name)
+
+        game.removeInstruction(surus.name, turnInstruction)
+        game.attachInstruction(surus.name, instruction)
+        game.runInstructionsFor(surus.name)
+        assertEquals(level1.players[surus.name]!!.x, 0)
+        assertEquals(level1.players[surus.name]!!.y, 0)
+    }
+
+    @Test
+    fun MoveObstacle(){
+        val testRobots = HashMap<String, Robot>()
+        val surus = Robot("Surus", "", 1, 1)
+        testRobots[surus.name] = surus
+
+        val testLevels = HashMap<String, Level>()
+
+        val robotPlayer1 = RobotPlayer("Surus",0,0, RobotOrientation.DIRECTION_RIGHT)
+
+        val list1 = HashMap<String, RobotPlayer>()
+        list1[robotPlayer1.name] = robotPlayer1
+
+        val level1 = Level(LevelProperties("Level 1", 0, 3, 3), list1, arrayListOf(surus.name))
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
+                arrayListOf(TileType.NEUTRAL, TileType.OBSTACLE, TileType.NEUTRAL)))
+
+        testLevels[level1.properties.name] = level1
+
+        game = Game(testLevels, testRobots, levelOrder)
+
+        val instruction = Instruction(INSTRUCTION_MOVE)
+        instruction.parameter = 1
+        game.attachInstruction(surus.name, instruction)
+
+        game.runInstructionsFor(surus.name)
+
+        assertEquals(level1.players[surus.name]!!.x, 0)
+        assertEquals(level1.players[surus.name]!!.y, 0)
+    }
+
+    @Test
+    fun LevelVictory(){
+        var won = false
+        val testRobots = HashMap<String, Robot>()
+        val surus = Robot("Surus", "", 1, 1)
+        testRobots[surus.name] = surus
+
+        val testLevels = HashMap<String, Level>()
+
+        val robotPlayer1 = RobotPlayer("Surus",0,0, RobotOrientation.DIRECTION_RIGHT)
+
+        val list1 = HashMap<String, RobotPlayer>()
+        list1[robotPlayer1.name] = robotPlayer1
+
+        val level1 = Level(LevelProperties("Level 1", 0, 3, 3), list1, arrayListOf(surus.name))
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
+                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
+                arrayListOf(TileType.NEUTRAL, TileType.VICTORY, TileType.NEUTRAL)))
+
+        testLevels[level1.properties.name] = level1
+
+        game = Game(testLevels, testRobots, levelOrder)
+
+        val instruction = Instruction(INSTRUCTION_MOVE)
+        instruction.parameter = 1
+        game.attachInstruction(surus.name, instruction)
+
+        game.attachEventListener { won = true }
+
+        game.runInstructionsFor(surus.name)
+
+        assertEquals(won, true)
     }
 }

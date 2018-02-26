@@ -1,7 +1,7 @@
 package org.chicagoedt.rosette
 
 class Level(var properties: LevelProperties, val players: HashMap<String, RobotPlayer>, val playerOrder: ArrayList<String>) {
-    var grid = arrayListOf<ArrayList<Tile>>()//ArrayList<ArrayList<Tile>>()
+    private var grid = arrayListOf<ArrayList<Tile>>()//ArrayList<ArrayList<Tile>>()
     init{
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
@@ -17,10 +17,14 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
             for (j in 0..properties.width - 1){
-                list.add(Tile(newGrid[i][properties.width - 1 - j]))
+                list.add(Tile(newGrid[properties.height - 1 - i][j]))
             }
             grid.add(list)
         }
+    }
+
+    fun tileAt(x: Int, y: Int): Tile{
+        return grid[y][x]
     }
 }
 
