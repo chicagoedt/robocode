@@ -7,5 +7,6 @@ enum class TileType {
 }
 
 
-class Tile (val type: TileType){
+interface Tile{
+    val type : TileType
 }

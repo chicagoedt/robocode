@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette.Level
+package org.chicagoedt.rosette.Levels
 
 class LevelProperties(val name: String,
                       val difficulty : Int,

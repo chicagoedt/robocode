@@ -1,11 +1,13 @@
 package org.chicagoedt.rosette
 
-import org.chicagoedt.rosette.Level.Level
-import org.chicagoedt.rosette.Level.LevelProperties
+import org.chicagoedt.rosette.Levels.Level
+import org.chicagoedt.rosette.Levels.LevelProperties
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Robots.Robot
 import org.chicagoedt.rosette.Robots.RobotOrientation
-import org.chicagoedt.rosette.Tiles.TileType
+import org.chicagoedt.rosette.Tiles.NeutralTile
+import org.chicagoedt.rosette.Tiles.ObstacleTile
+import org.chicagoedt.rosette.Tiles.VictoryTile
 
 
 fun getRobots() : HashMap<String, Robot>{
@@ -32,27 +34,27 @@ fun getLevels() : HashMap<String, Level>{
     list1[robotPlayer2.name] = robotPlayer2
     list2[robotPlayer2.name] = robotPlayer2
 
-    val level1 = Level(LevelProperties("Level 1", 0, 10, 10), list1, arrayListOf("Surus", "Hushpuppy"))
-    val level2 = Level(LevelProperties("Level 2", 0, 5, 5), list2, arrayListOf("Hushpuppy"))
+    val level1 = Level(LevelProperties("Levels 1", 0, 10, 10), list1, arrayListOf("Surus", "Hushpuppy"))
+    val level2 = Level(LevelProperties("Levels 2", 0, 5, 5), list2, arrayListOf("Hushpuppy"))
 
     level1.makeGrid(arrayListOf(
-            arrayListOf(TileType.VICTORY, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.OBSTACLE, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL)))
+            arrayListOf(VictoryTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), ObstacleTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile())))
 
     level2.makeGrid(arrayListOf(
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.OBSTACLE, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-            arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL, TileType.VICTORY)))
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), ObstacleTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile())))
 
     levels[level1.properties.name] = level1
     levels[level2.properties.name] = level2
@@ -61,5 +63,5 @@ fun getLevels() : HashMap<String, Level>{
 }
 
 fun getLevelOrder() : ArrayList<String>{
-    return arrayListOf("Level 1","Level 2")
+    return arrayListOf("Levels 1","Levels 2")
 }

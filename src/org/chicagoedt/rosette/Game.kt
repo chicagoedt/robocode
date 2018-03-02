@@ -1,7 +1,7 @@
 package org.chicagoedt.rosette
 
 import org.chicagoedt.rosette.Instructions.Instruction
-import org.chicagoedt.rosette.Level.Level
+import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.Robot
 import org.chicagoedt.rosette.Tiles.TileType
 

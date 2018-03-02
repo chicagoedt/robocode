@@ -1,16 +1,18 @@
 import kotlin.test.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Instructions.Instruction
 import org.chicagoedt.rosette.Instructions.MoveInstruction
 import org.chicagoedt.rosette.Instructions.TurnInstruction
-import org.chicagoedt.rosette.Level.Level
-import org.chicagoedt.rosette.Level.LevelProperties
+import org.chicagoedt.rosette.Levels.Level
+import org.chicagoedt.rosette.Levels.LevelProperties
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Robots.Robot
 import org.chicagoedt.rosette.Robots.RobotOrientation
 import org.chicagoedt.rosette.Robots.RobotRotation
 import org.chicagoedt.rosette.Robots.nextDirection
+import org.chicagoedt.rosette.Tiles.NeutralTile
+import org.chicagoedt.rosette.Tiles.ObstacleTile
 import org.chicagoedt.rosette.Tiles.TileType
+import org.chicagoedt.rosette.Tiles.VictoryTile
 
 
 class BackendTests {
@@ -189,12 +191,12 @@ class BackendTests {
         val list1 = HashMap<String, RobotPlayer>()
         list1[robotPlayer1.name] = robotPlayer1
 
-        val level1 = Level(LevelProperties("Level 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
 
         level1.makeGrid(arrayListOf(
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL)))
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())))
 
         testLevels[level1.properties.name] = level1
         game = Game(testLevels, testRobots, levelOrder)
@@ -232,12 +234,12 @@ class BackendTests {
         val list1 = HashMap<String, RobotPlayer>()
         list1[robotPlayer1.name] = robotPlayer1
 
-        val level1 = Level(LevelProperties("Level 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
 
         level1.makeGrid(arrayListOf(
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-                arrayListOf(TileType.NEUTRAL, TileType.OBSTACLE, TileType.NEUTRAL)))
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
 
         testLevels[level1.properties.name] = level1
 
@@ -267,12 +269,12 @@ class BackendTests {
         val list1 = HashMap<String, RobotPlayer>()
         list1[robotPlayer1.name] = robotPlayer1
 
-        val level1 = Level(LevelProperties("Level 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
 
         level1.makeGrid(arrayListOf(
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-                arrayListOf(TileType.NEUTRAL, TileType.NEUTRAL, TileType.NEUTRAL),
-                arrayListOf(TileType.NEUTRAL, TileType.VICTORY, TileType.NEUTRAL)))
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), VictoryTile(), NeutralTile())))
 
         testLevels[level1.properties.name] = level1
 

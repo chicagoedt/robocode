@@ -1,6 +1,6 @@
 package org.chicagoedt.rosette.Instructions
 
-import org.chicagoedt.rosette.Level.Level
+import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Robots.RobotRotation
 import org.chicagoedt.rosette.Robots.nextDirection
