@@ -1,5 +1,10 @@
 package org.chicagoedt.rosette
 
+import org.chicagoedt.rosette.Instructions.Instruction
+import org.chicagoedt.rosette.Level.Level
+import org.chicagoedt.rosette.Robots.Robot
+import org.chicagoedt.rosette.Tiles.TileType
+
 enum class Event {
     LEVEL_VICTORY
 }
@@ -12,7 +17,6 @@ class Game (private val levels: HashMap<String, Level>,
     private var eventListener: (Event) -> Unit
 
     init{
-        loadInstructions()
         eventListener = {}
     }
 
@@ -42,7 +46,7 @@ class Game (private val levels: HashMap<String, Level>,
     fun runInstructionsFor(name: String){
         val robot = currentLevel.players[name]!!
         for(inst: Instruction in robot.instructions){
-            inst.function!!.invoke(currentLevel, currentLevel.players[name]!!, inst.parameter)
+            inst.function(currentLevel, currentLevel.players[name]!!, inst.parameter)
 
             //check to see if the player won after the instruction
             if (currentLevel.tileAt(currentLevel.players[name]!!.x, currentLevel.players[name]!!.y).type == TileType.VICTORY){

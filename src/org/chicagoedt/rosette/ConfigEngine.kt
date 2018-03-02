@@ -1,5 +1,12 @@
 package org.chicagoedt.rosette
 
+import org.chicagoedt.rosette.Level.Level
+import org.chicagoedt.rosette.Level.LevelProperties
+import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.Robots.Robot
+import org.chicagoedt.rosette.Robots.RobotOrientation
+import org.chicagoedt.rosette.Tiles.TileType
+
 
 fun getRobots() : HashMap<String, Robot>{
     val robots = HashMap<String, Robot>()
@@ -16,7 +23,7 @@ fun getRobots() : HashMap<String, Robot>{
 fun getLevels() : HashMap<String, Level>{
     val levels = HashMap<String, Level>()
 
-    val robotPlayer1 = RobotPlayer("Surus",5,5, RobotOrientation.DIRECTION_UP)
+    val robotPlayer1 = RobotPlayer("Surus", 5, 5, RobotOrientation.DIRECTION_UP)
     val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP)
 
     val list1 = HashMap<String, RobotPlayer>()
