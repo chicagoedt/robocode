@@ -1,2 +1,5 @@
 rootProject.name = 'rosette'
 
+include 'backend'
+include 'web-frontend'
+include 'jvm-frontend'

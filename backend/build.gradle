@@ -1,0 +1,16 @@
+apply plugin: 'kotlin-platform-common'
+
+sourceSets {
+    main.kotlin.srcDirs += 'src/'
+    test.kotlin.srcDirs += 'tests/'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-common:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-annotations-common:$kotlin_version"
+}

@@ -109,21 +109,17 @@ class BackendTests {
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_DOWN) {
-            //if (assert)assertEquals(game.currentLevel.players[name]!!.y, y - difference)
-            //if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y - difference)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_LEFT) {
-            //if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
-            //if (assert)assertEquals(game.currentLevel.players[name]!!.x, x - difference)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x - difference)
         }
         else if (orientation == RobotOrientation.DIRECTION_RIGHT) {
-            //if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
-            //if (assert)assertEquals(game.currentLevel.players[name]!!.x, x + difference)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x + difference)
         }
-        println(game.getInstructions(name).size)
-        game.removeInstruction(name, instruction)
-        println(game.getInstructions(name).size)
-        println()
     }
 
     fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, level: Level): Int{

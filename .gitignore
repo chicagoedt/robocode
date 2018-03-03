@@ -31,9 +31,13 @@ $RECYCLE.BIN/
 
 #Node.js
 node_modules/
+web-frontend/node_modules/
 
 # Gradle:
 .gradle/
+web-frontend/.gradle/
+jvm-frontend/.gradle/
+backend/.gradle/
 gradle/
 gradlew*
 
@@ -48,6 +52,9 @@ cmake-build-debug/
 # IntelliJ
 out/
 build/
+web-frontend/build/
+jvm-frontend/build/
+backend/build/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
