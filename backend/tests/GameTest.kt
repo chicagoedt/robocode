@@ -4,11 +4,8 @@ import org.chicagoedt.rosette.Instructions.MoveInstruction
 import org.chicagoedt.rosette.Instructions.TurnInstruction
 import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Levels.LevelProperties
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Robots.Robot
-import org.chicagoedt.rosette.Robots.RobotOrientation
-import org.chicagoedt.rosette.Robots.RobotRotation
-import org.chicagoedt.rosette.Robots.nextDirection
+import org.chicagoedt.rosette.Robots.*
+import org.chicagoedt.rosette.Sensors.DistanceSensor
 import org.chicagoedt.rosette.Tiles.NeutralTile
 import org.chicagoedt.rosette.Tiles.ObstacleTile
 import org.chicagoedt.rosette.Tiles.TileType
@@ -36,6 +33,7 @@ class BackendTests {
                 assertEquals(game.currentLevel.players[robot.name]!!.x, robot.x)
                 assertEquals(game.currentLevel.players[robot.name]!!.y, robot.y)
             }
+            game.nextLevel()
         }
     }
 
@@ -70,6 +68,7 @@ class BackendTests {
                 assertEquals(list[0].name, moveInstruction.name)
                 assertEquals(list[1].name, turnInstruction.name)
             }
+            game.nextLevel()
         }
     }
 
@@ -82,6 +81,7 @@ class BackendTests {
                     turn(robotName, RobotRotation.CLOCKWISE, true)
                 }
             }
+            game.nextLevel()
         }
     }
 
@@ -171,6 +171,7 @@ class BackendTests {
                 turn(robotName, RobotRotation.CLOCKWISE, false)
                 move(robotName, game.currentLevel.players[robotName]!!.direction, 3, true)
             }
+            game.nextLevel()
         }
     }
 
@@ -285,5 +286,68 @@ class BackendTests {
         game.runInstructionsFor(surus.name)
 
         assertEquals(won, true)
+    }
+
+    @Test
+    fun addSensors(){
+        val distanceSensor  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+
+                val tryAddingMore = game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(tryAddingMore, false)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun increaseSensorCount(){
+        val distanceSensor  = DistanceSensor()
+        val distanceSensor2  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor2)
+
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[1], distanceSensor2)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun decreaseSensorCount(){
+        val distanceSensor  = DistanceSensor()
+        val distanceSensor2  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
+
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor2)
+
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 1)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
+
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
+
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                assertNotEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[1], distanceSensor2)
+            }
+            game.nextLevel()
+        }
     }
 }

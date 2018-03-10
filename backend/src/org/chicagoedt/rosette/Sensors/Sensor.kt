@@ -4,6 +4,7 @@ import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.RobotPlayer
 
 enum class SensorType{
+    EMPTY,
     DISTANCE
 }
 
