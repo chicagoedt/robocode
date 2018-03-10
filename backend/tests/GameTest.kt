@@ -350,4 +350,26 @@ class BackendTests {
             game.nextLevel()
         }
     }
+
+    @Test
+    fun removeSensor(){
+        val distanceSensor  = DistanceSensor()
+        val distanceSensor2  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                game.currentLevel.players[robotName]!!.removeSensorFrom(RobotPosition.FRONT, distanceSensor)
+                assertNotEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                game.currentLevel.players[robotName]!!.removeSensorFrom(RobotPosition.FRONT, 0)
+                assertNotEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+
+            }
+            game.nextLevel()
+        }
+    }
 }
