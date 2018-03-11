@@ -24,9 +24,9 @@ abstract class InstructionWithList : Instruction {
         return arrayList
     }
 
-    override fun function(level: Level, robot: RobotPlayer, parameter: Any) {
+    fun runList(level: Level, robot: RobotPlayer) {
         for (instruction in list){
-            instruction.function(level, robot, parameter)
+            instruction.function(level, robot, instruction.parameter)
         }
     }
 }

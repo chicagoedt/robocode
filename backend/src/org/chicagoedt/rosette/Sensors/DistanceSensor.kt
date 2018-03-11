@@ -4,11 +4,14 @@ import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.RobotOrientation
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Tiles.TileType
+import org.chicagoedt.rosette.Topic
+import org.chicagoedt.rosette.Robots.RobotPosition
 
-class DistanceSensor : Sensor {
+class DistanceSensor : Sensor() {
     override val type: SensorType = SensorType.DISTANCE
 
-    override fun function(player : RobotPlayer, level: Level, position: SensorPosition) : Int {
+    override fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic) {
+        val position = getSensorPos(player)
         var x = player.x
         var y = player.y
         var tile = level.tileAt(x, y)
@@ -18,7 +21,7 @@ class DistanceSensor : Sensor {
                 x < level.properties.width &&
                 y >= 0 &&
                 y < level.properties.height){
-            if (position == SensorPosition.FRONT){
+            if (position == RobotPosition.FRONT){
                 when (player.direction){
                     RobotOrientation.DIRECTION_UP -> y++
                     RobotOrientation.DIRECTION_DOWN -> y--
@@ -26,7 +29,7 @@ class DistanceSensor : Sensor {
                     RobotOrientation.DIRECTION_RIGHT -> x++
                 }
             }
-            else if (position == SensorPosition.LEFT){
+            else if (position == RobotPosition.LEFT){
                 when (player.direction){
                     RobotOrientation.DIRECTION_UP -> x--
                     RobotOrientation.DIRECTION_DOWN -> x++
@@ -34,7 +37,7 @@ class DistanceSensor : Sensor {
                     RobotOrientation.DIRECTION_RIGHT -> y++
                 }
             }
-            else if (position == SensorPosition.RIGHT){
+            else if (position == RobotPosition.RIGHT){
                 when (player.direction){
                     RobotOrientation.DIRECTION_UP -> x++
                     RobotOrientation.DIRECTION_DOWN -> x--
@@ -42,7 +45,7 @@ class DistanceSensor : Sensor {
                     RobotOrientation.DIRECTION_RIGHT -> y--
                 }
             }
-            else if (position == SensorPosition.BACK){
+            else if (position == RobotPosition.BACK){
                 when (player.direction){
                     RobotOrientation.DIRECTION_UP -> y--
                     RobotOrientation.DIRECTION_DOWN -> y++
@@ -53,6 +56,6 @@ class DistanceSensor : Sensor {
             sum++
             tile = level.tileAt(x,y)
         }
-        return sum
+        topic.value = sum
     }
 }
