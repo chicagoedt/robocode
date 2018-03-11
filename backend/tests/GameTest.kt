@@ -1,14 +1,14 @@
 import kotlin.test.*
 import org.chicagoedt.rosette.*
+import org.chicagoedt.rosette.Instructions.ConditionalWithList
 import org.chicagoedt.rosette.Instructions.MoveInstruction
+import org.chicagoedt.rosette.Instructions.Operations.TopicEqualsComparison
+import org.chicagoedt.rosette.Instructions.ReadSensorInstruction
 import org.chicagoedt.rosette.Instructions.TurnInstruction
 import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Levels.LevelProperties
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Robots.Robot
-import org.chicagoedt.rosette.Robots.RobotOrientation
-import org.chicagoedt.rosette.Robots.RobotRotation
-import org.chicagoedt.rosette.Robots.nextDirection
+import org.chicagoedt.rosette.Robots.*
+import org.chicagoedt.rosette.Sensors.DistanceSensor
 import org.chicagoedt.rosette.Tiles.NeutralTile
 import org.chicagoedt.rosette.Tiles.ObstacleTile
 import org.chicagoedt.rosette.Tiles.TileType
@@ -36,6 +36,7 @@ class BackendTests {
                 assertEquals(game.currentLevel.players[robot.name]!!.x, robot.x)
                 assertEquals(game.currentLevel.players[robot.name]!!.y, robot.y)
             }
+            game.nextLevel()
         }
     }
 
@@ -70,6 +71,7 @@ class BackendTests {
                 assertEquals(list[0].name, moveInstruction.name)
                 assertEquals(list[1].name, turnInstruction.name)
             }
+            game.nextLevel()
         }
     }
 
@@ -82,6 +84,7 @@ class BackendTests {
                     turn(robotName, RobotRotation.CLOCKWISE, true)
                 }
             }
+            game.nextLevel()
         }
     }
 
@@ -102,14 +105,16 @@ class BackendTests {
         val x = game.currentLevel.players[name]!!.x
         game.attachInstruction(name, instruction)
         game.runInstructionsFor(name)
+        game.removeInstruction(name, instruction)
 
-        val difference = distanceCanMove(x, y, orientation, parameter, game.currentLevel)
+        val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
         if (orientation == RobotOrientation.DIRECTION_UP) {
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y + difference)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_DOWN) {
-            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y - difference)
+            if (assert)
+                assertEquals(game.currentLevel.players[name]!!.y, y - difference)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_LEFT) {
@@ -120,43 +125,6 @@ class BackendTests {
             if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
             if (assert)assertEquals(game.currentLevel.players[name]!!.x, x + difference)
         }
-    }
-
-    fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, level: Level): Int{
-        var currentX = x
-        var currentY = y
-        var possibleDistance = 0
-        for (i in 0..distance-1){
-            if (orientation == RobotOrientation.DIRECTION_UP){
-                if (currentY + 1 >= level.properties.height || level.tileAt(currentX, currentY+1).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentY++
-                }
-            }
-            else if (orientation == RobotOrientation.DIRECTION_DOWN){
-                if (currentY - 1 < 0 || level.tileAt(currentX, currentY-1).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentY--
-                }
-            }
-            else if (orientation == RobotOrientation.DIRECTION_RIGHT){
-                if (currentX + 1 >= level.properties.width || level.tileAt(currentX+1, currentY).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentX++
-                }
-            }
-            else if (orientation == RobotOrientation.DIRECTION_DOWN){
-                if (currentX - 1 < 0 || level.tileAt(currentX-1, currentY).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentX--
-                }
-            }
-        }
-        return possibleDistance
     }
 
     @Test
@@ -171,6 +139,7 @@ class BackendTests {
                 turn(robotName, RobotRotation.CLOCKWISE, false)
                 move(robotName, game.currentLevel.players[robotName]!!.direction, 3, true)
             }
+            game.nextLevel()
         }
     }
 
@@ -285,5 +254,182 @@ class BackendTests {
         game.runInstructionsFor(surus.name)
 
         assertEquals(won, true)
+    }
+
+    @Test
+    fun addSensors(){
+        val distanceSensor  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+
+                val tryAddingMore = game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(tryAddingMore, false)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun increaseSensorCount(){
+        val distanceSensor  = DistanceSensor()
+        val distanceSensor2  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor2)
+
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[1], distanceSensor2)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun decreaseSensorCount(){
+        val distanceSensor  = DistanceSensor()
+        val distanceSensor2  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
+
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor2)
+
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 1)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
+
+                game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
+                assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
+
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                assertNotEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[1], distanceSensor2)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun removeSensor(){
+        val distanceSensor  = DistanceSensor()
+        val distanceSensor2  = DistanceSensor()
+
+        for(levelName : String in levelOrder){
+            for(robotName : String in levels[levelName]!!.playerOrder){
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                game.currentLevel.players[robotName]!!.removeSensorFrom(RobotPosition.FRONT, distanceSensor)
+                assertNotEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+
+                game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
+                assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+                game.currentLevel.players[robotName]!!.removeSensorFrom(RobotPosition.FRONT, 0)
+                assertNotEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
+
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun ReadDistanceSensor(){
+        var won = false
+        val testRobots = HashMap<String, Robot>()
+        val surus = Robot("Surus", "", 1, 1)
+        testRobots[surus.name] = surus
+
+        val testLevels = HashMap<String, Level>()
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
+        val distanceSensor = DistanceSensor()
+        robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
+
+        val list1 = HashMap<String, RobotPlayer>()
+        list1[robotPlayer1.name] = robotPlayer1
+
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
+
+        testLevels[level1.properties.name] = level1
+
+        game = Game(testLevels, testRobots, levelOrder)
+
+        val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
+        readSensorInstruction.parameter = distanceSensor
+        game.attachInstruction(surus.name, readSensorInstruction)
+
+        val instruction = ConditionalWithList()
+        instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
+        val turnInstruction = TurnInstruction()
+        turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
+        instruction.addToList(turnInstruction)
+        instruction.addToList(MoveInstruction())
+        game.attachInstruction(surus.name, instruction)
+
+        game.attachEventListener { won = true }
+
+        game.runInstructionsFor(surus.name)
+
+        assertEquals(won, true)
+    }
+
+    @Test
+    fun ReadDistanceSensorFalse(){
+        var won = false
+        val testRobots = HashMap<String, Robot>()
+        val surus = Robot("Surus", "", 1, 1)
+        testRobots[surus.name] = surus
+
+        val testLevels = HashMap<String, Level>()
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
+        val distanceSensor = DistanceSensor()
+        robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
+
+        val list1 = HashMap<String, RobotPlayer>()
+        list1[robotPlayer1.name] = robotPlayer1
+
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
+
+        testLevels[level1.properties.name] = level1
+
+        game = Game(testLevels, testRobots, levelOrder)
+
+        val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
+        readSensorInstruction.parameter = distanceSensor
+        game.attachInstruction(surus.name, readSensorInstruction)
+
+        val instruction = ConditionalWithList()
+        instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
+        val turnInstruction = TurnInstruction()
+        turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
+        instruction.addToList(turnInstruction)
+        instruction.addToList(MoveInstruction())
+        game.attachInstruction(surus.name, instruction)
+
+        game.attachEventListener { won = true }
+
+        game.runInstructionsFor(surus.name)
+
+        assertEquals(won, false)
     }
 }

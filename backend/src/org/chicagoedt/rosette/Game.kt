@@ -13,8 +13,10 @@ class Game (private val levels: HashMap<String, Level>,
             val robots: HashMap<String, Robot>,
             private val levelOrder: ArrayList<String>){
     private var levelNumber = 0
-    var currentLevel = levels[levelOrder[levelNumber]]!!
     private var eventListener: (Event) -> Unit
+
+    var currentLevel = levels[levelOrder[levelNumber]]!!
+    var mainTopic = Topic()
 
     init{
         eventListener = {}
