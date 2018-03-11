@@ -9,17 +9,30 @@ enum class Event {
     LEVEL_VICTORY
 }
 
-class Game (private val levels: HashMap<String, Level>,
-            val robots: HashMap<String, Robot>,
-            private val levelOrder: ArrayList<String>){
+class Game (private val levelsList: ArrayList<Level>,
+            val robotsList: ArrayList<Robot>){
+
     private var levelNumber = 0
     private var eventListener: (Event) -> Unit
+    private var levels: HashMap<String, Level> = hashMapOf()
+    private var robots: HashMap<String, Robot> = hashMapOf()
+    private var levelOrder: ArrayList<String> = arrayListOf()
 
-    var currentLevel = levels[levelOrder[levelNumber]]!!
+    var currentLevel : Level
     var mainTopic = Topic()
 
     init{
         eventListener = {}
+        for (level in levelsList){
+            levelOrder.add(level.properties.name)
+            levels[level.properties.name] = level
+        }
+
+        for (robot in robotsList){
+            robots[robot.name] = robot
+        }
+
+       currentLevel = levels[levelOrder[levelNumber]]!!
     }
 
     fun attachEventListener(newEventListener: (Event) -> Unit){

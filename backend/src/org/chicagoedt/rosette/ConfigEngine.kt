@@ -10,20 +10,20 @@ import org.chicagoedt.rosette.Tiles.ObstacleTile
 import org.chicagoedt.rosette.Tiles.VictoryTile
 
 
-fun getRobots() : HashMap<String, Robot>{
-    val robots = HashMap<String, Robot>()
+fun getRobots() : ArrayList<Robot>{
+    val robots = ArrayList<Robot>()
 
     val surus = Robot("Surus", "", 1, 1)
     val hushpuppy = Robot("Hushpuppy", "", 1, 1)
 
-    robots[surus.name] = surus
-    robots[hushpuppy.name] = hushpuppy
+    robots.add(surus)
+    robots.add(hushpuppy)
 
     return robots
 }
 
-fun getLevels() : HashMap<String, Level>{
-    val levels = HashMap<String, Level>()
+fun getLevels() : ArrayList<Level>{
+    val levels = ArrayList<Level>()
 
     val robotPlayer1 = RobotPlayer("Surus", 5, 5, RobotOrientation.DIRECTION_UP)
     val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP)
@@ -57,12 +57,8 @@ fun getLevels() : HashMap<String, Level>{
             arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
             arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile())))
 
-    levels[level1.properties.name] = level1
-    levels[level2.properties.name] = level2
+    levels.add(level1)
+    levels.add(level2)
 
     return levels
-}
-
-fun getLevelOrder() : ArrayList<String>{
-    return arrayListOf("Levels 1","Levels 2")
 }

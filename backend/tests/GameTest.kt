@@ -19,18 +19,18 @@ class BackendTests {
     private lateinit var game : Game
     private val levels = getLevels()
     private val robots = getRobots()
-    private val levelOrder = getLevelOrder()
 
     @BeforeTest
     fun SetUp(){
-        game = Game(levels, robots, levelOrder)
+        game = Game(levels, robots)
     }
 
     @Test
     fun GameRobots() {
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
-                val robot = levels[levelName]!!.players[robotName]!!
+        for(level in levels){
+            val levelName = level.properties.name
+            for(robotName : String in level.playerOrder){
+                val robot = level.players[robotName]!!
 
                 assertEquals(game.currentLevel.players[robot.name]!!.name, robot.name)
                 assertEquals(game.currentLevel.players[robot.name]!!.x, robot.x)
@@ -42,25 +42,25 @@ class BackendTests {
 
     @Test
     fun GameLevels() {
-        for(levelName : String in levelOrder){
-            assertEquals(game.currentLevel, levels[levelName])
+        for(level in levels){
+            assertEquals(game.currentLevel, level)
             game.nextLevel()
         }
     }
 
     @Test
     fun GameGrid() {
-        for(levelName : String in levelOrder){
-            assertEquals(game.currentLevel.properties.width, levels[levelName]!!.properties.width)
-            assertEquals(game.currentLevel.properties.height, levels[levelName]!!.properties.height)
+        for(level in levels){
+            assertEquals(game.currentLevel.properties.width, level.properties.width)
+            assertEquals(game.currentLevel.properties.height, level.properties.height)
             game.nextLevel()
         }
     }
 
     @Test
     fun RobotInstructionAttach() {
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
 
                 val moveInstruction = MoveInstruction()
                 game.attachInstruction(robotName, moveInstruction)
@@ -78,8 +78,8 @@ class BackendTests {
     @Test
     fun RobotInstructionTurn() {
         val instruction = TurnInstruction()
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
                 for (i in 0..3) {
                     turn(robotName, RobotRotation.CLOCKWISE, true)
                 }
@@ -129,8 +129,8 @@ class BackendTests {
 
     @Test
     fun RobotInstructionMove(){
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
                 move(robotName, game.currentLevel.players[robotName]!!.direction, 2, true)
                 turn(robotName, RobotRotation.CLOCKWISE, false)
                 move(robotName, game.currentLevel.players[robotName]!!.direction, 4, true)
@@ -145,11 +145,11 @@ class BackendTests {
 
     @Test
     fun MoveEdge(){
-        val testRobots = HashMap<String, Robot>()
+        val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "", 1, 1)
-        testRobots[surus.name] = surus
+        testRobots.add(surus)
 
-        val testLevels = HashMap<String, Level>()
+        val testLevels = ArrayList<Level>()
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN)
 
@@ -163,8 +163,8 @@ class BackendTests {
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())))
 
-        testLevels[level1.properties.name] = level1
-        game = Game(testLevels, testRobots, levelOrder)
+        testLevels.add(level1)
+        game = Game(testLevels, testRobots)
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
@@ -188,11 +188,11 @@ class BackendTests {
 
     @Test
     fun MoveObstacle(){
-        val testRobots = HashMap<String, Robot>()
+        val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "", 1, 1)
-        testRobots[surus.name] = surus
+        testRobots.add(surus)
 
-        val testLevels = HashMap<String, Level>()
+        val testLevels = ArrayList<Level>()
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
 
@@ -206,9 +206,9 @@ class BackendTests {
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
 
-        testLevels[level1.properties.name] = level1
+        testLevels.add(level1)
 
-        game = Game(testLevels, testRobots, levelOrder)
+        game = Game(testLevels, testRobots)
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
@@ -223,11 +223,11 @@ class BackendTests {
     @Test
     fun LevelVictory(){
         var won = false
-        val testRobots = HashMap<String, Robot>()
+        val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "", 1, 1)
-        testRobots[surus.name] = surus
+        testRobots.add(surus)
 
-        val testLevels = HashMap<String, Level>()
+        val testLevels = ArrayList<Level>()
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
 
@@ -241,9 +241,9 @@ class BackendTests {
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), VictoryTile(), NeutralTile())))
 
-        testLevels[level1.properties.name] = level1
+        testLevels.add(level1)
 
-        game = Game(testLevels, testRobots, levelOrder)
+        game = Game(testLevels, testRobots)
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
@@ -260,8 +260,8 @@ class BackendTests {
     fun addSensors(){
         val distanceSensor  = DistanceSensor()
 
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
                 assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
                 game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
                 assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
@@ -278,8 +278,8 @@ class BackendTests {
         val distanceSensor  = DistanceSensor()
         val distanceSensor2  = DistanceSensor()
 
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
                 assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 1)
                 game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
                 game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
@@ -298,8 +298,8 @@ class BackendTests {
         val distanceSensor  = DistanceSensor()
         val distanceSensor2  = DistanceSensor()
 
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
                 game.currentLevel.players[robotName]!!.setSensorCountAt(RobotPosition.FRONT, 2)
                 assertEquals(game.currentLevel.players[robotName]!!.sensorCountAt(RobotPosition.FRONT), 2)
 
@@ -324,8 +324,8 @@ class BackendTests {
         val distanceSensor  = DistanceSensor()
         val distanceSensor2  = DistanceSensor()
 
-        for(levelName : String in levelOrder){
-            for(robotName : String in levels[levelName]!!.playerOrder){
+        for(level in levels){
+            for(robotName : String in level.playerOrder){
                 game.currentLevel.players[robotName]!!.addSensorTo(RobotPosition.FRONT, distanceSensor)
                 assertEquals(game.currentLevel.players[robotName]!!.getSensors(RobotPosition.FRONT)[0], distanceSensor)
                 game.currentLevel.players[robotName]!!.removeSensorFrom(RobotPosition.FRONT, distanceSensor)
@@ -344,11 +344,11 @@ class BackendTests {
     @Test
     fun ReadDistanceSensor(){
         var won = false
-        val testRobots = HashMap<String, Robot>()
+        val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "", 1, 1)
-        testRobots[surus.name] = surus
+        testRobots.add(surus)
 
-        val testLevels = HashMap<String, Level>()
+        val testLevels = ArrayList<Level>()
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
         val distanceSensor = DistanceSensor()
@@ -364,9 +364,9 @@ class BackendTests {
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
 
-        testLevels[level1.properties.name] = level1
+        testLevels.add(level1)
 
-        game = Game(testLevels, testRobots, levelOrder)
+        game = Game(testLevels, testRobots)
 
         val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
@@ -390,11 +390,11 @@ class BackendTests {
     @Test
     fun ReadDistanceSensorFalse(){
         var won = false
-        val testRobots = HashMap<String, Robot>()
+        val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "", 1, 1)
-        testRobots[surus.name] = surus
+        testRobots.add(surus)
 
-        val testLevels = HashMap<String, Level>()
+        val testLevels = ArrayList<Level>()
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
         val distanceSensor = DistanceSensor()
@@ -410,9 +410,9 @@ class BackendTests {
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
 
-        testLevels[level1.properties.name] = level1
+        testLevels.add(level1)
 
-        game = Game(testLevels, testRobots, levelOrder)
+        game = Game(testLevels, testRobots)
 
         val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
