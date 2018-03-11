@@ -4,8 +4,12 @@ import org.chicagoedt.rosette.Tiles.Tile
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Tiles.NeutralTile
 
-class Level(var properties: LevelProperties, val players: HashMap<String, RobotPlayer>, val playerOrder: ArrayList<String>) {
+//class Level(var properties: LevelProperties, val players: HashMap<String, RobotPlayer>, val playerOrder: ArrayList<String>) {
+class Level(var properties: LevelProperties, val playersList: ArrayList<RobotPlayer>) {
     private var grid = arrayListOf<ArrayList<Tile>>()//ArrayList<ArrayList<Tile>>()
+    internal val players: HashMap<String, RobotPlayer> = hashMapOf()
+    internal val playerOrder: ArrayList<String> = arrayListOf()
+
     init{
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
@@ -13,6 +17,11 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
                 list.add(NeutralTile())
             }
             grid.add(list)
+        }
+
+        for (player in playersList){
+            playerOrder.add(player.name)
+            players[player.name] = player
         }
     }
 

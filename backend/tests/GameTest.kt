@@ -153,10 +153,10 @@ class BackendTests {
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN)
 
-        val list1 = HashMap<String, RobotPlayer>()
-        list1[robotPlayer1.name] = robotPlayer1
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -196,10 +196,10 @@ class BackendTests {
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
 
-        val list1 = HashMap<String, RobotPlayer>()
-        list1[robotPlayer1.name] = robotPlayer1
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -231,10 +231,10 @@ class BackendTests {
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
 
-        val list1 = HashMap<String, RobotPlayer>()
-        list1[robotPlayer1.name] = robotPlayer1
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -354,10 +354,10 @@ class BackendTests {
         val distanceSensor = DistanceSensor()
         robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
 
-        val list1 = HashMap<String, RobotPlayer>()
-        list1[robotPlayer1.name] = robotPlayer1
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -400,10 +400,10 @@ class BackendTests {
         val distanceSensor = DistanceSensor()
         robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
 
-        val list1 = HashMap<String, RobotPlayer>()
-        list1[robotPlayer1.name] = robotPlayer1
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1, arrayListOf(surus.name))
+        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),

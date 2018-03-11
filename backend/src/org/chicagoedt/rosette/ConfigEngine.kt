@@ -29,14 +29,14 @@ fun getLevels() : ArrayList<Level>{
     val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP)
     val robotPlayer3 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP)
 
-    val list1 = HashMap<String, RobotPlayer>()
-    val list2 = HashMap<String, RobotPlayer>()
-    list1[robotPlayer1.name] = robotPlayer1
-    list1[robotPlayer2.name] = robotPlayer2
-    list2[robotPlayer3.name] = robotPlayer3
+    val list1 = ArrayList<RobotPlayer>()
+    val list2 = ArrayList<RobotPlayer>()
+    list1.add(robotPlayer1)
+    list1.add(robotPlayer2)
+    list2.add(robotPlayer3)
 
-    val level1 = Level(LevelProperties("Levels 1", 0, 10, 10), list1, arrayListOf("Surus", "Hushpuppy"))
-    val level2 = Level(LevelProperties("Levels 2", 0, 5, 5), list2, arrayListOf("Hushpuppy"))
+    val level1 = Level(LevelProperties("Levels 1", 0, 10, 10), list1)
+    val level2 = Level(LevelProperties("Levels 2", 0, 5, 5), list2)
 
     level1.makeGrid(arrayListOf(
             arrayListOf(VictoryTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
