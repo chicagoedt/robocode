@@ -5,7 +5,7 @@ import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Robots.RobotRotation
 import org.chicagoedt.rosette.Robots.nextDirection
 
-class TurnInstruction : Instruction {
+class TurnInstruction : Instruction() {
     override val name: String = "Turn"
     override var parameter: Any = RobotRotation.CLOCKWISE
 

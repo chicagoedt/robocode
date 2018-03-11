@@ -3,7 +3,7 @@ package org.chicagoedt.rosette.Instructions
 import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.RobotPlayer
 
-abstract class InstructionWithList : Instruction {
+abstract class InstructionWithList : Instruction() {
     val list = mutableListOf<Instruction>()
 
     fun addToList(instruction: Instruction){

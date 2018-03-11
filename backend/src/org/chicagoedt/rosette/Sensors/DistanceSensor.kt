@@ -10,7 +10,7 @@ import org.chicagoedt.rosette.Robots.RobotPosition
 class DistanceSensor : Sensor() {
     override val type: SensorType = SensorType.DISTANCE
 
-    override fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic) {
+     override fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic) {
         val position = getSensorPos(player)
         var x = player.x
         var y = player.y

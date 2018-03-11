@@ -10,10 +10,10 @@ val availableInstructions = arrayListOf<Pair<String, String>>(
         Pair("Read Sensor", "Sensor")
         )
 
-interface Instruction {
-    var parameter : Any
+abstract class Instruction {
+    abstract var parameter : Any
 
-    val name : String
+    abstract val name : String
 
-    fun function(level: Level, robot: RobotPlayer, parameter: Any);
+    internal abstract fun function(level: Level, robot: RobotPlayer, parameter: Any);
 }

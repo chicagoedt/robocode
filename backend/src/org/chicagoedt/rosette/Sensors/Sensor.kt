@@ -11,11 +11,11 @@ enum class SensorType{
 }
 
 abstract class Sensor {
-    abstract val type : SensorType
+    internal abstract val type : SensorType
 
-    abstract fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic)
+    internal abstract fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic)
 
-    fun getSensorPos(player: RobotPlayer) : RobotPosition{
+    internal fun getSensorPos(player: RobotPlayer) : RobotPosition{
         if (player.getSensors(RobotPosition.FRONT).contains(this)) return RobotPosition.FRONT
         else if (player.getSensors(RobotPosition.BACK).contains(this)) return RobotPosition.BACK
         else if (player.getSensors(RobotPosition.LEFT).contains(this)) return RobotPosition.LEFT

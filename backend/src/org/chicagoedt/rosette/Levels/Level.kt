@@ -16,7 +16,7 @@ class Level(var properties: LevelProperties, val players: HashMap<String, RobotP
         }
     }
 
-    fun makeGrid(newGrid: ArrayList<ArrayList<out Tile>>){
+    internal fun makeGrid(newGrid: ArrayList<ArrayList<out Tile>>){
         grid = arrayListOf<ArrayList<Tile>>()
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
