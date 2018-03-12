@@ -146,7 +146,7 @@ class BackendTests {
     @Test
     fun MoveEdge(){
         val testRobots = ArrayList<Robot>()
-        val surus = Robot("Surus", "", 1, 1)
+        val surus = Robot("Surus", "")
         testRobots.add(surus)
 
         val testLevels = ArrayList<Level>()
@@ -189,7 +189,7 @@ class BackendTests {
     @Test
     fun MoveObstacle(){
         val testRobots = ArrayList<Robot>()
-        val surus = Robot("Surus", "", 1, 1)
+        val surus = Robot("Surus", "")
         testRobots.add(surus)
 
         val testLevels = ArrayList<Level>()
@@ -224,7 +224,7 @@ class BackendTests {
     fun LevelVictory(){
         var won = false
         val testRobots = ArrayList<Robot>()
-        val surus = Robot("Surus", "", 1, 1)
+        val surus = Robot("Surus", "")
         testRobots.add(surus)
 
         val testLevels = ArrayList<Level>()
@@ -345,7 +345,7 @@ class BackendTests {
     fun ReadDistanceSensor(){
         var won = false
         val testRobots = ArrayList<Robot>()
-        val surus = Robot("Surus", "", 1, 1)
+        val surus = Robot("Surus", "")
         testRobots.add(surus)
 
         val testLevels = ArrayList<Level>()
@@ -391,7 +391,7 @@ class BackendTests {
     fun ReadDistanceSensorFalse(){
         var won = false
         val testRobots = ArrayList<Robot>()
-        val surus = Robot("Surus", "", 1, 1)
+        val surus = Robot("Surus", "")
         testRobots.add(surus)
 
         val testLevels = ArrayList<Level>()

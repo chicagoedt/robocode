@@ -13,8 +13,8 @@ import org.chicagoedt.rosette.Tiles.VictoryTile
 fun getRobots() : ArrayList<Robot>{
     val robots = ArrayList<Robot>()
 
-    val surus = Robot("Surus", "", 1, 1)
-    val hushpuppy = Robot("Hushpuppy", "", 1, 1)
+    val surus = Robot("Surus", "")
+    val hushpuppy = Robot("Hushpuppy", "")
 
     robots.add(surus)
     robots.add(hushpuppy)
