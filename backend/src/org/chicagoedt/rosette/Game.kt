@@ -14,25 +14,19 @@ class Game (private val levelsList: ArrayList<Level>,
 
     private var levelNumber = 0
     private var eventListener: (Event) -> Unit
-    private var levels: HashMap<String, Level> = hashMapOf()
     private var robots: HashMap<String, Robot> = hashMapOf()
-    private var levelOrder: ArrayList<String> = arrayListOf()
 
     var currentLevel : Level
     var mainTopic = Topic()
 
     init{
         eventListener = {}
-        for (level in levelsList){
-            levelOrder.add(level.properties.name)
-            levels[level.properties.name] = level
-        }
 
         for (robot in robotsList){
             robots[robot.name] = robot
         }
 
-       currentLevel = levels[levelOrder[levelNumber]]!!
+       currentLevel = levelsList[levelNumber]
     }
 
     fun attachEventListener(newEventListener: (Event) -> Unit){
@@ -40,9 +34,9 @@ class Game (private val levelsList: ArrayList<Level>,
     }
 
     fun nextLevel(){
-        if (levelOrder.size > levelNumber + 1) {
+        if (levelsList.size > levelNumber + 1) {
             levelNumber++
-            currentLevel = levels[levelOrder[levelNumber]]!!
+            currentLevel = levelsList[levelNumber]
         }
     }
 
