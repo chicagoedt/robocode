@@ -40,22 +40,22 @@ class Game (private val levelsList: ArrayList<Level>,
         }
     }
 
-    fun attachInstruction(name: String, inst: Instruction){
+    fun attachInstruction(name: String, inst: Instruction<*>){
         currentLevel.players[name]!!.instructions.add(inst)
     }
 
-    fun removeInstruction(name: String, inst: Instruction){
+    fun removeInstruction(name: String, inst: Instruction<*>){
         currentLevel.players[name]!!.instructions.remove(inst)
     }
 
-    fun getInstructions(name: String) : List<Instruction>{
+    fun getInstructions(name: String) : List<Instruction<*>>{
         return currentLevel.players[name]!!.instructions
     }
 
     fun runInstructionsFor(name: String){
         val robot = currentLevel.players[name]!!
-        for(inst: Instruction in robot.instructions){
-            inst.function(currentLevel, currentLevel.players[name]!!, inst.parameter)
+        for(inst: Instruction<*> in robot.instructions){
+            inst.function(currentLevel, currentLevel.players[name]!!, inst.parameter!!)
 
             //check to see if the player won after the instruction
             if (currentLevel.tileAt(currentLevel.players[name]!!.x, currentLevel.players[name]!!.y).type == TileType.VICTORY){

@@ -3,8 +3,8 @@ package org.chicagoedt.rosette.Instructions
 import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.RobotPlayer
 
-abstract class Instruction {
-    abstract var parameter : Any
+abstract class Instruction<T> {
+    abstract var parameter : T
 
     abstract val name : String
 

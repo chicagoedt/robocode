@@ -6,8 +6,8 @@ import org.chicagoedt.rosette.Sensors.EmptySensor
 import org.chicagoedt.rosette.Sensors.Sensor
 import org.chicagoedt.rosette.Topic
 
-class ReadSensorInstruction(val topic: Topic) : Instruction() {
-    override var parameter: Any = EmptySensor()
+class ReadSensorInstruction(val topic: Topic) : Instruction<Sensor>() {
+    override var parameter: Sensor = EmptySensor()
     override val name: String = "Read Sensor"
 
     override fun function(level: Level, robot: RobotPlayer, parameter: Any) {

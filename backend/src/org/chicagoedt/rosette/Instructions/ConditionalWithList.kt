@@ -4,8 +4,8 @@ import org.chicagoedt.rosette.Instructions.Operations.Comparison
 import org.chicagoedt.rosette.Levels.Level
 import org.chicagoedt.rosette.Robots.RobotPlayer
 
-class ConditionalWithList() : InstructionWithList(){
-    lateinit override var parameter: Any
+class ConditionalWithList() : InstructionWithList<Comparison<*,*>>(){
+    lateinit override var parameter : Comparison<*,*>
     override val name = "Conditional"
 
     override fun function(level: Level, robot: RobotPlayer, parameter: Any) {

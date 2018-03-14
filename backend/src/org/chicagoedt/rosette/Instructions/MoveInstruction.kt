@@ -5,9 +5,9 @@ import org.chicagoedt.rosette.Robots.RobotOrientation
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Tiles.TileType
 
-class MoveInstruction : Instruction() {
+class MoveInstruction : Instruction<Int>() {
     override val name: String = "Move"
-    override var parameter: Any = 1
+    override var parameter = 1
 
     override fun function(level: Level, robot: RobotPlayer, parameter: Any) {
         val difference = distanceCanMove(robot.x, robot.y, robot.direction, parameter as Int, level)

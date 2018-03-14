@@ -15,7 +15,7 @@ class RobotPlayer(val name: String,
                   var y: Int,
                   var direction: RobotOrientation){
 
-    internal val instructions = arrayListOf<Instruction>()
+    internal val instructions = arrayListOf<Instruction<*>>()
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
 
