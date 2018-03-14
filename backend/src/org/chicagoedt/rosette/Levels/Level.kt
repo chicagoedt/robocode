@@ -16,7 +16,11 @@ import org.chicagoedt.rosette.eventListener
  * @property players All of the RobotPlayers in the level
  * @property playerOrder The order of the players in the level
  */
-class Level(var properties: LevelProperties, val playersList: ArrayList<RobotPlayer>) {
+class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>) {
+    data class Properties(val name: String,
+                          val difficulty : Int,
+                          val width : Int,
+                          val height : Int)
 
     private var grid = arrayListOf<ArrayList<Tile>>()
 

@@ -1,7 +1,6 @@
 package org.chicagoedt.rosette
 
 import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Levels.LevelProperties
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Robots.Robot
 import org.chicagoedt.rosette.Robots.RobotOrientation
@@ -41,8 +40,8 @@ fun getLevels() : ArrayList<Level>{
     list1.add(robotPlayer2)
     list2.add(robotPlayer3)
 
-    val level1 = Level(LevelProperties("Levels 1", 0, 10, 10), list1)
-    val level2 = Level(LevelProperties("Levels 2", 0, 5, 5), list2)
+    val level1 = Level(Level.Properties("Levels 1", 0, 10, 10), list1)
+    val level2 = Level(Level.Properties("Levels 2", 0, 5, 5), list2)
 
     level1.makeGrid(arrayListOf(
             arrayListOf(VictoryTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),

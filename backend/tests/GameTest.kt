@@ -6,12 +6,10 @@ import org.chicagoedt.rosette.Instructions.Operations.TopicEqualsComparison
 import org.chicagoedt.rosette.Instructions.ReadSensorInstruction
 import org.chicagoedt.rosette.Instructions.TurnInstruction
 import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Levels.LevelProperties
 import org.chicagoedt.rosette.Robots.*
 import org.chicagoedt.rosette.Sensors.DistanceSensor
 import org.chicagoedt.rosette.Tiles.NeutralTile
 import org.chicagoedt.rosette.Tiles.ObstacleTile
-import org.chicagoedt.rosette.Tiles.TileType
 import org.chicagoedt.rosette.Tiles.VictoryTile
 
 
@@ -156,7 +154,7 @@ class BackendTests {
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -199,7 +197,7 @@ class BackendTests {
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -234,7 +232,7 @@ class BackendTests {
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -357,7 +355,7 @@ class BackendTests {
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -403,7 +401,7 @@ class BackendTests {
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(LevelProperties("Levels 1", 0, 3, 3), list1)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
