@@ -17,6 +17,13 @@ import org.chicagoedt.rosette.eventListener
  * @property playerOrder The order of the players in the level
  */
 class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>) {
+    /**
+     * The properties to be stored in a Level
+     * @param name The name of the level
+     * @param difficulty The difficulty of the level. This is just for categorization, it will not affect the level at all.
+     * @param width The width of the grid on the level
+     * @param height The height of the grid on the level
+     */
     data class Properties(val name: String,
                           val difficulty : Int,
                           val width : Int,
