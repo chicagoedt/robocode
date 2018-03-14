@@ -5,12 +5,15 @@ import org.chicagoedt.rosette.Robots.RobotOrientation
 import org.chicagoedt.rosette.Robots.RobotPlayer
 import org.chicagoedt.rosette.Tiles.TileType
 
+/**
+ * Moves the robot by [parameter] tiles in the direction that it's facing
+ */
 class MoveInstruction : Instruction<Int>() {
     override val name: String = "Move"
     override var parameter = 1
 
-    override fun function(level: Level, robot: RobotPlayer, parameter: Any) {
-        val difference = distanceCanMove(robot.x, robot.y, robot.direction, parameter as Int, level)
+    override fun function(level: Level, robot: RobotPlayer, parameter: Int) {
+        val difference = distanceCanMove(robot.x, robot.y, robot.direction, parameter, level)
         when (robot.direction){
             RobotOrientation.DIRECTION_UP -> robot.y += difference
             RobotOrientation.DIRECTION_DOWN -> robot.y -= difference

@@ -7,6 +7,10 @@ import org.chicagoedt.rosette.Tiles.TileType
 import org.chicagoedt.rosette.Topic
 import org.chicagoedt.rosette.Robots.RobotPosition
 
+/**
+ * A sensor to measure a the distance from the robot to an obstacle or edge
+ * It measures outwards from the side that the sensor is attached to
+ */
 class DistanceSensor : Sensor() {
     override val type: SensorType = SensorType.DISTANCE
 

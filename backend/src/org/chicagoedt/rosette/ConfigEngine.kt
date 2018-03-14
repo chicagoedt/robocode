@@ -10,6 +10,9 @@ import org.chicagoedt.rosette.Tiles.ObstacleTile
 import org.chicagoedt.rosette.Tiles.VictoryTile
 
 
+/**
+ * @return All robots for the current game configuration
+ */
 fun getRobots() : ArrayList<Robot>{
     val robots = ArrayList<Robot>()
 
@@ -22,6 +25,9 @@ fun getRobots() : ArrayList<Robot>{
     return robots
 }
 
+/**
+ * @return All levels for the current game configuration
+ */
 fun getLevels() : ArrayList<Level>{
     val levels = ArrayList<Level>()
 
