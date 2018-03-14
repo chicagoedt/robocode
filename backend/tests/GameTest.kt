@@ -61,11 +61,11 @@ class BackendTests {
             for(robotName : String in level.playerOrder){
 
                 val moveInstruction = MoveInstruction()
-                game.attachInstruction(robotName, moveInstruction)
+                game.currentLevel.attachInstruction(robotName, moveInstruction)
                 val turnInstruction = TurnInstruction()
-                game.attachInstruction(robotName, turnInstruction)
+                game.currentLevel.attachInstruction(robotName, turnInstruction)
 
-                val list = game.getInstructions(robotName)
+                val list = game.currentLevel.getInstructions(robotName)
                 assertEquals(list[0].name, moveInstruction.name)
                 assertEquals(list[1].name, turnInstruction.name)
             }
@@ -90,9 +90,9 @@ class BackendTests {
         val next = nextDirection(game.currentLevel.players[name]!!.direction, rotation)
         val turn = TurnInstruction()
         turn.parameter = rotation
-        game.attachInstruction(name, turn)
-        game.runInstructionsFor(name)
-        game.removeInstruction(name, turn)
+        game.currentLevel.attachInstruction(name, turn)
+        game.currentLevel.runInstructionsFor(name)
+        game.currentLevel.removeInstruction(name, turn)
         if (assert) assertEquals(game.currentLevel.players[name]!!.direction, next)
     }
 
@@ -101,9 +101,9 @@ class BackendTests {
         instruction.parameter = parameter
         val y = game.currentLevel.players[name]!!.y
         val x = game.currentLevel.players[name]!!.x
-        game.attachInstruction(name, instruction)
-        game.runInstructionsFor(name)
-        game.removeInstruction(name, instruction)
+        game.currentLevel.attachInstruction(name, instruction)
+        game.currentLevel.runInstructionsFor(name)
+        game.currentLevel.removeInstruction(name, instruction)
 
         val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
         if (orientation == RobotOrientation.DIRECTION_UP) {
@@ -166,20 +166,20 @@ class BackendTests {
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
-        game.attachInstruction(surus.name, instruction)
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.attachInstruction(surus.name, instruction)
+        game.currentLevel.runInstructionsFor(surus.name)
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
 
-        game.removeInstruction(surus.name, instruction)
+        game.currentLevel.removeInstruction(surus.name, instruction)
         val turnInstruction = TurnInstruction()
         turnInstruction.parameter = RobotRotation.CLOCKWISE
-        game.attachInstruction(surus.name, turnInstruction)
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.attachInstruction(surus.name, turnInstruction)
+        game.currentLevel.runInstructionsFor(surus.name)
 
-        game.removeInstruction(surus.name, turnInstruction)
-        game.attachInstruction(surus.name, instruction)
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.removeInstruction(surus.name, turnInstruction)
+        game.currentLevel.attachInstruction(surus.name, instruction)
+        game.currentLevel.runInstructionsFor(surus.name)
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
     }
@@ -210,9 +210,9 @@ class BackendTests {
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
-        game.attachInstruction(surus.name, instruction)
+        game.currentLevel.attachInstruction(surus.name, instruction)
 
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.runInstructionsFor(surus.name)
 
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
@@ -245,11 +245,11 @@ class BackendTests {
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
-        game.attachInstruction(surus.name, instruction)
+        game.currentLevel.attachInstruction(surus.name, instruction)
 
         game.attachEventListener { won = true }
 
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.runInstructionsFor(surus.name)
 
         assertEquals(won, true)
     }
@@ -368,7 +368,7 @@ class BackendTests {
 
         val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
-        game.attachInstruction(surus.name, readSensorInstruction)
+        game.currentLevel.attachInstruction(surus.name, readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
@@ -376,11 +376,11 @@ class BackendTests {
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
         instruction.addToList(MoveInstruction())
-        game.attachInstruction(surus.name, instruction)
+        game.currentLevel.attachInstruction(surus.name, instruction)
 
         game.attachEventListener { won = true }
 
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.runInstructionsFor(surus.name)
 
         assertEquals(won, true)
     }
@@ -414,7 +414,7 @@ class BackendTests {
 
         val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
-        game.attachInstruction(surus.name, readSensorInstruction)
+        game.currentLevel.attachInstruction(surus.name, readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
@@ -422,11 +422,11 @@ class BackendTests {
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
         instruction.addToList(MoveInstruction())
-        game.attachInstruction(surus.name, instruction)
+        game.currentLevel.attachInstruction(surus.name, instruction)
 
         game.attachEventListener { won = true }
 
-        game.runInstructionsFor(surus.name)
+        game.currentLevel.runInstructionsFor(surus.name)
 
         assertEquals(won, false)
     }
