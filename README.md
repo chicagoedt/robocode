@@ -4,6 +4,8 @@
 
 The goal of ROSette (working title) is to teach programming & the fundamentals of building a robot. It has taken inspiration from great educational tools like Code.org and Scratch
 
+[View the ROSette Docs](https://chicagoedt.org/rosette/)
+
 This project is in very early development. Expect bugs.
 
 Currently there is no frontend to this project.

@@ -28,6 +28,8 @@ class BackendTests {
         for(level in levels){
             val levelName = level.properties.name
             for((name, robot) in level.players){
+                val robot = level.players[name]!!
+
                 assertEquals(game.currentLevel.players[robot.name]!!.name, robot.name)
                 assertEquals(game.currentLevel.players[robot.name]!!.x, robot.x)
                 assertEquals(game.currentLevel.players[robot.name]!!.y, robot.y)
@@ -77,49 +79,49 @@ class BackendTests {
         for(level in levels){
             for((name, robot) in level.players){
                 for (i in 0..3) {
-                    turn(robot, RobotRotation.CLOCKWISE, true)
+                    turn(name, RobotRotation.CLOCKWISE, true)
                 }
             }
             game.nextLevel()
         }
     }
 
-    private fun turn(robot: RobotPlayer, rotation: RobotRotation, assert: Boolean){
-        val next = nextDirection(robot.direction, rotation)
+    private fun turn(name: String, rotation: RobotRotation, assert: Boolean){
+        val next = nextDirection(game.currentLevel.players[name]!!.direction, rotation)
         val turn = TurnInstruction()
         turn.parameter = rotation
-        game.currentLevel.attachInstruction(robot.name, turn)
-        game.currentLevel.runInstructionsFor(robot.name)
-        game.currentLevel.removeInstruction(robot.name, turn)
-        if (assert) assertEquals(robot.direction, next)
+        game.currentLevel.attachInstruction(name, turn)
+        game.currentLevel.runInstructionsFor(name)
+        game.currentLevel.removeInstruction(name, turn)
+        if (assert) assertEquals(game.currentLevel.players[name]!!.direction, next)
     }
 
-    private fun move(robot: RobotPlayer, parameter: Int, assert: Boolean) {
+    private fun move(name: String, orientation: RobotOrientation, parameter: Int, assert: Boolean) {
         val instruction = MoveInstruction()
         instruction.parameter = parameter
-        val y = robot.y
-        val x = robot.x
-        game.currentLevel.attachInstruction(robot.name, instruction)
-        game.currentLevel.runInstructionsFor(robot.name)
-        game.currentLevel.removeInstruction(robot.name, instruction)
+        val y = game.currentLevel.players[name]!!.y
+        val x = game.currentLevel.players[name]!!.x
+        game.currentLevel.attachInstruction(name, instruction)
+        game.currentLevel.runInstructionsFor(name)
+        game.currentLevel.removeInstruction(name, instruction)
 
-        val difference = instruction.distanceCanMove(robot, parameter, game.currentLevel)
-        if (robot.direction == RobotOrientation.DIRECTION_UP) {
-            if (assert)assertEquals(robot.y, y + difference)
-            if (assert)assertEquals(robot.x, x)
+        val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
+        if (orientation == RobotOrientation.DIRECTION_UP) {
+            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y + difference)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
-        else if (robot.direction == RobotOrientation.DIRECTION_DOWN) {
+        else if (orientation == RobotOrientation.DIRECTION_DOWN) {
             if (assert)
-                assertEquals(robot.y, y - difference)
-            if (assert)assertEquals(robot.x, x)
+                assertEquals(game.currentLevel.players[name]!!.y, y - difference)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
         }
-        else if (robot.direction == RobotOrientation.DIRECTION_LEFT) {
-            if (assert)assertEquals(robot.y, y)
-            if (assert)assertEquals(robot.x, x - difference)
+        else if (orientation == RobotOrientation.DIRECTION_LEFT) {
+            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x - difference)
         }
-        else if (robot.direction == RobotOrientation.DIRECTION_RIGHT) {
-            if (assert)assertEquals(robot.y, y)
-            if (assert)assertEquals(robot.x, x + difference)
+        else if (orientation == RobotOrientation.DIRECTION_RIGHT) {
+            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
+            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x + difference)
         }
     }
 
@@ -127,13 +129,13 @@ class BackendTests {
     fun RobotInstructionMove(){
         for(level in levels){
             for((name, robot) in level.players){
-                move(robot, 2, true)
-                turn(robot, RobotRotation.CLOCKWISE, false)
-                move(robot, 4, true)
-                turn(robot, RobotRotation.CLOCKWISE, false)
-                move(robot, 5, true)
-                turn(robot, RobotRotation.CLOCKWISE, false)
-                move(robot, 3, true)
+                move(name, robot.direction, 2, true)
+                turn(name, RobotRotation.CLOCKWISE, false)
+                move(name, robot.direction, 4, true)
+                turn(name, RobotRotation.CLOCKWISE, false)
+                move(name, robot.direction, 5, true)
+                turn(name, RobotRotation.CLOCKWISE, false)
+                move(name, robot.direction, 3, true)
             }
             game.nextLevel()
         }
@@ -296,7 +298,7 @@ class BackendTests {
 
         for(level in levels){
             for((name, robot) in level.players){
-               robot.setSensorCountAt(RobotPosition.FRONT, 2)
+                robot.setSensorCountAt(RobotPosition.FRONT, 2)
                 assertEquals(robot.sensorCountAt(RobotPosition.FRONT), 2)
 
                 robot.addSensorTo(RobotPosition.FRONT, distanceSensor)
