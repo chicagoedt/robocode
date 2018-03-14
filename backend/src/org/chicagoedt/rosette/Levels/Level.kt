@@ -14,7 +14,6 @@ import org.chicagoedt.rosette.eventListener
  * @param playersList A list of all robot players in the level. The names should correspond to names of robots passed to the Game object
  * @property grid A 2D-Arraylist of all tiles in the level
  * @property players All of the RobotPlayers in the level
- * @property playerOrder The order of the players in the level
  */
 class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>) {
     /**
@@ -32,7 +31,6 @@ class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>)
     private var grid = arrayListOf<ArrayList<Tile>>()
 
     internal val players: HashMap<String, RobotPlayer> = hashMapOf()
-    internal val playerOrder: ArrayList<String> = arrayListOf()
 
     init{
         for (i in 0..properties.height - 1){
@@ -44,7 +42,6 @@ class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>)
         }
 
         for (player in playersList){
-            playerOrder.add(player.name)
             players[player.name] = player
         }
     }
