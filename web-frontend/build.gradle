@@ -22,7 +22,7 @@ dependencies {
     kotlinOptions.main = 'call'
 
     kotlinOptions.noStdlib = false
-    kotlinOptions.outputFile = "src/web/js/${project.name}.js"
+    kotlinOptions.outputFile = "web/js/${project.name}.js"
     kotlinOptions.sourceMap = true
 }
 
@@ -32,7 +32,7 @@ build.doLast {
             includeEmptyDirs = false
 
             from zipTree(file.absolutePath)
-            into "src/web/js/lib"
+            into "web/js/lib"
             include { fileTreeElement ->
                 def path = fileTreeElement.path
                 path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
