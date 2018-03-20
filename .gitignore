@@ -39,7 +39,7 @@ web-frontend/.gradle/
 jvm-frontend/.gradle/
 backend/.gradle/
 gradle/
-gradlew*
+gradlew.bat
 
 # CMake
 cmake-build-debug/

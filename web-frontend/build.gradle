@@ -22,7 +22,7 @@ dependencies {
     kotlinOptions.main = 'call'
 
     kotlinOptions.noStdlib = false
-    kotlinOptions.outputFile = "web/js/${project.name}.js"
+    kotlinOptions.outputFile = "web-frontend/web/js/${project.name}.js"
     kotlinOptions.sourceMap = true
 }
 
