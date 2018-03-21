@@ -1,5 +1,7 @@
 package org.chicagoedt.rosette.Tiles
 
+import org.chicagoedt.rosette.Collectibles.Collectible
+
 /**
  * The types of tiles possible on the map
  * @property NEUTRAL A tile that robots can freely pass through and ignore
@@ -15,7 +17,9 @@ enum class TileType {
 /**
  * A location on the grid
  * @property type The type of this tile
+ * @property items A list of items that can be picked up
  */
-interface Tile{
+interface Tile {
     val type : TileType
+    val items: ArrayList<Collectible>
 }
