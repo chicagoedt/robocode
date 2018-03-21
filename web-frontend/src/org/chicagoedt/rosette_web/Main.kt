@@ -5,11 +5,24 @@ import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 
+/**
+ * The context for the grid canvas
+ */
 private lateinit var gridContext: CanvasRenderingContext2D
+
+/**
+ * The context for the editor canvas
+ */
 private lateinit var editorContext: CanvasRenderingContext2D
 
+/**
+ * The game that the browser is running
+ */
 internal val game = Game(getLevels(), getRobots())
 
+/**
+ * The driver for the grid canvas
+ */
 private lateinit var gridDriver : GridDriver
 
 /**
@@ -24,14 +37,16 @@ fun main(args: Array<String>) {
         gridContext.canvas.style.width = "33%"
         gridContext.canvas.style.position = "absolute"
         gridDriver = GridDriver(game, gridContext)
-
+        
         val editorCanvas = document.createElement("canvas") as HTMLCanvasElement
         editorContext = editorCanvas.getContext("2d") as CanvasRenderingContext2D
         document.body!!.appendChild(editorCanvas)
         editorContext.canvas.style.height = "100%"
         editorContext.canvas.style.position = "absolute"
 
+        gridDriver.calculateNewLevel()
         positionCanvases()
+        
         draw()
     }
 
@@ -46,10 +61,12 @@ fun main(args: Array<String>) {
  * Defines the position for the canvases on the screen
  */
  fun positionCanvases(){
-     gridContext.canvas.height = gridContext.canvas.width
+    gridContext.canvas.height = gridContext.canvas.width
 
-     editorContext.canvas.style.width = (window.innerWidth - gridContext.canvas.width).toString() + "px"
-     editorContext.canvas.style.left = gridContext.canvas.style.width.toString()  + "px"
+    editorContext.canvas.style.width = "67%"
+    editorContext.canvas.style.left = gridContext.canvas.style.width
+    gridDriver.calculateTiles()
+    gridDriver.calculatePlayers()
  }
 
 /**
@@ -57,9 +74,4 @@ fun main(args: Array<String>) {
  */
 fun draw(){
     gridDriver.drawGrid()
-    // gridContext.fillStyle = "blue"
-    // gridContext.fillRect(0.0, 0.0, gridContext.canvas.width.toDouble(), gridContext.canvas.height.toDouble())
-
-    // editorContext.fillStyle = "black"
-    // editorContext.fillRect(0.0, 0.0, editorContext.canvas.width.toDouble(), editorContext.canvas.height.toDouble())
 }
