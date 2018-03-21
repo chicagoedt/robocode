@@ -10,19 +10,21 @@ private lateinit var editorContext: CanvasRenderingContext2D
 
 internal val game = Game(getLevels(), getRobots())
 
+private lateinit var gridDriver : GridDriver
+
 /**
  * The main function to run when the page loads
  * @param args The arguments to run. Not currently used at all.
  */
 fun main(args: Array<String>) {
     window.onload = {
-
         val gridCanvas = document.createElement("canvas") as HTMLCanvasElement
         gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
         document.body!!.appendChild(gridCanvas)
         gridContext.canvas.style.width = "400px"
         gridContext.canvas.style.height = "50%"
         gridContext.canvas.style.position = "absolute"
+        gridDriver = GridDriver(game, gridContext)
 
         val editorCanvas = document.createElement("canvas") as HTMLCanvasElement
         editorContext = editorCanvas.getContext("2d") as CanvasRenderingContext2D
@@ -53,9 +55,10 @@ fun main(args: Array<String>) {
  * Draws the view on the screen
  */
 fun draw(){
-    gridContext.fillStyle = "blue"
-    gridContext.fillRect(0.0, 0.0, gridContext.canvas.width.toDouble(), gridContext.canvas.height.toDouble())
+    gridDriver.drawGrid()
+    // gridContext.fillStyle = "blue"
+    // gridContext.fillRect(0.0, 0.0, gridContext.canvas.width.toDouble(), gridContext.canvas.height.toDouble())
 
-    editorContext.fillStyle = "black"
-    editorContext.fillRect(0.0, 0.0, editorContext.canvas.width.toDouble(), editorContext.canvas.height.toDouble())
+    // editorContext.fillStyle = "black"
+    // editorContext.fillRect(0.0, 0.0, editorContext.canvas.width.toDouble(), editorContext.canvas.height.toDouble())
 }
