@@ -21,8 +21,7 @@ fun main(args: Array<String>) {
         val gridCanvas = document.createElement("canvas") as HTMLCanvasElement
         gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
         document.body!!.appendChild(gridCanvas)
-        gridContext.canvas.style.width = "400px"
-        gridContext.canvas.style.height = "50%"
+        gridContext.canvas.style.width = "33%"
         gridContext.canvas.style.position = "absolute"
         gridDriver = GridDriver(game, gridContext)
 
@@ -47,8 +46,10 @@ fun main(args: Array<String>) {
  * Defines the position for the canvases on the screen
  */
  fun positionCanvases(){
-    editorContext.canvas.style.width = (window.innerWidth - 400).toString() + "px"
-    editorContext.canvas.style.left = gridContext.canvas.style.width
+     gridContext.canvas.height = gridContext.canvas.width
+
+     editorContext.canvas.style.width = (window.innerWidth - gridContext.canvas.width).toString() + "px"
+     editorContext.canvas.style.left = gridContext.canvas.style.width.toString()  + "px"
  }
 
 /**
