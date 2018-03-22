@@ -107,8 +107,8 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
         for (x in 0..game.currentLevel.properties.width-1){
             for (y in 0..game.currentLevel.properties.height-1){
                 if (game.currentLevel.tileAt(x,y) is NeutralTile) context.fillStyle = "#64B5F6" //blue
-                else if (game.currentLevel.tileAt(x,y) is ObstacleTile) context.fillStyle = "#616161" //gray
-                else if (game.currentLevel.tileAt(x,y) is VictoryTile) context.fillStyle = "#FFF176" //yellow
+                else if (game.currentLevel.tileAt(x,y) is ObstacleTile) context.fillStyle = "#212121" //gray
+                else if (game.currentLevel.tileAt(x,y) is VictoryTile) context.fillStyle = "#FFEB3B" //yellow
 
                 val loc = tileLocations[x][y]
 
@@ -117,9 +117,8 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
         }
 
         for (player in playerLocations){
-            context.fillStyle = "#D32F2F" //red
+            context.fillStyle = "#F44336" //red
             context.fillRect(player.screenX, player.screenY, player.screenWidth, player.screenHeight)
-        }
-        
+        } 
     }
 }

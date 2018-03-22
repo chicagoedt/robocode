@@ -49,6 +49,7 @@ fun main(args: Array<String>) {
         editorDriver = EditorDriver(game, editorContext)
 
         gridDriver.calculateNewLevel()
+        editorDriver.calculateNewLevel()
         positionCanvases()
 
         document.body!!.appendChild(editorCanvas)
@@ -65,6 +66,7 @@ fun main(args: Array<String>) {
         }
     }
 }
+
 /**
  * Defines the position for the canvases on the screen
  */

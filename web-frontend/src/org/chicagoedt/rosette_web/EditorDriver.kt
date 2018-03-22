@@ -5,6 +5,7 @@ import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Robots.*
+import org.chicagoedt.rosette_web.Editor.*
 /**
  * The driver to run an Editor canvas for the current game
  * @param game The game that the program is running
@@ -17,22 +18,6 @@ import org.chicagoedt.rosette.Robots.*
  */
 
 class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
-
-	/**
-	 * A space to contain all of the instructions for each robot
-	 * @param player The player that this panel will correspond to
-	 * @property screenHeight The height of this panel
-	 * @property screenWidth The width of this panel
-	 * @property screenX The X position of the top left corner of this panel
-	 * @property screenY The Y postiion of the top left corner of this panel
-	 */
-	data class Panel(var player: RobotPlayer){
-		var screenHeight = 0.0
-		var screenWidth = 0.0
-		var screenX = 0.0
-		var screenY = 0.0
-	}
-
 	private var globalPanelWidth = 0.0
 	private var globalPanelHeightRatio = 3
 	private var globalPanelMarginPercent = 5.0
@@ -49,7 +34,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	fun calculateNewLevel(){
 		panels.clear()
 		for (player in game.currentLevel.playersList){
-			val panel = Panel(player)
+			val panel = Panel(context, player)
 			panels.add(panel)
         }
 	}
@@ -79,8 +64,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 */
 	fun drawEditor(){
 		for (panel in panels){
-			context.fillStyle = "#E1BEE7" //purple
-            context.fillRect(panel.screenX, panel.screenY, panel.screenWidth, panel.screenHeight)
+			panel.draw()
 		}
 	}
 }
