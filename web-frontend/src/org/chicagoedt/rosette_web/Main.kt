@@ -26,6 +26,11 @@ internal val game = Game(getLevels(), getRobots())
 private lateinit var gridDriver : GridDriver
 
 /**
+ * The driver for the editor canvas
+ */
+private lateinit var editorDriver : EditorDriver
+
+/**
  * The main function to run when the page loads
  * @param args The arguments to run. Not currently used at all.
  */
@@ -33,25 +38,28 @@ fun main(args: Array<String>) {
     window.onload = {
         val gridCanvas = document.createElement("canvas") as HTMLCanvasElement
         gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
-        document.body!!.appendChild(gridCanvas)
-        gridContext.canvas.style.width = "33%"
+        gridContext.canvas.width = (document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
         gridContext.canvas.style.position = "absolute"
         gridDriver = GridDriver(game, gridContext)
         
         val editorCanvas = document.createElement("canvas") as HTMLCanvasElement
         editorContext = editorCanvas.getContext("2d") as CanvasRenderingContext2D
-        document.body!!.appendChild(editorCanvas)
-        editorContext.canvas.style.height = "100%"
+        editorContext.canvas.height = document.documentElement!!.clientHeight
         editorContext.canvas.style.position = "absolute"
+        editorDriver = EditorDriver(game, editorContext)
 
         gridDriver.calculateNewLevel()
         positionCanvases()
+
+        document.body!!.appendChild(editorCanvas)
+        document.body!!.appendChild(gridCanvas)
+
         
         draw()
     }
 
     window.onresize = {
-        if (::gridContext.isInitialized) {
+        if (::gridContext.isInitialized && ::editorContext.isInitialized) {
             positionCanvases()
             draw()
         }
@@ -61,12 +69,14 @@ fun main(args: Array<String>) {
  * Defines the position for the canvases on the screen
  */
  fun positionCanvases(){
+    gridContext.canvas.width = (document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
     gridContext.canvas.height = gridContext.canvas.width
 
-    editorContext.canvas.style.width = "67%"
-    editorContext.canvas.style.left = gridContext.canvas.style.width
+    editorContext.canvas.width = (2.0 * document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
+    editorContext.canvas.style.left = gridContext.canvas.width.toString() + "px"
     gridDriver.calculateTiles()
     gridDriver.calculatePlayers()
+    editorDriver.calculatePanels()
  }
 
 /**
@@ -74,4 +84,5 @@ fun main(args: Array<String>) {
  */
 fun draw(){
     gridDriver.drawGrid()
+    editorDriver.drawEditor()
 }

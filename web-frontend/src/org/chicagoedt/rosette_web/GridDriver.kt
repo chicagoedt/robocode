@@ -36,7 +36,7 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
 
     var widthInterval = 0.0
     var heightInterval = 0.0
-    val separation = 10
+    val separation = 0
     val tileLocations = ArrayList<ArrayList<TileLocation>>()
     val playerLocations = ArrayList<TileLocation>()
 
@@ -106,9 +106,9 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
     fun drawGrid(){
         for (x in 0..game.currentLevel.properties.width-1){
             for (y in 0..game.currentLevel.properties.height-1){
-                if (game.currentLevel.tileAt(x,y) is NeutralTile) context.fillStyle = "blue"
-                else if (game.currentLevel.tileAt(x,y) is ObstacleTile) context.fillStyle = "black"
-                else if (game.currentLevel.tileAt(x,y) is VictoryTile) context.fillStyle = "yellow"
+                if (game.currentLevel.tileAt(x,y) is NeutralTile) context.fillStyle = "#64B5F6" //blue
+                else if (game.currentLevel.tileAt(x,y) is ObstacleTile) context.fillStyle = "#616161" //gray
+                else if (game.currentLevel.tileAt(x,y) is VictoryTile) context.fillStyle = "#FFF176" //yellow
 
                 val loc = tileLocations[x][y]
 
@@ -117,7 +117,7 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
         }
 
         for (player in playerLocations){
-            context.fillStyle = "red"
+            context.fillStyle = "#D32F2F" //red
             context.fillRect(player.screenX, player.screenY, player.screenWidth, player.screenHeight)
         }
         
