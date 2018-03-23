@@ -33,7 +33,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 */
 	fun calculateNewLevel(){
 		panels.clear()
-		for (player in game.currentLevel.playersList){
+		for ((name, player) in game.currentLevel.players){
 			val panel = Panel(context, player)
 			panels.add(panel)
         }
@@ -47,8 +47,8 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		var panelY = 0.0
 
 		val panelMargin = context.canvas.width.toDouble() * (globalPanelMarginPercent / 100.0)
-		globalPanelWidth = context.canvas.width.toDouble() - (game.currentLevel.playersList.size * panelMargin).toDouble()
-		globalPanelWidth /= game.currentLevel.playersList.size
+		globalPanelWidth = context.canvas.width.toDouble() - (game.currentLevel.players.size * panelMargin).toDouble()
+		globalPanelWidth /= game.currentLevel.players.size
 		for (panel in panels){
 			panel.screenWidth = globalPanelWidth
 			panel.screenHeight = globalPanelHeightRatio * globalPanelWidth
