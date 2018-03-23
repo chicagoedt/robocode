@@ -1,10 +1,11 @@
-package org.chicagoedt.rosette.Instructions
+package org.chicagoedt.rosette.actions.robotActions
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Sensors.EmptySensor
-import org.chicagoedt.rosette.Sensors.Sensor
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.sensors.EmptySensor
+import org.chicagoedt.rosette.sensors.Sensor
 import org.chicagoedt.rosette.Topic
+import org.chicagoedt.rosette.actions.Instruction
 
 /**
  * Reads the data from a sensor and stores it

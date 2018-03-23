@@ -1,8 +1,8 @@
-package org.chicagoedt.rosette.Instructions
+package org.chicagoedt.rosette.actions
 
-import org.chicagoedt.rosette.Instructions.Operations.Comparison
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.actions.operations.Comparison
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
 
 /**
  * Executes the list of instructions if the Comparison [parameter] results in true

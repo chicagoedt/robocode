@@ -1,8 +1,8 @@
-package org.chicagoedt.rosette.Collectibles.Etc
+package org.chicagoedt.rosette.collectibles.etc
 
-import org.chicagoedt.rosette.Collectibles.Collectible
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.collectibles.Collectible
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
 
 class Sand: Collectible {
     override val id = 1000

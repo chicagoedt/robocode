@@ -1,7 +1,7 @@
-package org.chicagoedt.rosette.Instructions
+package org.chicagoedt.rosette.actions
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
 
 /**
  * An instruction with a list of sub-instructions to be run

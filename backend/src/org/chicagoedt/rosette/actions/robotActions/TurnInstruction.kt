@@ -1,9 +1,10 @@
-package org.chicagoedt.rosette.Instructions
+package org.chicagoedt.rosette.actions.robotActions
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Robots.RobotRotation
-import org.chicagoedt.rosette.Robots.nextDirection
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.robots.RobotRotation
+import org.chicagoedt.rosette.robots.nextDirection
+import org.chicagoedt.rosette.actions.Instruction
 
 /**
  * Turns the robot in the direction specified by the parameter

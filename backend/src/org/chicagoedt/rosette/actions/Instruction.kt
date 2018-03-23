@@ -1,7 +1,7 @@
-package org.chicagoedt.rosette.Instructions
+package org.chicagoedt.rosette.actions
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
 
 /**
  * A process to run on a robot including, but not limited to, moving and turning the robot.

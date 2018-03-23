@@ -1,11 +1,10 @@
-package org.chicagoedt.rosette.Robots
+package org.chicagoedt.rosette.robots
 
-import org.chicagoedt.rosette.Collectibles.Collectible
-import org.chicagoedt.rosette.Instructions.Instruction
-import org.chicagoedt.rosette.Sensors.*
-import org.chicagoedt.rosette.Levels.*
+import org.chicagoedt.rosette.actions.Instruction
+import org.chicagoedt.rosette.sensors.*
+import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Tiles.*
+import org.chicagoedt.rosette.tiles.*
 
 enum class RobotPosition{
     FRONT,

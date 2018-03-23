@@ -1,6 +1,6 @@
-package org.chicagoedt.rosette.Tiles
+package org.chicagoedt.rosette.tiles
 
-import org.chicagoedt.rosette.Collectibles.Collectible
+import org.chicagoedt.rosette.collectibles.Collectible
 
 /**
  * A tile that robots cannot pass through

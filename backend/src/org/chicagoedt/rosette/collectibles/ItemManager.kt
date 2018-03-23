@@ -1,8 +1,8 @@
-package org.chicagoedt.rosette.Collectibles
+package org.chicagoedt.rosette.collectibles
 
-import org.chicagoedt.rosette.Collectibles.Etc.Sand
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.collectibles.etc.Sand
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
 
 class ItemManager() {
     private val itemList = HashMap<Int, Collectible>()

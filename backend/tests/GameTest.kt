@@ -1,16 +1,16 @@
 import kotlin.test.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Instructions.ConditionalWithList
-import org.chicagoedt.rosette.Instructions.MoveInstruction
-import org.chicagoedt.rosette.Instructions.Operations.TopicEqualsComparison
-import org.chicagoedt.rosette.Instructions.ReadSensorInstruction
-import org.chicagoedt.rosette.Instructions.TurnInstruction
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.*
-import org.chicagoedt.rosette.Sensors.DistanceSensor
-import org.chicagoedt.rosette.Tiles.NeutralTile
-import org.chicagoedt.rosette.Tiles.ObstacleTile
-import org.chicagoedt.rosette.Tiles.VictoryTile
+import org.chicagoedt.rosette.actions.ConditionalWithList
+import org.chicagoedt.rosette.actions.robotActions.MoveInstruction
+import org.chicagoedt.rosette.actions.operations.TopicEqualsComparison
+import org.chicagoedt.rosette.actions.robotActions.ReadSensorInstruction
+import org.chicagoedt.rosette.actions.robotActions.TurnInstruction
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.*
+import org.chicagoedt.rosette.sensors.DistanceSensor
+import org.chicagoedt.rosette.tiles.NeutralTile
+import org.chicagoedt.rosette.tiles.ObstacleTile
+import org.chicagoedt.rosette.tiles.VictoryTile
 
 
 class BackendTests {
@@ -151,7 +151,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN, level1)
 
@@ -196,7 +196,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -233,7 +233,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -357,7 +357,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()
@@ -405,7 +405,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()

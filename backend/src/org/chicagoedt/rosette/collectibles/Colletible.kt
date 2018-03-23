@@ -1,7 +1,7 @@
-package org.chicagoedt.rosette.Collectibles
+package org.chicagoedt.rosette.collectibles
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
 
 /**
  * An item that can be picked up by the RobotPlayer
