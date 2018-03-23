@@ -30,7 +30,7 @@ class RobotPlayer(val name: String,
     internal val instructions = arrayListOf<Instruction<Any>>()
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
-    private val itemInventory = ArrayList<Collectible>()
+    val itemInventory = HashMap<Int, Int>() // <ItemID, Count>
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
@@ -105,7 +105,7 @@ class RobotPlayer(val name: String,
      * @param pos The side to retrieve the sensors from
      * @return A list, in order, of all sensors on a side
      */
-    fun getSensors(pos: RobotPosition) : ArrayList<Sensor> {
+    fun getSensors(pos: RobotPosition): ArrayList<Sensor> {
         val list = arrayListOf<Sensor>()
         list.addAll(sensors[pos]!!)
         if (list.size < sensorCountAt(pos)){
@@ -120,7 +120,23 @@ class RobotPlayer(val name: String,
      * Pick up an item
      * @param item The item the robot picks up
      */
-    fun pickupItem(item: Collectible) {
-        itemInventory.add(item)
+    fun pickupItem(itemID: Int) {
+        // See if item exists, if exists, increment item counter. Otherwise, add it to the list
+        if (itemInventory.containsKey(itemID)) {
+            val oldCount = itemInventory[itemID]!!
+            itemInventory[itemID] = oldCount + 1
+        }
+        else
+            itemInventory[itemID] = 1
+    }
+
+    fun dropItem(itemID: Int): Boolean {
+        // See if item exists, decrement counter, pass item back to tile at current position
+        if (!itemInventory.containsKey(itemID))
+            return false
+
+//        if (itemInventory.get[itemID])
+
+        return true
     }
 }
