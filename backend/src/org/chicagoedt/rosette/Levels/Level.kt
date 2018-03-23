@@ -15,7 +15,7 @@ import org.chicagoedt.rosette.eventListener
  * @property grid A 2D-Arraylist of all tiles in the level
  * @property players All of the RobotPlayers in the level
  */
-class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>) {
+class Level(var properties: Properties) {
     /**
      * The properties to be stored in a Level
      * @param name The name of the level
@@ -40,7 +40,9 @@ class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>)
             }
             grid.add(list)
         }
+    }
 
+    fun setPlayers(playersList: ArrayList<RobotPlayer>){
         for (player in playersList){
             players[player.name] = player
         }
@@ -70,48 +72,5 @@ class Level(var properties: Properties, val playersList: ArrayList<RobotPlayer>)
      */
     fun tileAt(x: Int, y: Int): Tile {
         return grid[y][x]
-    }
-
-    /**
-     * Attaches an instruction to a robot
-     * @param name The name of the robot to attach the instruction to
-     * @param inst The instruction to attach
-     */
-    fun attachInstruction(name: String, inst: Instruction<*>){
-        players[name]!!.instructions.add(inst as Instruction<Any>)
-    }
-
-    /**
-     * Removes an instruction from a robot
-     * @param name The name of the robot to remove the instruction from
-     * @param inst The instruction to remove from the robot
-     */
-    fun removeInstruction(name: String, inst: Instruction<*>){
-        players[name]!!.instructions.remove(inst)
-    }
-
-    /**
-     * @param name The name of the robot to retrieve the instructions for
-     * @return A list of instructions on the robot
-     */
-    fun getInstructions(name: String) : List<Instruction<*>>{
-        return players[name]!!.instructions
-    }
-
-    /**
-     * Executes all of the instructions attached to a robot
-     * @param name The name of the robot to run instructions for
-     */
-    fun runInstructionsFor(name: String){
-        val robot = players[name]!!
-        for(inst: Instruction<Any> in robot.instructions){
-            inst.function(this, players[name]!!, inst.parameter)
-
-            //check to see if the player won after the instruction
-            if (tileAt(players[name]!!.x, players[name]!!.y).type == TileType.VICTORY){
-                eventListener.invoke(Event.LEVEL_VICTORY)
-                break
-            }
-        }
     }
 }

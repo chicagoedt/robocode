@@ -61,11 +61,11 @@ class BackendTests {
             for((name, robot) in level.players){
 
                 val moveInstruction = MoveInstruction()
-                game.currentLevel.attachInstruction(name, moveInstruction)
+                robot.attachInstruction(moveInstruction)
                 val turnInstruction = TurnInstruction()
-                game.currentLevel.attachInstruction(name, turnInstruction)
+                robot.attachInstruction(turnInstruction)
 
-                val list = game.currentLevel.getInstructions(name)
+                val list = robot.getInstructions()
                 assertEquals(list[0].name, moveInstruction.name)
                 assertEquals(list[1].name, turnInstruction.name)
             }
@@ -87,41 +87,43 @@ class BackendTests {
     }
 
     private fun turn(name: String, rotation: RobotRotation, assert: Boolean){
-        val next = nextDirection(game.currentLevel.players[name]!!.direction, rotation)
+        val robot = game.currentLevel.players[name]!!
+        val next = nextDirection(robot.direction, rotation)
         val turn = TurnInstruction()
         turn.parameter = rotation
-        game.currentLevel.attachInstruction(name, turn)
-        game.currentLevel.runInstructionsFor(name)
-        game.currentLevel.removeInstruction(name, turn)
-        if (assert) assertEquals(game.currentLevel.players[name]!!.direction, next)
+        robot.attachInstruction(turn)
+        robot.runInstructions()
+        robot.removeInstruction(turn)
+        if (assert) assertEquals(robot.direction, next)
     }
 
     private fun move(name: String, orientation: RobotOrientation, parameter: Int, assert: Boolean) {
+        val robot = game.currentLevel.players[name]!!
         val instruction = MoveInstruction()
         instruction.parameter = parameter
-        val y = game.currentLevel.players[name]!!.y
-        val x = game.currentLevel.players[name]!!.x
-        game.currentLevel.attachInstruction(name, instruction)
-        game.currentLevel.runInstructionsFor(name)
-        game.currentLevel.removeInstruction(name, instruction)
+        val y = robot.y
+        val x = robot.x
+        robot.attachInstruction(instruction)
+        robot.runInstructions()
+        robot.removeInstruction(instruction)
 
         val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
         if (orientation == RobotOrientation.DIRECTION_UP) {
-            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y + difference)
-            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
+            if (assert)assertEquals(robot.y, y + difference)
+            if (assert)assertEquals(robot.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_DOWN) {
             if (assert)
-                assertEquals(game.currentLevel.players[name]!!.y, y - difference)
-            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x)
+                assertEquals(robot.y, y - difference)
+            if (assert)assertEquals(robot.x, x)
         }
         else if (orientation == RobotOrientation.DIRECTION_LEFT) {
-            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
-            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x - difference)
+            if (assert)assertEquals(robot.y, y)
+            if (assert)assertEquals(robot.x, x - difference)
         }
         else if (orientation == RobotOrientation.DIRECTION_RIGHT) {
-            if (assert)assertEquals(game.currentLevel.players[name]!!.y, y)
-            if (assert)assertEquals(game.currentLevel.players[name]!!.x, x + difference)
+            if (assert)assertEquals(robot.y, y)
+            if (assert)assertEquals(robot.x, x + difference)
         }
     }
 
@@ -149,12 +151,14 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN, level1)
 
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
+        level1.setPlayers(list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -166,20 +170,20 @@ class BackendTests {
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
-        game.currentLevel.attachInstruction(surus.name, instruction)
-        game.currentLevel.runInstructionsFor(surus.name)
-        assertEquals(level1.players[surus.name]!!.x, 0)
-        assertEquals(level1.players[surus.name]!!.y, 0)
+        robotPlayer1.attachInstruction(instruction)
+        robotPlayer1.runInstructions()
+        assertEquals(robotPlayer1.x, 0)
+        assertEquals(robotPlayer1.y, 0)
 
-        game.currentLevel.removeInstruction(surus.name, instruction)
+        robotPlayer1.removeInstruction(instruction)
         val turnInstruction = TurnInstruction()
         turnInstruction.parameter = RobotRotation.CLOCKWISE
-        game.currentLevel.attachInstruction(surus.name, turnInstruction)
-        game.currentLevel.runInstructionsFor(surus.name)
+        robotPlayer1.attachInstruction(turnInstruction)
+        robotPlayer1.runInstructions()
 
-        game.currentLevel.removeInstruction(surus.name, turnInstruction)
-        game.currentLevel.attachInstruction(surus.name, instruction)
-        game.currentLevel.runInstructionsFor(surus.name)
+        robotPlayer1.removeInstruction(turnInstruction)
+        robotPlayer1.attachInstruction(instruction)
+        robotPlayer1.runInstructions()
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
     }
@@ -192,12 +196,14 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
+        level1.setPlayers(list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -210,9 +216,9 @@ class BackendTests {
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
-        game.currentLevel.attachInstruction(surus.name, instruction)
+        robotPlayer1.attachInstruction(instruction)
 
-        game.currentLevel.runInstructionsFor(surus.name)
+        robotPlayer1.runInstructions()
 
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
@@ -227,12 +233,15 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
+        level1.setPlayers(list1)
+
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -245,11 +254,11 @@ class BackendTests {
 
         val instruction = MoveInstruction()
         instruction.parameter = 1
-        game.currentLevel.attachInstruction(surus.name, instruction)
+        robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }
 
-        game.currentLevel.runInstructionsFor(surus.name)
+        robotPlayer1.runInstructions()
 
         assertEquals(won, true)
     }
@@ -348,14 +357,16 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()
         robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
 
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
+        level1.setPlayers(list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -368,7 +379,7 @@ class BackendTests {
 
         val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
-        game.currentLevel.attachInstruction(surus.name, readSensorInstruction)
+        robotPlayer1.attachInstruction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
@@ -376,11 +387,11 @@ class BackendTests {
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
         instruction.addToList(MoveInstruction())
-        game.currentLevel.attachInstruction(surus.name, instruction)
+        robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }
 
-        game.currentLevel.runInstructionsFor(surus.name)
+        robotPlayer1.runInstructions()
 
         assertEquals(won, true)
     }
@@ -394,14 +405,16 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT)
+        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()
         robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
 
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3), list1)
+        level1.setPlayers(list1)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -414,7 +427,7 @@ class BackendTests {
 
         val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
-        game.currentLevel.attachInstruction(surus.name, readSensorInstruction)
+        robotPlayer1.attachInstruction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
@@ -422,11 +435,11 @@ class BackendTests {
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
         instruction.addToList(MoveInstruction())
-        game.currentLevel.attachInstruction(surus.name, instruction)
+        robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }
 
-        game.currentLevel.runInstructionsFor(surus.name)
+        robotPlayer1.runInstructions()
 
         assertEquals(won, false)
     }
