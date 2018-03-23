@@ -7,23 +7,23 @@ import org.chicagoedt.rosette.robots.RobotPlayer
  * An instruction with a list of sub-instructions to be run
  * @property list The list of instructions contained in this instruction
  */
-abstract class InstructionWithList<T> : Instruction<T>() {
-    internal val list = mutableListOf<Instruction<Any>>()
+abstract class ActionWithList<T> : Action<T>() {
+    internal val list = mutableListOf<Action<Any>>()
 
     /**
-     * Adds an instruction to the list
-     * @param instruction The instruction to add to the list
+     * Adds an action to the list
+     * @param action The action to add to the list
      */
-    internal fun addToList(instruction: Instruction<*>){
-        list.add(instruction as Instruction<Any>)
+    internal fun addToList(action: Action<*>){
+        list.add(action as Action<Any>)
     }
 
     /**
-     * Removes an instruction from the list
-     * @param instruction The instruction to remove from the list
+     * Removes an action from the list
+     * @param action The action to remove from the list
      */
-    internal fun removeFromList(instruction: Instruction<*>){
-        list.remove(instruction)
+    internal fun removeFromList(action: Action<*>){
+        list.remove(action)
     }
 
     /**
@@ -37,8 +37,8 @@ abstract class InstructionWithList<T> : Instruction<T>() {
     /**
      * @return The list of instructions
      */
-    internal fun getList() : ArrayList<Instruction<*>>{
-        val arrayList = arrayListOf<Instruction<*>>()
+    internal fun getList() : ArrayList<Action<*>>{
+        val arrayList = arrayListOf<Action<*>>()
         arrayList.addAll(list)
         return arrayList
     }

@@ -4,12 +4,12 @@ import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.RobotOrientation
 import org.chicagoedt.rosette.robots.RobotPlayer
 import org.chicagoedt.rosette.tiles.TileType
-import org.chicagoedt.rosette.actions.Instruction
+import org.chicagoedt.rosette.actions.Action
 
 /**
  * Moves the robot by [parameter] tiles in the direction that it's facing
  */
-class MoveInstruction : Instruction<Int>() {
+class MoveAction : Action<Int>() {
     override val name: String = "Move"
     override var parameter = 1
 

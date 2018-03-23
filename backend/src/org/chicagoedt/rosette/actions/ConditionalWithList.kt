@@ -7,7 +7,7 @@ import org.chicagoedt.rosette.robots.RobotPlayer
 /**
  * Executes the list of instructions if the Comparison [parameter] results in true
  */
-class ConditionalWithList() : InstructionWithList<Comparison<*,*>>(){
+class ConditionalWithList() : ActionWithList<Comparison<*,*>>(){
     lateinit override var parameter : Comparison<*,*>
     override val name = "Conditional"
 

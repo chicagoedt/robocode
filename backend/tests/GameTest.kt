@@ -1,10 +1,10 @@
 import kotlin.test.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.actions.ConditionalWithList
-import org.chicagoedt.rosette.actions.robotActions.MoveInstruction
+import org.chicagoedt.rosette.actions.robotActions.MoveAction
 import org.chicagoedt.rosette.actions.operations.TopicEqualsComparison
-import org.chicagoedt.rosette.actions.robotActions.ReadSensorInstruction
-import org.chicagoedt.rosette.actions.robotActions.TurnInstruction
+import org.chicagoedt.rosette.actions.robotActions.ReadSensorAction
+import org.chicagoedt.rosette.actions.robotActions.TurnAction
 import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.*
 import org.chicagoedt.rosette.sensors.DistanceSensor
@@ -60,9 +60,9 @@ class BackendTests {
         for(level in levels){
             for((name, robot) in level.players){
 
-                val moveInstruction = MoveInstruction()
+                val moveInstruction = MoveAction()
                 robot.attachInstruction(moveInstruction)
-                val turnInstruction = TurnInstruction()
+                val turnInstruction = TurnAction()
                 robot.attachInstruction(turnInstruction)
 
                 val list = robot.getInstructions()
@@ -75,7 +75,7 @@ class BackendTests {
 
     @Test
     fun RobotInstructionTurn() {
-        val instruction = TurnInstruction()
+        val instruction = TurnAction()
         for(level in levels){
             for((name, robot) in level.players){
                 for (i in 0..3) {
@@ -89,7 +89,7 @@ class BackendTests {
     private fun turn(name: String, rotation: RobotRotation, assert: Boolean){
         val robot = game.currentLevel.players[name]!!
         val next = nextDirection(robot.direction, rotation)
-        val turn = TurnInstruction()
+        val turn = TurnAction()
         turn.parameter = rotation
         robot.attachInstruction(turn)
         robot.runInstructions()
@@ -99,7 +99,7 @@ class BackendTests {
 
     private fun move(name: String, orientation: RobotOrientation, parameter: Int, assert: Boolean) {
         val robot = game.currentLevel.players[name]!!
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = parameter
         val y = robot.y
         val x = robot.x
@@ -168,7 +168,7 @@ class BackendTests {
         testLevels.add(level1)
         game = Game(testLevels, testRobots)
 
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.attachInstruction(instruction)
         robotPlayer1.runInstructions()
@@ -176,7 +176,7 @@ class BackendTests {
         assertEquals(robotPlayer1.y, 0)
 
         robotPlayer1.removeInstruction(instruction)
-        val turnInstruction = TurnInstruction()
+        val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.CLOCKWISE
         robotPlayer1.attachInstruction(turnInstruction)
         robotPlayer1.runInstructions()
@@ -214,7 +214,7 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.attachInstruction(instruction)
 
@@ -252,7 +252,7 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.attachInstruction(instruction)
 
@@ -377,16 +377,16 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
+        val readSensorInstruction = ReadSensorAction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.attachInstruction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
-        val turnInstruction = TurnInstruction()
+        val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
-        instruction.addToList(MoveInstruction())
+        instruction.addToList(MoveAction())
         robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }
@@ -425,16 +425,16 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
+        val readSensorInstruction = ReadSensorAction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.attachInstruction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
-        val turnInstruction = TurnInstruction()
+        val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
-        instruction.addToList(MoveInstruction())
+        instruction.addToList(MoveAction())
         robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }

@@ -1,6 +1,6 @@
 package org.chicagoedt.rosette.robots
 
-import org.chicagoedt.rosette.actions.Instruction
+import org.chicagoedt.rosette.actions.Action
 import org.chicagoedt.rosette.sensors.*
 import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.*
@@ -31,7 +31,7 @@ class RobotPlayer(val name: String,
                   var direction: RobotOrientation,
                   var level : Level){
 
-    internal val instructions = arrayListOf<Instruction<Any>>()
+    internal val instructions = arrayListOf<Action<Any>>()
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
     val itemInventory = HashMap<Int, Int>() // <ItemID, Count>
@@ -124,8 +124,8 @@ class RobotPlayer(val name: String,
      * Attaches an instruction to a robot
      * @param inst The instruction to attach
      */
-    fun attachInstruction(inst: Instruction<*>){
-        instructions.add(inst as Instruction<Any>)
+    fun attachInstruction(inst: Action<*>){
+        instructions.add(inst as Action<Any>)
     }
 
     /**
@@ -133,7 +133,7 @@ class RobotPlayer(val name: String,
      * @param name The name of the robot to remove the instruction from
      * @param inst The instruction to remove from the robot
      */
-    fun removeInstruction(inst: Instruction<*>){
+    fun removeInstruction(inst: Action<*>){
         instructions.remove(inst)
     }
 
@@ -141,16 +141,16 @@ class RobotPlayer(val name: String,
      * @param name The name of the robot to retrieve the instructions for
      * @return A list of instructions on the robot
      */
-    fun getInstructions() : List<Instruction<*>>{
+    fun getInstructions() : List<Action<*>>{
         return instructions
     }
 
     /**
-     * Executes all of the instructions attached to a robot
+     * Executes instructions assigned to a robot
      * @param name The name of the robot to run instructions for
      */
     fun runInstructions(){
-        for(inst: Instruction<Any> in instructions){
+        for(inst: Action<Any> in instructions){
             inst.function(level, this, inst.parameter)
 
             //check to see if the player won after the instruction

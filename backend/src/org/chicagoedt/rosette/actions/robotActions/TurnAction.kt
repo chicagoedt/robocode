@@ -4,12 +4,12 @@ import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.RobotPlayer
 import org.chicagoedt.rosette.robots.RobotRotation
 import org.chicagoedt.rosette.robots.nextDirection
-import org.chicagoedt.rosette.actions.Instruction
+import org.chicagoedt.rosette.actions.Action
 
 /**
  * Turns the robot in the direction specified by the parameter
  */
-class TurnInstruction : Instruction<RobotRotation>() {
+class TurnAction : Action<RobotRotation>() {
     override val name: String = "Turn"
     override var parameter = RobotRotation.CLOCKWISE
 
