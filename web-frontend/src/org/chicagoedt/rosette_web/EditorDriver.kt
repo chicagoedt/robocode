@@ -50,12 +50,13 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		globalPanelWidth = context.canvas.width.toDouble() - (game.currentLevel.players.size * panelMargin).toDouble()
 		globalPanelWidth /= game.currentLevel.players.size
 		for (panel in panels){
-			panel.screenWidth = globalPanelWidth
-			panel.screenHeight = globalPanelHeightRatio * globalPanelWidth
-			if (panel.screenHeight > globalMaxHeight) panel.screenHeight = globalMaxHeight
-			panel.screenX = panelX
-			panel.screenY = panelY
-			panelX += panel.screenWidth + panelMargin
+			var screenHeight = globalPanelHeightRatio * globalPanelWidth
+			if (screenHeight > globalMaxHeight) screenHeight = globalMaxHeight
+
+			panel.updatePosition(panelX, panelY, globalPanelWidth, screenHeight)
+
+			panelX += globalPanelWidth + panelMargin
+
         }
 	}
 

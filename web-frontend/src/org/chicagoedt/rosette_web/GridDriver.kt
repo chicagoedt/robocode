@@ -21,7 +21,7 @@ import org.chicagoedt.rosette_web.Grid.*
 class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
     var widthInterval = 0.0
     var heightInterval = 0.0
-    val separation = 0
+    val separation = 2
     val tileLocations = ArrayList<ArrayList<TileLocation>>()
     val playerLocations = ArrayList<PlayerLocation>()
 
@@ -61,10 +61,10 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
         for (x in 0..game.currentLevel.properties.width-1){
             for (y in 0..game.currentLevel.properties.height-1){
                 val loc = tileLocations[x][y]
-                loc.screenX = (tileX + (separation / 4)).toDouble()
-                loc.screenY = (tileY + (separation / 4)).toDouble()
-                loc.screenHeight = (heightInterval - (separation / 2)).toDouble()
-                loc.screenWidth = (widthInterval - (separation / 2)).toDouble()
+                loc.x = (tileX + (separation / 4)).toDouble()
+                loc.y = (tileY + (separation / 4)).toDouble()
+                loc.height = (heightInterval - (separation / 2)).toDouble()
+                loc.width = (widthInterval - (separation / 2)).toDouble()
 
                 tileY += heightInterval.toInt()
             }
@@ -78,10 +78,10 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
      */
     fun calculatePlayers(){
         for (player in playerLocations){
-            player.screenX = tileLocations[player.x.toInt()][player.y.toInt()].screenX
-            player.screenY = tileLocations[player.x.toInt()][player.y.toInt()].screenY
-            player.screenHeight = tileLocations[player.x.toInt()][player.y.toInt()].screenHeight
-            player.screenWidth = tileLocations[player.x.toInt()][player.y.toInt()].screenWidth
+            player.x = tileLocations[player.x.toInt()][player.y.toInt()].x
+            player.y = tileLocations[player.x.toInt()][player.y.toInt()].y
+            player.height = tileLocations[player.x.toInt()][player.y.toInt()].height
+            player.width = tileLocations[player.x.toInt()][player.y.toInt()].width
         }
     }
 
