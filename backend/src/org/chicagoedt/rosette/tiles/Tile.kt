@@ -1,6 +1,6 @@
 package org.chicagoedt.rosette.tiles
 
-import org.chicagoedt.rosette.collectibles.Collectible
+import org.chicagoedt.rosette.collectibles.ItemInventory
 
 /**
  * The types of tiles possible on the map
@@ -21,5 +21,5 @@ enum class TileType {
  */
 interface Tile {
     val type : TileType
-    val items: ArrayList<Collectible>
+    val items: ItemInventory
 }

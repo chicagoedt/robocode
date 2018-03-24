@@ -9,7 +9,7 @@ import org.chicagoedt.rosette.robots.RobotPlayer
  * @property type The type of item
  * @property name The name of the item
  * @property graphic The image URI
- * @property minUseQuantity The minimum number of this item to use the item
+ * @property useQuantity The minimum number of this item to use the item
  */
 interface Collectible {
     enum class ItemType {
@@ -23,7 +23,7 @@ interface Collectible {
     val name: String
     val graphic: String
 
-    val minUseQuantity: Int
+    val useQuantity: Int
 
     /**
      * Interact with the item

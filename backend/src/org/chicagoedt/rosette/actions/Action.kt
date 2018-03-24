@@ -22,5 +22,5 @@ abstract class Action<T> {
      * @param robot The current robot that the action is attached to
      * @param parameter The value to be used by this action
      */
-    internal abstract fun function(level: Level, robot: RobotPlayer, parameter: T);
+    internal abstract fun function(level: Level, robot: RobotPlayer, parameter: T)
 }

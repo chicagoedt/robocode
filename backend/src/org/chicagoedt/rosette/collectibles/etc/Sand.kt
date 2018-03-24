@@ -9,7 +9,7 @@ class Sand: Collectible {
     override val type = Collectible.ItemType.ETC
     override val name = "Sand"
     override val graphic = ""
-    override val minUseQuantity = 5
+    override val useQuantity = 5
 
     override fun use(level: Level, robot: RobotPlayer) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

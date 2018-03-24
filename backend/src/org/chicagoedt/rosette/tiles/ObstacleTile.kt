@@ -1,10 +1,11 @@
 package org.chicagoedt.rosette.tiles
 
-import org.chicagoedt.rosette.collectibles.Collectible
+import org.chicagoedt.rosette.collectibles.ItemInventory
 
 /**
  * A tile that robots cannot pass through
  */
-class ObstacleTile(override val items: ArrayList<Collectible> = ArrayList()) : Tile {
+class ObstacleTile(itemsList: IntArray = intArrayOf()) : Tile {
     override val type = TileType.OBSTACLE
+    override val items: ItemInventory = ItemInventory()
 }

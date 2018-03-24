@@ -4,6 +4,7 @@ import org.chicagoedt.rosette.actions.Action
 import org.chicagoedt.rosette.sensors.*
 import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.*
+import org.chicagoedt.rosette.collectibles.ItemInventory
 import org.chicagoedt.rosette.tiles.*
 
 enum class RobotPosition{
@@ -34,7 +35,7 @@ class RobotPlayer(val name: String,
     internal val instructions = arrayListOf<Action<Any>>()
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
-    val itemInventory = HashMap<Int, Int>() // <ItemID, Count>
+    val itemInventory = ItemInventory()
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
@@ -66,7 +67,7 @@ class RobotPlayer(val name: String,
             val actualSize = sensors[pos]!!.size
 
             if (count < currentCount && count < actualSize) {
-                for (i in count..actualSize-1) {
+                for (i in count until actualSize) {
                     sensors[pos]!!.removeAt(i)
                 }
             }
@@ -159,29 +160,5 @@ class RobotPlayer(val name: String,
                 break
             }
         }
-    }
-
-    /**
-     * Pick up an item
-     * @param item The item the robot picks up
-     */
-    fun pickupItem(itemID: Int) {
-        // See if item exists, if exists, increment item counter. Otherwise, add it to the list
-        if (itemInventory.containsKey(itemID)) {
-            val oldCount = itemInventory[itemID]!!
-            itemInventory[itemID] = oldCount + 1
-        }
-        else
-            itemInventory[itemID] = 1
-    }
-
-    fun dropItem(itemID: Int): Boolean {
-        // See if item exists, decrement counter, pass item back to tile at current position
-        if (!itemInventory.containsKey(itemID))
-            return false
-
-//        if (itemInventory.get[itemID])
-
-        return true
     }
 }
