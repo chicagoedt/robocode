@@ -1,11 +1,11 @@
-package org.chicagoedt.rosette_web
+package org.chicagoedt.rosetteweb
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Robots.*
-import org.chicagoedt.rosette_web.Editor.*
+import org.chicagoedt.rosetteweb.editor.*
 /**
  * The driver to run an Editor canvas for the current game
  * @param game The game that the program is running
@@ -23,9 +23,14 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private var globalPanelMarginPercent = 5.0
 	private var globalMaxHeight = 600.0
 	private val panels = ArrayList<Panel>()
+	private var interactionManager  = InteractionManager(context, {draw()})
 
 	init{
 		calculateNewLevel()
+	}
+
+	fun setOffset(offsetX : Double, offsetY : Double){
+		interactionManager.updateOffset(offsetX, offsetY)
 	}
 
 	/**
@@ -34,7 +39,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	fun calculateNewLevel(){
 		panels.clear()
 		for ((name, player) in game.currentLevel.players){
-			val panel = Panel(context, player)
+			val panel = Panel(context, player, interactionManager)
 			panels.add(panel)
         }
 	}
@@ -64,6 +69,10 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 * Draws all of the elements in this editor
 	 */
 	fun drawEditor(){
+		//draw background white
+		context.fillStyle = "white"
+        context.fillRect(0.0, 0.0, context.canvas.width.toDouble(), context.canvas.height.toDouble())
+
 		for (panel in panels){
 			panel.draw()
 		}

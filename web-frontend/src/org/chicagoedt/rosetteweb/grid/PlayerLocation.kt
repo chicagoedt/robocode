@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette_web.Grid
+package org.chicagoedt.rosetteweb.grid
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
@@ -6,7 +6,7 @@ import kotlin.browser.*
 import kotlin.math.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Tiles.*
-import org.chicagoedt.rosette_web.Grid.*
+import org.chicagoedt.rosetteweb.grid.*
 import org.chicagoedt.rosette.Levels.*
 import org.chicagoedt.rosette.Robots.*
 

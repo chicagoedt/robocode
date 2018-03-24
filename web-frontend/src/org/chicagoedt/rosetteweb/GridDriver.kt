@@ -1,11 +1,11 @@
-package org.chicagoedt.rosette_web
+package org.chicagoedt.rosetteweb
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Tiles.*
-import org.chicagoedt.rosette_web.Grid.*
+import org.chicagoedt.rosetteweb.grid.*
 
 /**
  * The driver to run a Grid canvas for the current game
@@ -24,10 +24,6 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
     val separation = 2
     val tileLocations = ArrayList<ArrayList<TileLocation>>()
     val playerLocations = ArrayList<PlayerLocation>()
-
-    init{
-        calculateNewLevel()
-    }
 
     /**
      * Calculates all of the necessary information when switching levels
@@ -78,10 +74,10 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
      */
     fun calculatePlayers(){
         for (player in playerLocations){
-            player.x = tileLocations[player.x.toInt()][player.y.toInt()].x
-            player.y = tileLocations[player.x.toInt()][player.y.toInt()].y
-            player.height = tileLocations[player.x.toInt()][player.y.toInt()].height
-            player.width = tileLocations[player.x.toInt()][player.y.toInt()].width
+            player.x = tileLocations[player.gridX.toInt()][player.gridY.toInt()].x
+            player.y = tileLocations[player.gridX.toInt()][player.gridY.toInt()].y
+            player.height = tileLocations[player.gridX.toInt()][player.gridY.toInt()].height
+            player.width = tileLocations[player.gridX.toInt()][player.gridY.toInt()].width
         }
     }
 

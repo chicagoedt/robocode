@@ -1,10 +1,11 @@
-package org.chicagoedt.rosette_web.Editor
+package org.chicagoedt.rosetteweb.editor
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Robots.*
+import org.chicagoedt.rosetteweb.InteractionManager
 
 /**
  * A space to contain all of the instructions for each robot
@@ -20,7 +21,8 @@ import org.chicagoedt.rosette.Robots.*
  * @property instructions The instruction blocks contained in this panel
  */
 class Panel(val context: CanvasRenderingContext2D, 
-			var player: RobotPlayer){
+			var player: RobotPlayer,
+			val manager : InteractionManager){
 	private var height = 0.0
 	private var width = 0.0
 	private var x = 0.0
@@ -32,8 +34,8 @@ class Panel(val context: CanvasRenderingContext2D,
 	private var instructions = arrayListOf<InstructionBlock<*>>()
 
 	init{
-		addInstruction(MoveInstructionBlock())
-		addInstruction(MoveInstructionBlock())
+		addInstruction(MoveInstructionBlock(manager))
+		addInstruction(MoveInstructionBlock(manager))
 	}
 
 	/**

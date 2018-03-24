@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette_web.Editor
+package org.chicagoedt.rosetteweb.editor
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement

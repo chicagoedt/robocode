@@ -1,10 +1,12 @@
-package org.chicagoedt.rosette_web.Editor
+package org.chicagoedt.rosetteweb.editor
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Instructions.*
+import org.chicagoedt.rosetteweb.InteractionManager
+import org.chicagoedt.rosetteweb.editor.Draggable
 
 /**
  * A block that represents (and contains) an instruction for the robot
@@ -18,37 +20,21 @@ import org.chicagoedt.rosette.Instructions.*
  * @property name The name of this block to display on the screen
  * @property textHeight The height of the text to display on this block
  */
-abstract class InstructionBlock<T : Instruction<*>>(){
-	abstract var x : Double
-	abstract var y : Double
-	abstract var height : Double
-	abstract var width : Double
+abstract class InstructionBlock<T : Instruction<*>>(manager : InteractionManager) : Draggable(manager) {
+	override abstract var x : Double
+	override abstract var y : Double
+	override abstract var height : Double
+	override abstract var width : Double
 	abstract var instruction : T
 	abstract var color : String
 	abstract var context : CanvasRenderingContext2D
 	abstract var name : String
 	private var textHeight = height * (2.0/3.0)
 
-
-	/**
-	 * Determines if the mouse is within this block
-	 * @param mouseX The X value of the mouse
-	 * @param mouseY The Y value of the mouse
-	 * @return True if the mouse is in this block, false otherwise
-	 */
-	fun mouseWithin(mouseX : Double, mouseY : Double) : Boolean{
-		if (mouseX > x && mouseX < (x + width)){
-			if (mouseY > y && mouseY < (y + height)){
-				return true
-			}
-		}
-		return false
-	}
-
 	/**
 	 * Draws this block on the screen
 	 */
-	fun draw(){
+	override fun draw(){
 		context.fillStyle = color
         context.fillRect(x, y, width, height)
 

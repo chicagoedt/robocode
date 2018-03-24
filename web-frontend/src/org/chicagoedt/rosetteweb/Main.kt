@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette_web
+package org.chicagoedt.rosetteweb
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
@@ -79,6 +79,7 @@ fun main(args: Array<String>) {
     gridDriver.calculateTiles()
     gridDriver.calculatePlayers()
     editorDriver.calculatePanels()
+    editorDriver.setOffset(gridContext.canvas.width.toDouble(), 0.0)
  }
 
 /**
