@@ -47,5 +47,5 @@ class ItemInventory {
 
     fun hasItem(itemId: Int): Boolean = inventory.containsKey(itemId)
 
-    fun itemQuantity(itemID: Int): Int = if (inventory[itemID]!! == null) 0 else inventory[itemID]!!
+    fun itemQuantity(itemID: Int): Int = if (hasItem(itemID)) inventory[itemID]!! else 0
 }
