@@ -14,7 +14,7 @@ object ItemManager {
         }
 
         // Load all items to be used for the game
-        addItem(Sand())
+        addItem(Sand)
     }
 
     fun itemExist(itemID: Int): Boolean = itemList.containsKey(itemID)

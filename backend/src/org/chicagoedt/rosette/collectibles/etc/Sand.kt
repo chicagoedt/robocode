@@ -4,7 +4,7 @@ import org.chicagoedt.rosette.collectibles.Collectible
 import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.RobotPlayer
 
-class Sand: Collectible {
+object Sand: Collectible {
     override val id = 1000
     override val type = Collectible.ItemType.ETC
     override val name = "Sand"
