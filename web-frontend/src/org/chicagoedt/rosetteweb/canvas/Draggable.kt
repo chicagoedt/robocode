@@ -24,8 +24,6 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 		manager.draggables.add(this)
 	}
 
-	override abstract fun draw()
-
 	/**
 	 * Drag to this location
 	 * @param mx The X value to drag to

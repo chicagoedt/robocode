@@ -3,6 +3,7 @@ package org.chicagoedt.rosetteweb.canvas
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
+import kotlin.math.*
 
 /**
  * An object to be drawn on the board
@@ -19,13 +20,57 @@ abstract class Drawable(protected var context : CanvasRenderingContext2D){
 	abstract var width : Double
 	abstract var height : Double
 	abstract var color : String
+	open var radius = 0.0
+	open var shadowBlur = 0.0
 
 	/**
 	 * Draws the object on the screen
 	 */
 	open fun draw(){
+		context.shadowBlur = shadowBlur
+		context.shadowColor="black";
 		context.fillStyle = color
-        context.fillRect(x, y, width, height)
+		if (radius == 0.0){
+        	context.fillRect(x, y, width, height)
+    	}
+    	else{
+    		var posX = x
+    		var posY = y + radius
+    		
+    		context.beginPath()
+    		context.moveTo(posX, posY)
+    		posX = x + radius
+    		posY = y
+    		context.quadraticCurveTo(x, y, posX, posY)
+
+    		posX = x + width - radius
+    		context.lineTo(posX, posY)
+
+    		posX = x + width
+    		posY = y + radius
+    		context.quadraticCurveTo(x + width, y, posX, posY)
+
+    		posY = y + height - radius
+    		context.lineTo(posX, posY)
+
+    		posX = x + width - radius
+    		posY = y + height
+    		context.quadraticCurveTo(x + width, y + height, posX, posY)
+
+    		posX = x + radius
+    		context.lineTo(posX, posY)
+
+    		posX = x
+    		posY = y + height - radius
+    		context.quadraticCurveTo(x, y + height, posX, posY)
+
+    		posY = y + radius
+    		context.lineTo(posX, posY)
+
+    		context.closePath()
+    		context.fill()
+    	}
+    	context.shadowBlur = 0.0
 	}
 
 	/**

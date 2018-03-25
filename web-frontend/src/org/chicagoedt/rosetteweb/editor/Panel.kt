@@ -11,18 +11,15 @@ import org.chicagoedt.rosetteweb.*
 
 /**
  * A space to contain all of the instructions for each robot
- * @param context The context to draw this panel on
- * @param manager The interaction managert to handle this canvas
  * @param player The player that this panel will correspond to
- * @property height The height of this panel
- * @property width The width of this panel
- * @property y The X position of the top left corner of this panel
- * @property x The Y postiion of the top left corner of this panel
  * @property headerHeight The height of the header at the top of the panel
  * @property textHeaderHeightRatio The ratio of the header text height to the header height
  * @property textHeaderHeight The size of the text in the header
  * @property blockHeight The standard height of the blocks
  * @property instructions The instruction blocks contained in this panel
+ * @property runButton The button to run the procedure
+ * @property instructionMarginVertical The spacing between the instructions
+ * @property instructionMarginHorizontal The spacing between the sides of the panel and the instructions
  */
 class Panel(context: CanvasRenderingContext2D, 
 			var player: RobotPlayer,
@@ -31,13 +28,18 @@ class Panel(context: CanvasRenderingContext2D,
 	override var width = 0.0
 	override var x = 0.0
 	override var y = 0.0
-	override var color = "#9E9E9E"
+	override var color = "#E0E0E0"
+	override var radius = 1.0
+	override var shadowBlur = 5.0
+
 	private var headerHeight = 50.0
 	private val textHeaderHeightRatio = (2.0/3.0)
 	private var textHeaderHeight = headerHeight * textHeaderHeightRatio
 	private val blockHeight = 30.0
 	private var instructions = arrayListOf<InstructionBlock<*>>()
 	private val runButton = Button(context, manager, ::runInstructions, "Run", "green")
+	private val instructionPaddingVertical = 5.0
+	private val instructionPaddingHorizontal = 20.0
 
 	init{
 		addInstruction(MoveInstructionBlock(manager, context))
@@ -63,7 +65,7 @@ class Panel(context: CanvasRenderingContext2D,
 	 * Draws the header on the panel
 	 */
 	fun drawHeader(){
-		context.fillStyle = "#5C6BC0"
+		context.fillStyle = "#64B5F6"
 		context.fillRect(x, y, width, headerHeight);
 
 
@@ -75,10 +77,10 @@ class Panel(context: CanvasRenderingContext2D,
 	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
 		super.calculate(newX, newY, newWidth, newHeight, newColor)
 
-		var blockY = y + headerHeight
+		var blockY = y + headerHeight + instructionPaddingVertical
 		for (block in instructions){
-			block.setPanelInfo(context, x, blockY, width, blockHeight)
-			blockY += blockHeight
+			block.setPanelInfo(context, x + instructionPaddingHorizontal, blockY, width - (2.0 * instructionPaddingHorizontal), blockHeight)
+			blockY += blockHeight + instructionPaddingVertical
 		}
 
 		runButton.calculate(x + width * (5.0/6.0), y, width * (1.0/6.0), headerHeight, runButton.color)

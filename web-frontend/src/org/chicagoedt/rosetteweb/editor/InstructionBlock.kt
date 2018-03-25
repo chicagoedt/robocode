@@ -27,6 +27,8 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 	override abstract var y : Double
 	override abstract var height : Double
 	override abstract var width : Double
+	override var radius = 10.0
+	override var shadowBlur = 10.0
 	abstract var action : T
 	override abstract var color : String
 	abstract var name : String
@@ -34,8 +36,7 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 	override lateinit var dropzone : Dropzone
 
 	override fun draw(){
-		context.fillStyle = color
-        context.fillRect(x, y, width, height)
+		super.draw()
 
         context.fillStyle = "black"
         context.font = textHeight.toInt().toString() + "px Arial";

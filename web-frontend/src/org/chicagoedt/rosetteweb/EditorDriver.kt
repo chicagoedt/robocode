@@ -28,6 +28,8 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private val panels = ArrayList<Panel>()
 	private var interactionManager  = InteractionManager(context, {drawEditor()})
 	private var drawer = Drawer(context)
+	private var panelPaddingVertical = 10.0
+	private var panelPaddingHorizontal = 10.0
 
 	/**
 	 * Set the offset of this canvas relative to the browser window
@@ -53,10 +55,11 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 * Calculates the positions of the panels in the canvas. This should be called when the screen size changes
 	 */
 	fun calculatePanels(){
-		var panelX = 0.0
-		var panelY = 0.0
+		var panelX = panelPaddingHorizontal
+		var panelY = panelPaddingVertical
 
-		val panelMargin = context.canvas.width.toDouble() * (globalPanelMarginPercent / 100.0)
+		var panelMargin = context.canvas.width.toDouble() * (globalPanelMarginPercent / 100.0)
+		if (panelMargin - panelX >= 0) panelMargin = panelMargin - panelX
 		globalPanelWidth = context.canvas.width.toDouble() - (game.currentLevel.players.size * panelMargin).toDouble()
 		globalPanelWidth /= game.currentLevel.players.size
 		for (panel in panels){
@@ -73,14 +76,13 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 * Draws all of the elements in this editor
 	 */
 	fun drawEditor(){
-		//draw background white
-		context.fillStyle = "white"
+		context.fillStyle = "#424242"
         context.fillRect(0.0, 0.0, context.canvas.width.toDouble(), context.canvas.height.toDouble())
 
 		for (panel in panels){
 			panel.draw()
 		}
 
-		drawer.draw()
+		//drawer.draw()
 	}
 }
