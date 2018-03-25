@@ -21,7 +21,7 @@ enum class RobotPosition{
  * @param y The starting Y value of the robot
  * @param direction The starting orientation of the robot
  * @param level The level that this robot is contained in
- * @property instructions All of the instructions attached to the robot
+ * @property procedure A sequential list of actions to run assigned to the robot
  * @property sensors All of the sensors attached to the robot
  * @property sensorCounts The number of sensors available on each side
  * @property itemInventory List of collectible items in the robot's possession
@@ -32,7 +32,7 @@ class RobotPlayer(val name: String,
                   var direction: RobotOrientation,
                   var level : Level){
 
-    internal val instructions = arrayListOf<Action<Any>>()
+    internal val procedure = arrayListOf<Action<Any>>()
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
     val itemInventory = ItemInventory()
@@ -122,37 +122,37 @@ class RobotPlayer(val name: String,
     }
 
     /**
-     * Attaches an instruction to a robot
-     * @param inst The instruction to attach
+     * Adds an action to a robot's procedure
+     * @param action The action to append
      */
-    fun attachInstruction(inst: Action<*>){
-        instructions.add(inst as Action<Any>)
+    fun appendAction(action: Action<*>){
+        procedure.add(action as Action<Any>)
     }
 
     /**
-     * Removes an instruction from a robot
-     * @param name The name of the robot to remove the instruction from
-     * @param inst The instruction to remove from the robot
+     * Removes an action from a robot's procedure
+     * @param name The name of the robot to remove the action from
+     * @param action The action to remove from the robot
      */
-    fun removeInstruction(inst: Action<*>){
-        instructions.remove(inst)
+    fun removeAction(action: Action<*>){
+        procedure.remove(action)
     }
 
     /**
-     * @param name The name of the robot to retrieve the instructions for
-     * @return A list of instructions on the robot
+     * @param name The name of the robot to retrieve the procedure
+     * @return A list of actions describing the robot's procedure
      */
-    fun getInstructions() : List<Action<*>>{
-        return instructions
+    fun getProcedure() : List<Action<*>>{
+        return procedure
     }
 
     /**
-     * Executes instructions assigned to a robot
-     * @param name The name of the robot to run instructions for
+     * Executes procedure assigned to a robot
+     * @param name The name of the robot to run the procedure for
      */
     fun runInstructions(){
-        for(inst: Action<Any> in instructions){
-            inst.function(level, this, inst.parameter)
+        for(action: Action<Any> in procedure){
+            action.function(level, this, action.parameter)
 
             //check to see if the player won after the instruction
             if (level.tileAt(x, y) is VictoryTile){
