@@ -10,6 +10,7 @@ import org.chicagoedt.rosetteweb.editor.Draggable
 
 /**
  * A block that represents (and contains) an instruction for the robot
+ * @param manager The interaction manager for the canvas that this block is on
  * @property x The X position for this block
  * @property y The y position for this block
  * @property height The height of this block
@@ -20,20 +21,16 @@ import org.chicagoedt.rosetteweb.editor.Draggable
  * @property name The name of this block to display on the screen
  * @property textHeight The height of the text to display on this block
  */
-abstract class InstructionBlock<T : Instruction<*>>(manager : InteractionManager) : Draggable(manager) {
+abstract class InstructionBlock<T : Instruction<*>>(manager : InteractionManager, context : CanvasRenderingContext2D) : Draggable(manager, context) {
 	override abstract var x : Double
 	override abstract var y : Double
 	override abstract var height : Double
 	override abstract var width : Double
 	abstract var instruction : T
-	abstract var color : String
-	abstract var context : CanvasRenderingContext2D
+	override abstract var color : String
 	abstract var name : String
 	private var textHeight = height * (2.0/3.0)
 
-	/**
-	 * Draws this block on the screen
-	 */
 	override fun draw(){
 		context.fillStyle = color
         context.fillRect(x, y, width, height)
@@ -62,6 +59,5 @@ abstract class InstructionBlock<T : Instruction<*>>(manager : InteractionManager
 		width = blockWidth
 		height = blockHeight
 		textHeight = height * (2.0/3.0)
-
 	}
 }

@@ -6,9 +6,12 @@ import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.Robots.*
 import org.chicagoedt.rosetteweb.InteractionManager
+import org.chicagoedt.rosetteweb.Drawable
 
 /**
  * A space to contain all of the instructions for each robot
+ * @param context The context to draw this panel on
+ * @param manager The interaction managert to handle this canvas
  * @param player The player that this panel will correspond to
  * @property height The height of this panel
  * @property width The width of this panel
@@ -20,13 +23,14 @@ import org.chicagoedt.rosetteweb.InteractionManager
  * @property blockHeight The standard height of the blocks
  * @property instructions The instruction blocks contained in this panel
  */
-class Panel(val context: CanvasRenderingContext2D, 
+class Panel(context: CanvasRenderingContext2D, 
 			var player: RobotPlayer,
-			val manager : InteractionManager){
-	private var height = 0.0
-	private var width = 0.0
-	private var x = 0.0
-	private var y = 0.0
+			val manager : InteractionManager) : Drawable(context){
+	override var height = 0.0
+	override var width = 0.0
+	override var x = 0.0
+	override var y = 0.0
+	override var color = "#9E9E9E"
 	private var headerHeight = 50.0
 	private val textHeaderHeightRatio = (2.0/3.0)
 	private var textHeaderHeight = headerHeight * textHeaderHeightRatio
@@ -34,8 +38,8 @@ class Panel(val context: CanvasRenderingContext2D,
 	private var instructions = arrayListOf<InstructionBlock<*>>()
 
 	init{
-		addInstruction(MoveInstructionBlock(manager))
-		addInstruction(MoveInstructionBlock(manager))
+		addInstruction(MoveInstructionBlock(manager, context))
+		addInstruction(MoveInstructionBlock(manager, context))
 	}
 
 	/**
@@ -82,12 +86,8 @@ class Panel(val context: CanvasRenderingContext2D,
 		textHeaderHeight = headerHeight * textHeaderHeightRatio
 	}
 
-	/**
-	 * Draws the panel and all of its components on the screen
-	 */
-	fun draw(){
-		context.fillStyle = "#E1BEE7" //purple
-        context.fillRect(x, y, width, height)
+	override fun draw(){
+		super.draw()
 
         drawHeader()
 

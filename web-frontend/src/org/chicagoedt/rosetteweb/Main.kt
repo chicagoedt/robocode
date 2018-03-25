@@ -55,7 +55,6 @@ fun main(args: Array<String>) {
         document.body!!.appendChild(editorCanvas)
         document.body!!.appendChild(gridCanvas)
 
-        
         draw()
     }
 

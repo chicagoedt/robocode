@@ -18,6 +18,10 @@ class PlayerLocation(   gridX : Double,
                         context : CanvasRenderingContext2D, 
                         level : Level,
                         val player : RobotPlayer) : TileLocation(gridX, gridY, context, level){
+
+    /**
+     * Draw the indicator of which direction it's facing. This will likely be removing before release
+     */
 	fun drawDirection(){
 		val radius = 5.0
 		context.beginPath()

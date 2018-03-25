@@ -15,6 +15,7 @@ import org.chicagoedt.rosetteweb.editor.*
  * @property globalPanelMarginPercent The percentage of screen that each margin should take up (e.g. set this to 5% and each margin width will be 5% of the canvas width)
  * @property globalMaxHeight The maximum height of a panel. This value will override the globalPanelHeightRatio
  * @property panels All of the panels in the level
+ * @property interactionManager The manager for all interactions, such as clicking and dragging and dropping
  */
 
 class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
@@ -29,6 +30,11 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		calculateNewLevel()
 	}
 
+	/**
+	 * Set the offset of this canvas relative to the browser window
+	 * @param offsetX The X offset of the canvas relative to the browser window
+	 * @param offsetY The Y offset of the canvas relative to the browser window
+	 */
 	fun setOffset(offsetX : Double, offsetY : Double){
 		interactionManager.updateOffset(offsetX, offsetY)
 	}
