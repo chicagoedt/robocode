@@ -5,15 +5,15 @@ import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.RobotPlayer
 
 /**
- * Executes the list of instructions if the Comparison [parameter] results in true
+ * Executes the action macro if the Comparison [parameter] results in true
  */
-class ConditionalWithList() : ActionWithList<Comparison<*,*>>(){
+class ConditionalWithList: ActionMacro<Comparison<*,*>>(){
     lateinit override var parameter : Comparison<*,*>
     override val name = "Conditional"
 
     override fun function(level: Level, robot: RobotPlayer, parameter: Comparison<*,*>) {
         if (parameter.result()) {
-            runList(level, robot)
+            runMacro(level, robot)
         }
     }
 }
