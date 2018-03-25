@@ -14,12 +14,15 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
  * @param refresh The callback to refresh the canvas drawing when interacting
  * @property draggables All draggable objects to be handled by this manager
  * @property currentDraggable The current item beign dragged
+ * @property originalX The original X value of the object being dragged
+ * @property originalY The original Y value of the object being dragged
  * @property offsetX The X offset of the canvas relative to the browser window
- * @property offsetY The Y offset of the canvas relative to the brwoser window
+ * @property offsetY The Y offset of the canvas relative to the browser window
  */
 class InteractionManager(val context : CanvasRenderingContext2D, val refresh: () -> Unit){
 	val draggables = arrayListOf<Draggable>()
-	lateinit var currentDraggable : Draggable
+	var currentDraggableIndex = -1
+	val onClicks = arrayListOf<Button>()
 	var originalX = 0.0
 	var originalY = 0.0
 	val dropzones = arrayListOf<Dropzone>()
@@ -29,34 +32,54 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 	init{
 		context.canvas.onmousedown = { e ->
 			val mouseE = e as MouseEvent
+			var found = false
+			val mouseX = mouseE.clientX.toDouble() - offsetX
+			val mouseY = mouseE.clientY.toDouble() - offsetY
+
 			for(draggable in draggables){
-				val mouseX = mouseE.clientX.toDouble() - offsetX
-				val mouseY = mouseE.clientY.toDouble() - offsetY
        			if (draggable.mouseWithin(mouseX, mouseY)){
        				setDrag(draggable)
+       				found = true
         			break
        			}
 			}
+
+			if (!found){
+				for (button in onClicks){
+					if (button.mouseWithin(mouseX, mouseY)){
+						button.onClick()
+						found = true
+						break
+					}
+				}
+			}
+
     		true
 		}
 
 		context.canvas.onmouseup = {e : Event ->
-			val mouseE = e as MouseEvent
-			var found = false
-			for (dropzone in dropzones){
+			if (currentDraggableIndex != -1){
+				val mouseE = e as MouseEvent
+				var found = false
 				val mouseX = mouseE.clientX.toDouble() - offsetX
 				val mouseY = mouseE.clientY.toDouble() - offsetY
-				if (dropzone.mouseWithin(mouseX, mouseY)){
-					dropzone.drop(currentDraggable)
-					found = true
-					break
+				for (dropzone in dropzones){
+					if (dropzone.mouseWithin(mouseX, mouseY)){
+						dropzone.drop(draggables[currentDraggableIndex])
+						found = true
+						break
+					}
 				}
+				if (!found){
+					draggables[currentDraggableIndex].calculate(originalX, 
+						originalY, 
+						draggables[currentDraggableIndex].width, 
+						draggables[currentDraggableIndex].height, 
+						draggables[currentDraggableIndex].color)
+				}
+				refresh.invoke()
+				clearDrag()
 			}
-			if (!found){
-				currentDraggable.calculate(originalX, originalY, currentDraggable.width, currentDraggable.height, currentDraggable.color)
-			}
-			refresh.invoke()
-			clearDrag()
 			true
 		}
 	}
@@ -76,9 +99,9 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 	 * @param draggable The draggable to be dragged
 	 */
 	fun setDrag(draggable : Draggable){
-		currentDraggable = draggable
-		originalX = currentDraggable.x
-		originalY = currentDraggable.y
+		currentDraggableIndex = draggables.indexOf(draggable)
+		originalX = draggables[currentDraggableIndex].x
+		originalY = draggables[currentDraggableIndex].y
 		var prevX = -1.0
 		var prevY = -1.0
 		context.canvas.onmousemove = { e : Event ->
@@ -102,6 +125,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 	 * Clears the current draggable being dragged
 	 */
 	fun clearDrag(){
+		currentDraggableIndex = -1
 		context.canvas.onmousemove = {e : Event ->
 			false
 		}

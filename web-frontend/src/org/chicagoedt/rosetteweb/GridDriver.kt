@@ -74,6 +74,8 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
      */
     fun calculatePlayers(){
         for (player in playerLocations){
+            player.gridX = player.player.x.toDouble()
+            player.gridY = player.player.y.toDouble()
             player.x = tileLocations[player.gridX.toInt()][player.gridY.toInt()].x
             player.y = tileLocations[player.gridX.toInt()][player.gridY.toInt()].y
             player.height = tileLocations[player.gridX.toInt()][player.gridY.toInt()].height

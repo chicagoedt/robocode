@@ -36,19 +36,4 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
         y += my
         draw()
 	}
-
-	/**
-	 * Determines if the mouse is within this area
-	 * @param mouseX The X value of the mouse
-	 * @param mouseY The Y value of the mouse
-	 * @return True if the mouse is in this area-, false otherwise
-	 */
-	fun mouseWithin(mouseX : Double, mouseY : Double) : Boolean{
-		if (mouseX > x && mouseX < (x + width)){
-			if (mouseY > y && mouseY < (y + height)){
-				return true
-			}
-		}
-		return false
-	}
 }

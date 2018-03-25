@@ -47,4 +47,19 @@ abstract class Drawable(protected var context : CanvasRenderingContext2D){
 		height = newHeight
 		color = newColor
 	}
+
+	/**
+	 * Determines if the mouse is within this drawable
+	 * @param mouseX The X value of the mouse
+	 * @param mouseY The Y value of the mouse
+	 * @return True if the mouse is in this drawable, false otherwise
+	 */
+	fun mouseWithin(mouseX : Double, mouseY : Double) : Boolean{
+		if (mouseX > x && mouseX < (x + width)){
+			if (mouseY > y && mouseY < (y + height)){
+				return true
+			}
+		}
+		return false
+	}
 }

@@ -7,6 +7,7 @@ import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.robots.*
 import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosetteweb.editor.InstructionBlock
+import org.chicagoedt.rosetteweb.*
 
 /**
  * A space to contain all of the instructions for each robot
@@ -36,10 +37,16 @@ class Panel(context: CanvasRenderingContext2D,
 	private var textHeaderHeight = headerHeight * textHeaderHeightRatio
 	private val blockHeight = 30.0
 	private var instructions = arrayListOf<InstructionBlock<*>>()
+	private val runButton = Button(context, manager, ::runInstructions, "Run", "green")
 
 	init{
 		addInstruction(MoveInstructionBlock(manager, context))
 		addInstruction(MoveInstructionBlock(manager, context))
+	}
+
+	fun runInstructions(){
+		player.runInstructions()
+		fullRefresh()
 	}
 
 	/**
@@ -49,7 +56,7 @@ class Panel(context: CanvasRenderingContext2D,
 	fun addInstruction(block : InstructionBlock<*>){
 		block.dropzone = this
 		instructions.add(block)
-		player.attachInstruction(block.action)
+		player.appendAction(block.action)
 	}
 
 	/**
@@ -74,6 +81,8 @@ class Panel(context: CanvasRenderingContext2D,
 			blockY += blockHeight
 		}
 
+		runButton.calculate(x + width * (5.0/6.0), y, width * (1.0/6.0), headerHeight, runButton.color)
+
 		textHeaderHeight = headerHeight * textHeaderHeightRatio
 	}
 
@@ -81,6 +90,8 @@ class Panel(context: CanvasRenderingContext2D,
 		super.draw()
 
         drawHeader()
+
+        runButton.draw()
 
         for (instruction in instructions){
         	instruction.draw()
@@ -90,12 +101,13 @@ class Panel(context: CanvasRenderingContext2D,
 	override fun drop(draggable : Draggable){
 		super.drop(draggable)
 		val block = draggable as InstructionBlock<*>
-		instructions.add(block)
+		addInstruction(block)
 		calculate(x, y, width, height, color)
 	}
 
 	override fun removeDraggable(draggable : Draggable){
 		instructions.remove(draggable as InstructionBlock<*>)
+		player.removeAction((draggable as InstructionBlock<*>).action)
 		calculate(x, y, width, height, color)
 	}
 }

@@ -27,20 +27,5 @@ abstract class Dropzone(manager : InteractionManager, context : CanvasRenderingC
 		draggable.dropzone = this
 	}
 
-	/**
-	 * Determines if the mouse is within this dropzone
-	 * @param mouseX The X value of the mouse
-	 * @param mouseY The Y value of the mouse
-	 * @return True if the mouse is in this dropzone, false otherwise
-	 */
-	fun mouseWithin(mouseX : Double, mouseY : Double) : Boolean{
-		if (mouseX > x && mouseX < (x + width)){
-			if (mouseY > y && mouseY < (y + height)){
-				return true
-			}
-		}
-		return false
-	}
-
 	abstract fun removeDraggable(draggable : Draggable)
 }

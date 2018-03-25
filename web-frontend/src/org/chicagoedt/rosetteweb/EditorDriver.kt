@@ -26,12 +26,8 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private var globalPanelMarginPercent = 5.0
 	private var globalMaxHeight = 600.0
 	private val panels = ArrayList<Panel>()
-	private var interactionManager  = InteractionManager(context, {draw()})
+	private var interactionManager  = InteractionManager(context, {drawEditor()})
 	private var drawer = Drawer(context)
-
-	init{
-		calculateNewLevel()
-	}
 
 	/**
 	 * Set the offset of this canvas relative to the browser window

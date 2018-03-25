@@ -36,6 +36,7 @@ private lateinit var editorDriver : EditorDriver
  */
 fun main(args: Array<String>) {
     window.onload = {
+        //game.nextLevel()
         val gridCanvas = document.createElement("canvas") as HTMLCanvasElement
         gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
         gridContext.canvas.width = (document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
@@ -55,13 +56,13 @@ fun main(args: Array<String>) {
         document.body!!.appendChild(editorCanvas)
         document.body!!.appendChild(gridCanvas)
 
-        draw()
+        fullRefresh()
     }
 
     window.onresize = {
         if (::gridContext.isInitialized && ::editorContext.isInitialized) {
             positionCanvases()
-            draw()
+            fullRefresh()
         }
     }
 }
@@ -84,7 +85,10 @@ fun main(args: Array<String>) {
 /**
  * Draws the view on the screen
  */
-fun draw(){
+fun fullRefresh(){
+    gridDriver.calculateTiles()
+    gridDriver.calculatePlayers()
+    editorDriver.calculatePanels()
     gridDriver.drawGrid()
     editorDriver.drawEditor()
 }
