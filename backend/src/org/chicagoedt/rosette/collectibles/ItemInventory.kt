@@ -42,6 +42,8 @@ class ItemInventory {
         val oldCount = inventory[itemID]!!
         inventory[itemID] = oldCount - quantity
 
+        if (inventory[itemID] == 0) inventory.remove(itemID)
+
         return true
     }
 

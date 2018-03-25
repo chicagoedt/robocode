@@ -1,10 +1,11 @@
 import kotlin.test.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.actions.ConditionalWithList
-import org.chicagoedt.rosette.actions.robotActions.MoveAction
 import org.chicagoedt.rosette.actions.operations.TopicEqualsComparison
-import org.chicagoedt.rosette.actions.robotActions.ReadSensorAction
-import org.chicagoedt.rosette.actions.robotActions.TurnAction
+import org.chicagoedt.rosette.actions.robotActions.*
+import org.chicagoedt.rosette.collectibles.ItemInventory
+import org.chicagoedt.rosette.collectibles.ItemManager
+import org.chicagoedt.rosette.collectibles.etc.Sand
 import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.*
 import org.chicagoedt.rosette.sensors.DistanceSensor
@@ -442,5 +443,94 @@ class BackendTests {
         robotPlayer1.runInstructions()
 
         assertEquals(won, false)
+    }
+
+    @Test
+    fun itemManager() {
+        assertEquals(ItemManager.itemExist(Sand.id), true)
+        assertEquals(ItemManager.getItem(Sand.id), Sand)
+    }
+
+    @Test
+    fun itemInventory() {
+        val inventory = ItemInventory()
+        val itemsList = intArrayOf(Sand.id, Sand.id, Sand.id, Sand.id, Sand.id)
+
+        // Test new inventory with no initial items
+        assertEquals(inventory.hasItem(-1), false)
+        assertEquals(inventory.hasItem(Sand.id), false)
+
+        // Test addItem, hasItem
+        inventory.addItem(Sand.id)
+        assertEquals(inventory.hasItem(Sand.id), true)
+
+        // Test addItems, itemQuantity
+        inventory.addItems(itemsList)
+        assertEquals(inventory.itemQuantity(Sand.id), 6)
+
+        // Test removeItem
+        inventory.removeItem(Sand.id)
+        assertEquals(inventory.itemQuantity(Sand.id), 5)
+
+        // Test remove more item than in inventory
+        assertEquals(inventory.removeItem(Sand.id, 6), false)
+        assertEquals(inventory.itemQuantity(Sand.id), 5)
+
+        // Test remove exactly all items
+        assertEquals(inventory.removeItem(Sand.id, 5), true)
+        assertEquals(inventory.hasItem(Sand.id), false)
+        assertEquals(inventory.itemQuantity(Sand.id), 0)
+
+        // Test removal of non-existent item
+        assertEquals(inventory.removeItem(-1), false)
+        assertEquals(inventory.removeItem(-1, 1), false)
+        assertEquals(inventory.removeItem(Sand.id), false)
+        assertEquals(inventory.removeItem(Sand.id, 5), false)
+    }
+
+    @Test
+    fun itemPickup() {
+        for (level in levels) {
+            for ((name, robot) in level.players) {
+                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id)
+                val robotOldQuantity = robot.itemInventory.itemQuantity(Sand.id)
+
+                level.tileAt(robot.x, robot.y).items.addItem(Sand.id)
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
+
+                val action = ItemPickupAction()
+                action.parameter = Sand.id
+
+                robot.attachInstruction(action)
+                robot.runInstructions()
+                robot.removeInstruction(action)
+
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity)
+                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity + 1)
+            }
+        }
+    }
+
+    @Test
+    fun itemDrop() {
+        for (level in levels) {
+            for ((name, robot) in level.players) {
+                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id)
+                val robotOldQuantity = robot.itemInventory.itemQuantity(Sand.id)
+
+                robot.itemInventory.addItem(Sand.id)
+                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity + 1)
+
+                val action = ItemDropAction()
+                action.parameter = Sand.id
+
+                robot.attachInstruction(action)
+                robot.runInstructions()
+                robot.removeInstruction(action)
+
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
+                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity)
+            }
+        }
     }
 }
