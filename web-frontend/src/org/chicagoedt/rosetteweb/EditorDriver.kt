@@ -4,8 +4,9 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Robots.*
+import org.chicagoedt.rosette.robots.*
 import org.chicagoedt.rosetteweb.editor.*
+import org.chicagoedt.rosetteweb.canvas.*
 /**
  * The driver to run an Editor canvas for the current game
  * @param game The game that the program is running
@@ -16,6 +17,7 @@ import org.chicagoedt.rosetteweb.editor.*
  * @property globalMaxHeight The maximum height of a panel. This value will override the globalPanelHeightRatio
  * @property panels All of the panels in the level
  * @property interactionManager The manager for all interactions, such as clicking and dragging and dropping
+ * @property drawer The drawer to house the actions to choose
  */
 
 class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
@@ -25,6 +27,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private var globalMaxHeight = 600.0
 	private val panels = ArrayList<Panel>()
 	private var interactionManager  = InteractionManager(context, {draw()})
+	private var drawer = Drawer(context)
 
 	init{
 		calculateNewLevel()
@@ -64,10 +67,9 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 			var screenHeight = globalPanelHeightRatio * globalPanelWidth
 			if (screenHeight > globalMaxHeight) screenHeight = globalMaxHeight
 
-			panel.updatePosition(panelX, panelY, globalPanelWidth, screenHeight)
+			panel.calculate(panelX, panelY, globalPanelWidth, screenHeight, panel.color)
 
 			panelX += globalPanelWidth + panelMargin
-
         }
 	}
 
@@ -82,5 +84,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		for (panel in panels){
 			panel.draw()
 		}
+
+		drawer.draw()
 	}
 }

@@ -4,9 +4,9 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Robots.*
-import org.chicagoedt.rosetteweb.InteractionManager
-import org.chicagoedt.rosetteweb.Drawable
+import org.chicagoedt.rosette.robots.*
+import org.chicagoedt.rosetteweb.canvas.*
+import org.chicagoedt.rosetteweb.editor.InstructionBlock
 
 /**
  * A space to contain all of the instructions for each robot
@@ -25,7 +25,7 @@ import org.chicagoedt.rosetteweb.Drawable
  */
 class Panel(context: CanvasRenderingContext2D, 
 			var player: RobotPlayer,
-			val manager : InteractionManager) : Drawable(context){
+			manager : InteractionManager) : Dropzone(manager, context){
 	override var height = 0.0
 	override var width = 0.0
 	override var x = 0.0
@@ -47,8 +47,9 @@ class Panel(context: CanvasRenderingContext2D,
 	 * @param block The instruction block to add
 	 */
 	fun addInstruction(block : InstructionBlock<*>){
+		block.dropzone = this
 		instructions.add(block)
-		player.attachInstruction(block.instruction)
+		player.attachInstruction(block.action)
 	}
 
 	/**
@@ -64,18 +65,8 @@ class Panel(context: CanvasRenderingContext2D,
         context.fillText(player.name, x, y + textHeaderHeight);
 	}
 
-	/**
-	 * Updates the position of the panel, along with everything contained in the panel (such as instructions)
-	 * @param newX The new X value for the panel
-	 * @param newY The new Y value for the panel
-	 * @param newWidth The new width for the panel
-	 * @param newHeight The new height of the panel
-	 */
-	fun updatePosition(newX : Double, newY : Double, newWidth : Double, newHeight : Double){
-		x = newX
-		y = newY
-		width = newWidth
-		height = newHeight
+	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
+		super.calculate(newX, newY, newWidth, newHeight, newColor)
 
 		var blockY = y + headerHeight
 		for (block in instructions){
@@ -94,5 +85,17 @@ class Panel(context: CanvasRenderingContext2D,
         for (instruction in instructions){
         	instruction.draw()
         }
+	}
+
+	override fun drop(draggable : Draggable){
+		super.drop(draggable)
+		val block = draggable as InstructionBlock<*>
+		instructions.add(block)
+		calculate(x, y, width, height, color)
+	}
+
+	override fun removeDraggable(draggable : Draggable){
+		instructions.remove(draggable as InstructionBlock<*>)
+		calculate(x, y, width, height, color)
 	}
 }

@@ -4,9 +4,10 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Instructions.*
-import org.chicagoedt.rosetteweb.InteractionManager
-import org.chicagoedt.rosetteweb.editor.Draggable
+import org.chicagoedt.rosette.actions.*
+import org.chicagoedt.rosetteweb.canvas.InteractionManager
+import org.chicagoedt.rosetteweb.canvas.Draggable
+import org.chicagoedt.rosetteweb.canvas.Dropzone
 
 /**
  * A block that represents (and contains) an instruction for the robot
@@ -21,15 +22,16 @@ import org.chicagoedt.rosetteweb.editor.Draggable
  * @property name The name of this block to display on the screen
  * @property textHeight The height of the text to display on this block
  */
-abstract class InstructionBlock<T : Instruction<*>>(manager : InteractionManager, context : CanvasRenderingContext2D) : Draggable(manager, context) {
+abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, context : CanvasRenderingContext2D) : Draggable(manager, context) {
 	override abstract var x : Double
 	override abstract var y : Double
 	override abstract var height : Double
 	override abstract var width : Double
-	abstract var instruction : T
+	abstract var action : T
 	override abstract var color : String
 	abstract var name : String
 	private var textHeight = height * (2.0/3.0)
+	override lateinit var dropzone : Dropzone
 
 	override fun draw(){
 		context.fillStyle = color

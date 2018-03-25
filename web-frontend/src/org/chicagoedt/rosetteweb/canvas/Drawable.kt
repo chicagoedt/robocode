@@ -1,4 +1,4 @@
-package org.chicagoedt.rosetteweb
+package org.chicagoedt.rosetteweb.canvas
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
@@ -26,5 +26,25 @@ abstract class Drawable(protected var context : CanvasRenderingContext2D){
 	open fun draw(){
 		context.fillStyle = color
         context.fillRect(x, y, width, height)
+	}
+
+	/**
+	 * Updates the properties of the object
+	 * @param newX The new X value for the object
+	 * @param newY The new Y value for the object
+	 * @param newWidth The new width for the object
+	 * @param newHeight The new height of the object
+	 * @param newColor The new color for the object
+	 */
+	open fun calculate(newX : Double,
+						newY : Double,
+						newWidth : Double,
+						newHeight : Double,
+						newColor : String){
+		x = newX
+		y = newY
+		width = newWidth
+		height = newHeight
+		color = newColor
 	}
 }

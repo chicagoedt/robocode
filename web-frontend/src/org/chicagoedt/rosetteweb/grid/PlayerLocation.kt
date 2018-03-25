@@ -5,10 +5,10 @@ import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import kotlin.math.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Tiles.*
+import org.chicagoedt.rosette.tiles.*
 import org.chicagoedt.rosetteweb.grid.*
-import org.chicagoedt.rosette.Levels.*
-import org.chicagoedt.rosette.Robots.*
+import org.chicagoedt.rosette.levels.*
+import org.chicagoedt.rosette.robots.*
 
 /**
  * @param player The player contained in this location

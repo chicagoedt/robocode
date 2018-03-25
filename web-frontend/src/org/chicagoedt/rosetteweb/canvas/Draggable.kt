@@ -1,12 +1,13 @@
-package org.chicagoedt.rosetteweb.editor
+package org.chicagoedt.rosetteweb.canvas
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.w3c.dom.events.Event
 import org.w3c.dom.events.MouseEvent
-import org.chicagoedt.rosetteweb.InteractionManager
-import org.chicagoedt.rosetteweb.Drawable
+import org.chicagoedt.rosetteweb.canvas.InteractionManager
+import org.chicagoedt.rosetteweb.canvas.Drawable
+import org.chicagoedt.rosetteweb.canvas.Dropzone
 
 /**
  * An object that can be dragged around with the mouse
@@ -17,6 +18,7 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	override abstract var y : Double
 	override abstract var height : Double
 	override abstract var width : Double
+	abstract var dropzone : Dropzone
 
 	init{
 		manager.draggables.add(this)
@@ -30,16 +32,16 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	 * @param my The Y value to drag to
 	 */
 	fun drag(mx : Double, my : Double){
-		x = mx
-        y = my
+		x += mx
+        y += my
         draw()
 	}
 
 	/**
-	 * Determines if the mouse is within this block
+	 * Determines if the mouse is within this area
 	 * @param mouseX The X value of the mouse
 	 * @param mouseY The Y value of the mouse
-	 * @return True if the mouse is in this block, false otherwise
+	 * @return True if the mouse is in this area-, false otherwise
 	 */
 	fun mouseWithin(mouseX : Double, mouseY : Double) : Boolean{
 		if (mouseX > x && mouseX < (x + width)){

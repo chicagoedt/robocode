@@ -4,7 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Tiles.*
+import org.chicagoedt.rosette.tiles.*
 import org.chicagoedt.rosetteweb.grid.*
 
 /**
@@ -21,7 +21,7 @@ import org.chicagoedt.rosetteweb.grid.*
 class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
     var widthInterval = 0.0
     var heightInterval = 0.0
-    val separation = 2
+    val separation = 0
     val tileLocations = ArrayList<ArrayList<TileLocation>>()
     val playerLocations = ArrayList<PlayerLocation>()
 
