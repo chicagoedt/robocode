@@ -1,12 +1,8 @@
-package org.chicagoedt.rosette.Levels
+package org.chicagoedt.rosette.levels
 
-import org.chicagoedt.rosette.Event
-import org.chicagoedt.rosette.Instructions.Instruction
-import org.chicagoedt.rosette.Tiles.Tile
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Tiles.NeutralTile
-import org.chicagoedt.rosette.Tiles.TileType
-import org.chicagoedt.rosette.eventListener
+import org.chicagoedt.rosette.tiles.Tile
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.tiles.NeutralTile
 
 /**
  * A single challenge for the user to complete

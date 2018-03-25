@@ -1,12 +1,12 @@
 package org.chicagoedt.rosette
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Robots.Robot
-import org.chicagoedt.rosette.Robots.RobotOrientation
-import org.chicagoedt.rosette.Tiles.NeutralTile
-import org.chicagoedt.rosette.Tiles.ObstacleTile
-import org.chicagoedt.rosette.Tiles.VictoryTile
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.robots.Robot
+import org.chicagoedt.rosette.robots.RobotOrientation
+import org.chicagoedt.rosette.tiles.NeutralTile
+import org.chicagoedt.rosette.tiles.ObstacleTile
+import org.chicagoedt.rosette.tiles.VictoryTile
 
 
 /**
@@ -30,8 +30,8 @@ fun getRobots() : ArrayList<Robot>{
 fun getLevels() : ArrayList<Level>{
     val levels = ArrayList<Level>()
 
-    val level1 = Level(Level.Properties("Levels 1", 0, 10, 10))
-    val level2 = Level(Level.Properties("Levels 2", 0, 5, 5))
+    val level1 = Level(Level.Properties("levels 1", 0, 10, 10))
+    val level2 = Level(Level.Properties("levels 2", 0, 5, 5))
 
     val robotPlayer1 = RobotPlayer("Surus", 5, 5, RobotOrientation.DIRECTION_UP, level1)
     val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP, level1)

@@ -1,7 +1,7 @@
 package org.chicagoedt.rosette
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.Robot
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.Robot
 
 /**
  * A signal to communicate with the client running the program

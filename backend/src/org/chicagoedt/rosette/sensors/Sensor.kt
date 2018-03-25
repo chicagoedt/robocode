@@ -1,8 +1,8 @@
-package org.chicagoedt.rosette.Sensors
+package org.chicagoedt.rosette.sensors
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Robots.RobotPosition
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.robots.RobotPosition
 import org.chicagoedt.rosette.Topic
 
 /**
