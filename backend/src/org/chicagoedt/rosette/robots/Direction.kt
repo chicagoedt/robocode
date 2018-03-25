@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette.Robots
+package org.chicagoedt.rosette.robots
 
 /**
  * The directions that a robot can be facing

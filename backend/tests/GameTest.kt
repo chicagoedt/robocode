@@ -1,16 +1,17 @@
 import kotlin.test.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Instructions.ConditionalWithList
-import org.chicagoedt.rosette.Instructions.MoveInstruction
-import org.chicagoedt.rosette.Instructions.Operations.TopicEqualsComparison
-import org.chicagoedt.rosette.Instructions.ReadSensorInstruction
-import org.chicagoedt.rosette.Instructions.TurnInstruction
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.*
-import org.chicagoedt.rosette.Sensors.DistanceSensor
-import org.chicagoedt.rosette.Tiles.NeutralTile
-import org.chicagoedt.rosette.Tiles.ObstacleTile
-import org.chicagoedt.rosette.Tiles.VictoryTile
+import org.chicagoedt.rosette.actions.ConditionalWithList
+import org.chicagoedt.rosette.actions.operations.TopicEqualsComparison
+import org.chicagoedt.rosette.actions.robotActions.*
+import org.chicagoedt.rosette.collectibles.ItemInventory
+import org.chicagoedt.rosette.collectibles.ItemManager
+import org.chicagoedt.rosette.collectibles.etc.Sand
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.*
+import org.chicagoedt.rosette.sensors.DistanceSensor
+import org.chicagoedt.rosette.tiles.NeutralTile
+import org.chicagoedt.rosette.tiles.ObstacleTile
+import org.chicagoedt.rosette.tiles.VictoryTile
 
 
 class BackendTests {
@@ -60,9 +61,9 @@ class BackendTests {
         for(level in levels){
             for((name, robot) in level.players){
 
-                val moveInstruction = MoveInstruction()
+                val moveInstruction = MoveAction()
                 robot.attachInstruction(moveInstruction)
-                val turnInstruction = TurnInstruction()
+                val turnInstruction = TurnAction()
                 robot.attachInstruction(turnInstruction)
 
                 val list = robot.getInstructions()
@@ -75,7 +76,7 @@ class BackendTests {
 
     @Test
     fun RobotInstructionTurn() {
-        val instruction = TurnInstruction()
+        val instruction = TurnAction()
         for(level in levels){
             for((name, robot) in level.players){
                 for (i in 0..3) {
@@ -89,7 +90,7 @@ class BackendTests {
     private fun turn(name: String, rotation: RobotRotation, assert: Boolean){
         val robot = game.currentLevel.players[name]!!
         val next = nextDirection(robot.direction, rotation)
-        val turn = TurnInstruction()
+        val turn = TurnAction()
         turn.parameter = rotation
         robot.attachInstruction(turn)
         robot.runInstructions()
@@ -99,7 +100,7 @@ class BackendTests {
 
     private fun move(name: String, orientation: RobotOrientation, parameter: Int, assert: Boolean) {
         val robot = game.currentLevel.players[name]!!
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = parameter
         val y = robot.y
         val x = robot.x
@@ -151,7 +152,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN, level1)
 
@@ -168,7 +169,7 @@ class BackendTests {
         testLevels.add(level1)
         game = Game(testLevels, testRobots)
 
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.attachInstruction(instruction)
         robotPlayer1.runInstructions()
@@ -176,7 +177,7 @@ class BackendTests {
         assertEquals(robotPlayer1.y, 0)
 
         robotPlayer1.removeInstruction(instruction)
-        val turnInstruction = TurnInstruction()
+        val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.CLOCKWISE
         robotPlayer1.attachInstruction(turnInstruction)
         robotPlayer1.runInstructions()
@@ -196,7 +197,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -214,7 +215,7 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.attachInstruction(instruction)
 
@@ -233,7 +234,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -252,7 +253,7 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val instruction = MoveInstruction()
+        val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.attachInstruction(instruction)
 
@@ -357,7 +358,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()
@@ -377,16 +378,16 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
+        val readSensorInstruction = ReadSensorAction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.attachInstruction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
-        val turnInstruction = TurnInstruction()
+        val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
-        instruction.addToList(MoveInstruction())
+        instruction.addToList(MoveAction())
         robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }
@@ -405,7 +406,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("Levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()
@@ -425,16 +426,16 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val readSensorInstruction = ReadSensorInstruction(game.mainTopic)
+        val readSensorInstruction = ReadSensorAction(game.mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.attachInstruction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
         instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
-        val turnInstruction = TurnInstruction()
+        val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToList(turnInstruction)
-        instruction.addToList(MoveInstruction())
+        instruction.addToList(MoveAction())
         robotPlayer1.attachInstruction(instruction)
 
         game.attachEventListener { won = true }
@@ -442,5 +443,94 @@ class BackendTests {
         robotPlayer1.runInstructions()
 
         assertEquals(won, false)
+    }
+
+    @Test
+    fun itemManager() {
+        assertEquals(ItemManager.itemExist(Sand.id), true)
+        assertEquals(ItemManager.getItem(Sand.id), Sand)
+    }
+
+    @Test
+    fun itemInventory() {
+        val inventory = ItemInventory()
+        val itemsList = intArrayOf(Sand.id, Sand.id, Sand.id, Sand.id, Sand.id)
+
+        // Test new inventory with no initial items
+        assertEquals(inventory.hasItem(-1), false)
+        assertEquals(inventory.hasItem(Sand.id), false)
+
+        // Test addItem, hasItem
+        inventory.addItem(Sand.id)
+        assertEquals(inventory.hasItem(Sand.id), true)
+
+        // Test addItems, itemQuantity
+        inventory.addItems(itemsList)
+        assertEquals(inventory.itemQuantity(Sand.id), 6)
+
+        // Test removeItem
+        inventory.removeItem(Sand.id)
+        assertEquals(inventory.itemQuantity(Sand.id), 5)
+
+        // Test remove more item than in inventory
+        assertEquals(inventory.removeItem(Sand.id, 6), false)
+        assertEquals(inventory.itemQuantity(Sand.id), 5)
+
+        // Test remove exactly all items
+        assertEquals(inventory.removeItem(Sand.id, 5), true)
+        assertEquals(inventory.hasItem(Sand.id), false)
+        assertEquals(inventory.itemQuantity(Sand.id), 0)
+
+        // Test removal of non-existent item
+        assertEquals(inventory.removeItem(-1), false)
+        assertEquals(inventory.removeItem(-1, 1), false)
+        assertEquals(inventory.removeItem(Sand.id), false)
+        assertEquals(inventory.removeItem(Sand.id, 5), false)
+    }
+
+    @Test
+    fun itemPickup() {
+        for (level in levels) {
+            for ((name, robot) in level.players) {
+                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id)
+                val robotOldQuantity = robot.itemInventory.itemQuantity(Sand.id)
+
+                level.tileAt(robot.x, robot.y).items.addItem(Sand.id)
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
+
+                val action = ItemPickupAction()
+                action.parameter = Sand.id
+
+                robot.attachInstruction(action)
+                robot.runInstructions()
+                robot.removeInstruction(action)
+
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity)
+                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity + 1)
+            }
+        }
+    }
+
+    @Test
+    fun itemDrop() {
+        for (level in levels) {
+            for ((name, robot) in level.players) {
+                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id)
+                val robotOldQuantity = robot.itemInventory.itemQuantity(Sand.id)
+
+                robot.itemInventory.addItem(Sand.id)
+                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity + 1)
+
+                val action = ItemDropAction()
+                action.parameter = Sand.id
+
+                robot.attachInstruction(action)
+                robot.runInstructions()
+                robot.removeInstruction(action)
+
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
+                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity)
+            }
+        }
     }
 }

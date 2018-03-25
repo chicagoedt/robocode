@@ -1,10 +1,11 @@
-package org.chicagoedt.rosette.Robots
+package org.chicagoedt.rosette.robots
 
-import org.chicagoedt.rosette.Instructions.Instruction
-import org.chicagoedt.rosette.Sensors.*
-import org.chicagoedt.rosette.Levels.*
+import org.chicagoedt.rosette.actions.Action
+import org.chicagoedt.rosette.sensors.*
+import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.Tiles.*
+import org.chicagoedt.rosette.collectibles.ItemInventory
+import org.chicagoedt.rosette.tiles.*
 
 enum class RobotPosition{
     FRONT,
@@ -23,6 +24,7 @@ enum class RobotPosition{
  * @property instructions All of the instructions attached to the robot
  * @property sensors All of the sensors attached to the robot
  * @property sensorCounts The number of sensors available on each side
+ * @property itemInventory List of collectible items in the robot's possession
  */
 class RobotPlayer(val name: String,
                   var x: Int,
@@ -30,9 +32,10 @@ class RobotPlayer(val name: String,
                   var direction: RobotOrientation,
                   var level : Level){
 
-    internal val instructions = arrayListOf<Instruction<Any>>()
+    internal val instructions = arrayListOf<Action<Any>>()
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
+    val itemInventory = ItemInventory()
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
@@ -44,7 +47,7 @@ class RobotPlayer(val name: String,
     /**
      * @return The number of sensors available on a side
      */
-    fun sensorCountAt(pos: RobotPosition) : Int{
+    fun sensorCountAt(pos: RobotPosition) : Int {
         return sensorCounts[pos]!!
     }
 
@@ -53,8 +56,8 @@ class RobotPlayer(val name: String,
      * @param pos The side to modify the sensor count for
      * @param count The new sensor count
      */
-    fun setSensorCountAt(pos: RobotPosition, count : Int){
-        if (sensorCounts[pos] == null){
+    fun setSensorCountAt(pos: RobotPosition, count : Int) {
+        if (sensorCounts[pos] == null) {
             sensorCounts[pos] = count
             sensors[pos] = mutableListOf()
         }
@@ -64,7 +67,7 @@ class RobotPlayer(val name: String,
             val actualSize = sensors[pos]!!.size
 
             if (count < currentCount && count < actualSize) {
-                for (i in count..actualSize-1) {
+                for (i in count until actualSize) {
                     sensors[pos]!!.removeAt(i)
                 }
             }
@@ -77,8 +80,8 @@ class RobotPlayer(val name: String,
      * @param sensor The sensor to attach
      * @return True if the attach succeeded, false if it didn't
      */
-    fun addSensorTo(pos: RobotPosition, sensor: Sensor): Boolean{
-        if (sensors[pos]!!.size + 1 <= sensorCounts[pos]!!){
+    fun addSensorTo(pos: RobotPosition, sensor: Sensor): Boolean {
+        if (sensors[pos]!!.size + 1 <= sensorCounts[pos]!!) {
             sensors[pos]!!.add(sensor)
             return true
         }
@@ -90,7 +93,7 @@ class RobotPlayer(val name: String,
      * @param pos The side to remove the sensor from
      * @param sensor The sensor to remove
      */
-    fun removeSensorFrom(pos: RobotPosition, sensor: Sensor){
+    fun removeSensorFrom(pos: RobotPosition, sensor: Sensor) {
         sensors[pos]!!.remove(sensor)
     }
 
@@ -99,7 +102,7 @@ class RobotPlayer(val name: String,
      * @param pos The side to remove the sensor from
      * @param index The index of the sensor to remove
      */
-    fun removeSensorFrom(pos: RobotPosition, index: Int){
+    fun removeSensorFrom(pos: RobotPosition, index: Int) {
         sensors[pos]!!.removeAt(index)
     }
 
@@ -107,11 +110,11 @@ class RobotPlayer(val name: String,
      * @param pos The side to retrieve the sensors from
      * @return A list, in order, of all sensors on a side
      */
-    fun getSensors(pos: RobotPosition) : ArrayList<Sensor>{
+    fun getSensors(pos: RobotPosition): ArrayList<Sensor> {
         val list = arrayListOf<Sensor>()
         list.addAll(sensors[pos]!!)
         if (list.size < sensorCountAt(pos)){
-            for (i in list.size..sensorCountAt(pos)-1){
+            for (i in list.size until sensorCountAt(pos)) {
                 list.add(EmptySensor())
             }
         }
@@ -122,8 +125,8 @@ class RobotPlayer(val name: String,
      * Attaches an instruction to a robot
      * @param inst The instruction to attach
      */
-    fun attachInstruction(inst: Instruction<*>){
-        instructions.add(inst as Instruction<Any>)
+    fun attachInstruction(inst: Action<*>){
+        instructions.add(inst as Action<Any>)
     }
 
     /**
@@ -131,7 +134,7 @@ class RobotPlayer(val name: String,
      * @param name The name of the robot to remove the instruction from
      * @param inst The instruction to remove from the robot
      */
-    fun removeInstruction(inst: Instruction<*>){
+    fun removeInstruction(inst: Action<*>){
         instructions.remove(inst)
     }
 
@@ -139,16 +142,16 @@ class RobotPlayer(val name: String,
      * @param name The name of the robot to retrieve the instructions for
      * @return A list of instructions on the robot
      */
-    fun getInstructions() : List<Instruction<*>>{
+    fun getInstructions() : List<Action<*>>{
         return instructions
     }
 
     /**
-     * Executes all of the instructions attached to a robot
+     * Executes instructions assigned to a robot
      * @param name The name of the robot to run instructions for
      */
     fun runInstructions(){
-        for(inst: Instruction<Any> in instructions){
+        for(inst: Action<Any> in instructions){
             inst.function(level, this, inst.parameter)
 
             //check to see if the player won after the instruction

@@ -1,11 +1,11 @@
-package org.chicagoedt.rosette.Sensors
+package org.chicagoedt.rosette.sensors
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotOrientation
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Tiles.TileType
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotOrientation
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.tiles.TileType
 import org.chicagoedt.rosette.Topic
-import org.chicagoedt.rosette.Robots.RobotPosition
+import org.chicagoedt.rosette.robots.RobotPosition
 
 /**
  * A sensor to measure a the distance from the robot to an obstacle or edge

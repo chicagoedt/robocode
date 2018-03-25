@@ -1,16 +1,17 @@
-package org.chicagoedt.rosette.Instructions
+package org.chicagoedt.rosette.actions.robotActions
 
-import org.chicagoedt.rosette.Levels.Level
-import org.chicagoedt.rosette.Robots.RobotPlayer
-import org.chicagoedt.rosette.Sensors.EmptySensor
-import org.chicagoedt.rosette.Sensors.Sensor
+import org.chicagoedt.rosette.levels.Level
+import org.chicagoedt.rosette.robots.RobotPlayer
+import org.chicagoedt.rosette.sensors.EmptySensor
+import org.chicagoedt.rosette.sensors.Sensor
 import org.chicagoedt.rosette.Topic
+import org.chicagoedt.rosette.actions.Action
 
 /**
  * Reads the data from a sensor and stores it
  * @param topic The topic to store the data in
  */
-class ReadSensorInstruction(val topic: Topic) : Instruction<Sensor>() {
+class ReadSensorAction(val topic: Topic) : Action<Sensor>() {
     override var parameter: Sensor = EmptySensor()
     override val name: String = "Read Sensor"
 

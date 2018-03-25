@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette.Instructions.Operations
+package org.chicagoedt.rosette.actions.operations
 
 /**
  * Compares two objects

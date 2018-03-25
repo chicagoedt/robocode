@@ -1,4 +1,4 @@
-package org.chicagoedt.rosette.Robots
+package org.chicagoedt.rosette.robots
 
 /**
  * The robot to be used in all levels with a corresponding name
