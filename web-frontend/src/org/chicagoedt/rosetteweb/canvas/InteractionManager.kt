@@ -13,7 +13,7 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
  * @param context The context for the canvas being interacted upon
  * @param refresh The callback to refresh the canvas drawing when interacting
  * @property draggables All draggable objects to be handled by this manager
- * @property currentDraggable The current item beign dragged
+ * @property currentDraggableIndex The index of the current item in [draggables] being dragged
  * @property originalX The original X value of the object being dragged
  * @property originalY The original Y value of the object being dragged
  * @property offsetX The X offset of the canvas relative to the browser window
@@ -59,6 +59,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 
 		context.canvas.onmouseup = {e : Event ->
 			if (currentDraggableIndex != -1){
+				draggables[currentDraggableIndex].beingDragged = false
 				val mouseE = e as MouseEvent
 				var found = false
 				val mouseX = mouseE.clientX.toDouble() - offsetX
@@ -102,6 +103,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 		currentDraggableIndex = draggables.indexOf(draggable)
 		originalX = draggables[currentDraggableIndex].x
 		originalY = draggables[currentDraggableIndex].y
+		draggables[currentDraggableIndex].beingDragged = true
 		var prevX = -1.0
 		var prevY = -1.0
 		context.canvas.onmousemove = { e : Event ->

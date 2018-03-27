@@ -12,6 +12,7 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
 /**
  * An object that can be dragged around with the mouse
  * @param manager The interaction manager to manage this draggable
+ * @property beingDragged To be set by the InteractionManager if the current draggable is being dragged
  */
 abstract class Draggable(manager : InteractionManager, context : CanvasRenderingContext2D) : Drawable(context){
 	override abstract var x : Double
@@ -19,6 +20,7 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	override abstract var height : Double
 	override abstract var width : Double
 	abstract var dropzone : Dropzone
+	var beingDragged = false
 
 	init{
 		manager.draggables.add(this)
@@ -32,6 +34,12 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	fun drag(mx : Double, my : Double){
 		x += mx
         y += my
+        beingDragged = false
         draw()
+        beingDragged = true
+	}
+
+	override fun draw(){
+		if (!beingDragged) super.draw()
 	}
 }
