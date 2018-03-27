@@ -18,8 +18,8 @@ import org.chicagoedt.rosetteweb.*
  * @property blockHeight The standard height of the blocks
  * @property instructions The instruction blocks contained in this panel
  * @property runButton The button to run the procedure
- * @property instructionMarginVertical The spacing between the instructions
- * @property instructionMarginHorizontal The spacing between the sides of the panel and the instructions
+ * @property instructionPaddingVertical The spacing between the instructions
+ * @property instructionPaddingHorizontal The spacing between the sides of the panel and the instructions
  */
 class Panel(context: CanvasRenderingContext2D, 
 			var player: RobotPlayer,
@@ -37,7 +37,7 @@ class Panel(context: CanvasRenderingContext2D,
 	private var textHeaderHeight = headerHeight * textHeaderHeightRatio
 	private val blockHeight = 30.0
 	private var instructions = arrayListOf<InstructionBlock<*>>()
-	private val runButton = Button(context, manager, ::runInstructions, "Run", "green")
+	private val runButton = Button(context, manager, ::runInstructions, "Run")
 	private val instructionPaddingVertical = 5.0
 	private val instructionPaddingHorizontal = 20.0
 

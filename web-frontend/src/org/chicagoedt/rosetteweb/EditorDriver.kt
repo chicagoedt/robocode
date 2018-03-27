@@ -18,6 +18,8 @@ import org.chicagoedt.rosetteweb.canvas.*
  * @property panels All of the panels in the level
  * @property interactionManager The manager for all interactions, such as clicking and dragging and dropping
  * @property drawer The drawer to house the actions to choose
+ * @property panelPaddingVertical The vertical padding for each panel
+ * @property panelPaddingHorizontal The horizontal padding for each panel. Not to be confused with the [globalPanelMarginPercent]
  */
 
 class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){

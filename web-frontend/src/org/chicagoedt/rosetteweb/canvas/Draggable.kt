@@ -12,6 +12,7 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
 /**
  * An object that can be dragged around with the mouse
  * @param manager The interaction manager to manage this draggable
+ * @property dropzone The dropzone that contains this object
  * @property beingDragged To be set by the InteractionManager if the current draggable is being dragged
  */
 abstract class Draggable(manager : InteractionManager, context : CanvasRenderingContext2D) : Drawable(context){

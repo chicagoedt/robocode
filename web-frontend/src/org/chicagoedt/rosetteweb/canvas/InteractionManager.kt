@@ -14,6 +14,7 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
  * @param refresh The callback to refresh the canvas drawing when interacting
  * @property draggables All draggable objects to be handled by this manager
  * @property currentDraggableIndex The index of the current item in [draggables] being dragged
+ * @property onClicks A list of Buttons to check on each click
  * @property originalX The original X value of the object being dragged
  * @property originalY The original Y value of the object being dragged
  * @property offsetX The X offset of the canvas relative to the browser window
@@ -23,8 +24,8 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 	val draggables = arrayListOf<Draggable>()
 	var currentDraggableIndex = -1
 	val onClicks = arrayListOf<Button>()
-	var originalX = 0.0
-	var originalY = 0.0
+	private var originalX = 0.0
+	private var originalY = 0.0
 	val dropzones = arrayListOf<Dropzone>()
 	var offsetX = 0.0
 	var offsetY = 0.0

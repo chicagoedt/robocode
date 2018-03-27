@@ -29,11 +29,12 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 	override abstract var width : Double
 	override var radius = 10.0
 	override var shadowBlur = 10.0
-	abstract var action : T
+	override lateinit var dropzone : Dropzone
 	override abstract var color : String
+
+	abstract var action : T
 	abstract var name : String
 	private var textHeight = height * (2.0/3.0)
-	override lateinit var dropzone : Dropzone
 
 	override fun draw(){
 		super.draw()
