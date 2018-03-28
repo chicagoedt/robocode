@@ -56,7 +56,7 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 	 * @param blockWidth The width for this block
 	 * @param blockHeight The height for this block
 	 */
-	fun setPanelInfo(blockContext: CanvasRenderingContext2D,
+	fun setContainerInfo(blockContext: CanvasRenderingContext2D,
 					 blockX : Double,
 					 blockY : Double,
 					 blockWidth : Double,

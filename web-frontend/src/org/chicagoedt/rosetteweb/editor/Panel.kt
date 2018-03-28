@@ -77,7 +77,7 @@ class Panel(context: CanvasRenderingContext2D,
 
 		var blockY = y + headerHeight + instructionPaddingVertical
 		for (block in instructions){
-			block.setPanelInfo(context, x + instructionPaddingHorizontal, blockY, width - (2.0 * instructionPaddingHorizontal), blockHeight)
+			block.setContainerInfo(context, x + instructionPaddingHorizontal, blockY, width - (2.0 * instructionPaddingHorizontal), blockHeight)
 			blockY += blockHeight + instructionPaddingVertical
 		}
 

@@ -71,10 +71,11 @@ fun main(args: Array<String>) {
  * Defines the position for the canvases on the screen
  */
  fun positionCanvases(){
-    gridContext.canvas.width = (document.body!!.clientWidth.toDouble() / 3.0).toInt()
+    gridContext.canvas.width = (document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
     gridContext.canvas.height = gridContext.canvas.width
 
-    editorContext.canvas.width = (2.0 * document.body!!.clientWidth.toDouble() / 3.0).toInt()
+    editorContext.canvas.width = (2.0 * document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
+    editorContext.canvas.height = document.documentElement!!.clientHeight
     editorContext.canvas.style.left = gridContext.canvas.width.toString() + "px"
 
     gridDriver.calculateTiles()

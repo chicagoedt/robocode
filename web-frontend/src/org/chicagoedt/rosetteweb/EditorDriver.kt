@@ -29,7 +29,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private var globalMaxHeight = 600.0
 	private val panels = ArrayList<Panel>()
 	private var interactionManager  = InteractionManager(context, {drawEditor()})
-	private var drawer = Drawer(context)
+	private var drawer = Drawer(interactionManager, context)
 	private var panelPaddingVertical = 10.0
 	private var panelPaddingHorizontal = 10.0
 
@@ -72,6 +72,12 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 
 			panelX += globalPanelWidth + panelMargin
         }
+
+        drawer.calculate(0.0, 
+        		context.canvas.height.toDouble() * (5.0/6.0),
+        		context.canvas.width.toDouble(),
+        		context.canvas.height.toDouble() * (1.0/6.0),
+        		drawer.color)
 	}
 
 	/**
@@ -85,6 +91,6 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 			panel.draw()
 		}
 
-		//drawer.draw()
+		drawer.draw()
 	}
 }

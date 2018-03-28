@@ -12,7 +12,7 @@ import org.chicagoedt.rosetteweb.canvas.Draggable
  * @param manager The interaction manager for the canvas
  * 
  */
-abstract class Dropzone(manager : InteractionManager, context : CanvasRenderingContext2D) : Drawable(context){
+abstract class Dropzone(val manager : InteractionManager, context : CanvasRenderingContext2D) : Drawable(context){
 
 	init{
 		manager.dropzones.add(this)
