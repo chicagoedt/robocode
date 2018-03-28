@@ -54,7 +54,6 @@ class Panel(context: CanvasRenderingContext2D,
 	 * @param block The instruction block to add
 	 */
 	fun addInstruction(block : InstructionBlock<*>){
-		block.dropzone = this
 		instructions.add(block)
 		player.appendAction(block.action)
 	}

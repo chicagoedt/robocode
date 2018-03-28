@@ -15,12 +15,11 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
  * @property dropzone The dropzone that contains this object
  * @property beingDragged To be set by the InteractionManager if the current draggable is being dragged
  */
-abstract class Draggable(manager : InteractionManager, context : CanvasRenderingContext2D) : Drawable(context){
+abstract class Draggable(manager : InteractionManager, context : CanvasRenderingContext2D, var dropzone : Dropzone) : Drawable(context){
 	override abstract var x : Double
 	override abstract var y : Double
 	override abstract var height : Double
 	override abstract var width : Double
-	abstract var dropzone : Dropzone
 	var beingDragged = false
 
 	init{

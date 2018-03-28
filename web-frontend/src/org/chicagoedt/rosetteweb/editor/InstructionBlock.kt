@@ -20,14 +20,15 @@ import org.chicagoedt.rosetteweb.canvas.*
  * @property name The name of this block to display on the screen
  * @property textHeight The height of the text to display on this block
  */
-abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, context : CanvasRenderingContext2D) : Draggable(manager, context) {
+abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, 
+		context : CanvasRenderingContext2D, 
+		dropzone : Dropzone) : Draggable(manager, context, dropzone) {
 	override abstract var x : Double
 	override abstract var y : Double
 	override abstract var height : Double
 	override abstract var width : Double
 	override var radius = 10.0
 	override var shadowBlur = 5.0
-	override lateinit var dropzone : Dropzone
 	override abstract var color : String
 	override var textColor = "black"
 	override var textSize = (height * (2.0/3.0)).toInt()

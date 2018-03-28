@@ -19,18 +19,17 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 	val instructions = arrayListOf<InstructionBlock<*>>()
 
 	init{
-		addInstruction(MoveInstructionBlock(manager, context))
+		addInstruction(MoveInstructionBlock(manager, context, this))
 	}
 
 	fun addInstruction(instruction : InstructionBlock<*>){
-		instruction.dropzone = this
 		instructions.add(instruction)
 	}
 
 	override fun removeDraggable(draggable : Draggable){
 		instructions.remove(draggable as InstructionBlock<*>)
 
-		if (draggable is MoveInstructionBlock) addInstruction(MoveInstructionBlock(manager, context))
+		if (draggable is MoveInstructionBlock) addInstruction(MoveInstructionBlock(manager, context, this))
 
 		calculate(x, y, width, height, color)
 	}

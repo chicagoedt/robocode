@@ -6,12 +6,14 @@ import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.actions.*
 import org.chicagoedt.rosette.actions.robotActions.*
-import org.chicagoedt.rosetteweb.canvas.InteractionManager
+import org.chicagoedt.rosetteweb.canvas.*
 
 /**
  * The instruction block that represents the Move instruction
  */
-class MoveInstructionBlock(manager : InteractionManager, context : CanvasRenderingContext2D) : InstructionBlock<MoveAction>(manager, context){
+class MoveInstructionBlock(manager : InteractionManager, 
+		context : CanvasRenderingContext2D, 
+		dropzone : Dropzone) : InstructionBlock<MoveAction>(manager, context, dropzone){
 	override var height = 50.0
     override var width = 100.0
 	override var action = MoveAction()
