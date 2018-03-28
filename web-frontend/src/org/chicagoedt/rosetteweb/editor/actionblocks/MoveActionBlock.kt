@@ -1,8 +1,9 @@
-package org.chicagoedt.rosetteweb.editor
+package org.chicagoedt.rosetteweb.editor.actionblocks
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosette.actions.robotActions.*
 import org.chicagoedt.rosetteweb.canvas.*
+import org.chicagoedt.rosetteweb.editor.*
 
 /**
  * The instruction block that represents the Move instruction

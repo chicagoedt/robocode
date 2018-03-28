@@ -2,6 +2,7 @@ package org.chicagoedt.rosetteweb.editor
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosetteweb.canvas.*
+import org.chicagoedt.rosetteweb.editor.actionblocks.*
 
 /**
  * The class to represent the instruction drawers at the bottom of the screen
