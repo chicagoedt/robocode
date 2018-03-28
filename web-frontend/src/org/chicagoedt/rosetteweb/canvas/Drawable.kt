@@ -2,8 +2,21 @@ package org.chicagoedt.rosetteweb.canvas
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.CanvasTextAlign
 import kotlin.browser.*
 import kotlin.math.*
+
+enum class TextAlignmentVertical{
+	CENTER,
+	TOP,
+	BOTTOM
+}
+
+enum class TextAlignmentHorizontal{
+	CENTER,
+	RIGHT,
+	LEFT
+}
 
 /**
  * An object to be drawn on the board
@@ -13,6 +26,16 @@ import kotlin.math.*
  * @property width The width of the object to draw
  * @property height The height of the object to draw
  * @property color The color of the object to draw
+ * @property text The text to draw over this drawable
+ * @property textVerticalAlignment The text alignment in the vertical space
+ * @property textHorizontalAlignment The text alignment in the horizontal space
+ * @property textColor The color of the text
+ * @property textFont The font to display the text in
+ * @property textSize The size to display the text in
+ * @property textMarginTop The top margin for the text
+ * @property textMarginLeft The left margin for the text
+ * @property textMarginRight The right margin for the text
+ * @property textMarginBottom The bottom margin for the text
  */
 abstract class Drawable(protected var context : CanvasRenderingContext2D){
 	abstract var x : Double
@@ -23,10 +46,64 @@ abstract class Drawable(protected var context : CanvasRenderingContext2D){
 	open var radius = 0.0
 	open var shadowBlur = 0.0
 
+	//I know there's quite a few properties for the text, but most use cases will probably just leave these as default
+	open var text = ""
+	open var textAlignmentVertical = TextAlignmentVertical.CENTER
+	open var textAlignmentHorizontal = TextAlignmentHorizontal.CENTER
+	open var textColor = "black"
+	open var textFont = "Arial"
+	open var textSize = 20
+	open var textMarginTop = 0.0
+	open var textMarginLeft = 0.0
+	open var textMarginRight = 0.0
+	open var textMarginBottom = 0.0
+
 	/**
-	 * Draws the object on the screen
+	 * Draws the text on screen according to the class parameters
 	 */
-	open fun draw(){
+	fun drawText(){
+		if (text != ""){
+			var textY = y + textMarginTop
+			var textX = x + textMarginLeft
+
+			if (textAlignmentVertical == TextAlignmentVertical.CENTER){
+				textY += (height / 2.4) + (textSize / 2.0)
+			}
+			else if (textAlignmentVertical == TextAlignmentVertical.TOP){
+				textY += textSize.toDouble()
+			}
+			else if (textAlignmentVertical == TextAlignmentVertical.BOTTOM){
+				textY += height
+			}
+
+			if (textAlignmentHorizontal == TextAlignmentHorizontal.CENTER){
+				context.textAlign =  "center".asDynamic().unsafeCast<CanvasTextAlign>()
+				textX += (width / 2.0)
+			}
+			else if (textAlignmentHorizontal == TextAlignmentHorizontal.LEFT){
+				context.textAlign = "left".asDynamic().unsafeCast<CanvasTextAlign>()
+			}
+			else if (textAlignmentHorizontal == TextAlignmentHorizontal.RIGHT){
+				context.textAlign =  "right".asDynamic().unsafeCast<CanvasTextAlign>()
+				textX += width
+			}
+
+			textY -= textMarginBottom
+			textX -= textMarginRight
+
+			context.fillStyle = textColor
+			context.font = textSize.toString() + "px " + textFont;
+        	context.fillText(text, textX, textY, width);
+
+        	context.textAlign =  "start".asDynamic().unsafeCast<CanvasTextAlign>()
+
+		}
+	}
+
+	/**
+	 * Draws the background of the object on the screen
+	 */
+	fun drawBackground(){
 		context.shadowBlur = shadowBlur
 		context.shadowColor="black";
 		context.fillStyle = color
@@ -71,6 +148,14 @@ abstract class Drawable(protected var context : CanvasRenderingContext2D){
     		context.fill()
     	}
     	context.shadowBlur = 0.0
+	}
+
+	/**
+	 * Draws the object on the screen
+	 */
+	open fun draw(){
+		drawBackground()
+    	drawText()
 	}
 
 	/**

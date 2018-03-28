@@ -24,19 +24,11 @@ class Button(context : CanvasRenderingContext2D,
 	override var height = 0.0
 	override var width = 0.0
 	override var color = "white"
-	val labelColor = "green"
-	private val textHeightRatio = (1.0/3.0)
-	private var textHeight = height * textHeightRatio
+	override var textColor = "green"
+	override var text = label
 
 	init{
 		manager.onClicks.add(this)
-	}
-
-	override fun draw(){
-		super.draw()
-		context.fillStyle = labelColor
-		context.font = (textHeight).toInt().toString() + "px Arial";
-        context.fillText(label, x, y + textHeight)
 	}
 
 	/**
@@ -44,11 +36,5 @@ class Button(context : CanvasRenderingContext2D,
 	 */
 	open fun onClick(){
 		function.invoke()
-	}
-
-	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
-		super.calculate(newX, newY, newWidth, newHeight, newColor)
-
-		textHeight = height * textHeightRatio
 	}
 }

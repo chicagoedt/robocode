@@ -18,6 +18,6 @@ class MoveInstructionBlock(manager : InteractionManager, context : CanvasRenderi
 	override var color = "#DCE775"
 	override var x = 0.0
 	override var y = 0.0
-	override var name = "Move"
+	override var text = "Move"
 	
 }

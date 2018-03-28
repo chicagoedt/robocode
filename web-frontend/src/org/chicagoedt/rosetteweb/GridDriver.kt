@@ -38,7 +38,7 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
         }
 
         for ((name, player) in game.currentLevel.players){
-            playerLocations.add(PlayerLocation(player.x.toDouble(), player.y.toDouble(), context, game.currentLevel, player))
+            playerLocations.add(PlayerLocation(player.x.toDouble(), player.y.toDouble(), context, player))
         }
 
         calculateTiles()

@@ -7,17 +7,27 @@ import kotlin.math.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.tiles.*
 import org.chicagoedt.rosetteweb.grid.*
+import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.robots.*
 
 /**
+ * @param gridX The X location of the tile corresponding to the level grid
+ * @param gridY The Y location of the tile corresponding to the level grid
+ * @param context The context to draw this player on
  * @param player The player contained in this location
  */
-class PlayerLocation(   gridX : Double, 
-                        gridY : Double, 
+class PlayerLocation(   var gridX : Double, 
+                        var gridY : Double, 
                         context : CanvasRenderingContext2D, 
-                        level : Level,
-                        val player : RobotPlayer) : TileLocation(gridX, gridY, context, level){
+                        val player : RobotPlayer) : Drawable(context){
+    override var text = player.name
+    override var color = "#F44336"
+    override var x = 0.0
+    override var y = 0.0
+    override var height = 0.0
+    override var width = 0.0
+    override var textSize = 10
 
     /**
      * Draw the indicator of which direction it's facing. This will likely be removing before release
@@ -44,13 +54,8 @@ class PlayerLocation(   gridX : Double,
 	}
 
     override fun draw(){
-        context.fillStyle = "#F44336" //red
-        context.fillRect(x, y, width, height)
+        super.draw()
 
         drawDirection()
-
-        context.fillStyle = "black"
-        context.font = "10px Arial";
-        context.fillText(player.name, x, y + 10.0);
     }
 }

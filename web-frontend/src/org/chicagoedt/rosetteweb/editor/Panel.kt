@@ -13,8 +13,6 @@ import org.chicagoedt.rosetteweb.*
  * A space to contain all of the instructions for each robot
  * @param player The player that this panel will correspond to
  * @property headerHeight The height of the header at the top of the panel
- * @property textHeaderHeightRatio The ratio of the header text height to the header height
- * @property textHeaderHeight The size of the text in the header
  * @property blockHeight The standard height of the blocks
  * @property instructions The instruction blocks contained in this panel
  * @property runButton The button to run the procedure
@@ -33,8 +31,13 @@ class Panel(context: CanvasRenderingContext2D,
 	override var shadowBlur = 5.0
 
 	private var headerHeight = 50.0
-	private val textHeaderHeightRatio = (2.0/3.0)
-	private var textHeaderHeight = headerHeight * textHeaderHeightRatio
+
+	override var textSize = (headerHeight * (2.0/3.0)).toInt()
+	override var text = player.name
+	override var textAlignmentVertical = TextAlignmentVertical.TOP
+	override var textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
+	override var textMarginTop = 5.0
+
 	private val blockHeight = 30.0
 	private var instructions = arrayListOf<InstructionBlock<*>>()
 	private val runButton = Button(context, manager, ::runInstructions, "Run")
@@ -67,11 +70,6 @@ class Panel(context: CanvasRenderingContext2D,
 	fun drawHeader(){
 		context.fillStyle = "#64B5F6"
 		context.fillRect(x, y, width, headerHeight);
-
-
-		context.fillStyle = "black"
-        context.font = (textHeaderHeight).toInt().toString() + "px Arial";
-        context.fillText(player.name, x, y + textHeaderHeight);
 	}
 
 	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
@@ -85,13 +83,15 @@ class Panel(context: CanvasRenderingContext2D,
 
 		runButton.calculate(x + width * (5.0/6.0), y, width * (1.0/6.0), headerHeight, runButton.color)
 
-		textHeaderHeight = headerHeight * textHeaderHeightRatio
+		textSize = (headerHeight * (2.0/3.0)).toInt()
 	}
 
 	override fun draw(){
-		super.draw()
+		super.drawBackground()
 
         drawHeader()
+
+        super.drawText()
 
         runButton.draw()
 

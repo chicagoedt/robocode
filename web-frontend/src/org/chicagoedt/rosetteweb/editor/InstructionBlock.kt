@@ -5,9 +5,7 @@ import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.actions.*
-import org.chicagoedt.rosetteweb.canvas.InteractionManager
-import org.chicagoedt.rosetteweb.canvas.Draggable
-import org.chicagoedt.rosetteweb.canvas.Dropzone
+import org.chicagoedt.rosetteweb.canvas.*
 
 /**
  * A block that represents (and contains) an instruction for the robot
@@ -31,17 +29,14 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 	override var shadowBlur = 10.0
 	override lateinit var dropzone : Dropzone
 	override abstract var color : String
+	override var textColor = "black"
+	override var textSize = (height * (2.0/3.0)).toInt()
+	override var textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
 
 	abstract var action : T
-	abstract var name : String
-	private var textHeight = height * (2.0/3.0)
 
 	override fun draw(){
 		super.draw()
-
-        context.fillStyle = "black"
-        context.font = textHeight.toInt().toString() + "px Arial";
-        context.fillText(name, x, y + textHeight);
 	}
 
 	/**
@@ -62,6 +57,6 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 		context = blockContext
 		width = blockWidth
 		height = blockHeight
-		textHeight = height * (2.0/3.0)
+		textSize = (height * (2.0/3.0)).toInt()
 	}
 }

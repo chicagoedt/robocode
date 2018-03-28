@@ -13,6 +13,7 @@ import org.chicagoedt.rosetteweb.canvas.Drawable
  * The class for storing the boundaries of tiles so they don't have to be recalculated often
  * @param gridX The X location of the tile corresponding to the level grid
  * @param gridY The Y location of the tile corresponding to the level grid
+ * @param context The context to draw this tile on
  * @param level The level that the tile is a part of
  */
 open class TileLocation(var gridX : Double, var gridY : Double, context : CanvasRenderingContext2D, var level : Level) : Drawable(context){
