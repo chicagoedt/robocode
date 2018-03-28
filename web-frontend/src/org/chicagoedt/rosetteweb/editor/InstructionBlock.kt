@@ -26,17 +26,26 @@ abstract class InstructionBlock<T : Action<*>>(manager : InteractionManager, con
 	override abstract var height : Double
 	override abstract var width : Double
 	override var radius = 10.0
-	override var shadowBlur = 10.0
+	override var shadowBlur = 5.0
 	override lateinit var dropzone : Dropzone
 	override abstract var color : String
 	override var textColor = "black"
 	override var textSize = (height * (2.0/3.0)).toInt()
 	override var textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
+	override var textMarginLeft = 2.0
 
 	abstract var action : T
 
 	override fun draw(){
 		super.draw()
+	}
+
+	override fun onDragStart(){
+		shadowBlur = 20.0
+	}
+
+	override fun onDragEnd(){
+		shadowBlur = 5.0
 	}
 
 	/**

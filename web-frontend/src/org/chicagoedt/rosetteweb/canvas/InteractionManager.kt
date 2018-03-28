@@ -61,6 +61,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 		context.canvas.onmouseup = {e : Event ->
 			if (currentDraggableIndex != -1){
 				draggables[currentDraggableIndex].beingDragged = false
+				draggables[currentDraggableIndex].onDragEnd()
 				val mouseE = e as MouseEvent
 				var found = false
 				val mouseX = mouseE.clientX.toDouble() - offsetX
@@ -105,6 +106,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 		originalX = draggables[currentDraggableIndex].x
 		originalY = draggables[currentDraggableIndex].y
 		draggables[currentDraggableIndex].beingDragged = true
+		draggables[currentDraggableIndex].onDragStart()
 		var prevX = -1.0
 		var prevY = -1.0
 		context.canvas.onmousemove = { e : Event ->

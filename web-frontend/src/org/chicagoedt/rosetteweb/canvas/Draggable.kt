@@ -43,4 +43,8 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	override fun draw(){
 		if (!beingDragged) super.draw()
 	}
+
+	abstract fun onDragStart()
+
+	abstract fun onDragEnd()
 }
