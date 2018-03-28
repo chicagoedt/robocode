@@ -1,23 +1,19 @@
 package org.chicagoedt.rosetteweb.editor
 
 import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLCanvasElement
-import kotlin.browser.*
-import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.robots.*
 import org.chicagoedt.rosetteweb.canvas.*
-import org.chicagoedt.rosetteweb.editor.InstructionBlock
 import org.chicagoedt.rosetteweb.*
 
 /**
- * A space to contain all of the instructions for each robot
+ * A space to contain all of the actions for each robot
  * @param player The player that this panel will correspond to
  * @property headerHeight The height of the header at the top of the panel
  * @property blockHeight The standard height of the blocks
- * @property instructions The instruction blocks contained in this panel
+ * @property actions The action blocks contained in this panel
  * @property runButton The button to run the procedure
- * @property instructionPaddingVertical The spacing between the instructions
- * @property instructionPaddingHorizontal The spacing between the sides of the panel and the instructions
+ * @property actionPaddingVertical The spacing between the actions
+ * @property actionPaddingHorizontal The spacing between the sides of the panel and the actions
  */
 class Panel(context: CanvasRenderingContext2D, 
 			var player: RobotPlayer,
@@ -39,22 +35,22 @@ class Panel(context: CanvasRenderingContext2D,
 	override var textMarginTop = 5.0
 
 	private val blockHeight = 30.0
-	private var instructions = arrayListOf<InstructionBlock<*>>()
-	private val runButton = Button(context, manager, ::runInstructions, "Run")
-	private val instructionPaddingVertical = 5.0
-	private val instructionPaddingHorizontal = 20.0
+	private var actions = arrayListOf<ActionBlock<*>>()
+	private val runButton = Button(context, manager, ::runActions, "Run")
+	private val actionPaddingVertical = 5.0
+	private val actionPaddingHorizontal = 20.0
 
-	fun runInstructions(){
+	fun runActions(){
 		player.runInstructions()
 		fullRefresh()
 	}
 
 	/**
-	 * Adds an instruction to this panel. The instruction is added to the robot player automatically
-	 * @param block The instruction block to add
+	 * Adds an action to this panel. The action is added to the robot player automatically
+	 * @param block The action block to add
 	 */
-	fun addInstruction(block : InstructionBlock<*>){
-		instructions.add(block)
+	fun addAction(block : ActionBlock<*>){
+		actions.add(block)
 		player.appendAction(block.action)
 	}
 
@@ -69,10 +65,10 @@ class Panel(context: CanvasRenderingContext2D,
 	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
 		super.calculate(newX, newY, newWidth, newHeight, newColor)
 
-		var blockY = y + headerHeight + instructionPaddingVertical
-		for (block in instructions){
-			block.setContainerInfo(context, x + instructionPaddingHorizontal, blockY, width - (2.0 * instructionPaddingHorizontal), blockHeight)
-			blockY += blockHeight + instructionPaddingVertical
+		var blockY = y + headerHeight + actionPaddingVertical
+		for (block in actions){
+			block.setContainerInfo(context, x + actionPaddingHorizontal, blockY, width - (2.0 * actionPaddingHorizontal), blockHeight)
+			blockY += blockHeight + actionPaddingVertical
 		}
 
 		runButton.calculate(x + width * (5.0/6.0), y, width * (1.0/6.0), headerHeight, runButton.color)
@@ -89,21 +85,21 @@ class Panel(context: CanvasRenderingContext2D,
 
         runButton.draw()
 
-        for (instruction in instructions){
-        	instruction.draw()
+        for (action in actions){
+        	action.draw()
         }
 	}
 
 	override fun drop(draggable : Draggable){
 		super.drop(draggable)
-		val block = draggable as InstructionBlock<*>
-		addInstruction(block)
+		val block = draggable as ActionBlock<*>
+		addAction(block)
 		calculate(x, y, width, height, color)
 	}
 
 	override fun removeDraggable(draggable : Draggable){
-		instructions.remove(draggable as InstructionBlock<*>)
-		player.removeAction((draggable as InstructionBlock<*>).action)
+		actions.remove(draggable as ActionBlock<*>)
+		player.removeAction((draggable as ActionBlock<*>).action)
 		calculate(x, y, width, height, color)
 	}
 }

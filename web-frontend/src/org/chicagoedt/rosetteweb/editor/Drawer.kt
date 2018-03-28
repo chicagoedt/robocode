@@ -1,10 +1,7 @@
 package org.chicagoedt.rosetteweb.editor
 
 import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLCanvasElement
-import kotlin.browser.*
 import org.chicagoedt.rosetteweb.canvas.*
-import org.chicagoedt.rosetteweb.editor.*
 
 /**
  * The class to represent the instruction drawers at the bottom of the screen
@@ -16,20 +13,20 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 	override var height = (context.canvas.height * (1.0/6.0))
 	override var color = "black"
 
-	val instructions = arrayListOf<InstructionBlock<*>>()
+	val actions = arrayListOf<ActionBlock<*>>()
 
 	init{
-		addInstruction(MoveInstructionBlock(manager, context, this))
+		addAction(MoveActionBlock(manager, context, this))
 	}
 
-	fun addInstruction(instruction : InstructionBlock<*>){
-		instructions.add(instruction)
+	fun addAction(action : ActionBlock<*>){
+		actions.add(action)
 	}
 
 	override fun removeDraggable(draggable : Draggable){
-		instructions.remove(draggable as InstructionBlock<*>)
+		actions.remove(draggable as ActionBlock<*>)
 
-		if (draggable is MoveInstructionBlock) addInstruction(MoveInstructionBlock(manager, context, this))
+		if (draggable is MoveActionBlock) addAction(MoveActionBlock(manager, context, this))
 
 		calculate(x, y, width, height, color)
 	}
@@ -38,7 +35,7 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 		super.calculate(newX, newY, newWidth, newHeight, newColor)
 
 		var blockY = y
-		for (block in instructions){
+		for (block in actions){
 			block.setContainerInfo(context, x, blockY, width / 3.0, 30.0)
 			blockY += block.height
 		}
@@ -46,8 +43,8 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 
 	override fun draw(){
 		super.draw()
-		for (instruction in instructions){
-			instruction.draw()
+		for (action in actions){
+			action.draw()
 		}
 	}
 }
