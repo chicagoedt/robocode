@@ -44,11 +44,6 @@ class Panel(context: CanvasRenderingContext2D,
 	private val instructionPaddingVertical = 5.0
 	private val instructionPaddingHorizontal = 20.0
 
-	init{
-		addInstruction(MoveInstructionBlock(manager, context))
-		addInstruction(MoveInstructionBlock(manager, context))
-	}
-
 	fun runInstructions(){
 		player.runInstructions()
 		fullRefresh()

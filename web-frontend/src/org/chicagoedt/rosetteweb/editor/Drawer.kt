@@ -9,7 +9,7 @@ import org.chicagoedt.rosetteweb.editor.*
 /**
  * The class to represent the instruction drawers at the bottom of the screen
  */
-class Drawer(val manager : InteractionManager, context : CanvasRenderingContext2D) : Dropzone(manager, context){
+class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) : Dropzone(manager, context){
 	override var x = 0.0
 	override var y = (context.canvas.height * (5.0/6.0))
 	override var width = context.canvas.width.toDouble()
