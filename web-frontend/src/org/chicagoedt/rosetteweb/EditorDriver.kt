@@ -84,7 +84,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 * Draws all of the elements in this editor
 	 */
 	fun drawEditor(){
-		context.fillStyle = "#424242"
+		context.fillStyle = colors.backgroundColor
         context.fillRect(0.0, 0.0, context.canvas.width.toDouble(), context.canvas.height.toDouble())
 
 		for (panel in panels){

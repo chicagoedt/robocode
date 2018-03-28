@@ -10,6 +10,7 @@ import org.chicagoedt.rosetteweb.grid.*
 import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.robots.*
+import org.chicagoedt.rosetteweb.*
 
 /**
  * @param gridX The X location of the tile corresponding to the level grid
@@ -22,7 +23,7 @@ class PlayerLocation(   var gridX : Double,
                         context : CanvasRenderingContext2D, 
                         val player : RobotPlayer) : Drawable(context){
     override var text = player.name
-    override var color = "#F44336"
+    override var color = colors.playerTile
     override var x = 0.0
     override var y = 0.0
     override var height = 0.0

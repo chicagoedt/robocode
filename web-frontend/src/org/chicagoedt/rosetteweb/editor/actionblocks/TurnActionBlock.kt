@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosette.actions.robotActions.*
 import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosetteweb.editor.*
+import org.chicagoedt.rosetteweb.*
 
 /**
  * The instruction block that represents the Move instruction
@@ -14,7 +15,7 @@ class TurnActionBlock(manager : InteractionManager,
 	override var height = 50.0
     override var width = 100.0
 	override var action = TurnAction()
-	override var color = "#ff6659"
+	override var color = colors.turnActionBlock
 	override var x = 0.0
 	override var y = 0.0
 	override var text = "Turn"

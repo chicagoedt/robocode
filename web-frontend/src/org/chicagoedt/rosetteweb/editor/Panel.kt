@@ -22,7 +22,7 @@ class Panel(context: CanvasRenderingContext2D,
 	override var width = 0.0
 	override var x = 0.0
 	override var y = 0.0
-	override var color = "#E0E0E0"
+	override var color = colors.panelBackground
 	override var radius = 1.0
 	override var shadowBlur = 5.0
 
@@ -58,7 +58,7 @@ class Panel(context: CanvasRenderingContext2D,
 	 * Draws the header on the panel
 	 */
 	fun drawHeader(){
-		context.fillStyle = "#64B5F6"
+		context.fillStyle = colors.panelHeader
 		context.fillRect(x, y, width, headerHeight);
 	}
 

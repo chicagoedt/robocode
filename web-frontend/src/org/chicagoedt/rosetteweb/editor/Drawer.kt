@@ -3,6 +3,7 @@ package org.chicagoedt.rosetteweb.editor
 import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosetteweb.editor.actionblocks.*
+import org.chicagoedt.rosetteweb.*
 
 /**
  * The class to represent the instruction drawers at the bottom of the screen
@@ -12,7 +13,7 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 	override var y = (context.canvas.height * (5.0/6.0))
 	override var width = context.canvas.width.toDouble()
 	override var height = (context.canvas.height * (1.0/6.0))
-	override var color = "black"
+	override var color = colors.drawer
 
 	val actions = arrayOf<ActionBlock<*>>(
 		MoveActionBlock(manager, context, this),

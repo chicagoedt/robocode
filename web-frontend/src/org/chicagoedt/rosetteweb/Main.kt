@@ -31,11 +31,17 @@ private lateinit var gridDriver : GridDriver
 private lateinit var editorDriver : EditorDriver
 
 /**
+ * The colors for the page
+ */
+var colors = Colors()
+
+/**
  * The main function to run when the page loads
  * @param args The arguments to run. Not currently used at all.
  */
 fun main(args: Array<String>) {
     window.onload = {
+        document.body!!.style.backgroundColor = colors.backgroundColor
         //game.nextLevel()
         val gridCanvas = document.createElement("canvas") as HTMLCanvasElement
         gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
@@ -71,10 +77,12 @@ fun main(args: Array<String>) {
  * Defines the position for the canvases on the screen
  */
  fun positionCanvases(){
+    val maximumGrid = (document.documentElement!!.clientHeight / 2.0).toInt()
     gridContext.canvas.width = (document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
+    if (gridContext.canvas.width > maximumGrid) gridContext.canvas.width = maximumGrid
     gridContext.canvas.height = gridContext.canvas.width
 
-    editorContext.canvas.width = (2.0 * document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
+    editorContext.canvas.width = (document.documentElement!!.clientWidth - gridContext.canvas.width)
     editorContext.canvas.height = document.documentElement!!.clientHeight
     editorContext.canvas.style.left = gridContext.canvas.width.toString() + "px"
 
