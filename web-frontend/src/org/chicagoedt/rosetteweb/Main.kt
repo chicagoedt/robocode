@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
+import org.chicagoedt.rosetteweb.canvas.*
 
 /**
  * The context for the grid canvas
@@ -86,10 +87,14 @@ fun main(args: Array<String>) {
     editorContext.canvas.height = document.documentElement!!.clientHeight
     editorContext.canvas.style.left = gridContext.canvas.width.toString() + "px"
 
+    setCanvasDPI(editorContext)
+    setCanvasDPI(gridContext)
+
+
     gridDriver.calculateTiles()
     gridDriver.calculatePlayers()
     editorDriver.calculatePanels()
-    editorDriver.setOffset(gridContext.canvas.width.toDouble(), 0.0)
+    editorDriver.setOffset(gridContext.canvas.width.toDouble() / pixelRatio(gridContext), 0.0)
  }
 
 /**
@@ -101,4 +106,15 @@ fun fullRefresh(){
     editorDriver.calculatePanels()
     gridDriver.drawGrid()
     editorDriver.drawEditor()
+}
+
+fun setCanvasDPI(context : CanvasRenderingContext2D){
+    val ratio = pixelRatio(context)
+    val originalWidth = context.canvas.width
+    val originalHeight = context.canvas.height
+    context.canvas.width = (context.canvas.width.toDouble() * ratio).toInt()
+    context.canvas.height = (context.canvas.height.toDouble() * ratio).toInt()
+    context.canvas.style.width = originalWidth.toInt().toString() + "px"
+    context.canvas.style.height = originalHeight.toInt().toString() + "px"
+    context.setTransform(ratio, 0.0, 0.0, ratio, 0.0, 0.0)
 }

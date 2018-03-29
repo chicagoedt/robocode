@@ -32,8 +32,13 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	 * @param my The Y value to drag to
 	 */
 	fun drag(mx : Double, my : Double){
-		x += mx
-        y += my
+		val mxDPI = mx * pixelRatio(context)
+		val myDPI = my * pixelRatio(context)
+		//drawX += mx
+		//x += (drawX / pixelRatio(context))
+		//drawY += my
+		//y += (drawY / pixelRatio(context))
+        calculate(x + mxDPI, y + myDPI, width, height, color)
         beingDragged = false
         draw()
         beingDragged = true

@@ -28,7 +28,7 @@ class PlayerLocation(   var gridX : Double,
     override var y = 0.0
     override var height = 0.0
     override var width = 0.0
-    override var textSize = 10
+    override var textSize = 20
 
     /**
      * Draw the indicator of which direction it's facing. This will likely be removing before release

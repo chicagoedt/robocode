@@ -27,12 +27,13 @@ class Panel(context: CanvasRenderingContext2D,
 	override var shadowBlur = 5.0
 
 	private var headerHeight = 50.0
-
-	override var textSize = (headerHeight * (2.0/3.0)).toInt()
-	override var text = player.name
-	override var textAlignmentVertical = TextAlignmentVertical.TOP
-	override var textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
-	override var textMarginTop = 5.0
+	private var header = Drawable(context)
+	init{
+		header.textSize = (headerHeight * (2.0/3.0)).toInt()
+		header.color = colors.panelHeader
+		header.text = player.name
+		header.textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
+	}
 
 	private val blockHeight = 30.0
 	private var actions = arrayListOf<ActionBlock<*>>()
@@ -54,13 +55,6 @@ class Panel(context: CanvasRenderingContext2D,
 		player.appendAction(block.action)
 	}
 
-	/**
-	 * Draws the header on the panel
-	 */
-	fun drawHeader(){
-		context.fillStyle = colors.panelHeader
-		context.fillRect(x, y, width, headerHeight);
-	}
 
 	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
 		super.calculate(newX, newY, newWidth, newHeight, newColor)
@@ -74,12 +68,13 @@ class Panel(context: CanvasRenderingContext2D,
 		runButton.calculate(x + width * (5.0/6.0), y, width * (1.0/6.0), headerHeight, runButton.color)
 
 		textSize = (headerHeight * (2.0/3.0)).toInt()
+		header.calculate(x, y, width, headerHeight, header.color)
 	}
 
 	override fun draw(){
 		super.drawBackground()
 
-        drawHeader()
+		header.draw()
 
         super.drawText()
 

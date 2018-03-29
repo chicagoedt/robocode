@@ -26,7 +26,6 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private var globalPanelWidth = 0.0
 	private var globalPanelHeightRatio = 3
 	private var globalPanelMarginPercent = 5.0
-	private var globalMaxHeight = 600.0
 	private val panels = ArrayList<Panel>()
 	private var interactionManager  = InteractionManager(context, {drawEditor()})
 	private var drawer = Drawer(interactionManager, context)
@@ -66,7 +65,6 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		globalPanelWidth /= game.currentLevel.players.size
 		for (panel in panels){
 			var screenHeight = globalPanelHeightRatio * globalPanelWidth
-			if (screenHeight > globalMaxHeight) screenHeight = globalMaxHeight
 
 			panel.calculate(panelX, panelY, globalPanelWidth, screenHeight, panel.color)
 
