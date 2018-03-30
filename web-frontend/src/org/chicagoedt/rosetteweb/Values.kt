@@ -29,6 +29,6 @@ fun pixelRatio(context : CanvasRenderingContext2D) : Double{
             "context.oBackingStorePixelRatio ||" +
             "context.backingStorePixelRatio || 1;" +
             "ratio = dpr / bsr")
-    //return ratio
-    return 1.0
+    return ratio
+    //return 1.0
 }
