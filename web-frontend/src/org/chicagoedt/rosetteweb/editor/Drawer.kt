@@ -7,13 +7,12 @@ import org.chicagoedt.rosetteweb.*
 
 /**
  * The class to represent the instruction drawers at the bottom of the screen
+ * @param manager The interaction manager for the canvas
+ * @param context The context in which the canvas is drawn
+ * @property actions The list of actions stored in the drawer (i.e. not in a panel yet)
  */
 class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) : Dropzone(manager, context){
-	override var x = 0.0
-	override var y = (context.canvas.height * (5.0/6.0))
-	override var width = context.canvas.width.toDouble()
-	override var height = (context.canvas.height * (1.0/6.0))
-	override var color = colors.drawer
+	override var color = COLOR_DRAWER
 
 	val actions = arrayOf<ActionBlock<*>>(
 		MoveActionBlock(manager, context, this),
@@ -26,21 +25,23 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 		else if (draggable is TurnActionBlock)
 			actions[actions.indexOf(draggable as ActionBlock<*>)] = TurnActionBlock(manager, context, this)
 
-		calculate(x, y, width, height, color)
+		recalculate()
 	}
 
-	override fun calculate(newX : Double, newY : Double, newWidth : Double, newHeight : Double, newColor : String){
-		super.calculate(newX, newY, newWidth, newHeight, newColor)
-
+	override fun recalculate(){
 		var blockY = y
 		for (block in actions){
-			block.setContainerInfo(context, x, blockY, width / 3.0, 30.0)
+			block.x = x
+			block.y = blockY
+			block.width = BLOCK_WIDTH
+			block.height = BLOCK_HEIGHT
+			block.recalculate()
+
 			blockY += block.height
 		}
 	}
 
-	override fun draw(){
-		super.draw()
+	override fun afterDraw(){
 		for (action in actions){
 			action.draw()
 		}

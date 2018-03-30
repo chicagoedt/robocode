@@ -11,17 +11,11 @@ import org.chicagoedt.rosetteweb.grid.*
  * The driver to run a Grid canvas for the current game
  * @param game The game that the program is running
  * @param context The context for the canvas to run the grid on
- * @property widthInterval The width for each tile on the grid
- * @property heightInterval The height for each tile on the grid
- * @property separation The spacing between each tile on the grid
  * @property tileLocations TileLocation objects corresponding to each Tile on the grid
  * @property playerLocations TileLocation obejcts corresponding to each RobotPlayer in the level
  */
 
 class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
-    var widthInterval = 0.0
-    var heightInterval = 0.0
-    val separation = 0
     val tileLocations = ArrayList<ArrayList<TileLocation>>()
     val playerLocations = ArrayList<PlayerLocation>()
 
@@ -38,35 +32,34 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
         }
 
         for ((name, player) in game.currentLevel.players){
-            playerLocations.add(PlayerLocation(player.x.toDouble(), player.y.toDouble(), context, player))
+            playerLocations.add(PlayerLocation(context, player))
         }
 
         calculateTiles()
-        calculatePlayers()
     }
 
     /**
      * Calculates all of the tile locations and sizes
      */
     fun calculateTiles(){
-        widthInterval = (context.canvas.width.toDouble()) / (game.currentLevel.properties.width.toDouble())
-        heightInterval = (context.canvas.height.toDouble()) / (game.currentLevel.properties.height.toDouble())
-        var tileX = 0
-        var tileY = 0
+        var tileX = 0.0
+        var tileY = 0.0
 
         for (x in 0..game.currentLevel.properties.width-1){
             for (y in 0..game.currentLevel.properties.height-1){
                 val loc = tileLocations[x][y]
-                loc.x = (tileX + (separation / 4)).toDouble()
-                loc.y = (tileY + (separation / 4)).toDouble()
-                loc.height = (heightInterval - (separation / 2)).toDouble()
-                loc.width = (widthInterval - (separation / 2)).toDouble()
+                loc.x = tileX
+                loc.y = tileY
+                loc.height = TILE_HEIGHT
+                loc.width = TILE_WIDTH
+                loc.recalculate()
 
-                tileY += heightInterval.toInt()
+                tileY += TILE_HEIGHT
             }
-            tileX += widthInterval.toInt()
-            tileY = 0
+            tileX += TILE_WIDTH
+            tileY = 0.0
         }
+        calculatePlayers()
     }
 
     /**
@@ -74,12 +67,13 @@ class GridDriver(val game: Game, val context: CanvasRenderingContext2D){
      */
     fun calculatePlayers(){
         for (player in playerLocations){
-            player.gridX = player.player.x.toDouble()
-            player.gridY = player.player.y.toDouble()
-            player.x = tileLocations[player.gridX.toInt()][player.gridY.toInt()].x
-            player.y = tileLocations[player.gridX.toInt()][player.gridY.toInt()].y
-            player.height = tileLocations[player.gridX.toInt()][player.gridY.toInt()].height
-            player.width = tileLocations[player.gridX.toInt()][player.gridY.toInt()].width
+            val tile = tileLocations[player.gridX.toInt()][player.gridY.toInt()]
+
+            player.x = tile.x
+            player.y = tile.y
+            player.width = tile.width
+            player.height = tile.height
+            player.recalculate()
         }
     }
 

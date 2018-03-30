@@ -1,5 +1,6 @@
 package org.chicagoedt.rosetteweb.canvas
 
+import org.chicagoedt.rosetteweb.COLOR_BUTTON_TEXT
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import kotlin.browser.*
@@ -10,21 +11,13 @@ import org.chicagoedt.rosetteweb.canvas.InteractionManager
 /**
  * An object to perform an action when clicked (i.e., a button)
  * @param function A lambda to be performed when this button is clocked
- * @param label The text to display on this button
- * @property labelColor The color of the label text
- * @property textHeightRatio How big the text should be compared to the button
- * @property textHeight The height of the text
+ * @param label The text to show on the button
  */
 class Button(context : CanvasRenderingContext2D, 
 				manager : InteractionManager, 
 				var function : () -> Unit,
-				val label : String) : Drawable(context){
-	override var x = 0.0
-	override var y = 0.0
-	override var height = 0.0
-	override var width = 0.0
-	override var color = "white"
-	override var textColor = "green"
+				label : String) : Drawable(context){
+	override var textColor = COLOR_BUTTON_TEXT
 	override var text = label
 
 	init{
@@ -34,7 +27,7 @@ class Button(context : CanvasRenderingContext2D,
 	/**
 	 * Performes the function passed to this button
 	 */
-	open fun onClick(){
+	fun onClick(){
 		function.invoke()
 	}
 }

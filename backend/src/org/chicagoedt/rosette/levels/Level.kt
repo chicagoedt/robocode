@@ -26,7 +26,7 @@ class Level(var properties: Properties) {
 
     private var grid = arrayListOf<ArrayList<Tile>>()
 
-    internal val players: HashMap<String, RobotPlayer> = hashMapOf()
+    val players: HashMap<String, RobotPlayer> = hashMapOf()
 
     init{
         for (i in 0..properties.height - 1){

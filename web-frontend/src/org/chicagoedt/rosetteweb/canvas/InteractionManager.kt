@@ -74,11 +74,9 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 					}
 				}
 				if (!found){
-					draggables[currentDraggableIndex].calculate(originalX, 
-						originalY, 
-						draggables[currentDraggableIndex].width, 
-						draggables[currentDraggableIndex].height, 
-						draggables[currentDraggableIndex].color)
+					draggables[currentDraggableIndex].x = originalX
+					draggables[currentDraggableIndex].y = originalY
+					draggables[currentDraggableIndex].recalculate()
 				}
 				refresh.invoke()
 				clearDrag()

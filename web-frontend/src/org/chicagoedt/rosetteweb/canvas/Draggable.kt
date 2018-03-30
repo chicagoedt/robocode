@@ -16,10 +16,6 @@ import org.chicagoedt.rosetteweb.canvas.Dropzone
  * @property beingDragged To be set by the InteractionManager if the current draggable is being dragged
  */
 abstract class Draggable(manager : InteractionManager, context : CanvasRenderingContext2D, var dropzone : Dropzone) : Drawable(context){
-	override abstract var x : Double
-	override abstract var y : Double
-	override abstract var height : Double
-	override abstract var width : Double
 	var beingDragged = false
 
 	init{
@@ -32,23 +28,21 @@ abstract class Draggable(manager : InteractionManager, context : CanvasRendering
 	 * @param my The Y value to drag to
 	 */
 	fun drag(mx : Double, my : Double){
-		val mxDPI = mx * pixelRatio(context)
-		val myDPI = my * pixelRatio(context)
-		//drawX += mx
-		//x += (drawX / pixelRatio(context))
-		//drawY += my
-		//y += (drawY / pixelRatio(context))
-        calculate(x + mxDPI, y + myDPI, width, height, color)
-        beingDragged = false
+		x += mx
+		y += my
+		recalculate()
+		shouldDraw = true
         draw()
-        beingDragged = true
+		shouldDraw = false
 	}
 
-	override fun draw(){
-		if (!beingDragged) super.draw()
-	}
-
+	/**
+	 * Called when the objects starts being dragged
+	 */
 	abstract fun onDragStart()
 
+	/**
+	 * Called when the object is dropped after being dragged
+	 */
 	abstract fun onDragEnd()
 }

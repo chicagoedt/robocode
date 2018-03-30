@@ -12,12 +12,8 @@ import org.chicagoedt.rosetteweb.*
 class MoveActionBlock(manager : InteractionManager,
 					  context : CanvasRenderingContext2D,
 					  dropzone : Dropzone) : ActionBlock<MoveAction>(manager, context, dropzone){
-	override var height = 50.0
-    override var width = 100.0
 	override var action = MoveAction()
-	override var color = colors.moveActionBlock
-	override var x = 0.0
-	override var y = 0.0
+	override var color = COLOR_MOVE
 	override var text = "Move"
 	
 }

@@ -25,6 +25,7 @@ abstract class Dropzone(val manager : InteractionManager, context : CanvasRender
 	open fun drop(draggable : Draggable){
 		draggable.dropzone.removeDraggable(draggable)
 		draggable.dropzone = this
+		draggable.shouldDraw = true
 	}
 
 	abstract fun removeDraggable(draggable : Draggable)

@@ -1,11 +1,7 @@
 package org.chicagoedt.rosetteweb.grid
 
 import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLCanvasElement
-import kotlin.browser.*
-import org.chicagoedt.rosette.*
 import org.chicagoedt.rosette.tiles.*
-import org.chicagoedt.rosetteweb.grid.*
 import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosetteweb.canvas.Drawable
 import org.chicagoedt.rosetteweb.*
@@ -18,17 +14,10 @@ import org.chicagoedt.rosetteweb.*
  * @param level The level that the tile is a part of
  */
 open class TileLocation(var gridX : Double, var gridY : Double, context : CanvasRenderingContext2D, var level : Level) : Drawable(context){
-    override var x = 0.0
-    override var y = 0.0
-    override var height = 0.0
-    override var width = 0.0
-    override var color = "white"
 
-    override open fun draw(){
-        if (level.tileAt(gridX.toInt(),gridY.toInt()) is NeutralTile) color = colors.neutralTile //blue
-        else if (level.tileAt(gridX.toInt(),gridY.toInt()) is ObstacleTile) color = colors.obstacleTile //gray
-        else if (level.tileAt(gridX.toInt(),gridY.toInt()) is VictoryTile) color = colors.victoryTile //yellow
-
-        super.draw()
+    override fun beforeDraw(){
+        if (level.tileAt(gridX.toInt(),gridY.toInt()) is NeutralTile) color = COLOR_TILE_NEUTRAL //blue
+        else if (level.tileAt(gridX.toInt(),gridY.toInt()) is ObstacleTile) color = COLOR_TILE_OBSTACLE //gray
+        else if (level.tileAt(gridX.toInt(),gridY.toInt()) is VictoryTile) color = COLOR_TILE_VICTORY //yellow
     }
 }
