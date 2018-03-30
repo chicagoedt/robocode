@@ -48,7 +48,7 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 	open var textFont = "Arial"
 	open var textSize = 40
 
-	internal var shouldDraw = true
+	var shouldDraw = true
 
 	/**
 	 * Draws the text on screen according to the class parameters

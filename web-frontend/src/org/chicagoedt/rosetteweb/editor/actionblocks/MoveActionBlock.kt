@@ -15,5 +15,13 @@ class MoveActionBlock(manager : InteractionManager,
 	override var action = MoveAction()
 	override var color = COLOR_MOVE
 	override var text = "Move"
+	override val hasParameter = true
+
+	init{
+		menu.text = action.parameter.toString()
+		for (i in 1..9){
+			menu.addItem(i.toString(), {action.parameter = i})
+		}
+	}
 	
 }

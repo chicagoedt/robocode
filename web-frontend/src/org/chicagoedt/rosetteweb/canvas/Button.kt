@@ -13,12 +13,14 @@ import org.chicagoedt.rosetteweb.canvas.InteractionManager
  * @param function A lambda to be performed when this button is clocked
  * @param label The text to show on the button
  */
-class Button(context : CanvasRenderingContext2D, 
-				manager : InteractionManager, 
-				var function : () -> Unit,
-				label : String) : Drawable(context){
+open class Button(context : CanvasRenderingContext2D, 
+				val manager : InteractionManager, 
+				open var function : () -> Unit) : Drawable(context){
+
+	constructor(context : CanvasRenderingContext2D, 
+				manager : InteractionManager) : this(context, manager, {})
+
 	override var textColor = COLOR_BUTTON_TEXT
-	override var text = label
 
 	init{
 		manager.onClicks.add(this)

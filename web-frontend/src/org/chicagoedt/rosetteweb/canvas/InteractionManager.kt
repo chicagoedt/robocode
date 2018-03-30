@@ -37,23 +37,28 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 			val mouseX = mouseE.clientX.toDouble() - offsetX
 			val mouseY = mouseE.clientY.toDouble() - offsetY
 
-			for(draggable in draggables){
-       			if (draggable.mouseWithin(mouseX, mouseY)){
-       				setDrag(draggable)
-       				found = true
-        			break
-       			}
+			for (button in onClicks){
+				if (button.mouseWithin(mouseX, mouseY) && button.shouldDraw){
+					button.onClick()
+					found = true
+					break
+				}
+				//else if (button is Dropdown){
+				//	if ((button as Dropdown).expanded) (button as Dropdown).switchView()
+				//}
 			}
-
+			
 			if (!found){
-				for (button in onClicks){
-					if (button.mouseWithin(mouseX, mouseY)){
-						button.onClick()
-						found = true
-						break
-					}
+				for(draggable in draggables){
+       				if (draggable.mouseWithin(mouseX, mouseY)){
+       					setDrag(draggable)
+       					found = true
+        				break
+       				}
 				}
 			}
+
+			//refresh.invoke()
 
     		true
 		}

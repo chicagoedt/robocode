@@ -20,6 +20,11 @@ abstract class ActionBlock<T : Action<*>>(manager : InteractionManager,
 	override var shadowBlur = BLOCK_DOWN_SHADOW
 	override var radius = BLOCK_CORNER_RADIUS
 	abstract var action : T
+	abstract val hasParameter : Boolean
+	var menu = Dropdown(context, manager)
+	init{
+		menu.shouldDraw = false
+	}
 
 	override fun onDragStart(){
 		shadowBlur = BLOCK_LIFT_SHADOW
@@ -32,5 +37,17 @@ abstract class ActionBlock<T : Action<*>>(manager : InteractionManager,
 	override fun recalculate(){
 		textSize = (height * (2.0/3.0)).toInt()
 		radius = BLOCK_CORNER_RADIUS
+
+		if (hasParameter){
+			menu.height = height
+			menu.width = BLOCK_DROPDOWN_WIDTH
+			menu.x = x + width - BLOCK_DROPDOWN_WIDTH
+			menu.y = y
+			menu.recalculate()
+		}
+	}
+
+	override fun afterDraw(){
+		if (hasParameter) menu.draw()
 	}
 }

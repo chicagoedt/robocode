@@ -19,8 +19,8 @@ abstract class Dropzone(val manager : InteractionManager, context : CanvasRender
 	}
 
 	/**
-	 * To be called when an object of type T is dropped into this dropzone
-	 * @param draggable The object being dropped into this dropzone
+	 * To be called when a draggable is dropped into this dropzone
+	 * @param draggable The draggable being dropped into this dropzone
 	 */
 	open fun drop(draggable : Draggable){
 		draggable.dropzone.removeDraggable(draggable)

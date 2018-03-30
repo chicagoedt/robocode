@@ -41,6 +41,17 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 		}
 	}
 
+	override fun drop(draggable : Draggable){
+		super.drop(draggable)
+		manager.draggables.remove(draggable)
+		if (draggable is ActionBlock<*>){
+			manager.onClicks.remove(draggable.menu)
+			for (button in draggable.menu.items){
+				manager.onClicks.remove(button)
+			}
+		}
+	}
+
 	override fun afterDraw(){
 		for (action in actions){
 			action.draw()

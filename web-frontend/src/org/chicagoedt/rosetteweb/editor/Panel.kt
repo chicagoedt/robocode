@@ -17,9 +17,10 @@ class Panel(context: CanvasRenderingContext2D,
 	override var color = COLOR_PANEL_BACKGROUND
 	private var header = Drawable(context)
 	private var actions = arrayListOf<ActionBlock<*>>()
-	private val runButton = Button(context, manager, ::runActions, "Run")
+	private val runButton = Button(context, manager, ::runActions)
 
 	init{
+		runButton.text = "Run"
 		header.textSize = (PANEL_HEADER_HEIGHT * (2.0/3.0)).toInt()
 		header.color = COLOR_PANEL_HEADER
 		header.text = player.name
@@ -82,6 +83,7 @@ class Panel(context: CanvasRenderingContext2D,
 	override fun drop(draggable : Draggable){
 		super.drop(draggable)
 		val block = draggable as ActionBlock<*>
+		block.menu.shouldDraw = true
 		addAction(block)
 		recalculate()
 	}

@@ -2,6 +2,7 @@ package org.chicagoedt.rosetteweb.editor.actionblocks
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosette.actions.robotActions.*
+import org.chicagoedt.rosette.robots.RobotRotation
 import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosetteweb.editor.*
 import org.chicagoedt.rosetteweb.*
@@ -15,5 +16,12 @@ class TurnActionBlock(manager : InteractionManager,
 	override var action = TurnAction()
 	override var color = COLOR_TURN
 	override var text = "Turn"
+	override val hasParameter = true
+
+	init{
+		menu.text = "Clockwise"
+		menu.addItem("Clockwise", {action.parameter = RobotRotation.CLOCKWISE})
+		menu.addItem("Counterclockwise", {action.parameter = RobotRotation.COUNTERCLOCKWISE})
+	}
 	
 }
