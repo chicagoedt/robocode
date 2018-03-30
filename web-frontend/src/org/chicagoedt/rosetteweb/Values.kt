@@ -15,7 +15,7 @@ val BLOCK_HEIGHT get() = PANEL_HEIGHT / 20.0
 val BLOCK_WIDTH get() = PANEL_WIDTH
 val BLOCK_LIFT_SHADOW get() = 20.0 / pixelRatio(editorContext)
 val BLOCK_DOWN_SHADOW get() = 5.0 / pixelRatio(editorContext)
-val BLOCK_CORNER_RADIUS get() = 20.0 / pixelRatio(editorContext)
+val BLOCK_CORNER_RADIUS get() = 20.0 // pixelRatio(editorContext)
 
 val TILE_WIDTH get() = (gridContext.canvas.width / game.currentLevel.properties.width) / pixelRatio(gridContext)
 val TILE_HEIGHT get() = (gridContext.canvas.height / game.currentLevel.properties.height) / pixelRatio(gridContext)
@@ -29,6 +29,6 @@ fun pixelRatio(context : CanvasRenderingContext2D) : Double{
             "context.oBackingStorePixelRatio ||" +
             "context.backingStorePixelRatio || 1;" +
             "ratio = dpr / bsr")
-    return ratio
-    //return 1.0
+    //return ratio
+    return 1.0
 }
