@@ -35,7 +35,7 @@ abstract class ActionBlock<T : Action<*>>(manager : InteractionManager,
 		this.shadowBlur = BLOCK_DOWN_SHADOW
 	}
 
-	override fun recalculate(){
+	override fun calculate(){
 		textSize = (height * (2.0/3.0)).toInt()
 		radius = BLOCK_CORNER_RADIUS
 

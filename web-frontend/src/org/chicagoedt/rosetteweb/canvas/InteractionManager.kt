@@ -44,16 +44,18 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 					break
 				}
 			}
+			if (found) refresh.invoke()
 			
 			if (!found){
 				for(draggable in draggables){
        				if (draggable.mouseWithin(mouseX, mouseY)){
-       					setDrag(draggable)
+       					setDrag(draggable, mouseX, mouseY)
        					found = true
         				break
        				}
 				}
 			}
+			//refreshView()
     		true
 		}
 
@@ -98,21 +100,20 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 	 * Sets a draggable to be dragged
 	 * @param draggable The draggable to be dragged
 	 */
-	fun setDrag(draggable : Draggable){
+	fun setDrag(draggable : Draggable, mx : Double, my : Double){
 		currentDraggableIndex = draggables.indexOf(draggable)
 		originalX = draggables[currentDraggableIndex].x
 		originalY = draggables[currentDraggableIndex].y
 		draggables[currentDraggableIndex].beingDragged = true
 		draggables[currentDraggableIndex].onDragStart()
-		var prevX = -1.0
-		var prevY = -1.0
+		var prevX = mx
+		var prevY = my
 		draggable.drag(0.0, 0.0)
+		var mouseX = mx - offsetX
+		var mouseY = my - offsetY
 		context.canvas.onmousemove = { e : Event ->
-			val mouseE = e as MouseEvent
-			val mouseX = mouseE.clientX.toDouble() - offsetX
-			val mouseY = mouseE.clientY.toDouble() - offsetY
-			if (prevX == -1.0) prevX = mouseX
-			if (prevY == -1.0) prevY = mouseY
+			mouseX = (e as MouseEvent).clientX.toDouble() - offsetX
+			mouseY = (e as MouseEvent).clientY.toDouble() - offsetY
 
 			refreshView()
 

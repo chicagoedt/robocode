@@ -14,8 +14,8 @@ val PANEL_HOVER_BORDER_WIDTH get() = PANEL_WIDTH / 100.0
 
 val BLOCK_HEIGHT get() = PANEL_HEIGHT / 20.0
 val BLOCK_WIDTH get() = PANEL_WIDTH
-val BLOCK_LIFT_SHADOW get() = 200.0 // pixelRatio(editorContext)
-val BLOCK_DOWN_SHADOW get() = 2.0 // pixelRatio(editorContext)
+val BLOCK_LIFT_SHADOW get() = 0.0 // pixelRatio(editorContext)
+val BLOCK_DOWN_SHADOW get() = 0.0 // pixelRatio(editorContext)
 val BLOCK_CORNER_RADIUS get() = 10.0
 val BLOCK_DROPDOWN_WIDTH get() = BLOCK_WIDTH / 5.0
 
@@ -24,7 +24,7 @@ val TILE_HEIGHT get() = (gridContext.canvas.height.toDouble() / game.currentLeve
 
 val BORDER_WIDTH get() = editorContext.canvas.width / 100.0 / pixelRatio(editorContext)
 val BORDER_HEIGHT get() = editorContext.canvas.height / pixelRatio(editorContext)
-val BORDER_SHADOW get() = 300.0
+val BORDER_SHADOW get() = 0.0
 
 fun pixelRatio(context : CanvasRenderingContext2D) : Double{
     var ratio = 1.0

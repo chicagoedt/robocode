@@ -47,7 +47,7 @@ class Panel(context: CanvasRenderingContext2D,
 	}
 
 
-	override fun recalculate(){
+	override fun calculate(){
 		var blockY = y + PANEL_HEADER_HEIGHT
 		for (block in actions){
 			block.x = x

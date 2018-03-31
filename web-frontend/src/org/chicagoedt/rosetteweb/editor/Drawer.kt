@@ -28,7 +28,7 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 		recalculate()
 	}
 
-	override fun recalculate(){
+	override fun calculate(){
 		var blockY = y
 		for (block in actions){
 			block.x = x

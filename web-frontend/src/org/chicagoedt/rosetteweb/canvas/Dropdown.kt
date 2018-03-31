@@ -26,6 +26,7 @@ class Dropdown(context : CanvasRenderingContext2D,
 		val button = Button(context, manager, {
 			text = itemText
 			switchView()
+			manager.refresh.invoke()
 			function.invoke()
 		})
 		button.shouldDraw = false
@@ -50,11 +51,10 @@ class Dropdown(context : CanvasRenderingContext2D,
 				button.shouldDraw = true
 			}
 		}
-		manager.refresh.invoke()
 		draw()
 	}
 
-	override fun recalculate(){
+	override fun calculate(){
 		var buttonY = y + height
 		for (button in items){
 			button.textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
@@ -62,6 +62,7 @@ class Dropdown(context : CanvasRenderingContext2D,
 			button.height = height
 			button.x = x
 			button.y = buttonY
+			button.recalculate()
 
 			buttonY += button.height
 		}

@@ -55,6 +55,11 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 	open var textColor = "black"
 	open var textFont = "Arial"
 	open var textSize = 40
+	private var drawingTextWidth = 0.0
+	private var drawingTextSize = 0
+	private var textX = 0.0
+	private var textY = 0.0
+	private var textAlign = "start".asDynamic().unsafeCast<CanvasTextAlign>()
 
 	var shouldDraw = true
 
@@ -106,13 +111,10 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 		context.lineTo(posX, posY)
 	}
 
-	/**
-	 * Draws the text on screen according to the class parameters
-	 */
-	fun drawText() {
-		if (text != "") {
-			var textY = y
-			var textX = x
+	fun calculateText(){
+		if (text != ""){
+			textY = y
+			textX = x
 
 			if (textAlignmentVertical == TextAlignmentVertical.CENTER) {
 				textY += (height / 2.0) + (textSize / 2.5)
@@ -124,33 +126,42 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 			}
 
 			if (textAlignmentHorizontal == TextAlignmentHorizontal.CENTER) {
-				context.textAlign = "center".asDynamic().unsafeCast<CanvasTextAlign>()
+				textAlign = "center".asDynamic().unsafeCast<CanvasTextAlign>()
 				textX += (width / 2.0)
 			} else if (textAlignmentHorizontal == TextAlignmentHorizontal.LEFT) {
-				context.textAlign = "left".asDynamic().unsafeCast<CanvasTextAlign>()
+				textAlign = "left".asDynamic().unsafeCast<CanvasTextAlign>()
 				textX += radius
 			} else if (textAlignmentHorizontal == TextAlignmentHorizontal.RIGHT) {
-				context.textAlign = "right".asDynamic().unsafeCast<CanvasTextAlign>()
+				textAlign = "right".asDynamic().unsafeCast<CanvasTextAlign>()
 				textX += width - radius
 			}
-
 
 			context.fillStyle = textColor
 			context.font = textSize.toString() + "px " + textFont;
 
-			val usableWidth = width - (radius * 2.0)
+			drawingTextWidth = width - (radius * 2.0)
 
 			val textWidth = context.measureText(text).width
-			if (textWidth > usableWidth){
-				val textRatio = usableWidth / textWidth.toDouble()
-				val newSize = (textSize * textRatio)
-				context.font = newSize.toString() + "px " + textFont;
+			if (textWidth > drawingTextWidth){
+				val textRatio = drawingTextWidth / textWidth.toDouble()
+				drawingTextSize = (textSize.toDouble() * textRatio).toInt()
 			}
+			else drawingTextSize = textSize
+		}
+	}
 
-			context.fillText(text, textX, textY, usableWidth);
+	/**
+	 * Draws the text on screen according to the class parameters
+	 */
+	fun drawText() {
+		if (text != "") {
+			context.fillStyle = textColor
+			context.font = drawingTextSize.toString() + "px " + textFont;
+			context.textAlign = textAlign
+
+			context.fillText(text, textX, textY, drawingTextWidth);
 
 			context.textAlign = "start".asDynamic().unsafeCast<CanvasTextAlign>()
-
 		}
 	}
 
@@ -198,10 +209,16 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 
 	}
 
+	fun recalculate(){
+		calculate()
+		calculateText()
+	}
+
 	/**
 	 * Called to calculate the parameters of the object
+	 * This is meant to be implemented in a subclass
 	 */
-	open fun recalculate() {
+	protected open fun calculate() {
 
 	}
 
