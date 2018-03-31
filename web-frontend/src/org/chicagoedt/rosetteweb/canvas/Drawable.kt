@@ -59,7 +59,7 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 			var textX = x
 
 			if (textAlignmentVertical == TextAlignmentVertical.CENTER) {
-				textY += (height / 2.4) + (textSize / 2.0)
+				textY += (height / 2.0) + (textSize / 2.5)
 			} else if (textAlignmentVertical == TextAlignmentVertical.TOP) {
 				textY += textSize.toDouble() + radius
 
@@ -78,8 +78,17 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 				textX += width - radius
 			}
 
+
 			context.fillStyle = textColor
 			context.font = textSize.toString() + "px " + textFont;
+
+			val textWidth = context.measureText(text).width
+			if (textWidth > width){
+				val textRatio = width / textWidth.toDouble()
+				val newSize = (textSize * textRatio)
+				context.font = newSize.toString() + "px " + textFont;
+			}
+
 			context.fillText(text, textX, textY, width);
 
 			context.textAlign = "start".asDynamic().unsafeCast<CanvasTextAlign>()
