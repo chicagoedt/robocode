@@ -115,6 +115,13 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 			if (prevY == -1.0) prevY = mouseY
 
 			refreshView()
+
+			for (dropzone in dropzones){
+				if (dropzone.mouseWithin(mouseX, mouseY)){
+					dropzone.onHover(mouseX, mouseY, draggable)
+				}
+			}
+
 			draggable.drag(mouseX - prevX, mouseY - prevY)
 
 			prevX = mouseX

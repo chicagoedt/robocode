@@ -57,4 +57,8 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 			action.draw()
 		}
 	}
+
+	override fun onHover(mx : Double, my : Double, draggable : Draggable){
+		
+	}
 }

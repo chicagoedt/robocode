@@ -24,6 +24,7 @@ abstract class ActionBlock<T : Action<*>>(manager : InteractionManager,
 	var menu = Dropdown(context, manager)
 	init{
 		menu.shouldDraw = false
+		menu.radius = BLOCK_CORNER_RADIUS
 	}
 
 	override fun onDragStart(){

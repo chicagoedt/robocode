@@ -15,6 +15,8 @@ class Panel(context: CanvasRenderingContext2D,
 			var player: RobotPlayer,
 			manager : InteractionManager) : Dropzone(manager, context){
 	override var color = COLOR_PANEL_BACKGROUND
+	override var borderWidth = PANEL_HOVER_BORDER_WIDTH
+	override var borderColor = COLOR_PANEL_HOVER_BORDER
 	private var header = Drawable(context)
 	private var actions = arrayListOf<ActionBlock<*>>()
 	private val runButton = Button(context, manager, ::runActions)
@@ -68,6 +70,8 @@ class Panel(context: CanvasRenderingContext2D,
 		header.width = PANEL_HEADER_WIDTH
 		header.height = PANEL_HEADER_HEIGHT
 		header.recalculate()
+
+		borderWidth = PANEL_HOVER_BORDER_WIDTH
 	}
 
 	override fun afterDraw(){
@@ -92,5 +96,9 @@ class Panel(context: CanvasRenderingContext2D,
 		actions.remove(draggable as ActionBlock<*>)
 		player.removeAction((draggable as ActionBlock<*>).action)
 		recalculate()
+	}
+
+	override fun onHover(mx : Double, my : Double, draggable : Draggable){
+		drawBorder()
 	}
 }

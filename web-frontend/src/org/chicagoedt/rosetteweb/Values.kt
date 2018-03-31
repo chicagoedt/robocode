@@ -10,6 +10,7 @@ val PANEL_WIDTH get() = ((editorContext.canvas.width / pixelRatio(editorContext)
 val PANEL_HEADER_HEIGHT get() = PANEL_HEIGHT / 15.0
 val PANEL_HEADER_WIDTH get() = PANEL_WIDTH
 val PANEL_RUN_BUTTON_WIDTH get() = PANEL_WIDTH / 5.0
+val PANEL_HOVER_BORDER_WIDTH get() = PANEL_WIDTH / 100.0
 
 val BLOCK_HEIGHT get() = PANEL_HEIGHT / 20.0
 val BLOCK_WIDTH get() = PANEL_WIDTH

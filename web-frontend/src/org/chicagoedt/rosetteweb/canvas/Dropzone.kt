@@ -28,5 +28,17 @@ abstract class Dropzone(val manager : InteractionManager, context : CanvasRender
 		draggable.shouldDraw = true
 	}
 
+	/**
+	 * Called when a draggable is removed from this dropzone
+	 * @param draggable The draggable being removed
+	 */
 	abstract fun removeDraggable(draggable : Draggable)
+
+	/**
+	 * Called when a draggable is hovered over this object
+	 * @param mx The X value of the mouse on this hover
+	 * @param my The Y value of the mouse on this hover
+	 * @param draggable The draggable being hovered over this dropzone
+	 */
+	abstract fun onHover(mx : Double, my : Double, draggable : Draggable)
 }

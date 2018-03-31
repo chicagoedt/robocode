@@ -23,6 +23,11 @@ enum class TextAlignmentHorizontal{
  * @property width The width of the object to draw
  * @property height The height of the object to draw
  * @property color The color of the object to draw
+ * @property radius The radius of the rounded corners
+ * @property shadowBlur The amount of blur on the shadow underneath this object
+ * @property borderColor The color for the border on this object
+ * @property borderWidth The width for the border on this object
+ * @property hasBorder Select this if the object should be drawn with a border
  * @property text The text to draw over this drawable
  * @property textVerticalAlignment The text alignment in the vertical space
  * @property textHorizontalAlignment The text alignment in the horizontal space
@@ -39,6 +44,9 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 	open var color = "white"
 	open var radius = 0.0
 	open var shadowBlur = 0.0
+	open var borderColor = "black"
+	open var borderWidth = 0.0
+	open var hasBorder = false
 
 	//I know there's quite a few properties for the text, but most use cases will probably just leave these as default
 	open var text = ""
@@ -49,6 +57,54 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 	open var textSize = 40
 
 	var shouldDraw = true
+
+	/**
+	 * Draws the border for this object
+	 */
+	fun drawBorder(){
+		traceOutline()
+		context.strokeStyle = borderColor
+		context.lineWidth = borderWidth
+		context.stroke()
+	}
+
+	/**
+	 * Traces the outline of this object, to be used with fill(), stroke(), etc
+	 */
+	private fun traceOutline(){
+		var posX = x
+		var posY = y + radius
+
+		context.beginPath()
+		context.moveTo(posX, posY)
+		posX = x + radius
+		posY = y
+		context.quadraticCurveTo(x, y, posX, posY)
+
+		posX = x + width - radius
+		context.lineTo(posX, posY)
+
+		posX = x + width
+		posY = y + radius
+		context.quadraticCurveTo(x + width, y, posX, posY)
+
+		posY = y + height - radius
+		context.lineTo(posX, posY)
+
+		posX = x + width - radius
+		posY = y + height
+		context.quadraticCurveTo(x + width, y + height, posX, posY)
+
+		posX = x + radius
+		context.lineTo(posX, posY)
+
+		posX = x
+		posY = y + height - radius
+		context.quadraticCurveTo(x, y + height, posX, posY)
+
+		posY = y + radius
+		context.lineTo(posX, posY)
+	}
 
 	/**
 	 * Draws the text on screen according to the class parameters
@@ -82,14 +138,16 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 			context.fillStyle = textColor
 			context.font = textSize.toString() + "px " + textFont;
 
+			val usableWidth = width - (radius * 2.0)
+
 			val textWidth = context.measureText(text).width
-			if (textWidth > width){
-				val textRatio = width / textWidth.toDouble()
+			if (textWidth > usableWidth){
+				val textRatio = usableWidth / textWidth.toDouble()
 				val newSize = (textSize * textRatio)
 				context.font = newSize.toString() + "px " + textFont;
 			}
 
-			context.fillText(text, textX, textY, width);
+			context.fillText(text, textX, textY, usableWidth);
 
 			context.textAlign = "start".asDynamic().unsafeCast<CanvasTextAlign>()
 
@@ -106,39 +164,7 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 		if (radius == 0.0) {
 			context.fillRect(x, y, width, height)
 		} else {
-			var posX = x
-			var posY = y + radius
-
-			context.beginPath()
-			context.moveTo(posX, posY)
-			posX = x + radius
-			posY = y
-			context.quadraticCurveTo(x, y, posX, posY)
-
-			posX = x + width - radius
-			context.lineTo(posX, posY)
-
-			posX = x + width
-			posY = y + radius
-			context.quadraticCurveTo(x + width, y, posX, posY)
-
-			posY = y + height - radius
-			context.lineTo(posX, posY)
-
-			posX = x + width - radius
-			posY = y + height
-			context.quadraticCurveTo(x + width, y + height, posX, posY)
-
-			posX = x + radius
-			context.lineTo(posX, posY)
-
-			posX = x
-			posY = y + height - radius
-			context.quadraticCurveTo(x, y + height, posX, posY)
-
-			posY = y + radius
-			context.lineTo(posX, posY)
-
+			traceOutline()
 			context.closePath()
 			context.fill()
 		}
@@ -153,6 +179,7 @@ open class Drawable(protected var context : CanvasRenderingContext2D) {
 			beforeDraw()
 			drawBackground()
 			drawText()
+			if (hasBorder) drawBorder()
 			afterDraw()
 		}
 	}

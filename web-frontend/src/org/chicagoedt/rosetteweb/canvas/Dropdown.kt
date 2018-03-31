@@ -3,6 +3,11 @@ package org.chicagoedt.rosetteweb.canvas
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.CanvasTextAlign
 
+/**
+ * A list of clickable dropdown buttons
+ * @property items The buttons in this dropdown list
+ * @property expanded True if the dropdown is currently displaying all items, false otherwise
+ */
 class Dropdown(context : CanvasRenderingContext2D, 
 				manager : InteractionManager) : Button(context, manager){
 	val items = arrayListOf<Button>()
@@ -12,6 +17,11 @@ class Dropdown(context : CanvasRenderingContext2D,
 	override var textColor = "black"
 	override var function = {switchView()}
 
+	/**
+	 * Adds an item to this dropdown list
+	 * @param itemText The label for this item
+	 * @param function The function to call when this item is selected
+	 */
 	fun addItem(itemText : String, function : () -> Unit){
 		val button = Button(context, manager, {
 			text = itemText
@@ -24,6 +34,9 @@ class Dropdown(context : CanvasRenderingContext2D,
 		items.add(button)
 	}
 
+	/**
+	 * Switched between expanded and non-expanded modes
+	 */
 	fun switchView(){
 		if (expanded){
 			expanded = false
