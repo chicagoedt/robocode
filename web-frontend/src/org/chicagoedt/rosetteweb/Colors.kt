@@ -15,3 +15,5 @@ val COLOR_TILE_OBSTACLE = "#212121"
 val COLOR_TILE_VICTORY = "#FFEB3B"
 
 val COLOR_BUTTON_TEXT = "green"
+
+val COLOR_BORDER = "black"

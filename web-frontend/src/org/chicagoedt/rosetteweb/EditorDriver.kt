@@ -4,6 +4,8 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosetteweb.editor.*
 import org.chicagoedt.rosetteweb.canvas.*
+
+
 /**
  * The driver to run an Editor canvas for the current game
  * @param game The game that the program is running
@@ -13,12 +15,13 @@ import org.chicagoedt.rosetteweb.canvas.*
  * @property drawer The COLOR_DRAWER to house the actions to choose
  * @property background The drawable for the background color
  */
-
 class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	private val panels = ArrayList<Panel>()
 	private var interactionManager  = InteractionManager(context, {drawEditor()})
 	private var drawer = Drawer(interactionManager, context)
 	private val background = Drawable(context)
+	val border = Drawable(context)
+	
 
 	/**
 	 * Set the offset of this canvas relative to the browser window
@@ -45,7 +48,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 	 * Calculates the positions of the panels in the canvas. This should be called when the screen size changes
 	 */
 	fun calculatePanels(){
-		var panelX = 0.0
+		var panelX = BORDER_WIDTH
 		var panelY = 0.0
 
 		for (panel in panels){
@@ -57,7 +60,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 
 			panelX += PANEL_WIDTH
         }
-		drawer.x = 0.0
+		drawer.x = BORDER_WIDTH
 		drawer.y = PANEL_HEIGHT
 		drawer.width = DRAWER_WIDTH
 		drawer.height = DRAWER_HEIGHT
@@ -70,6 +73,14 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		background.height = context.canvas.height.toDouble()
 		background.color = COLOR_BACKGROUND
 		background.recalculate()
+
+		border.x = 0.0
+		border.y = 0.0
+		border.width = BORDER_WIDTH
+		border.height = BORDER_HEIGHT
+		border.color = COLOR_BORDER
+		border.shadowBlur = BORDER_SHADOW
+		border.recalculate()
 	}
 
 	/**
@@ -83,5 +94,7 @@ class EditorDriver(val game: Game, val context: CanvasRenderingContext2D){
 		}
 
 		drawer.draw()
+
+		border.draw()
 	}
 }

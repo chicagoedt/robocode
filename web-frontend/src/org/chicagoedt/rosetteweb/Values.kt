@@ -6,20 +6,24 @@ val DRAWER_HEIGHT get() = editorContext.canvas.height * (1.0/6.0) / pixelRatio(e
 val DRAWER_WIDTH get() = editorContext.canvas.width / pixelRatio(editorContext)
 
 val PANEL_HEIGHT get() = editorContext.canvas.height * (5.0/6.0) / pixelRatio(editorContext)
-val PANEL_WIDTH get() = editorContext.canvas.width / pixelRatio(editorContext) / game.currentLevel.players.size
+val PANEL_WIDTH get() = ((editorContext.canvas.width / pixelRatio(editorContext)) - BORDER_WIDTH) / game.currentLevel.players.size
 val PANEL_HEADER_HEIGHT get() = PANEL_HEIGHT / 15.0
 val PANEL_HEADER_WIDTH get() = PANEL_WIDTH
 val PANEL_RUN_BUTTON_WIDTH get() = PANEL_WIDTH / 5.0
 
 val BLOCK_HEIGHT get() = PANEL_HEIGHT / 20.0
 val BLOCK_WIDTH get() = PANEL_WIDTH
-val BLOCK_LIFT_SHADOW get() = 20.0 / pixelRatio(editorContext)
-val BLOCK_DOWN_SHADOW get() = 5.0 / pixelRatio(editorContext)
+val BLOCK_LIFT_SHADOW get() = 200.0 // pixelRatio(editorContext)
+val BLOCK_DOWN_SHADOW get() = 2.0 // pixelRatio(editorContext)
 val BLOCK_CORNER_RADIUS get() = 10.0
 val BLOCK_DROPDOWN_WIDTH get() = BLOCK_WIDTH / 5.0
 
-val TILE_WIDTH get() = (gridContext.canvas.width / game.currentLevel.properties.width) / pixelRatio(gridContext)
-val TILE_HEIGHT get() = (gridContext.canvas.height / game.currentLevel.properties.height) / pixelRatio(gridContext)
+val TILE_WIDTH get() = (gridContext.canvas.width.toDouble() / game.currentLevel.properties.width.toDouble()) / pixelRatio(gridContext)
+val TILE_HEIGHT get() = (gridContext.canvas.height.toDouble() / game.currentLevel.properties.height.toDouble()) / pixelRatio(gridContext)
+
+val BORDER_WIDTH get() = editorContext.canvas.width / 100.0 / pixelRatio(editorContext)
+val BORDER_HEIGHT get() = editorContext.canvas.height / pixelRatio(editorContext)
+val BORDER_SHADOW get() = 300.0
 
 fun pixelRatio(context : CanvasRenderingContext2D) : Double{
     var ratio = 1.0

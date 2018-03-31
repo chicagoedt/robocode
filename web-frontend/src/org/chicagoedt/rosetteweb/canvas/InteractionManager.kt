@@ -43,9 +43,6 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 					found = true
 					break
 				}
-				//else if (button is Dropdown){
-				//	if ((button as Dropdown).expanded) (button as Dropdown).switchView()
-				//}
 			}
 			
 			if (!found){
@@ -57,9 +54,6 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
        				}
 				}
 			}
-
-			//refresh.invoke()
-
     		true
 		}
 
@@ -83,7 +77,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 					draggables[currentDraggableIndex].y = originalY
 					draggables[currentDraggableIndex].recalculate()
 				}
-				refresh.invoke()
+				refreshView()
 				clearDrag()
 			}
 			true
@@ -112,6 +106,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 		draggables[currentDraggableIndex].onDragStart()
 		var prevX = -1.0
 		var prevY = -1.0
+		draggable.drag(0.0, 0.0)
 		context.canvas.onmousemove = { e : Event ->
 			val mouseE = e as MouseEvent
 			val mouseX = mouseE.clientX.toDouble() - offsetX
@@ -119,7 +114,7 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 			if (prevX == -1.0) prevX = mouseX
 			if (prevY == -1.0) prevY = mouseY
 
-			refresh.invoke()
+			refreshView()
 			draggable.drag(mouseX - prevX, mouseY - prevY)
 
 			prevX = mouseX
@@ -138,4 +133,16 @@ class InteractionManager(val context : CanvasRenderingContext2D, val refresh: ()
 			false
 		}
 	}
+
+	/**
+	 * Refreshes the view
+	 */
+	 fun refreshView(){
+	 	for (button in onClicks){
+			if (button is Dropdown){
+				if (button.expanded) button.switchView()
+			}
+		}
+		refresh.invoke()
+	 }
 }
