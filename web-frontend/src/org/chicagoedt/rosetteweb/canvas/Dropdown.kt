@@ -5,17 +5,21 @@ import org.w3c.dom.CanvasTextAlign
 
 /**
  * A list of clickable dropdown buttons
+ * @param manager The interaction manager to handle this dropdown
  * @property items The buttons in this dropdown list
  * @property expanded True if the dropdown is currently displaying all items, false otherwise
  */
 class Dropdown(context : CanvasRenderingContext2D, 
-				manager : InteractionManager) : Button(context, manager){
+				val manager : InteractionManager) : Drawable(context){
 	val items = arrayListOf<Button>()
 	internal var expanded = false
 	override var text = "Select..."
 	override var textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
 	override var textColor = "black"
-	override var function = {switchView()}
+
+	init{
+		manager.dropdowns.add(this)
+	}
 
 	/**
 	 * Adds an item to this dropdown list
@@ -25,33 +29,15 @@ class Dropdown(context : CanvasRenderingContext2D,
 	fun addItem(itemText : String, function : () -> Unit){
 		val button = Button(context, manager, {
 			text = itemText
-			switchView()
 			manager.refresh.invoke()
 			function.invoke()
+			manager.removeDropdownItems(this)
 		})
+		manager.buttons.remove(button)
 		button.shouldDraw = false
 		button.text = itemText
 		button.textColor = "gray"
 		items.add(button)
-	}
-
-	/**
-	 * Switched between expanded and non-expanded modes
-	 */
-	fun switchView(){
-		if (expanded){
-			expanded = false
-			for (button in items){
-				button.shouldDraw = false
-			}
-		}
-		else if (!expanded){
-			expanded = true
-			for (button in items){
-				button.shouldDraw = true
-			}
-		}
-		draw()
 	}
 
 	override fun calculate(){

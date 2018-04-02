@@ -23,7 +23,7 @@ open class Button(context : CanvasRenderingContext2D,
 	override var textColor = COLOR_BUTTON_TEXT
 
 	init{
-		manager.onClicks.add(this)
+		manager.buttons.add(this)
 	}
 
 	/**

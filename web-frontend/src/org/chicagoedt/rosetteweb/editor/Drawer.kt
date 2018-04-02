@@ -45,10 +45,7 @@ class Drawer(manager : InteractionManager, context : CanvasRenderingContext2D) :
 		super.drop(draggable)
 		manager.draggables.remove(draggable)
 		if (draggable is ActionBlock<*>){
-			manager.onClicks.remove(draggable.menu)
-			for (button in draggable.menu.items){
-				manager.onClicks.remove(button)
-			}
+			manager.dropdowns.remove(draggable.menu)
 		}
 	}
 
