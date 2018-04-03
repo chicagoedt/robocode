@@ -29,8 +29,8 @@ enum class TextAlignmentHorizontal{
  * @property borderWidth The width for the border on this object
  * @property hasBorder Select this if the object should be drawn with a border
  * @property text The text to draw over this drawable
- * @property textVerticalAlignment The text alignment in the vertical space
- * @property textHorizontalAlignment The text alignment in the horizontal space
+ * @property textAlignmentVertical The text alignment in the vertical space
+ * @property textAlignmentHorizontal The text alignment in the horizontal space
  * @property textColor The color of the text
  * @property textFont The font to display the text in
  * @property textSize The size to display the text in

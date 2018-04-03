@@ -3,7 +3,7 @@ package org.chicagoedt.rosetteweb.grid
 import org.w3c.dom.CanvasRenderingContext2D
 import org.chicagoedt.rosette.tiles.*
 import org.chicagoedt.rosette.levels.*
-import org.chicagoedt.rosetteweb.canvas.Drawable
+import org.chicagoedt.rosetteweb.canvas.*
 import org.chicagoedt.rosetteweb.*
 
 /**
@@ -14,10 +14,18 @@ import org.chicagoedt.rosetteweb.*
  * @param level The level that the tile is a part of
  */
 open class TileLocation(var gridX : Double, var gridY : Double, context : CanvasRenderingContext2D, var level : Level) : Drawable(context){
+	override var textAlignmentVertical = TextAlignmentVertical.BOTTOM
+	override var textAlignmentHorizontal = TextAlignmentHorizontal.RIGHT
+	override var text  = level.tileAt(gridX.toInt(), gridY.toInt()).items.itemQuantity(1000).toString()
+		get() = level.tileAt(gridX.toInt(), gridY.toInt()).items.itemQuantity(1000).toString()
 
     override fun beforeDraw(){
         if (level.tileAt(gridX.toInt(),gridY.toInt()) is NeutralTile) color = COLOR_TILE_NEUTRAL //blue
         else if (level.tileAt(gridX.toInt(),gridY.toInt()) is ObstacleTile) color = COLOR_TILE_OBSTACLE //gray
         else if (level.tileAt(gridX.toInt(),gridY.toInt()) is VictoryTile) color = COLOR_TILE_VICTORY //yellow
+    }
+
+    override fun afterDraw(){
+
     }
 }

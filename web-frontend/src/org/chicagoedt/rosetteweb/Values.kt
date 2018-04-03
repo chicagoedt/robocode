@@ -21,6 +21,7 @@ val BLOCK_DROPDOWN_WIDTH get() = BLOCK_WIDTH / 5.0
 
 val TILE_WIDTH get() = (gridContext.canvas.width.toDouble() / game.currentLevel.properties.width.toDouble()) / pixelRatio(gridContext)
 val TILE_HEIGHT get() = (gridContext.canvas.height.toDouble() / game.currentLevel.properties.height.toDouble()) / pixelRatio(gridContext)
+val TILE_TEXT_SIZE get() = 20
 
 val BORDER_WIDTH get() = editorContext.canvas.width / 100.0 / pixelRatio(editorContext)
 val BORDER_HEIGHT get() = editorContext.canvas.height / pixelRatio(editorContext)
