@@ -4,6 +4,7 @@ apply plugin: 'kotlin2js'
 
 sourceSets {
     main.kotlin.srcDirs += 'src/'
+    main.kotlin.srcDirs += 'lib/'
     test.kotlin.srcDirs += 'tests/'
 }
 
@@ -65,3 +66,24 @@ task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModu
 }
 
 test.dependsOn runMocha
+
+task installTs2kt(type: NpmTask) {
+    args = ['install', 'ts2kt']
+}
+
+task generateJQueryHeader(type: NodeTask, dependsOn: [populateNodeModules, installTs2kt]){
+    def f = file('headers/jquery.d.ts')
+    if (!f.exists()) {
+        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
+    }
+
+    script = file("node_modules/ts2kt/ts2kt.js")
+    args = ["-d", "lib/", "headers/jquery.d.ts"]
+}
+
+compileKotlin2Js.doFirst{
+    def f = file('lib/jquery.kt')
+    if (!f.exists()){
+        generateJQueryHeader.execute()
+    }
+}

@@ -2,18 +2,14 @@ package org.chicagoedt.rosetteweb
 
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.HTMLElement
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
 
 /**
  * The context for the grid canvas
  */
-internal val gridContext = (document.createElement("canvas") as HTMLCanvasElement).getContext("2d") as CanvasRenderingContext2D
-
-/**
- * The context for the editor canvas
- */
-internal val editorContext  = (document.createElement("canvas") as HTMLCanvasElement).getContext("2d") as CanvasRenderingContext2D
+internal lateinit var gridContext : CanvasRenderingContext2D
 
 /**
  * The game that the browser is running
@@ -23,12 +19,12 @@ internal val game = Game(getLevels(), getRobots())
 /**
  * The driver for the grid canvas
  */
-private var gridDriver = GridDriver(game, gridContext)
+private lateinit var gridDriver : GridDriver
 
 /**
- * The driver for the editor canvas
+ * The driver for the editor area
  */
-private var editorDriver = EditorDriver(game, editorContext)
+ private lateinit var editorDriver : EditorDriver
 
 /**
  * The main function to run when the page loads
@@ -36,24 +32,23 @@ private var editorDriver = EditorDriver(game, editorContext)
  */
 fun main(args: Array<String>) {
     window.onload = {
-        document.body!!.style.backgroundColor = COLOR_BACKGROUND
-
-        gridContext.canvas.style.position = "absolute"
-        editorContext.canvas.style.position = "absolute"
+        //document.querySelector(".actionBlock").
+        val gridCanvas = document.getElementById("grid") as HTMLCanvasElement
+        gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
 
         positionCanvases()
 
+        gridDriver = GridDriver(game, gridContext)
         gridDriver.calculateNewLevel()
-        editorDriver.calculateNewLevel()
 
-        document.body!!.appendChild(editorContext.canvas)
-        document.body!!.appendChild(gridContext.canvas)
+        editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
+        editorDriver.calculateNewLevel()
 
         drawRefresh()
     }
 
     window.onresize = {
-        if (::gridContext.isInitialized && ::editorContext.isInitialized) {
+        if (::gridContext.isInitialized) {
             positionCanvases()
             fullRefresh()
         }
@@ -69,14 +64,9 @@ fun main(args: Array<String>) {
     if (gridContext.canvas.width > maximumGrid) gridContext.canvas.width = maximumGrid
     gridContext.canvas.height = gridContext.canvas.width
 
-    editorContext.canvas.width = document.documentElement!!.clientWidth - gridContext.canvas.width
-    editorContext.canvas.height = document.documentElement!!.clientHeight
-    editorContext.canvas.style.left = gridContext.canvas.width.toString() + "px"
-
     setCanvasDPI(gridContext)
-    setCanvasDPI(editorContext)
 
-    editorDriver.setOffset(gridContext.canvas.width.toDouble() / pixelRatio(gridContext), 0.0)
+    (document.getElementById("editor") as HTMLElement).style.left = gridContext.canvas.style.width
  }
 
 /**
@@ -84,13 +74,11 @@ fun main(args: Array<String>) {
  */
 fun fullRefresh(){
     gridDriver.calculateTiles()
-    editorDriver.calculatePanels()
     drawRefresh()
 }
 
 fun drawRefresh(){
     gridDriver.drawGrid()
-    editorDriver.drawEditor()
 }
 
 fun setCanvasDPI(context : CanvasRenderingContext2D){

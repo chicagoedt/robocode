@@ -1,54 +1,21 @@
 package org.chicagoedt.rosetteweb.editor
 
-import org.w3c.dom.CanvasRenderingContext2D
-import org.w3c.dom.HTMLCanvasElement
-import kotlin.browser.*
-import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.actions.*
-import org.chicagoedt.rosetteweb.canvas.*
+import jQuery
 import org.chicagoedt.rosetteweb.*
+import org.w3c.dom.HTMLDivElement
+import org.w3c.dom.HTMLElement
+import kotlin.browser.document
+import kotlin.dom.addClass
 
-/**
- * A block that represents (and contains) an instruction for the robot
- * @param manager The interaction manager for the canvas that this block is on
- * @property action The action object that this block represents
- */
-abstract class ActionBlock<T : Action<*>>(manager : InteractionManager,
-										  context : CanvasRenderingContext2D,
-										  dropzone : Dropzone) : Draggable(manager, context, dropzone) {
-	override var textAlignmentHorizontal = TextAlignmentHorizontal.LEFT
-	override var shadowBlur = BLOCK_DOWN_SHADOW
-	override var radius = BLOCK_CORNER_RADIUS
-	abstract var action : T
-	abstract val hasParameter : Boolean
-	var menu = Dropdown(context, manager)
-	init{
-		menu.shouldDraw = false
-		menu.radius = BLOCK_CORNER_RADIUS
-	}
+class ActionBlock(val parent : HTMLElement){
+    val element = document.createElement("div")
 
-	override fun onDragStart(){
-		shadowBlur = BLOCK_LIFT_SHADOW
-	}
+    init {
+        element.addClass("actionBlock")
+        parent.appendChild(element)
+        val drag = jQuery(".actionBlock").asDynamic()
+        drag.draggable()
+        drag.draggable("option", "containment", "#editor")
+    }
 
-	override fun onDragEnd() {
-		this.shadowBlur = BLOCK_DOWN_SHADOW
-	}
-
-	override fun calculate(){
-		textSize = (height * (2.0/3.0)).toInt()
-		radius = BLOCK_CORNER_RADIUS
-
-		if (hasParameter){
-			menu.height = height
-			menu.width = BLOCK_DROPDOWN_WIDTH
-			menu.x = x + width - BLOCK_DROPDOWN_WIDTH
-			menu.y = y
-			menu.recalculate()
-		}
-	}
-
-	override fun afterDraw(){
-		if (hasParameter) menu.draw()
-	}
 }

@@ -58,6 +58,8 @@ backend/build/
 
 #Kotlin -> JS stuff
 /web-frontend/web/js/*
+/web-frontend/headers/*
+/web-frontend/lib/*
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
