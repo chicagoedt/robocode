@@ -1,19 +1,16 @@
 package org.chicagoedt.rosetteweb
 
-import jQuery
-import kotlin.browser.*
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosetteweb.editor.*
 import org.w3c.dom.*
-import kotlin.dom.addClass
 
 class EditorDriver(val game : Game, val editor : HTMLElement){
-	val panelTable = editor.children.get("panels")!! as HTMLTableElement
+	val panelsTable = editor.children.get("panels")!!.children.get(0)!!.children.get("panelsRow") as HTMLElement
 	val drawer = Drawer(editor)
 
 	fun calculateNewLevel(){
-		for (robot in game.currentLevel.players){
-			val panel = Panel(panelTable)
+		for ((name, robot) in game.currentLevel.players){
+			val panel = Panel(panelsTable, robot)
 		}
 
 		populateDrawer()
