@@ -9,7 +9,7 @@ import kotlin.dom.addClass
 
 class EditorDriver(val game : Game, val editor : HTMLElement){
 	val panelTable = editor.children.get("panels")!! as HTMLTableElement
-	val drawer = editor.children.get("drawer")!! as HTMLElement
+	val drawer = Drawer(editor)
 
 	fun calculateNewLevel(){
 		for (robot in game.currentLevel.players){
@@ -20,6 +20,6 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 	}
 
 	fun populateDrawer(){
-		val moveActionBlock = ActionBlock(drawer)
+		val moveActionBlock = ActionBlock(drawer.element)
 	}
 }

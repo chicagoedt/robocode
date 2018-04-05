@@ -8,15 +8,12 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 
-class Panel(val parent : HTMLElement){
-    val element = document.createElement("td")
+class Drawer(val parent : HTMLElement){
+    val element = document.getElementById("drawer") as HTMLElement
 
     init {
-        element.addClass("panel")
-        parent.appendChild(element)
-        val drag = jQuery(".panel").asDynamic()
+        val drag = jQuery("#drawer").asDynamic()
         drag.droppable()
-        //js("drag.droppable(\"option\", \"drop\", function(event, ui){drop()})")
         drag.droppable("option", "drop", ::drop)
     }
 
