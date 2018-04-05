@@ -3,7 +3,7 @@ package org.chicagoedt.rosetteweb
 import jQuery
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
-import org.chicagoedt.rosetteweb.editor.ActionBlock
+import org.chicagoedt.rosetteweb.editor.*
 import org.w3c.dom.*
 import kotlin.dom.addClass
 
@@ -13,9 +13,7 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 
 	fun calculateNewLevel(){
 		for (robot in game.currentLevel.players){
-			val panel = document.createElement("td") as HTMLTableCellElement
-			panel.addClass("panel")
-			panelTable.appendChild(panel)
+			val panel = Panel(panelTable)
 		}
 
 		populateDrawer()
