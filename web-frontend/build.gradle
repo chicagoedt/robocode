@@ -72,8 +72,11 @@ task installTs2kt(type: NpmTask) {
 }
 
 task generateJQueryHeader(type: NodeTask, dependsOn: [populateNodeModules, installTs2kt]){
-    def f = file('headers/jquery.d.ts')
-    if (!f.exists()) {
+    def folder = new File('web-frontend/headers/')
+    if (!folder.exists()) {
+        folder.mkdirs()
+        def f = new File('web-frontend/headers/jquery.d.ts')
+
         new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
     }
 
