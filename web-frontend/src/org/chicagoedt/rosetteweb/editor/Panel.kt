@@ -18,18 +18,31 @@ import kotlin.dom.addClass
  * @property element The HTML element for this panel
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer){
-    val element = document.createElement("td") as HTMLElement
+    lateinit var element : HTMLDivElement
 
     init {
+        val tdElement = document.createElement("td") as HTMLElement
+        
+        element = document.createElement("div") as HTMLDivElement
         element.addClass("panel")
-        element.id = robot.name + "Panel"
-        parent.appendChild(element)
-        val drag = jQuery("#" + element.id).asDynamic()
-        drag.droppable()
-        drag.droppable("option", "tolerance", "pointer")
-        drag.droppable("option", "drop", ::drop)
-        drag.droppable("option", "over", ::over)
-        drag.droppable("option", "out", ::overout)
+
+        element.appendChild(getHeader())
+        tdElement.appendChild(element)
+        parent.appendChild(tdElement)
+
+        addDrop()
+    }
+
+    /**
+     * Adds the necessary options for this panel to be a droppable
+     */
+    fun addDrop(){
+        val drop = jQuery(element).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "drop", ::drop)
+        drop.droppable("option", "over", ::over)
+        drop.droppable("option", "out", ::overout)
     }
 
     /**
@@ -63,6 +76,19 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      */
     fun overout(event : Event, ui : dynamic){
         element.style.border = ""
+    }
+
+    private fun getHeader() : HTMLElement{
+        val header = document.createElement("div") as HTMLElement
+        header.addClass("panelHeader")
+
+        val name = document.createElement("p") as HTMLElement
+        name.addClass("panelHeaderName")
+        name.innerHTML = robot.name
+        
+        header.appendChild(name)
+
+        return header
     }
 
 }

@@ -22,7 +22,7 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 		val width = ((1.0  / game.currentLevel.players.size.toDouble()) * 100).toString() + "%"
 		for ((name, robot) in game.currentLevel.players){
 			val panel = Panel(panelsTable, robot, drawer)
-			panel.element.style.width = width
+			(panel.element.parentElement!! as HTMLElement).style.width = width
 		}
 
 		drawer.populate()

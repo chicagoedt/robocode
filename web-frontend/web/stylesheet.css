@@ -24,10 +24,21 @@
 
 .panel{
 	background-color: #0b97c4;
+	height: 100%;
 }
 
 .actionBlock{
 	width:50%;
 	height:40px;
 	background-color: #00d6b2;
+}
+
+.panelHeader{
+	width:100%;
+	height:60px;
+	background-color: #FF5722;
+}
+
+.panelHeaderName{
+	float: left;
 }
