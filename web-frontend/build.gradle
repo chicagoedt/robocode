@@ -84,8 +84,6 @@ task generateJQueryHeader(type: NodeTask, dependsOn: [populateNodeModules, insta
     args = ["-d", "lib/", "headers/jquery.d.ts"]
 }
 
-compileKotlin2Js.dependsOn installTs2kt
-
 compileKotlin2Js.doFirst{
     def f = file('lib/jquery.kt')
     if (!f.exists()){
