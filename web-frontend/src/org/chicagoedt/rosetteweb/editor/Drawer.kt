@@ -4,6 +4,8 @@ import jQuery
 import JQueryEventObject
 import JQuery
 import org.chicagoedt.rosetteweb.*
+import org.chicagoedt.rosette.actions.robotActions.*
+import org.chicagoedt.rosetteweb.editor.actionblocks.*
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLObjectElement
@@ -41,7 +43,7 @@ class Drawer(val parent : HTMLElement){
      */
     fun populate(){
         if (element.children.length == 0){
-            val actionBlock = ActionBlock()
+            val actionBlock = MoveActionBlock()
             this.element.appendChild(actionBlock.element)
             actionBlock.addDraggable()
         }

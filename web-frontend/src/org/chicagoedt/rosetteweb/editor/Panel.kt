@@ -78,6 +78,10 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         element.style.border = ""
     }
 
+    /**
+     * Generates the header for the panel
+     * @return The HTMLElement for the header
+     */
     private fun getHeader() : HTMLElement{
         val header = document.createElement("div") as HTMLElement
         header.addClass("panelHeader")
@@ -85,7 +89,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val name = document.createElement("p") as HTMLElement
         name.addClass("panelHeaderName")
         name.innerHTML = robot.name
-        
+
         header.appendChild(name)
 
         return header
