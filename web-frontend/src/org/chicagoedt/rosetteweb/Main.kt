@@ -31,6 +31,8 @@ private lateinit var gridDriver : GridDriver
  * @param args The arguments to run. Not currently used at all.
  */
 fun main(args: Array<String>) {
+    game.attachEventListener(::update)
+
     window.onload = {
         //document.querySelector(".actionBlock").
         val gridCanvas = document.getElementById("grid") as HTMLCanvasElement
@@ -77,10 +79,17 @@ fun fullRefresh(){
     drawRefresh()
 }
 
+/**
+ * Only redraw the previously calculated coordinates
+ */
 fun drawRefresh(){
     gridDriver.drawGrid()
 }
 
+/**
+ * Sets the DPI for the canvas
+ * @param context The context for the canvas to set the DPI for
+ */
 fun setCanvasDPI(context : CanvasRenderingContext2D){
     val ratio = pixelRatio(context)
     val originalWidth = context.canvas.width
@@ -90,4 +99,14 @@ fun setCanvasDPI(context : CanvasRenderingContext2D){
     context.canvas.style.width = originalWidth.toString() + "px"
     context.canvas.style.height = originalHeight.toString() + "px"
     context.setTransform(ratio, 0.0, 0.0, ratio, 0.0, 0.0)
+}
+
+/**
+ * Updates according to the event from the game
+ * @param e The event coming from the game
+ */
+fun update(e : Event){
+    when (e){
+        Event.LEVEL_UPDATE -> fullRefresh()
+    }
 }

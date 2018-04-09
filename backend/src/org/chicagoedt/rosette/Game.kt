@@ -8,7 +8,8 @@ import org.chicagoedt.rosette.robots.Robot
  * @property LEVEL_VICTORY A robot has reached a victory tile
  */
 enum class Event {
-    LEVEL_VICTORY
+    LEVEL_VICTORY,
+    LEVEL_UPDATE
 }
 
 /**

@@ -20,6 +20,7 @@ abstract class ActionBlock<T : Action<*>>(){
 
     init {
         element.addClass("actionBlock")
+        element.asDynamic().block = this
     }
 
     /**

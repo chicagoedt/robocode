@@ -160,5 +160,6 @@ class RobotPlayer(val name: String,
                 break
             }
         }
+        eventListener.invoke(Event.LEVEL_UPDATE)
     }
 }
