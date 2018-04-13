@@ -26,23 +26,7 @@ private lateinit var gridDriver : GridDriver
  */
  private lateinit var editorDriver : EditorDriver
 
-/**
- * The main function to run when the page loads
- * @param args The arguments to run. Not currently used at all.
- */
-fun main(args: Array<String>) {
-    game.attachEventListener(::update)
-
-    //js("if (window typeof !== 'undefined') window.onload = onLoad;")
-    js("if (typeof window !== 'undefined')" + 
-        "{" +
-            "window.onresize = onResize;" +
-            "window.onload = onLoad;" + 
-        "}")
-
-    //js("if (window typeof !== 'undefined') window.onresize = onResize;")
-}
-
+@JsName("onLoad")
 fun onLoad(){
     //document.querySelector(".actionBlock").
     val gridCanvas = document.getElementById("grid") as HTMLCanvasElement
@@ -59,11 +43,45 @@ fun onLoad(){
     drawRefresh()
 }
 
+@JsName("onResize")
 fun onResize(){
     if (::gridContext.isInitialized) {
         positionCanvases()
         fullRefresh()
     }
+}
+
+/**
+ * The main function to run when the page loads
+ * @param args The arguments to run. Not currently used at all.
+ */
+fun main(args: Array<String>) {
+    game.attachEventListener(::update)
+
+    //js("if (window typeof !== 'undefined') window.onload = onLoad;")
+    //js("if (typeof window !== 'undefined')" + 
+    //    "{" +
+    //        "window.onresize = onResize;" +
+    //        "window.onload = onLoad;" + 
+     //   "}")
+
+    //js("if (typeof window !== 'undefined')")
+    //    window.onresize = {onResize()}
+
+    //js("if (typeof window !== 'undefined')")
+    //    window.onload = {onLoad()}
+
+    val windowType = js("typeof window")
+    if (windowType != "undefined"){
+        window.onresize = {onResize()}
+        window.onload = {onLoad()}
+    } 
+
+    //js("if (window typeof !== 'undefined') window.onresize = onResize;")
+}
+
+fun getTypeOf(elem : Any) : String{
+    return js("typeof elem")
 }
 
 /**
