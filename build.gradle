@@ -1,5 +1,5 @@
 group 'chicagoedt'
-version '0.1-ALPHA'
+version '0.0.1-ALPHA'
 
 allprojects{
     buildscript {
@@ -14,3 +14,5 @@ allprojects{
         }
     }
 }
+
+

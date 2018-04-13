@@ -38,8 +38,6 @@ web-frontend/node_modules/
 web-frontend/.gradle/
 jvm-frontend/.gradle/
 backend/.gradle/
-gradle/
-gradlew.bat
 
 # CMake
 cmake-build-debug/

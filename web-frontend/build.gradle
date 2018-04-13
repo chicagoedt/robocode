@@ -107,3 +107,9 @@ task runMocha(type: NodeTask, dependsOn: [installMocha, installKotlin, installKo
 
 test.dependsOn runMocha
 
+clean.doFirst{
+    delete 'node_modules/'
+    delete 'headers/'
+    delete 'lib/'
+    delete 'web/js/'
+}
