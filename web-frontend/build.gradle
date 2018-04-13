@@ -97,7 +97,7 @@ task installKotlinTest(type: NpmTask) {
 }
 
 task installWebFrontend(type: NpmTask) {
-    args = ['install', 'web/js/']
+    args = ['install', 'web/']
 }
 
 task runMocha(type: NodeTask, dependsOn: [installMocha, installKotlin, installKotlinTest, installWebFrontend]) {
