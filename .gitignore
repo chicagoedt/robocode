@@ -57,7 +57,11 @@ jvm-frontend/build/
 backend/build/
 
 #Kotlin -> JS stuff
-/web-frontend/web/js/*
+/web-frontend/web/js/*.js
+/web-frontend/web/js/*.map
+/web-frontend/web/js/lib/*
+/web-frontend/web/js/web-frontend/*
+/web-frontend/web/js/web-frontend-test/*
 /web-frontend/headers/*
 /web-frontend/lib/*
 

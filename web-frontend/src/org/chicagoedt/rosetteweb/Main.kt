@@ -33,27 +33,36 @@ private lateinit var gridDriver : GridDriver
 fun main(args: Array<String>) {
     game.attachEventListener(::update)
 
-    window.onload = {
-        //document.querySelector(".actionBlock").
-        val gridCanvas = document.getElementById("grid") as HTMLCanvasElement
-        gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
+    //js("if (window typeof !== 'undefined') window.onload = onLoad;")
+    js("if (typeof window !== 'undefined')" + 
+        "{" +
+            "window.onresize = onResize;" +
+            "window.onload = onLoad;" + 
+        "}")
 
+    //js("if (window typeof !== 'undefined') window.onresize = onResize;")
+}
+
+fun onLoad(){
+    //document.querySelector(".actionBlock").
+    val gridCanvas = document.getElementById("grid") as HTMLCanvasElement
+    gridContext = gridCanvas.getContext("2d") as CanvasRenderingContext2D
+
+    positionCanvases()
+
+    gridDriver = GridDriver(game, gridContext)
+    gridDriver.calculateNewLevel()
+
+    editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
+    editorDriver.calculateNewLevel()
+
+    drawRefresh()
+}
+
+fun onResize(){
+    if (::gridContext.isInitialized) {
         positionCanvases()
-
-        gridDriver = GridDriver(game, gridContext)
-        gridDriver.calculateNewLevel()
-
-        editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
-        editorDriver.calculateNewLevel()
-
-        drawRefresh()
-    }
-
-    window.onresize = {
-        if (::gridContext.isInitialized) {
-            positionCanvases()
-            fullRefresh()
-        }
+        fullRefresh()
     }
 }
 
@@ -75,8 +84,10 @@ fun main(args: Array<String>) {
  * Calculate and draws the view on the screen
  */
 fun fullRefresh(){
-    gridDriver.calculateTiles()
-    drawRefresh()
+    if (::gridDriver.isInitialized){
+        gridDriver.calculateTiles()
+        drawRefresh()
+    }
 }
 
 /**

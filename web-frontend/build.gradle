@@ -1,11 +1,17 @@
 apply plugin: 'kotlin-platform-js'
-apply plugin: 'com.moowork.node'
 apply plugin: 'kotlin2js'
+apply plugin: 'com.moowork.node'
 
 sourceSets {
     main.kotlin.srcDirs += 'src/'
     main.kotlin.srcDirs += 'lib/'
     test.kotlin.srcDirs += 'tests/'
+}
+
+buildscript{
+    dependencies {
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+    }
 }
 
 repositories {
@@ -18,8 +24,8 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 
-[compileKotlin2Js, compileTestKotlin2Js]*.configure {
-    kotlinOptions.moduleKind = "umd"
+compileKotlin2Js.configure {
+    kotlinOptions.moduleKind = "commonjs"
     kotlinOptions.main = 'call'
 
     kotlinOptions.noStdlib = false
@@ -27,7 +33,40 @@ dependencies {
     kotlinOptions.sourceMap = true
 }
 
-build.doLast {
+compileTestKotlin2Js.configure {
+    kotlinOptions.moduleKind = "commonjs"
+    kotlinOptions.noStdlib = false
+    kotlinOptions.outputFile = "web-frontend/web/js/${project.name}-test.js"
+}
+
+node{
+    download = true
+}
+
+task installTs2kt(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/ts2kt/")
+    args = ['install', 'ts2kt']
+}
+
+task generateJQueryHeader(type: NodeTask, dependsOn: [installTs2kt]){
+    outputs.dir file('lib/')
+
+    def folder = new File('web-frontend/headers/')
+    if (!folder.exists()) {
+        folder.mkdirs()
+        def f = new File('web-frontend/headers/jquery.d.ts')
+
+        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
+    }
+    
+
+    script = file("${node.nodeModulesDir}/node_modules/ts2kt/ts2kt.js")
+    args = ["-d", "lib/", "headers/jquery.d.ts"]
+}
+
+compileKotlin2Js.dependsOn generateJQueryHeader
+
+compileKotlin2Js.doLast {
     configurations.compile.each { File file ->
         copy {
             includeEmptyDirs = false
@@ -42,51 +81,29 @@ build.doLast {
     }
 }
 
-task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
-    from compileKotlin2Js.destinationDir
-
-    configurations.testCompile.each {
-        from zipTree(it.absolutePath).matching { include '*.js' }
-    }
-
-    into "${buildDir}/node_modules"
-}
-
-node {
-    download = true
-}
-
 task installMocha(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/mocha/")
     args = ['install', 'mocha']
 }
 
-task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installMocha]) {
+task installKotlin(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/kotlin/")
+    args = ['install', 'kotlin']
+}
+
+task installKotlinTest(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/kotlin-test/")
+    args = ['install', 'kotlin-test']
+}
+
+task installWebFrontend(type: NpmTask) {
+    args = ['install', 'web/js/']
+}
+
+task runMocha(type: NodeTask, dependsOn: [installMocha, installKotlin, installKotlinTest, installWebFrontend]) {
     script = file("node_modules/mocha/bin/mocha")
-    args = [compileTestKotlin2Js.outputFile]
+    args = ["web/js/${project.name}-test.js", "-r", "${project.name}"]
 }
 
 test.dependsOn runMocha
 
-task installTs2kt(type: NpmTask) {
-    args = ['install', 'ts2kt']
-}
-
-task generateJQueryHeader(type: NodeTask, dependsOn: [populateNodeModules, installTs2kt]){
-    def folder = new File('web-frontend/headers/')
-    if (!folder.exists()) {
-        folder.mkdirs()
-        def f = new File('web-frontend/headers/jquery.d.ts')
-
-        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
-    }
-
-    script = file("node_modules/ts2kt/ts2kt.js")
-    args = ["-d", "lib/", "headers/jquery.d.ts"]
-}
-
-compileKotlin2Js.doFirst{
-    def f = file('lib/jquery.kt')
-    if (!f.exists()){
-        generateJQueryHeader.execute()
-    }
-}
