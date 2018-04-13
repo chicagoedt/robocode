@@ -4,6 +4,7 @@ import jQuery
 import org.chicagoedt.rosetteweb.*
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 import org.chicagoedt.rosette.actions.robotActions.*
@@ -15,12 +16,14 @@ import org.chicagoedt.rosette.actions.*
  * @property action The action 
  */
 abstract class ActionBlock<T : Action<*>>(){
-    val element = document.createElement("div")
+    val element = document.createElement("div") as HTMLElement
     abstract val action : T
+    private lateinit var originalShadow : String
 
     init {
         element.addClass("actionBlock")
         element.asDynamic().block = this
+        originalShadow = element.style.boxShadow
     }
 
     /**
@@ -30,6 +33,8 @@ abstract class ActionBlock<T : Action<*>>(){
     	val drag = jQuery(element).asDynamic()
         drag.draggable()
         drag.draggable("option", "containment", "#editor")
+        drag.on("dragstart", ::onDrag)
+        drag.on("dragstop", ::onDragStop)
     }
 
     /**
@@ -41,5 +46,13 @@ abstract class ActionBlock<T : Action<*>>(){
     	nameElement.addClass("actionName")
     	nameElement.innerHTML = action.name
     	return nameElement
+    }
+
+    fun onDrag(event : Event, ui : dynamic){
+        element.style.boxShadow = "0px 0px 50px grey"
+    }
+
+    fun onDragStop(event : Event, ui : dynamic){
+        element.style.boxShadow = originalShadow
     }
 }
