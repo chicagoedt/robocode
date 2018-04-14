@@ -20,12 +20,15 @@ import kotlin.dom.addClass
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer){
     lateinit var element : HTMLDivElement
+    lateinit var originalBorderColor : String
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
         
         element = document.createElement("div") as HTMLDivElement
         element.addClass("panel")
+
+        originalBorderColor = element.style.borderColor
 
         element.appendChild(getHeader())
         tdElement.appendChild(element)
@@ -70,7 +73,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      * @param ui The element being hovered
      */
     fun over(event : Event, ui : dynamic){
-        element.style.border = "thick solid #000000"
+        element.style.borderColor = "red"
         val blockElement : HTMLElement = ui.draggable.context
         robot.removeAction(blockElement.asDynamic().block.action)
     }
@@ -81,7 +84,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      * @param ui The element being moved
      */
     fun overout(event : Event, ui : dynamic){
-        element.style.border = ""
+        element.style.borderColor = originalBorderColor
     }
 
     /**
