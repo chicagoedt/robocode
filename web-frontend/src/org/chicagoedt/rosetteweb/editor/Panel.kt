@@ -58,7 +58,6 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val blockElement : HTMLElement = ui.draggable.context
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
-        blockElement.style.width = "100%"
     	element.appendChild(blockElement)
         element.style.border = ""
 

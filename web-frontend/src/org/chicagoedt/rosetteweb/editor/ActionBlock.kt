@@ -33,6 +33,7 @@ abstract class ActionBlock<T : Action<*>>(){
     	val drag = jQuery(element).asDynamic()
         drag.draggable()
         drag.draggable("option", "containment", "#editor")
+        drag.draggable("option", "stack", ".actionBlock")
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
     }
