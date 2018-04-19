@@ -105,3 +105,23 @@ td, th {
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
 }
+
+.gridTile{
+	padding-top: 100%;
+}
+
+.gridPlayer{
+	background-color: #FF5722;
+}
+
+.obstacleTile{
+	background-color: #673AB7;
+}
+
+.neutralTile{
+	background-color: #8BC34A;
+}
+
+.victoryTile{
+	background-color: #FFEB3B;
+}
