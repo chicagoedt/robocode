@@ -39,6 +39,9 @@ class GridDriver(val game: Game){
         calculatePlayers()
     }
 
+    /**
+     * Calculates the positions for the players on the grid
+     */
     fun calculatePlayers(){
         for ((name, player) in level.players){
             val x = player.x
