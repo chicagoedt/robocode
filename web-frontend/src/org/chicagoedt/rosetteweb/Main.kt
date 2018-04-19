@@ -88,14 +88,14 @@ fun getTypeOf(elem : Any) : String{
  * Defines the position for the canvases on the screen
  */
  fun positionCanvases(){
-    val maximumGrid = (document.documentElement!!.clientHeight / 2.0).toInt()
+    /*val maximumGrid = (document.documentElement!!.clientHeight / 2.0).toInt()
     gridContext.canvas.width = (document.documentElement!!.clientWidth.toDouble() / 3.0).toInt()
     if (gridContext.canvas.width > maximumGrid) gridContext.canvas.width = maximumGrid
-    gridContext.canvas.height = gridContext.canvas.width
+    gridContext.canvas.height = gridContext.canvas.width*/
 
-    setCanvasDPI(gridContext)
+    //setCanvasDPI(gridContext)
 
-    (document.getElementById("editor") as HTMLElement).style.left = gridContext.canvas.style.width
+    //(document.getElementById("editor") as HTMLElement).style.left = gridContext.canvas.style.width
  }
 
 /**

@@ -21,8 +21,11 @@ import kotlin.dom.addClass
 class Drawer(val parent : HTMLElement){
     val element = document.getElementById("drawer") as HTMLElement
 
-    init {
-        val drag = jQuery("#drawer").asDynamic()
+    /**
+     * Sets the droppable properties for this drawer
+     */
+    fun setDroppable(){
+        val drag = jQuery(element).asDynamic()
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
         drag.droppable("option", "drop", ::drop)

@@ -3,6 +3,7 @@ package org.chicagoedt.rosetteweb
 import org.chicagoedt.rosette.*
 import org.chicagoedt.rosetteweb.editor.*
 import org.w3c.dom.*
+import kotlin.browser.*
 
 /**
  * The driver for the editor section of the game
@@ -12,7 +13,7 @@ import org.w3c.dom.*
  * @property drawer The drawer element for the editor
  */
 class EditorDriver(val game : Game, val editor : HTMLElement){
-	val panelsTable = editor.children.get("panels")!!.children.get(0)!!.children.get("panelsRow") as HTMLElement
+	val panelsTable = document.getElementById("panelsRow") as HTMLElement
 	val drawer = Drawer(editor)
 
 	/**
@@ -24,6 +25,8 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 			val panel = Panel(panelsTable, robot, drawer)
 			(panel.element.parentElement!! as HTMLElement).style.width = width
 		}
+
+		drawer.setDroppable()
 
 		drawer.populate()
 	}

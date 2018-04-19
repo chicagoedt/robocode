@@ -32,8 +32,10 @@ abstract class ActionBlock<T : Action<*>>(){
     fun addDraggable(){
     	val drag = jQuery(element).asDynamic()
         drag.draggable()
-        drag.draggable("option", "containment", "#editor")
         drag.draggable("option", "stack", ".actionBlock")
+        drag.draggable("option", "helper", "clone")
+        drag.draggable("option", "appendTo", "#editor")
+        drag.draggable("option", "zIndex", 99)
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
     }
@@ -49,10 +51,23 @@ abstract class ActionBlock<T : Action<*>>(){
     	return nameElement
     }
 
+    /**
+     * Called when drag starts
+     * @param event The event which started the drag
+     * @param ui The ui being dragged
+     */
     fun onDrag(event : Event, ui : dynamic){
-        element.style.boxShadow = "0px 0px 50px grey"
+        ui.helper[0].style.width = "200px"
+        ui.helper[0].style.left = ui.position.left.toString() + "px"
+
+        ui.helper[0].style.boxShadow = "0px 0px 50px grey"
     }
 
+    /**
+     * Called when drag ends
+     * @param event The event which ended the drag
+     * @param ui The ui being dragged
+     */
     fun onDragStop(event : Event, ui : dynamic){
         element.style.boxShadow = originalShadow
     }

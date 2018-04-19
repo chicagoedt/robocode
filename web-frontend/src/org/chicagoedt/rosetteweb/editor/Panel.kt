@@ -24,6 +24,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
+        tdElement.addClass("panelTd")
         
         element = document.createElement("div") as HTMLDivElement
         element.addClass("panel")
