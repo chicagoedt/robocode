@@ -36,6 +36,7 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.draggable("option", "helper", "clone")
         drag.draggable("option", "appendTo", "#editor")
         drag.draggable("option", "zIndex", 99)
+        drag.draggable("option", "opacity", 0.8)
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
     }
@@ -57,7 +58,7 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     fun onDrag(event : Event, ui : dynamic){
-        ui.helper[0].style.width = "200px"
+        ui.helper[0].style.width = element.clientWidth.toString() + "px"
         ui.helper[0].style.left = ui.position.left.toString() + "px"
 
         ui.helper[0].style.boxShadow = "0px 0px 50px grey"
