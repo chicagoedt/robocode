@@ -54,7 +54,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      * @param ui The element being dropped
      */
     fun drop(event : Event, ui : dynamic){
-        val blockElement : HTMLElement = ui.draggable.context
+        val blockElement : HTMLElement = ui.draggable[0]
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
     	element.appendChild(blockElement)
@@ -72,7 +72,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      */
     fun over(event : Event, ui : dynamic){
         element.style.boxShadow = "0px 0px 5px grey"
-        val blockElement : HTMLElement = ui.draggable.context
+        val blockElement : HTMLElement = ui.draggable[0]
         robot.removeAction(blockElement.asDynamic().block.action)
     }
 

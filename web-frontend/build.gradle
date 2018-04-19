@@ -64,6 +64,19 @@ task generateJQueryHeader(type: NodeTask, dependsOn: [installTs2kt]){
     args = ["-d", "lib/", "headers/jquery.d.ts"]
 }
 
+task generateJQueryLib{
+    outputs.dir file("web-frontend/web/js/lib/jquery/")
+    def folder = new File('web-frontend/web/js/lib/jquery/')
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
+    def f = new File('web-frontend/web/js/lib/jquery/jquery.js')
+    new URL('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js').withInputStream{ i -> f.withOutputStream{ it << i }}
+
+    def f2 = new File('web-frontend/web/js/lib/jquery/jqueryui.js')
+    new URL('https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js').withInputStream{ i -> f2.withOutputStream{ it << i }}
+}
+
 compileKotlin2Js.dependsOn generateJQueryHeader
 
 compileKotlin2Js.doLast {
@@ -79,6 +92,8 @@ compileKotlin2Js.doLast {
             }
         }
     }
+
+    generateJQueryLib.execute()
 }
 
 task installMocha(type: NpmTask) {

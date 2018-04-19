@@ -37,7 +37,7 @@ class Drawer(val parent : HTMLElement){
      * @param ui The element being dropped
      */
     fun drop(event : JQueryEventObject, ui : dynamic){
-        ui.draggable.context.parentNode.removeChild(ui.draggable.context)
+        ui.draggable[0].parentNode.removeChild(ui.draggable[0])
         populate()
     }
 
