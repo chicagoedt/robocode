@@ -45,10 +45,39 @@ class Drawer(val parent : HTMLElement){
      * Checks to make sure the drawer population is updates
      */
     fun populate(){
-        if (element.children.length == 0){
-            val actionBlock = MoveActionBlock()
-            this.element.appendChild(actionBlock.element)
-            actionBlock.addDraggable()
+        checkMoveActionBlock(0)
+        checkTurnActionBlock(1)
+    }
+
+
+    //there is a more elegant way to check these blocks, but kotlinJS doesn't support the necessary reflection methods yet
+    fun checkMoveActionBlock(index : Int){
+        if (element.children.length <= index || 
+            !(element.children.item(index).asDynamic().block is MoveActionBlock)){
+            val block = MoveActionBlock()
+            block.addDraggable()
+
+            try{
+                element.insertBefore(block.element, element.children.item(index))
+            }
+            catch(e : Exception){
+                element.appendChild(block.element)
+            }
+        }
+    }
+
+    fun checkTurnActionBlock(index : Int){
+        if (element.children.length <= index || 
+            !(element.children.item(index).asDynamic().block is TurnActionBlock)){
+            val block = TurnActionBlock()
+            block.addDraggable()
+
+            try{
+                element.insertBefore(block.element, element.children.item(index))
+            }
+            catch(e : Exception){
+                element.appendChild(block.element)
+            }
         }
     }
 
