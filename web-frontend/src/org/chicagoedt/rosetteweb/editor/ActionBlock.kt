@@ -39,17 +39,7 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.draggable("option", "opacity", 0.8)
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
-    }
-
-    /**
-     * Generates the name <p> for the block
-     * @return The HTMLElement for the name
-     */
-    fun getName() : HTMLElement{
-    	val nameElement = document.createElement("p") as HTMLElement
-    	nameElement.addClass("actionName")
-    	nameElement.innerHTML = action.name
-    	return nameElement
+        element.innerHTML = action.name
     }
 
     /**

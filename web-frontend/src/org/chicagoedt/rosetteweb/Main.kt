@@ -26,6 +26,9 @@ fun onLoad(){
 
     editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
     editorDriver.calculateNewLevel()
+
+    val header = document.getElementById("header") as HTMLElement
+    header.innerHTML = game.currentLevel.properties.name
 }
 
 @JsName("onResize")

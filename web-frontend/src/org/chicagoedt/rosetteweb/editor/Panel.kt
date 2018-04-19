@@ -20,7 +20,6 @@ import kotlin.dom.addClass
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer){
     lateinit var element : HTMLDivElement
-    lateinit var originalBorderColor : String
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -29,7 +28,6 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         element = document.createElement("div") as HTMLDivElement
         element.addClass("panel")
 
-        originalBorderColor = element.style.borderColor
 
         element.appendChild(getHeader())
         tdElement.appendChild(element)
@@ -60,7 +58,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
     	element.appendChild(blockElement)
-        element.style.border = ""
+        element.style.boxShadow = ""
 
         robot.appendAction(blockElement.asDynamic().block.action)
 
@@ -73,7 +71,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      * @param ui The element being hovered
      */
     fun over(event : Event, ui : dynamic){
-        element.style.borderColor = "red"
+        element.style.boxShadow = "0px 0px 5px grey"
         val blockElement : HTMLElement = ui.draggable.context
         robot.removeAction(blockElement.asDynamic().block.action)
     }
@@ -84,7 +82,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      * @param ui The element being moved
      */
     fun overout(event : Event, ui : dynamic){
-        element.style.borderColor = originalBorderColor
+        element.style.boxShadow = ""
     }
 
     /**
@@ -95,10 +93,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val header = document.createElement("div") as HTMLElement
         header.addClass("panelHeader")
 
-        val name = document.createElement("p") as HTMLElement
-        name.addClass("panelHeaderName")
-        name.innerHTML = robot.name
-        header.appendChild(name)
+        header.innerHTML = robot.name
 
         val runButton = document.createElement("button") as HTMLElement
         runButton.addClass("panelHeaderButton")

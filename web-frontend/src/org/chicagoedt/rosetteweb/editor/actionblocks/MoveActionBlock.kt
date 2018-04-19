@@ -8,8 +8,4 @@ import org.chicagoedt.rosetteweb.editor.*
  */
 class MoveActionBlock() : ActionBlock<MoveAction>(){
 	override val action = MoveAction()
-
-	init{
-		element.appendChild(getName())
-	}
 }
