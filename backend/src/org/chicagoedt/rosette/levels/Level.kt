@@ -50,7 +50,7 @@ class Level(var properties: Properties) {
      * This method exists because it's easier to create a 2D array visually with 0,0 in the top left
      * @param newGrid A grid with 0,0 in the top left corner
      */
-    internal fun makeGrid(newGrid: ArrayList<ArrayList<out Tile>>){
+    internal fun makeGrid(newGrid: ArrayList<ArrayList<Tile>>){
         grid = arrayListOf<ArrayList<Tile>>()
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()

@@ -1,13 +1,15 @@
 package org.chicagoedt.rosetteweb
 
-import org.w3c.dom.HTMLElement
+import org.w3c.dom.*
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
+import org.chicagoedt.rosette.robots.*
+import org.chicagoedt.rosette.levels.*
 
 /**
  * The game that the browser is running
  */
-internal val game = Game(getLevels(), getRobots())
+internal lateinit var game : Game
 
 /**
  * The driver for the grid canvas
@@ -17,7 +19,24 @@ private lateinit var gridDriver : GridDriver
 /**
  * The driver for the editor area
  */
- private lateinit var editorDriver : EditorDriver
+private lateinit var editorDriver : EditorDriver
+
+/**
+ * The configurator for the game
+ */
+private lateinit var configDriver : ConfigDriver
+
+fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>){
+    game = Game(levels, robots)
+    game.attachEventListener(::update)
+    window.onresize = {onResize()}
+    if (document.readyState == DocumentReadyState.Companion.COMPLETE){
+        onLoad()
+    }
+    else{
+        window.onload = {onLoad()}
+    }
+}
 
 @JsName("onLoad")
 fun onLoad(){
@@ -41,12 +60,10 @@ fun onResize(){
  * @param args The arguments to run. Not currently used at all.
  */
 fun main(args: Array<String>) {
-    game.attachEventListener(::update)
     val windowType = js("typeof window")
     if (windowType != "undefined"){
-        window.onresize = {onResize()}
-        window.onload = {onLoad()}
-    } 
+        configDriver = ConfigDriver("config.xml", ::setup)
+    }
 }
 
 fun getTypeOf(elem : Any) : String{
