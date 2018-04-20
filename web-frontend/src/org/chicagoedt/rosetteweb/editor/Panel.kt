@@ -98,7 +98,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val runButton = document.createElement("button") as HTMLElement
         runButton.addClass("panelHeaderButton")
         runButton.innerHTML = "Go"
-        runButton.onclick = {robot.runInstructions()}
+        runButton.onclick = {robot.runInstructions(true)}
         header.appendChild(runButton)
 
         return header

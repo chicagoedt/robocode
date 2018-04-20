@@ -153,7 +153,7 @@ class BackendTests {
         val turn = TurnAction()
         turn.parameter = rotation
         robot.appendAction(turn)
-        robot.runInstructions()
+        robot.runInstructions(false)
         robot.removeAction(turn)
         if (assert) assertEquals(robot.direction, next)
     }
@@ -165,7 +165,7 @@ class BackendTests {
         val y = robot.y
         val x = robot.x
         robot.appendAction(instruction)
-        robot.runInstructions()
+        robot.runInstructions(false)
         robot.removeAction(instruction)
 
         val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
@@ -232,7 +232,7 @@ class BackendTests {
         val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.appendAction(instruction)
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
         assertEquals(robotPlayer1.x, 0)
         assertEquals(robotPlayer1.y, 0)
 
@@ -240,11 +240,11 @@ class BackendTests {
         val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.CLOCKWISE
         robotPlayer1.appendAction(turnInstruction)
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         robotPlayer1.removeAction(turnInstruction)
         robotPlayer1.appendAction(instruction)
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
     }
@@ -279,7 +279,7 @@ class BackendTests {
         instruction.parameter = 1
         robotPlayer1.appendAction(instruction)
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
@@ -319,7 +319,7 @@ class BackendTests {
 
         game.attachEventListener { won = true }
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         assertEquals(won, true)
     }
@@ -456,7 +456,7 @@ class BackendTests {
             }
         }
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         game.attachEventListener {}
 
@@ -510,7 +510,7 @@ class BackendTests {
             }
         }
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         game.attachEventListener {}
 
@@ -574,7 +574,7 @@ class BackendTests {
                 action.parameter = Sand.id
 
                 robot.appendAction(action)
-                robot.runInstructions()
+                robot.runInstructions(false)
                 robot.removeAction(action)
 
                 assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity)
@@ -597,12 +597,88 @@ class BackendTests {
                 action.parameter = Sand.id
 
                 robot.appendAction(action)
-                robot.runInstructions()
+                robot.runInstructions(false)
                 robot.removeAction(action)
 
                 assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
                 assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity)
             }
         }
+    }
+
+    @Test
+    fun ItemRestoreCheckpoint(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        level1.tileAt(0,0).items.addItem(Sand.id)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val pickupAction = ItemPickupAction()
+        pickupAction.parameter = Sand.id
+        robotPlayer1.appendAction(pickupAction)
+
+        robotPlayer1.runInstructions(true)
+
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 0)
+        assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 1)
+    }
+
+    @Test
+    fun ItemRestoreCheckpointVictoryFalse(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        level1.tileAt(0,0).items.addItem(Sand.id)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val pickupAction = ItemPickupAction()
+        pickupAction.parameter = Sand.id
+        robotPlayer1.appendAction(pickupAction)
+
+        robotPlayer1.runInstructions(true)
+
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 1)
+        assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 0)
     }
 }

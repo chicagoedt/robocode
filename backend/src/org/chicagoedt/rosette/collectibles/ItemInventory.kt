@@ -2,9 +2,12 @@ package org.chicagoedt.rosette.collectibles
 
 /**
  * A single inventory of collectible items
+ * @property inventory The current inventory for the items
+ * @property checkpointInventory The saved state of an inventory for the items
  */
 class ItemInventory {
-    private val inventory = HashMap<Int, Int>() // <ItemID, Count>
+    private var inventory = HashMap<Int, Int>() // <ItemID, Count>
+    private val checkpointInventory = HashMap<Int, Int>()
 
     /**
      * Adds an item to inventory
@@ -82,4 +85,14 @@ class ItemInventory {
      * @return Quantity of itemID
      */
     fun itemQuantity(itemID: Int): Int = if (hasItem(itemID)) inventory[itemID]!! else 0
+
+    fun saveCheckpoint(){
+        for ((first, second) in inventory){
+            checkpointInventory[first] = second
+        }
+    }
+
+    fun restoreCheckpoint(){
+        inventory = checkpointInventory
+    }
 }

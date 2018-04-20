@@ -3,6 +3,7 @@ package org.chicagoedt.rosette.levels
 import org.chicagoedt.rosette.tiles.Tile
 import org.chicagoedt.rosette.robots.RobotPlayer
 import org.chicagoedt.rosette.tiles.NeutralTile
+import org.chicagoedt.rosette.*
 
 /**
  * A single challenge for the user to complete
@@ -25,17 +26,18 @@ class Level(var properties: Properties) {
                           val height : Int)
 
     private var grid = arrayListOf<ArrayList<Tile>>()
-
     val players: HashMap<String, RobotPlayer> = hashMapOf()
 
     init{
+        val blankGrid = arrayListOf<ArrayList<Tile>>()
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
             for (j in 0..properties.width - 1){
                 list.add(NeutralTile())
             }
-            grid.add(list)
+            blankGrid.add(list)
         }
+        makeGrid(blankGrid)
     }
 
     fun setPlayers(playersList: ArrayList<RobotPlayer>){
@@ -59,6 +61,35 @@ class Level(var properties: Properties) {
             }
             grid.add(list)
         }
+    }
+
+    /**
+     * Saves the items in all the tiles to be restored at a later time
+     */
+    fun saveCheckpoint(){
+        for (i in 0 until properties.height){
+            for (j in 0 until properties.width){
+                grid[i][j].items.saveCheckpoint()
+            }
+        }
+        for ((name, player) in players){
+            player.saveCheckpoint()
+        }
+    }
+    
+    /**
+     * Restores the items in the tiles to the last time [saveLevelItemsState] was called
+     */
+    fun restoreCheckpoint(){
+        for (i in 0 until properties.height){
+            for (j in 0 until properties.width){
+                grid[i][j].items.restoreCheckpoint()
+            }
+        }
+        for ((name, player) in players){
+            player.restoreCheckpoint()
+        }
+        eventListener.invoke(Event.LEVEL_UPDATE)
     }
 
     /**

@@ -36,12 +36,35 @@ class RobotPlayer(val name: String,
     private val sensors = hashMapOf<RobotPosition, MutableList<Sensor>>()
     private val sensorCounts = hashMapOf<RobotPosition, Int>()
     val itemInventory = ItemInventory()
+    private var checkpointX = x
+    private var checkpointY = y
+    private var checkpointDirection = direction
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
         setSensorCountAt(RobotPosition.BACK, 1)
         setSensorCountAt(RobotPosition.LEFT, 1)
         setSensorCountAt(RobotPosition.RIGHT, 1)
+    }
+
+    /**
+     * Restores the state of the robot from the checkpoint
+     */
+    fun restoreCheckpoint(){
+        x = checkpointX
+        y = checkpointY
+        direction = checkpointDirection
+        itemInventory.restoreCheckpoint()
+    }
+
+    /**
+     * Saves the state of the robot to the checkpoint
+     */
+    fun saveCheckpoint(){
+        checkpointX = x
+        checkpointY = y
+        checkpointDirection = direction
+        itemInventory.saveCheckpoint()
     }
 
     /**
@@ -148,9 +171,10 @@ class RobotPlayer(val name: String,
 
     /**
      * Executes procedure assigned to a robot
-     * @param name The name of the robot to run the procedure for
+     * @param reset true if the level should reset afterwards, false otherwise
      */
-    fun runInstructions(){
+    fun runInstructions(reset : Boolean){
+        level.saveCheckpoint()
         for(action: Action<Any> in procedure){
             action.function(level, this, action.parameter)
 
@@ -158,6 +182,11 @@ class RobotPlayer(val name: String,
             if (level.tileAt(x, y) is VictoryTile){
                 eventListener.invoke(Event.LEVEL_VICTORY)
                 break
+            }
+            else if (procedure.indexOf(action) == procedure.size - 1 && reset){ 
+                //if the player was not victorious
+                level.restoreCheckpoint()
+                return
             }
         }
         eventListener.invoke(Event.LEVEL_UPDATE)
