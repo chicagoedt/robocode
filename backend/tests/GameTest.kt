@@ -681,4 +681,67 @@ class BackendTests {
         assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 1)
         assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 0)
     }
+
+    @Test
+    fun RobotCheckpointRestore(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val moveAction = MoveAction()
+                val turnAction = TurnAction()
+                val x = robot.x
+                val y = robot.y
+                val direction = robot.direction
+                robot.appendAction(moveAction)
+                robot.appendAction(turnAction)
+                robot.runInstructions(true)
+                robot.removeAction(moveAction)
+                robot.removeAction(turnAction)
+                assertEquals(robot.x, x)
+                assertEquals(robot.y, y)
+                assertEquals(robot.direction, direction)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun RobotCheckpointRestoreVictoryFalse(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        level1.tileAt(0,0).items.addItem(Sand.id)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val turnAction = TurnAction()
+        turnAction.parameter = RobotRotation.COUNTERCLOCKWISE
+        robotPlayer1.appendAction(turnAction)
+
+        val moveAction = MoveAction()
+        robotPlayer1.appendAction(moveAction)
+
+        robotPlayer1.runInstructions(true)
+
+        assertEquals(robotPlayer1.y, 1)
+        assertEquals(robotPlayer1.direction, RobotOrientation.DIRECTION_UP)
+    }
 }
