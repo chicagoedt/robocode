@@ -49,7 +49,7 @@ class MoveAction : Action<Int>() {
                     currentX++
                 }
             }
-            else if (orientation == RobotOrientation.DIRECTION_DOWN){
+            else if (orientation == RobotOrientation.DIRECTION_LEFT){
                 if (currentX - 1 < 0 || level.tileAt(currentX-1, currentY).type == TileType.OBSTACLE) return possibleDistance
                 else {
                     possibleDistance++

@@ -59,6 +59,15 @@ fun getTypeOf(elem : Any) : String{
  */
 fun update(e : Event){
     when (e){
-        Event.LEVEL_UPDATE -> gridDriver.refresh()
+        Event.LEVEL_UPDATE -> refresh()
+    }
+}
+
+/**
+ * Refreshes the display of the game
+ */
+fun refresh(){
+    if (::gridDriver.isInitialized){
+        gridDriver.refresh()
     }
 }
