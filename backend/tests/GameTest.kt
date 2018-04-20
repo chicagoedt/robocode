@@ -390,9 +390,15 @@ class BackendTests {
         instruction.addToMacro(MoveAction())
         robotPlayer1.appendAction(instruction)
 
-        game.attachEventListener { won = true }
+        game.attachEventListener {e ->
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+            }
+        }
 
         robotPlayer1.runInstructions()
+
+        game.attachEventListener {}
 
         assertEquals(won, true)
     }
@@ -438,9 +444,15 @@ class BackendTests {
         instruction.addToMacro(MoveAction())
         robotPlayer1.appendAction(instruction)
 
-        game.attachEventListener { won = true }
+        game.attachEventListener {e ->
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+            }
+        }
 
         robotPlayer1.runInstructions()
+
+        game.attachEventListener {}
 
         assertEquals(won, false)
     }

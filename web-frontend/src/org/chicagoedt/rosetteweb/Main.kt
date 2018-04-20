@@ -60,6 +60,7 @@ fun getTypeOf(elem : Any) : String{
 fun update(e : Event){
     when (e){
         Event.LEVEL_UPDATE -> refresh()
+        Event.LEVEL_VICTORY -> console.log("victory!")
     }
 }
 

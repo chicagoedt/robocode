@@ -71,7 +71,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      * @param ui The element being hovered
      */
     fun over(event : Event, ui : dynamic){
-        element.style.boxShadow = "0px 0px 5px grey"
+        element.style.boxShadow = "0px 0px 2px grey"
         val blockElement : HTMLElement = ui.draggable[0]
         robot.removeAction(blockElement.asDynamic().block.action)
     }

@@ -33,7 +33,7 @@ class GridDriver(val game: Game){
                 tableRow.appendChild(tile.tableElement)
             }
             gridTiles.add(row)
-            tableBody.appendChild(tableRow)
+            tableBody.prepend(tableRow)
         }
 
         calculatePlayers()
