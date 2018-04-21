@@ -25,6 +25,10 @@ enum class RobotPosition{
  * @property sensors All of the sensors attached to the robot
  * @property sensorCounts The number of sensors available on each side
  * @property itemInventory List of collectible items in the robot's possession
+ * @property checkpointX The X value at the last checkpoint
+ * @property checkpointY The Y value at the last checkpoint
+ * @property checkpointDirection The direction at the last checkpoint
+ * @property victorious A variable to track whether the player was victorious in their current run
  */
 class RobotPlayer(val name: String,
                   var x: Int,
@@ -39,6 +43,7 @@ class RobotPlayer(val name: String,
     private var checkpointX = x
     private var checkpointY = y
     private var checkpointDirection = direction
+    private var victorious = false;
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
@@ -170,25 +175,60 @@ class RobotPlayer(val name: String,
     }
 
     /**
+     * Runs the action at the specified index
+     * @param i The index of the action to run
+     * @param reset True if the grid should reset if finished, false otherwise
+     */
+    fun runActionAt(i : Int, reset : Boolean){
+        if (i == procedure.size){
+            if (!victorious){
+                if (reset) level.restoreCheckpoint()
+                eventListener.invoke(Event.LEVEL_FAILURE)
+            }
+            victorious = false
+            return
+        }
+        val action = procedure[i]
+
+        action.function(level, this, action.parameter)
+
+        //check to see if the player won after the instruction
+        if (level.tileAt(x, y) is VictoryTile){
+            eventListener.invoke(Event.LEVEL_VICTORY)
+            victorious = true
+        }
+    }
+
+    /**
+     * Executes procedure assigned to a robot
+     * @param reset true if the level should reset afterwards, false otherwise
+     * @param run The lambda to run the action. Necessary to set an interval. The parameter is the actual run function for each action, it must be called
+     * @param clear The function to call once all intervals have been run
+     */
+    fun runInstructions(reset : Boolean, run: (() -> Unit) -> Unit, clear: () -> Unit){
+        var i = 0;
+        val runNextAction = { 
+            runActionAt(i, reset)
+
+            eventListener.invoke(Event.LEVEL_UPDATE)
+
+            i++
+
+            if (i == procedure.size + 1) 
+                clear()
+        }
+        runNextAction()
+        run(runNextAction)
+    }
+
+    /**
      * Executes procedure assigned to a robot
      * @param reset true if the level should reset afterwards, false otherwise
      */
     fun runInstructions(reset : Boolean){
         level.saveCheckpoint()
-        for(action: Action<Any> in procedure){
-            action.function(level, this, action.parameter)
-
-            //check to see if the player won after the instruction
-            if (level.tileAt(x, y) is VictoryTile){
-                eventListener.invoke(Event.LEVEL_VICTORY)
-                break
-            }
-            else if (procedure.indexOf(action) == procedure.size - 1 && reset){ 
-                //if the player was not victorious
-                level.restoreCheckpoint()
-                return
-            }
+        for (i in 0..procedure.size){
+            runActionAt(i, reset)
         }
-        eventListener.invoke(Event.LEVEL_UPDATE)
     }
 }

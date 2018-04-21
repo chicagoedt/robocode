@@ -317,11 +317,59 @@ class BackendTests {
         instruction.parameter = 1
         robotPlayer1.appendAction(instruction)
 
-        game.attachEventListener { won = true }
+        game.attachEventListener {e -> 
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+                Event.LEVEL_FAILURE -> won = false
+            }
+        }
 
         robotPlayer1.runInstructions(false)
 
         assertEquals(won, true)
+    }
+
+    @Test
+    fun LevelFailure(){
+        var failed = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), VictoryTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val instruction = MoveAction()
+        instruction.parameter = 1
+        robotPlayer1.appendAction(instruction)
+
+        game.attachEventListener {e -> 
+            when (e){
+                Event.LEVEL_FAILURE -> failed = true
+            }
+        }
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(failed, true)
     }
 
     @Test

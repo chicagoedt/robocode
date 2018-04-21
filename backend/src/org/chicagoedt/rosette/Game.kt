@@ -9,7 +9,8 @@ import org.chicagoedt.rosette.robots.Robot
  */
 enum class Event {
     LEVEL_VICTORY,
-    LEVEL_UPDATE
+    LEVEL_UPDATE,
+    LEVEL_FAILURE
 }
 
 /**

@@ -8,8 +8,9 @@ import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import org.w3c.dom.get
-import kotlin.browser.document
+import kotlin.browser.*
 import kotlin.dom.addClass
+import kotlin.js.*
 
 /**
  * The area to show and manage the code corresponding to the robot
@@ -98,10 +99,19 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val runButton = document.createElement("button") as HTMLElement
         runButton.addClass("panelHeaderButton")
         runButton.innerHTML = "Go"
-        runButton.onclick = {robot.runInstructions(true)}
+
+        runButton.onclick = {
+            var interval = 0
+            robot.runInstructions(true, 
+                {runner -> 
+                    interval = window.setInterval(runner, 500)
+                }, 
+                {
+                    window.clearInterval(interval)
+                })
+        }
         header.appendChild(runButton)
 
         return header
     }
-
 }
