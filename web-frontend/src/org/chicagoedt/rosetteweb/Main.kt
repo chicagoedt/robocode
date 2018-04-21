@@ -1,5 +1,6 @@
 package org.chicagoedt.rosetteweb
 
+import jQuery
 import org.w3c.dom.*
 import kotlin.browser.*
 import org.chicagoedt.rosette.*
@@ -46,8 +47,7 @@ fun onLoad(){
     editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
     editorDriver.calculateNewLevel()
 
-    val header = document.getElementById("header") as HTMLElement
-    header.innerHTML = game.currentLevel.properties.name
+    updateHeader()
 }
 
 @JsName("onResize")
@@ -77,7 +77,8 @@ fun getTypeOf(elem : Any) : String{
 fun update(e : Event){
     when (e){
         Event.LEVEL_UPDATE -> refresh()
-        Event.LEVEL_VICTORY -> console.log("victory!")
+        Event.LEVEL_VICTORY -> showPopup("Victory!", "Next Level", ::nextLevel)
+        Event.LEVEL_FAILURE -> showPopup("Try again!")
     }
 }
 
@@ -88,4 +89,65 @@ fun refresh(){
     if (::gridDriver.isInitialized){
         gridDriver.refresh()
     }
+}
+
+fun nextLevel(){
+    game.nextLevel()
+    gridDriver.calculateNewLevel()
+    editorDriver.calculateNewLevel()
+    updateHeader()
+}
+
+fun updateHeader(){
+    val header = document.getElementById("header") as HTMLElement
+    header.innerHTML = game.currentLevel.properties.name
+}
+
+fun showPopup(title: String, buttonTitle: String, buttonClick: () -> Unit){
+    val oldPopups = document.body!!.querySelectorAll(".popup")
+    for (i in 0 until oldPopups.length){
+        document.body!!.removeChild(oldPopups.item(i)!!)
+    }
+
+    val popup = document.createElement("div") as HTMLElement
+    popup.classList.add("popup")
+
+    val popupText = document.createElement("div") as HTMLElement
+    popupText.classList.add("popupText")
+    popupText.innerHTML = title
+    popup.appendChild(popupText)
+
+    if (buttonTitle != ""){
+        val popupButton = document.createElement("button") as HTMLElement
+        popupButton.classList.add("popupButton")
+
+        popupButton.innerHTML = buttonTitle
+
+        popupButton.onclick = {
+            document.body!!.removeChild(popup)
+            buttonClick()
+        }
+
+        popup.appendChild(popupButton)
+    }
+    else{
+        popup.style.textAlign = "center"
+    }
+
+    val dismissButton = document.createElement("div") as HTMLElement
+    dismissButton.classList.add("popupDismissButton")
+    dismissButton.innerHTML = "Dismiss"
+    dismissButton.onclick = {
+        document.body!!.removeChild(popup)
+    }
+    popup.prepend(dismissButton)
+
+    document.body!!.appendChild(popup)
+
+    if (oldPopups.length == 0) jQuery(popup).fadeIn("slow")
+    else jQuery(popup).fadeIn(0)
+}
+
+fun showPopup(title: String){
+    showPopup(title, "", {})
 }

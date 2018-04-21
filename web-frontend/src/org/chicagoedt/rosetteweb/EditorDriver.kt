@@ -13,13 +13,17 @@ import kotlin.browser.*
  * @property drawer The drawer element for the editor
  */
 class EditorDriver(val game : Game, val editor : HTMLElement){
-	val panelsTable = document.getElementById("panelsRow") as HTMLElement
+	var panelsTable = document.getElementById("panelsRow") as HTMLElement
 	val drawer = Drawer(editor)
 
 	/**
 	 * Calculates everything necessary to switch levels
 	 */
 	fun calculateNewLevel(){
+		val cNode = panelsTable.cloneNode(false);
+        panelsTable.parentNode!!.replaceChild(cNode, panelsTable);
+        panelsTable = cNode as HTMLElement
+
 		val width = ((1.0  / game.currentLevel.players.size.toDouble()) * 100).toString() + "%"
 		for ((name, robot) in game.currentLevel.players){
 			val panel = Panel(panelsTable, robot, drawer)

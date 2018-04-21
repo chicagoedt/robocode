@@ -121,6 +121,7 @@ td, th, tr {
 	float: right;
 	font-family: Verdana;
 	background-color: white;
+	cursor: pointer;
 }
 
 .gridTileCell{
@@ -145,4 +146,58 @@ td, th, tr {
 
 .victoryTile{
 	background-color: #FFEB3B;
+}
+
+.popup{
+	display: none;
+	position: absolute;
+	width: auto;
+	height: 100px;
+	bottom:20px;
+	right:20px;
+	background-color: white;
+	box-shadow: 0px 0px 40px grey;
+	z-index: 999;
+	padding: 10px;
+
+	font-family: Verdana;
+    text-align: left;
+    font-size: 3vw;
+    
+}
+
+.popupText{
+	float: left;
+	height: 100px;
+	line-height: 100px;
+	min-width: 60%;
+	font-family: Verdana;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 3vw;
+}
+
+.popupButton{
+	width: 30%;
+	height: calc(100% - 10px);
+	float: right;
+	font-size: 1vw;
+	border-radius: 5px;
+	background-color: white;
+	top: -10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+
+.popupDismissButton{
+	position: relative;
+	font-family: Verdana;
+	font-size: 8px;
+	width: auto;
+	height: 8px;
+	float: right;
+	margin-right: -8px;
+	margin-top: -8px;
+	cursor: pointer;
 }

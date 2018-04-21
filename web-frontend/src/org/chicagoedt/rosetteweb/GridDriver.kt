@@ -12,7 +12,7 @@ import org.chicagoedt.rosetteweb.grid.*
  */
 
 class GridDriver(val game: Game){
-    val tableBody = document.getElementById("grid")!!.children.item(0)!! as HTMLElement
+    var tableBody = document.getElementById("grid")!!.children.item(0)!! as HTMLElement
     var level = game.currentLevel
     var gridTiles = arrayListOf<ArrayList<GridTile>>()
 
@@ -20,6 +20,10 @@ class GridDriver(val game: Game){
      * Calculates all of the necessary information when switching levels
      */
     fun calculateNewLevel(){
+        val cNode = tableBody.cloneNode(false);
+        tableBody.parentNode!!.replaceChild(cNode, tableBody);
+        tableBody = cNode as HTMLElement
+
         level = game.currentLevel
         gridTiles.clear()
 
