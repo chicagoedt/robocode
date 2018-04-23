@@ -17,8 +17,10 @@ import org.chicagoedt.rosette.actions.*
  */
 abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
+    val parameterElement = document.createElement("select") as HTMLElement
     abstract val action : T
     private lateinit var originalShadow : String
+    protected abstract val hasParameters : Boolean
 
     init {
         element.addClass("actionBlock")
@@ -40,6 +42,11 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
         element.innerHTML = action.name
+        if (hasParameters){
+            parameterElement.addClass("actionBlockParameter")
+            parameterElement.onchange = ::parameterChanged
+            element.appendChild(parameterElement)
+        }
     }
 
     /**
@@ -61,5 +68,18 @@ abstract class ActionBlock<T : Action<*>>(){
      */
     fun onDragStop(event : Event, ui : dynamic){
         element.style.boxShadow = originalShadow
+    }
+
+    fun insertParameter(s : String, onSelectedParameter: dynamic){
+        val option = document.createElement("option") as HTMLElement
+        option.innerHTML = s
+        option.asDynamic().parameter = onSelectedParameter
+        option.setAttribute("value", s)
+        parameterElement.appendChild(option)
+    }
+
+    fun parameterChanged(e : Event) : dynamic{
+        action.parameter = e.target.asDynamic().selectedOptions[0].parameter
+        return 0
     }
 }

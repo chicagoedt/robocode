@@ -8,4 +8,11 @@ import org.chicagoedt.rosetteweb.editor.*
  */
 class MoveActionBlock() : ActionBlock<MoveAction>(){
 	override val action = MoveAction()
+	override val hasParameters = true;
+
+	init{
+		for (i in 1..10){
+			insertParameter(i.toString(), i.toInt())
+		}
+	}
 }

@@ -82,15 +82,21 @@ table{
 }
 
 .actionBlock{
-	width:calc(100% - 10px);
-	height:40px;
+	width:calc(100% - 20px);
+	height:20px;
 	background-color: #DCEDC8;
 	box-shadow: 0px 0px 2px grey;
-	line-height: 40px;
+	line-height: 20px;
 	text-align: center;
-	padding-left: 10px;
+	padding: 10px;
 	font-family: Verdana;
     text-align: left;
+}
+
+.actionBlockParameter{
+	float: right;
+	height:100%;
+	width:40%;
 }
 
 td, th, tr {
