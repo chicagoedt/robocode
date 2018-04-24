@@ -4,7 +4,7 @@ import org.chicagoedt.rosette.levels.Level
 import org.chicagoedt.rosette.robots.RobotOrientation
 import org.chicagoedt.rosette.robots.RobotPlayer
 import org.chicagoedt.rosette.tiles.TileType
-import org.chicagoedt.rosette.actions.Action
+import org.chicagoedt.rosette.actions.*
 
 /**
  * Moves the robot by [parameter] tiles in the direction that it's facing

@@ -76,11 +76,13 @@ fun getRobots() : ArrayList<Robot>{
 
 class BackendTests {
     private lateinit var game : Game
-    private val levels = getLevels()
-    private val robots = getRobots()
+    private var levels = getLevels()
+    private var robots = getRobots()
 
     @BeforeTest
     fun SetUp(){
+        levels = getLevels()
+        robots = getRobots()
         game = Game(levels, robots)
     }
 
@@ -791,5 +793,60 @@ class BackendTests {
 
         assertEquals(robotPlayer1.y, 1)
         assertEquals(robotPlayer1.direction, RobotOrientation.DIRECTION_UP)
+    }
+
+    @Test
+    fun MoveActionMacroSetParameter(){
+        val action = MoveActionMacro()
+        assertEquals(action.parameter, 1)
+        assertEquals(action.getMacro().size, 1)
+
+        action.parameter = 5
+        assertEquals(action.parameter, 5)
+        assertEquals(action.getMacro().size, 5)
+
+        action.parameter = 3
+        assertEquals(action.parameter, 3)
+        assertEquals(action.getMacro().size, 3)
+
+        action.parameter = 7
+        assertEquals(action.parameter, 7)
+        assertEquals(action.getMacro().size, 7)
+    }
+
+    @Test
+    fun MoveWithMoveActionMacro(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveActionMacro()
+                
+                val y = robot.y
+                val x = robot.x
+                val orientation = robot.direction
+                action.parameter = 2
+                robot.appendAction(action)
+                robot.runInstructions(false)
+                robot.removeAction(action)
+
+                val difference = (action.getMacro()[0] as MoveAction).distanceCanMove(x, y, orientation, action.parameter, game.currentLevel)
+                if (orientation == RobotOrientation.DIRECTION_UP) {
+                    assertEquals(robot.y, y + difference)
+                    assertEquals(robot.x, x)
+                }
+                else if (orientation == RobotOrientation.DIRECTION_DOWN) {
+                    assertEquals(robot.y, y - difference)
+                    assertEquals(robot.x, x)
+                }
+                else if (orientation == RobotOrientation.DIRECTION_LEFT) {
+                    assertEquals(robot.y, y)
+                    assertEquals(robot.x, x - difference)
+                }
+                else if (orientation == RobotOrientation.DIRECTION_RIGHT) {
+                    assertEquals(robot.y, y)
+                    assertEquals(robot.x, x + difference)
+                }
+            }
+            game.nextLevel()
+        }
     }
 }

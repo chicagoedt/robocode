@@ -53,4 +53,12 @@ abstract class ActionMacro<T> : Action<T>() {
             action.function(level, robot, action.parameter)
         }
     }
+
+    /**
+     * Runs a specific action in the macro
+     * @param i The index of the action to run
+     */
+    internal fun runMacroAt(i : Int, level: Level, robot: RobotPlayer){
+        macro[i].function(level, robot, macro[i].parameter)
+    }
 }

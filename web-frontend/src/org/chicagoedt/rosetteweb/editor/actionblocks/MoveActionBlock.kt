@@ -6,8 +6,8 @@ import org.chicagoedt.rosetteweb.editor.*
 /**
  * The ActionBlock representing the MoveAction
  */
-class MoveActionBlock() : ActionBlock<MoveAction>(){
-	override val action = MoveAction()
+class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
+	override val action = MoveActionMacro()
 	override val hasParameters = true;
 
 	init{

@@ -1,6 +1,6 @@
 package org.chicagoedt.rosette.robots
 
-import org.chicagoedt.rosette.actions.Action
+import org.chicagoedt.rosette.actions.*
 import org.chicagoedt.rosette.sensors.*
 import org.chicagoedt.rosette.levels.*
 import org.chicagoedt.rosette.*
@@ -179,7 +179,7 @@ class RobotPlayer(val name: String,
      * @param i The index of the action to run
      * @param reset True if the grid should reset if finished, false otherwise
      */
-    fun runActionAt(i : Int, reset : Boolean){
+    fun runAction(i : Int, reset : Boolean){
         if (i == procedure.size){
             if (!victorious){
                 if (reset) level.restoreCheckpoint()
@@ -189,14 +189,9 @@ class RobotPlayer(val name: String,
             return
         }
         val action = procedure[i]
-
         action.function(level, this, action.parameter)
 
-        //check to see if the player won after the instruction
-        if (level.tileAt(x, y) is VictoryTile){
-            eventListener.invoke(Event.LEVEL_VICTORY)
-            victorious = true
-        }
+        checkForVictory()        
     }
 
     /**
@@ -207,15 +202,32 @@ class RobotPlayer(val name: String,
      */
     fun runInstructions(reset : Boolean, run: (() -> Unit) -> Unit, clear: () -> Unit){
         var i = 0;
-        val runNextAction = { 
-            runActionAt(i, reset)
+        var currentMacroIndex = 0
+        val runNextAction = {
+            if (i < procedure.size){
+                val action = procedure[i]
+                if (action is ActionMacro){
+                    action.runMacroAt(currentMacroIndex, level, this)
+                    currentMacroIndex++
+                    if (currentMacroIndex == action.getMacro().size){
+                        i++
+                        currentMacroIndex = 0
+                        checkForVictory()
+                    }
+                }
+                else{
+                    runAction(i, reset)
+                    i++
+                }
+            }
+            else{
+                runAction(i, reset)
+                i++
+                clear()
+            }
 
             eventListener.invoke(Event.LEVEL_UPDATE)
-
-            i++
-
-            if (i == procedure.size + 1) 
-                clear()
+            
         }
         runNextAction()
         run(runNextAction)
@@ -227,8 +239,18 @@ class RobotPlayer(val name: String,
      */
     fun runInstructions(reset : Boolean){
         level.saveCheckpoint()
-        for (i in 0..procedure.size){
-            runActionAt(i, reset)
+        for (i in  0..procedure.size){
+            runAction(i, reset)
+        }
+    }
+
+    /**
+     * If the player is on a victory tile, this calls the proper event and set [victorious] to true
+     */
+    fun checkForVictory(){
+        if (level.tileAt(x, y) is VictoryTile){
+            eventListener.invoke(Event.LEVEL_VICTORY)
+            victorious = true
         }
     }
 }
