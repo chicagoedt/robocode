@@ -11,9 +11,10 @@ class ConditionalWithList: ActionMacro<Comparison<*,*>>(){
     lateinit override var parameter : Comparison<*,*>
     override val name = "Conditional"
 
-    override fun function(level: Level, robot: RobotPlayer, parameter: Comparison<*,*>) {
-        if (parameter.result()) {
-            runMacro(level, robot)
-        }
+    override fun getActualMacro() : ArrayList<Action<Any>>{
+    	if (parameter.result()){
+    		return getMacro()
+    	}
+    	else return arrayListOf<Action<Any>>()
     }
 }

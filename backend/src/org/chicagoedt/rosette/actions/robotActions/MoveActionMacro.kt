@@ -21,9 +21,8 @@ class MoveActionMacro : ActionMacro<Int>() {
         addToMacro(MoveAction())
     }
 
-    override fun function(level: Level, robot: RobotPlayer, parameter: Int) {
-        val size = getMacro().size
-        runMacro(level, robot)
+    override fun getActualMacro() : ArrayList<Action<Any>>{
+        return getMacro()
     }
 
     private fun configureMoveMacro(){

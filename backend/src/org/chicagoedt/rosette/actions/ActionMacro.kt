@@ -10,6 +10,13 @@ import org.chicagoedt.rosette.robots.RobotPlayer
 abstract class ActionMacro<T> : Action<T>() {
     internal val macro = mutableListOf<Action<Any>>()
 
+    override fun function(level: Level, robot: RobotPlayer, parameter: T){
+        val list = getActualMacro()
+        for (action in list){
+            action.function(level, robot, parameter as Any)
+        }
+    }
+
     /**
      * Adds an action to the macro
      * @param action The action to add to the macro's list
@@ -37,11 +44,16 @@ abstract class ActionMacro<T> : Action<T>() {
     /**
      * @return A sequential list of the macro's actions
      */
-    internal fun getMacro() : ArrayList<Action<*>>{
-        val arrayList = arrayListOf<Action<*>>()
+    internal fun getMacro() : ArrayList<Action<Any>>{
+        val arrayList = arrayListOf<Action<Any>>()
         arrayList.addAll(macro)
         return arrayList
     }
+
+    /**
+     * @return A sequential list of the macro's actions to necessarily be run. For example, an empty list if a conditional is false
+     */
+    abstract fun getActualMacro() : ArrayList<Action<Any>>
 
     /**
      * Executes the macro

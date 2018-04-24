@@ -28,7 +28,6 @@ enum class RobotPosition{
  * @property checkpointX The X value at the last checkpoint
  * @property checkpointY The Y value at the last checkpoint
  * @property checkpointDirection The direction at the last checkpoint
- * @property victorious A variable to track whether the player was victorious in their current run
  */
 class RobotPlayer(val name: String,
                   var x: Int,
@@ -43,7 +42,6 @@ class RobotPlayer(val name: String,
     private var checkpointX = x
     private var checkpointY = y
     private var checkpointDirection = direction
-    private var victorious = false;
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
@@ -182,7 +180,6 @@ class RobotPlayer(val name: String,
     }
 
     /**
-     * @param name The name of the robot to retrieve the procedure
      * @return A list of actions describing the robot's procedure
      */
     fun getProcedure() : List<Action<*>>{
@@ -190,23 +187,22 @@ class RobotPlayer(val name: String,
     }
 
     /**
-     * Runs the action at the specified index
-     * @param i The index of the action to run
-     * @param reset True if the grid should reset if finished, false otherwise
+     * Interprets an action, including macros, when running a list
+     * @param action The action to interpret
+     * @param fullProcedure The list currently being run
+     * @return True if an action was run, false otherwise
      */
-    fun runAction(i : Int, reset : Boolean){
-        if (i == procedure.size){
-            if (!victorious){
-                if (reset) level.restoreCheckpoint()
-                eventListener.invoke(Event.LEVEL_FAILURE)
-            }
-            victorious = false
-            return
+    fun interpretAction(action: Action<Any>, fullProcedure : ArrayList<Action<Any>>) : Boolean{
+        if (action is ActionMacro){
+            val index = fullProcedure.indexOf(action)
+            val additions = action.getActualMacro()
+            fullProcedure.addAll(index + 1, additions)
+            return false
         }
-        val action = procedure[i]
-        action.function(level, this, action.parameter)
-
-        checkForVictory()        
+        else {
+            action.function(level, this, action.parameter)
+            return true
+        }
     }
 
     /**
@@ -216,33 +212,26 @@ class RobotPlayer(val name: String,
      * @param clear The function to call once all intervals have been run
      */
     fun runInstructions(reset : Boolean, run: (() -> Unit) -> Unit, clear: () -> Unit){
-        var i = 0;
-        var currentMacroIndex = 0
+        val procedureCopy = arrayListOf<Action<Any>>()
+        procedureCopy.addAll(getProcedure() as ArrayList<Action<Any>>)
+        var i = 0
         val runNextAction = {
-            if (i < procedure.size){
-                val action = procedure[i]
-                if (action is ActionMacro){
-                    action.runMacroAt(currentMacroIndex, level, this)
-                    currentMacroIndex++
-                    if (currentMacroIndex == action.getMacro().size){
-                        i++
-                        currentMacroIndex = 0
-                        checkForVictory()
-                    }
+            var actuallyRun = true
+            do{
+                actuallyRun = true
+                if (i < procedureCopy.size){
+                    actuallyRun = interpretAction(procedureCopy[i], procedureCopy)
                 }
                 else{
-                    runAction(i, reset)
-                    i++
+                    handleEndOfRun(reset)
+                    clear()
                 }
-            }
-            else{
-                runAction(i, reset)
-                i++
-                clear()
-            }
 
-            eventListener.invoke(Event.LEVEL_UPDATE)
+                i++
+            } while(!actuallyRun)
+
             
+            eventListener.invoke(Event.LEVEL_UPDATE)
         }
         runNextAction()
         run(runNextAction)
@@ -253,19 +242,26 @@ class RobotPlayer(val name: String,
      * @param reset true if the level should reset afterwards, false otherwise
      */
     fun runInstructions(reset : Boolean){
+        val procedureCopy = arrayListOf<Action<Any>>()
+        procedureCopy.addAll(getProcedure() as ArrayList<Action<Any>>)
         level.saveCheckpoint()
-        for (i in  0..procedure.size){
-            runAction(i, reset)
+        for (action in procedureCopy){
+            interpretAction(action as Action<Any>, procedureCopy)
         }
+        handleEndOfRun(reset)
     }
 
     /**
-     * If the player is on a victory tile, this calls the proper event and set [victorious] to true
+     * Handles the events for the end of the run
+     * @param reset True to revert to checkpoint if not victorious, false otherwise
      */
-    fun checkForVictory(){
+    fun handleEndOfRun(reset : Boolean){
         if (level.tileAt(x, y) is VictoryTile){
             eventListener.invoke(Event.LEVEL_VICTORY)
-            victorious = true
+        }
+        else {
+            if (reset) level.restoreCheckpoint()
+            eventListener.invoke(Event.LEVEL_FAILURE)
         }
     }
 }
