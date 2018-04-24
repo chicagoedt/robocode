@@ -19,13 +19,11 @@ abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
     val parameterElement = document.createElement("select") as HTMLElement
     abstract val action : T
-    private lateinit var originalShadow : String
     protected abstract val hasParameters : Boolean
 
     init {
         element.addClass("actionBlock")
         element.asDynamic().block = this
-        originalShadow = element.style.boxShadow
     }
 
     /**
@@ -47,6 +45,12 @@ abstract class ActionBlock<T : Action<*>>(){
             parameterElement.onchange = ::parameterChanged
             element.appendChild(parameterElement)
         }
+
+        drag.droppable()
+        drag.droppable("option", "tolerance", "pointer")
+        drag.droppable("option", "over", ::over)
+        drag.droppable("option", "out", ::overout)
+        drag.droppable("option", "drop", ::drop)
     }
 
     /**
@@ -55,6 +59,7 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     fun onDrag(event : Event, ui : dynamic){
+        element.style.backgroundColor = "grey"
         ui.helper[0].style.width = element.clientWidth.toString() + "px"
         ui.helper[0].style.left = ui.position.left.toString() + "px"
 
@@ -67,9 +72,15 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     fun onDragStop(event : Event, ui : dynamic){
-        element.style.boxShadow = originalShadow
+        element.style.backgroundColor = ""
+        element.style.boxShadow = ""
     }
 
+    /**
+     * Inserts a parameter into the parameter list
+     * @param s The string representation of the parameter
+     * @param onSelectedParameter The value that the parameter should be set to when this option is selected
+     */
     fun insertParameter(s : String, onSelectedParameter: dynamic){
         val option = document.createElement("option") as HTMLElement
         option.innerHTML = s
@@ -78,8 +89,42 @@ abstract class ActionBlock<T : Action<*>>(){
         parameterElement.appendChild(option)
     }
 
+    /**
+     * Called when the parameter gets changed
+     * @param e The event of the changed parameter
+     */
     fun parameterChanged(e : Event) : dynamic{
         action.parameter = e.target.asDynamic().selectedOptions[0].parameter
         return 0
+    }
+
+    /**
+     * Expands the bottom margin when dragged over. Only applies if the parent is a panel
+     * @param event The over event
+     * @param ui The element being hovered
+     */
+    fun over(event : Event, ui : dynamic){
+        if (element.parentElement!!.classList.contains("panel")){
+            element.style.marginBottom = "10px"
+        }
+        
+    }
+
+    /**
+     * Called when a draggable that was hovering over this block is moved out
+     * @param event The out event
+     * @param ui The element being moved
+     */
+    fun overout(event : Event, ui : dynamic){
+        element.style.marginBottom = "0px"
+    }
+
+    /**
+     * Called when a draggable is dropped over this block
+     * @param event The drop event
+     * @param ui The element being dropped
+     */
+    fun drop(event : Event, ui : dynamic){
+        element.style.marginBottom = "0px"
     }
 }

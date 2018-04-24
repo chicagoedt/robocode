@@ -11,6 +11,7 @@ import org.w3c.dom.get
 import kotlin.browser.*
 import kotlin.dom.addClass
 import kotlin.js.*
+import kotlin.*
 
 /**
  * The area to show and manage the code corresponding to the robot
@@ -58,10 +59,22 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val blockElement : HTMLElement = ui.draggable[0]
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
-    	element.appendChild(blockElement)
         element.style.boxShadow = ""
 
-        robot.appendAction(blockElement.asDynamic().block.action)
+        val blocks = element.querySelectorAll(".actionBlock")
+        var pos = blocks.length
+
+        try{
+            pos = whichBlockOver(event.asDynamic().clientX, event.asDynamic().clientY)
+            val block = blocks.item(pos) as HTMLElement
+            element.insertBefore(blockElement, block)
+        }
+        catch(e : ClassCastException){
+            pos = blocks.length
+            element.appendChild(blockElement)
+        }
+        
+        robot.insertAction(blockElement.asDynamic().block.action, pos)
 
         drawer.populate()
     }
@@ -113,5 +126,26 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         header.appendChild(runButton)
 
         return header
+    }
+
+    /**
+     * Gets the block that the new block should be when dropped in this position
+     * @param x The x value of the mouse
+     * @param y The y value of the mouse
+     * @return The position that the new block should be inserted at
+     */
+    private fun whichBlockOver(x : Int, y : Int) : Int{
+        val blocks = element.querySelectorAll(".actionBlock")
+        var position = blocks.length
+        
+        for (i in 0 until blocks.length){
+            val block = (blocks.item(i) as HTMLElement).getBoundingClientRect()
+            if (y < block.top){
+                position = i
+                break
+            }
+        }
+
+        return position;
     }
 }
