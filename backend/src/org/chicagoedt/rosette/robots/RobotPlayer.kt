@@ -158,6 +158,21 @@ class RobotPlayer(val name: String,
     }
 
     /**
+     * Inserts an action into a robot's procedure at a specific spot
+     * @param action The action to append
+     */
+    fun insertAction(action: Action<*>, i : Int){
+        val lastIndex = procedure.size - 1
+
+        if (i > lastIndex){
+            procedure.add(action as Action<Any>)
+        }
+        else{
+            procedure.add(i, action as Action<Any>)
+        }
+    }
+
+    /**
      * Removes an action from a robot's procedure
      * @param name The name of the robot to remove the action from
      * @param action The action to remove from the robot

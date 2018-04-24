@@ -849,4 +849,29 @@ class BackendTests {
             game.nextLevel()
         }
     }
+
+    @Test
+    fun AddAction(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveAction()
+                val action2 = TurnAction()
+                val action3 = MoveActionMacro()
+
+                robot.appendAction(action)
+                robot.insertAction(action3, 5)
+
+                assertEquals(robot.getProcedure()[0] is MoveAction, true)
+                assertEquals(robot.getProcedure()[1] is MoveActionMacro, true)
+
+                robot.insertAction(action2, 1)
+                
+                assertEquals(robot.getProcedure()[0] is MoveAction, true)
+                assertEquals(robot.getProcedure()[1] is TurnAction, true)
+                assertEquals(robot.getProcedure()[2] is MoveActionMacro, true)
+
+            }
+            game.nextLevel()
+        }
+    }
 }
