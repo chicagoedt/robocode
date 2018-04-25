@@ -214,27 +214,26 @@ class RobotPlayer(val name: String,
     fun runInstructions(reset : Boolean, run: (() -> Unit) -> Unit, clear: () -> Unit){
         val procedureCopy = arrayListOf<Action<Any>>()
         procedureCopy.addAll(getProcedure() as ArrayList<Action<Any>>)
+        level.saveCheckpoint()
         var i = 0
         val runNextAction = {
             var actuallyRun = true
             do{
                 actuallyRun = true
                 if (i < procedureCopy.size){
-                    actuallyRun = interpretAction(procedureCopy[i], procedureCopy)
+                    actuallyRun = interpretAction(procedureCopy[i] as Action<Any>, procedureCopy)
+                    eventListener.invoke(Event.LEVEL_UPDATE)
                 }
                 else{
-                    handleEndOfRun(reset)
                     clear()
                 }
 
                 i++
             } while(!actuallyRun)
-
-            
-            eventListener.invoke(Event.LEVEL_UPDATE)
         }
         runNextAction()
         run(runNextAction)
+        handleEndOfRun(reset)
     }
 
     /**
@@ -242,13 +241,15 @@ class RobotPlayer(val name: String,
      * @param reset true if the level should reset afterwards, false otherwise
      */
     fun runInstructions(reset : Boolean){
-        val procedureCopy = arrayListOf<Action<Any>>()
-        procedureCopy.addAll(getProcedure() as ArrayList<Action<Any>>)
-        level.saveCheckpoint()
-        for (action in procedureCopy){
-            interpretAction(action as Action<Any>, procedureCopy)
+        var shouldRun = true
+        val toRun = {runner : () -> Unit->
+            while(shouldRun){
+                runner()
+            }
         }
-        handleEndOfRun(reset)
+        val clear = {shouldRun = false}
+
+        runInstructions(reset, toRun, clear)
     }
 
     /**
