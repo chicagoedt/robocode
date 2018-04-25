@@ -105,7 +105,7 @@ abstract class ActionBlock<T : Action<*>>(){
     fun over(event : Event, ui : dynamic){
         if (element.parentElement!!.classList.contains("panel")){
             element.parentElement!!.asDynamic().panelObject.lastHoveredBlock = this
-            element.style.marginTop = "10px"
+            element.style.marginBottom = "10px"
         }
     }
 
@@ -115,6 +115,6 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The element being moved
      */
     fun overout(event : Event, ui : dynamic){
-        element.style.marginTop = ""
+        element.style.marginBottom = ""
     }
 }
