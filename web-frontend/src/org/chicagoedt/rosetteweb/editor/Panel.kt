@@ -4,10 +4,8 @@ import jQuery
 import org.chicagoedt.rosette.robots.RobotPlayer
 import org.chicagoedt.rosetteweb.*
 import org.chicagoedt.rosette.actions.*
-import org.w3c.dom.HTMLDivElement
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
-import org.w3c.dom.get
+import org.w3c.dom.*
 import kotlin.browser.*
 import kotlin.dom.addClass
 import kotlin.js.*
@@ -19,9 +17,11 @@ import kotlin.*
  * @param robot The robot corresponding to this panel
  * @param drawer The drawer where the blocks are being dragged from
  * @property element The HTML element for this panel
+ * @property lastHoveredBlock The last block that a draggable was hovered over
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer){
     lateinit var element : HTMLDivElement
+    var lastHoveredBlock : ActionBlock<Action<Any>>? = null
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -29,6 +29,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         
         element = document.createElement("div") as HTMLDivElement
         element.addClass("panel")
+        element.asDynamic().panelObject = this
 
 
         element.appendChild(getHeader())
@@ -61,18 +62,21 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         blockElement.style.left = "0px"
         element.style.boxShadow = ""
 
-        val blocks = element.querySelectorAll(".actionBlock")
-        var pos = blocks.length
+        val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+        var pos = 0
 
         try{
-            pos = whichBlockOver(event.asDynamic().clientX, event.asDynamic().clientY)
-            val block = blocks.item(pos) as HTMLElement
+            lastHoveredBlock!!.element.style.marginTop = ""
+            pos = blocks.indexOf(lastHoveredBlock!!.element)
+            val block = blocks[pos] as HTMLElement
             element.insertBefore(blockElement, block)
         }
-        catch(e : ClassCastException){
-            pos = blocks.length
+        catch(e : Exception){
+            pos = blocks.size
             element.appendChild(blockElement)
         }
+
+        lastHoveredBlock = null
         
         robot.insertAction(blockElement.asDynamic().block.action, pos)
 
@@ -97,6 +101,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      */
     fun overout(event : Event, ui : dynamic){
         element.style.boxShadow = ""
+        lastHoveredBlock = null
     }
 
     /**

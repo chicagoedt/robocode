@@ -225,6 +225,7 @@ class RobotPlayer(val name: String,
                     eventListener.invoke(Event.LEVEL_UPDATE)
                 }
                 else{
+                    handleEndOfRun(reset)
                     clear()
                 }
 
@@ -232,8 +233,8 @@ class RobotPlayer(val name: String,
             } while(!actuallyRun)
         }
         runNextAction()
+        //console.log(procedureCopy)
         run(runNextAction)
-        handleEndOfRun(reset)
     }
 
     /**

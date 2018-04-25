@@ -50,7 +50,6 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.droppable("option", "tolerance", "pointer")
         drag.droppable("option", "over", ::over)
         drag.droppable("option", "out", ::overout)
-        drag.droppable("option", "drop", ::drop)
     }
 
     /**
@@ -105,9 +104,9 @@ abstract class ActionBlock<T : Action<*>>(){
      */
     fun over(event : Event, ui : dynamic){
         if (element.parentElement!!.classList.contains("panel")){
-            element.style.marginBottom = "10px"
+            element.parentElement!!.asDynamic().panelObject.lastHoveredBlock = this
+            element.style.marginTop = "10px"
         }
-        
     }
 
     /**
@@ -116,15 +115,6 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The element being moved
      */
     fun overout(event : Event, ui : dynamic){
-        element.style.marginBottom = "0px"
-    }
-
-    /**
-     * Called when a draggable is dropped over this block
-     * @param event The drop event
-     * @param ui The element being dropped
-     */
-    fun drop(event : Event, ui : dynamic){
-        element.style.marginBottom = "0px"
+        element.style.marginTop = ""
     }
 }
