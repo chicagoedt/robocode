@@ -1,26 +1,88 @@
 import kotlin.test.*
-import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.actions.ConditionalWithList
-import org.chicagoedt.rosette.actions.operations.TopicEqualsComparison
-import org.chicagoedt.rosette.actions.robotActions.*
-import org.chicagoedt.rosette.collectibles.ItemInventory
-import org.chicagoedt.rosette.collectibles.ItemManager
-import org.chicagoedt.rosette.collectibles.etc.Sand
-import org.chicagoedt.rosette.levels.Level
-import org.chicagoedt.rosette.robots.*
-import org.chicagoedt.rosette.sensors.DistanceSensor
-import org.chicagoedt.rosette.tiles.NeutralTile
-import org.chicagoedt.rosette.tiles.ObstacleTile
-import org.chicagoedt.rosette.tiles.VictoryTile
+import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.actions.ConditionalWithList
+import org.chicagoedt.robocode.actions.operations.TopicEqualsComparison
+import org.chicagoedt.robocode.actions.robotActions.*
+import org.chicagoedt.robocode.collectibles.ItemInventory
+import org.chicagoedt.robocode.collectibles.ItemManager
+import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocode.levels.Level
+import org.chicagoedt.robocode.robots.*
+import org.chicagoedt.robocode.sensors.DistanceSensor
+import org.chicagoedt.robocode.tiles.*
 
+/**
+ * @return All levels for the current game configuration
+ */
+fun getLevels() : ArrayList<Level>{
+    val levels = ArrayList<Level>()
+
+    val level1 = Level(Level.Properties("levels 1", 0, 10, 10))
+    val level2 = Level(Level.Properties("levels 2", 0, 5, 5))
+
+    val robotPlayer1 = RobotPlayer("Surus", 5, 5, RobotOrientation.DIRECTION_UP, level1)
+    val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP, level1)
+    val robotPlayer3 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP, level2)
+
+    val list1 = ArrayList<RobotPlayer>()
+    val list2 = ArrayList<RobotPlayer>()
+
+    list1.add(robotPlayer1)
+    list1.add(robotPlayer2)
+    list2.add(robotPlayer3)
+
+    level1.setPlayers(list1)
+    level2.setPlayers(list2)
+
+    level1.makeGrid(arrayListOf(
+            arrayListOf(VictoryTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), ObstacleTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+    level2.makeGrid(arrayListOf(
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), ObstacleTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile()),
+            arrayListOf(NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+    levels.add(level1)
+    levels.add(level2)
+
+    return levels
+}
+
+/**
+ * @return All robots for the current game configuration
+ */
+fun getRobots() : ArrayList<Robot>{
+    val robots = ArrayList<Robot>()
+
+    val surus = Robot("Surus", "")
+    val hushpuppy = Robot("Hushpuppy", "")
+
+    robots.add(surus)
+    robots.add(hushpuppy)
+
+    return robots
+}
 
 class BackendTests {
     private lateinit var game : Game
-    private val levels = getLevels()
-    private val robots = getRobots()
+    private var levels = getLevels()
+    private var robots = getRobots()
 
     @BeforeTest
     fun SetUp(){
+        levels = getLevels()
+        robots = getRobots()
         game = Game(levels, robots)
     }
 
@@ -93,7 +155,7 @@ class BackendTests {
         val turn = TurnAction()
         turn.parameter = rotation
         robot.appendAction(turn)
-        robot.runInstructions()
+        robot.runInstructions(false)
         robot.removeAction(turn)
         if (assert) assertEquals(robot.direction, next)
     }
@@ -105,7 +167,7 @@ class BackendTests {
         val y = robot.y
         val x = robot.x
         robot.appendAction(instruction)
-        robot.runInstructions()
+        robot.runInstructions(false)
         robot.removeAction(instruction)
 
         val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
@@ -164,7 +226,7 @@ class BackendTests {
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
-                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())))
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
         testLevels.add(level1)
         game = Game(testLevels, testRobots)
@@ -172,7 +234,7 @@ class BackendTests {
         val instruction = MoveAction()
         instruction.parameter = 1
         robotPlayer1.appendAction(instruction)
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
         assertEquals(robotPlayer1.x, 0)
         assertEquals(robotPlayer1.y, 0)
 
@@ -180,11 +242,11 @@ class BackendTests {
         val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.CLOCKWISE
         robotPlayer1.appendAction(turnInstruction)
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         robotPlayer1.removeAction(turnInstruction)
         robotPlayer1.appendAction(instruction)
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
     }
@@ -209,7 +271,7 @@ class BackendTests {
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
-                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
         testLevels.add(level1)
 
@@ -219,7 +281,7 @@ class BackendTests {
         instruction.parameter = 1
         robotPlayer1.appendAction(instruction)
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         assertEquals(level1.players[surus.name]!!.x, 0)
         assertEquals(level1.players[surus.name]!!.y, 0)
@@ -247,7 +309,7 @@ class BackendTests {
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
-                arrayListOf(NeutralTile(), VictoryTile(), NeutralTile())))
+                arrayListOf(NeutralTile(), VictoryTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
         testLevels.add(level1)
 
@@ -257,11 +319,59 @@ class BackendTests {
         instruction.parameter = 1
         robotPlayer1.appendAction(instruction)
 
-        game.attachEventListener { won = true }
+        game.attachEventListener {e -> 
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+                Event.LEVEL_FAILURE -> won = false
+            }
+        }
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
 
         assertEquals(won, true)
+    }
+
+    @Test
+    fun LevelFailure(){
+        var failed = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), VictoryTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val instruction = MoveAction()
+        instruction.parameter = 1
+        robotPlayer1.appendAction(instruction)
+
+        game.attachEventListener {e -> 
+            when (e){
+                Event.LEVEL_FAILURE -> failed = true
+            }
+        }
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(failed, true)
     }
 
     @Test
@@ -372,7 +482,7 @@ class BackendTests {
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
-                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
         testLevels.add(level1)
 
@@ -390,9 +500,15 @@ class BackendTests {
         instruction.addToMacro(MoveAction())
         robotPlayer1.appendAction(instruction)
 
-        game.attachEventListener { won = true }
+        game.attachEventListener {e ->
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+            }
+        }
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
+
+        game.attachEventListener {}
 
         assertEquals(won, true)
     }
@@ -420,7 +536,7 @@ class BackendTests {
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
-                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())))
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
         testLevels.add(level1)
 
@@ -438,9 +554,15 @@ class BackendTests {
         instruction.addToMacro(MoveAction())
         robotPlayer1.appendAction(instruction)
 
-        game.attachEventListener { won = true }
+        game.attachEventListener {e ->
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+            }
+        }
 
-        robotPlayer1.runInstructions()
+        robotPlayer1.runInstructions(false)
+
+        game.attachEventListener {}
 
         assertEquals(won, false)
     }
@@ -502,7 +624,7 @@ class BackendTests {
                 action.parameter = Sand.id
 
                 robot.appendAction(action)
-                robot.runInstructions()
+                robot.runInstructions(false)
                 robot.removeAction(action)
 
                 assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity)
@@ -525,12 +647,231 @@ class BackendTests {
                 action.parameter = Sand.id
 
                 robot.appendAction(action)
-                robot.runInstructions()
+                robot.runInstructions(false)
                 robot.removeAction(action)
 
                 assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
                 assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity)
             }
+        }
+    }
+
+    @Test
+    fun ItemRestoreCheckpoint(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        level1.tileAt(0,0).items.addItem(Sand.id)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val pickupAction = ItemPickupAction()
+        pickupAction.parameter = Sand.id
+        robotPlayer1.appendAction(pickupAction)
+
+        robotPlayer1.runInstructions(true)
+
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 0)
+        assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 1)
+    }
+
+    @Test
+    fun ItemRestoreCheckpointVictoryFalse(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        level1.tileAt(0,0).items.addItem(Sand.id)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val pickupAction = ItemPickupAction()
+        pickupAction.parameter = Sand.id
+        robotPlayer1.appendAction(pickupAction)
+
+        robotPlayer1.runInstructions(true)
+
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 1)
+        assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 0)
+    }
+
+    @Test
+    fun RobotCheckpointRestore(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val moveAction = MoveAction()
+                val turnAction = TurnAction()
+                val x = robot.x
+                val y = robot.y
+                val direction = robot.direction
+                robot.appendAction(moveAction)
+                robot.appendAction(turnAction)
+                robot.runInstructions(true)
+                robot.removeAction(moveAction)
+                robot.removeAction(turnAction)
+                assertEquals(robot.x, x)
+                assertEquals(robot.y, y)
+                assertEquals(robot.direction, direction)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun RobotCheckpointRestoreVictoryFalse(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        level1.tileAt(0,0).items.addItem(Sand.id)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val turnAction = TurnAction()
+        turnAction.parameter = RobotRotation.COUNTERCLOCKWISE
+        robotPlayer1.appendAction(turnAction)
+
+        val moveAction = MoveAction()
+        robotPlayer1.appendAction(moveAction)
+
+        robotPlayer1.runInstructions(true)
+
+        assertEquals(robotPlayer1.y, 1)
+        assertEquals(robotPlayer1.direction, RobotOrientation.DIRECTION_UP)
+    }
+
+    @Test
+    fun MoveActionMacroSetParameter(){
+        val action = MoveActionMacro()
+        assertEquals(action.parameter, 1)
+        assertEquals(action.getMacro().size, 1)
+
+        action.parameter = 5
+        assertEquals(action.parameter, 5)
+        assertEquals(action.getMacro().size, 5)
+
+        action.parameter = 3
+        assertEquals(action.parameter, 3)
+        assertEquals(action.getMacro().size, 3)
+
+        action.parameter = 7
+        assertEquals(action.parameter, 7)
+        assertEquals(action.getMacro().size, 7)
+    }
+
+    @Test
+    fun MoveWithMoveActionMacro(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveActionMacro()
+                
+                val y = robot.y
+                val x = robot.x
+                val orientation = robot.direction
+                action.parameter = 2
+                robot.appendAction(action)
+                robot.runInstructions(false)
+                robot.removeAction(action)
+
+                val difference = (action.getMacro()[0] as MoveAction).distanceCanMove(x, y, orientation, action.parameter, game.currentLevel)
+                if (orientation == RobotOrientation.DIRECTION_UP) {
+                    assertEquals(robot.y, y + difference)
+                    assertEquals(robot.x, x)
+                }
+                else if (orientation == RobotOrientation.DIRECTION_DOWN) {
+                    assertEquals(robot.y, y - difference)
+                    assertEquals(robot.x, x)
+                }
+                else if (orientation == RobotOrientation.DIRECTION_LEFT) {
+                    assertEquals(robot.y, y)
+                    assertEquals(robot.x, x - difference)
+                }
+                else if (orientation == RobotOrientation.DIRECTION_RIGHT) {
+                    assertEquals(robot.y, y)
+                    assertEquals(robot.x, x + difference)
+                }
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun AddAction(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveAction()
+                val action2 = TurnAction()
+                val action3 = MoveActionMacro()
+
+                robot.appendAction(action)
+                robot.insertAction(action3, 5)
+
+                assertEquals(robot.getProcedure()[0] is MoveAction, true)
+                assertEquals(robot.getProcedure()[1] is MoveActionMacro, true)
+
+                robot.insertAction(action2, 1)
+                
+                assertEquals(robot.getProcedure()[0] is MoveAction, true)
+                assertEquals(robot.getProcedure()[1] is TurnAction, true)
+                assertEquals(robot.getProcedure()[2] is MoveActionMacro, true)
+
+            }
+            game.nextLevel()
         }
     }
 }

@@ -1,5 +1,5 @@
 group 'chicagoedt'
-version '0.1-ALPHA'
+version '0.0.1-ALPHA'
 
 allprojects{
     buildscript {
@@ -11,7 +11,8 @@ allprojects{
         }
         dependencies {
             classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-            classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
         }
     }
 }
+
+

@@ -1,0 +1,209 @@
+body{
+	background-color: #EFEFEF;
+}
+
+#header{
+	height: 50px;
+	width: 100%;
+	background-color: #3F51B5;
+	box-shadow: 0px 2px 5px grey;
+	z-index: 199;
+	position: relative;
+	font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+}
+
+#grid{
+	top: 50px;
+	left: 0;
+	width: calc(20% - 20px);
+	margin: 10px;
+	float:left;
+	z-index: 5;
+	box-shadow: 0px 0px 20px grey;
+	background-color: #8BC34A;
+}
+
+#editor{
+	top:50px;
+	position: absolute;
+	width: 80%;
+	height: calc(100% - 50px);
+	left: 20%;
+	overflow: hidden;
+}
+
+#panelTable{
+	position: absolute;
+	width:100%;
+	height:100%;
+}
+
+#panelContainer{
+	position: absolute;
+	width:80%;
+	height:100%;
+	right: 20%;
+	float: left;
+	overflow: auto;
+}
+
+#drawer{
+	position: absolute;
+	width:20%;
+	height:100%;
+	left: 80%;
+	float: right;
+	background-color: #BBDEFB;
+	box-shadow: 0px 0px 20px grey;
+	z-index: 10;
+	overflow: auto;
+	z-index: 5;
+}
+
+table{
+	border-spacing: 0px;
+}
+
+.panelTd{
+	min-width: 200px;
+}
+
+.panel{
+	background-color: #9DA6DB;
+	height: calc(95% - 10px);
+	margin: 10px;
+	box-shadow: 0px 0px 20px grey;
+	border-radius: 0px;
+	overflow: auto;
+}
+
+.actionBlock{
+	width:calc(100% - 20px);
+	height:20px;
+	background-color: #DCEDC8;
+	box-shadow: 0px 0px 2px grey;
+	line-height: 20px;
+	text-align: center;
+	padding: 10px;
+	font-family: Verdana;
+    text-align: left;
+}
+
+.actionBlockParameter{
+	float: right;
+	height:100%;
+	width:40%;
+}
+
+td, th, tr {
+	padding: 0px;
+}
+
+.panelHeader{
+	width:calc(100% - 10px);
+	height:60px;
+	line-height: 60px;
+	text-align: center;
+	background-color: #454FFF;
+	padding-left: 10px;
+	font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.panelHeaderButton{
+	height:calc(100% - 20px);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	border-radius: 5px;
+	width:20%;
+	float: right;
+	font-family: Verdana;
+	background-color: white;
+	cursor: pointer;
+}
+
+.gridTileCell{
+	border: 1px solid black;
+}
+
+.gridTile{
+	padding-top: 100%;
+}
+
+.gridPlayer{
+	background-color: #FF5722;
+}
+
+.obstacleTile{
+	background-color: #673AB7;
+}
+
+.neutralTile{
+	background-color: #8BC34A;
+}
+
+.victoryTile{
+	background-color: #FFEB3B;
+}
+
+.popup{
+	display: none;
+	position: absolute;
+	width: auto;
+	height: 100px;
+	bottom:20px;
+	right:20px;
+	background-color: white;
+	box-shadow: 0px 0px 40px grey;
+	z-index: 999;
+	padding: 10px;
+
+	font-family: Verdana;
+    text-align: left;
+    font-size: 3vw;
+    
+}
+
+.popupText{
+	float: left;
+	height: 100px;
+	line-height: 100px;
+	min-width: 60%;
+	font-family: Verdana;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 3vw;
+}
+
+.popupButton{
+	width: 30%;
+	height: calc(100% - 10px);
+	float: right;
+	font-size: 1vw;
+	border-radius: 5px;
+	background-color: white;
+	top: -10px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+
+.popupDismissButton{
+	position: relative;
+	font-family: Verdana;
+	font-size: 8px;
+	width: auto;
+	height: 8px;
+	float: right;
+	margin-right: -8px;
+	margin-top: -8px;
+	cursor: pointer;
+}

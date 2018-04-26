@@ -1,9 +1,17 @@
 apply plugin: 'kotlin-platform-js'
+apply plugin: 'kotlin2js'
 apply plugin: 'com.moowork.node'
 
 sourceSets {
     main.kotlin.srcDirs += 'src/'
+    main.kotlin.srcDirs += 'lib/'
     test.kotlin.srcDirs += 'tests/'
+}
+
+buildscript{
+    dependencies {
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.2.0'
+    }
 }
 
 repositories {
@@ -16,31 +24,107 @@ dependencies {
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 
-[compileKotlin2Js, compileTestKotlin2Js]*.configure {
+compileKotlin2Js.configure {
+    kotlinOptions.moduleKind = "umd"
+    kotlinOptions.main = 'call'
+
+    kotlinOptions.noStdlib = false
+    kotlinOptions.outputFile = "web-frontend/web/js/${project.name}.js"
+    kotlinOptions.sourceMap = true
+}
+
+compileTestKotlin2Js.configure {
     kotlinOptions.moduleKind = "commonjs"
+    kotlinOptions.noStdlib = false
+    kotlinOptions.outputFile = "web-frontend/web/js/${project.name}-test.js"
 }
 
-task populateNodeModules(type: Copy, dependsOn: compileKotlin2Js) {
-    from compileKotlin2Js.destinationDir
-
-    configurations.testCompile.each {
-        from zipTree(it.absolutePath).matching { include '*.js' }
-    }
-
-    into "${buildDir}/node_modules"
-}
-
-node {
+node{
     download = true
 }
 
+task installTs2kt(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/ts2kt/")
+    args = ['install', 'ts2kt']
+}
+
+task generateJQueryHeader(type: NodeTask, dependsOn: [installTs2kt]){
+    outputs.dir file('lib/')
+
+    def folder = new File('web-frontend/headers/')
+    if (!folder.exists()) {
+        folder.mkdirs()
+        def f = new File('web-frontend/headers/jquery.d.ts')
+
+        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
+    }
+    
+
+    script = file("${node.nodeModulesDir}/node_modules/ts2kt/ts2kt.js")
+    args = ["-d", "lib/", "headers/jquery.d.ts"]
+}
+
+task generateJQueryLib{
+    outputs.dir file("web-frontend/web/js/lib/jquery/")
+    def folder = new File('web-frontend/web/js/lib/jquery/')
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
+    def f = new File('web-frontend/web/js/lib/jquery/jquery.js')
+    new URL('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js').withInputStream{ i -> f.withOutputStream{ it << i }}
+
+    def f2 = new File('web-frontend/web/js/lib/jquery/jqueryui.js')
+    new URL('https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js').withInputStream{ i -> f2.withOutputStream{ it << i }}
+}
+
+compileKotlin2Js.dependsOn generateJQueryHeader
+
+compileKotlin2Js.doLast {
+    configurations.compile.each { File file ->
+        copy {
+            includeEmptyDirs = false
+
+            from zipTree(file.absolutePath)
+            into "web/js/lib"
+            include { fileTreeElement ->
+                def path = fileTreeElement.path
+                path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+            }
+        }
+    }
+
+    generateJQueryLib.execute()
+}
+
 task installMocha(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/mocha/")
     args = ['install', 'mocha']
 }
 
-task runMocha(type: NodeTask, dependsOn: [compileTestKotlin2Js, populateNodeModules, installMocha]) {
+task installKotlin(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/kotlin/")
+    args = ['install', 'kotlin']
+}
+
+task installKotlinTest(type: NpmTask) {
+    outputs.dir file("${node.nodeModulesDir}/node_modules/kotlin-test/")
+    args = ['install', 'kotlin-test']
+}
+
+task installWebFrontend(type: NpmTask) {
+    args = ['install', 'web/']
+}
+
+task runMocha(type: NodeTask, dependsOn: [installMocha, installKotlin, installKotlinTest, installWebFrontend]) {
     script = file("node_modules/mocha/bin/mocha")
-    args = [compileTestKotlin2Js.outputFile]
+    args = ["web/js/${project.name}-test.js", "-r", "${project.name}"]
 }
 
 test.dependsOn runMocha
+
+clean.doFirst{
+    delete 'node_modules/'
+    delete 'headers/'
+    delete 'lib/'
+    delete 'web/js/'
+}

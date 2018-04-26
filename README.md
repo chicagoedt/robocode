@@ -1,10 +1,10 @@
-# ROSette
+# Robocode
 
 ## About
 
-The goal of ROSette (working title) is to teach programming & the fundamentals of building a robot. It has taken inspiration from great educational tools like Code.org and Scratch
+The goal of Robocode is to teach programming & the fundamentals of building a robot. It has taken inspiration from great educational tools like Code.org and Scratch
 
-[View the ROSette Docs](https://outreach.chicagoedt.org/rosette/docs)
+[View the Robocode Docs](https://chicagoedt.org/rosette/)
 
 This project is in very early development. Expect bugs.
 

@@ -1,4 +1,4 @@
-rootProject.name = 'rosette'
+rootProject.name = 'robocode'
 
 include 'backend'
 include 'web-frontend'
