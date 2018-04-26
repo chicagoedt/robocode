@@ -1,15 +1,15 @@
 import kotlin.test.*
-import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.actions.ConditionalWithList
-import org.chicagoedt.rosette.actions.operations.TopicEqualsComparison
-import org.chicagoedt.rosette.actions.robotActions.*
-import org.chicagoedt.rosette.collectibles.ItemInventory
-import org.chicagoedt.rosette.collectibles.ItemManager
-import org.chicagoedt.rosette.collectibles.etc.Sand
-import org.chicagoedt.rosette.levels.Level
-import org.chicagoedt.rosette.robots.*
-import org.chicagoedt.rosette.sensors.DistanceSensor
-import org.chicagoedt.rosette.tiles.*
+import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.actions.ConditionalWithList
+import org.chicagoedt.robocode.actions.operations.TopicEqualsComparison
+import org.chicagoedt.robocode.actions.robotActions.*
+import org.chicagoedt.robocode.collectibles.ItemInventory
+import org.chicagoedt.robocode.collectibles.ItemManager
+import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocode.levels.Level
+import org.chicagoedt.robocode.robots.*
+import org.chicagoedt.robocode.sensors.DistanceSensor
+import org.chicagoedt.robocode.tiles.*
 
 /**
  * @return All levels for the current game configuration

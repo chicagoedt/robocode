@@ -1,11 +1,11 @@
-package org.chicagoedt.rosetteweb
+package org.chicagoedt.robocodeweb
 
 import jQuery
 import org.w3c.dom.*
 import kotlin.browser.*
-import org.chicagoedt.rosette.*
-import org.chicagoedt.rosette.robots.*
-import org.chicagoedt.rosette.levels.*
+import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.robots.*
+import org.chicagoedt.robocode.levels.*
 
 /**
  * The game that the browser is running
