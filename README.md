@@ -8,11 +8,8 @@ The goal of Robocode is to teach programming & the fundamentals of building a ro
 
 This project is in very early development. Expect bugs.
 
-Currently there is no frontend to this project.
-
 ## Getting Started with Development
-1. [Install Gradle](https://gradle.org/install/)
-2. Clone this repository into a directory of your choice
+Clone this repository into a directory of your choice
 
 To run the JVM tests:
 1. Run "gradle :jvm-frontend:build" in your terminal/command prompt to build the project
