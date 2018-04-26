@@ -8,6 +8,8 @@ The goal of Robocode is to teach programming & the fundamentals of building a ro
 
 This project is in very early development. Expect bugs.
 
+![Robocode](https://github.com/chicagoedt/robocode/raw/master/res/screenshot.png)
+
 ## Getting Started with Development
 Clone this repository into a directory of your choice
 
