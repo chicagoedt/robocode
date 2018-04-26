@@ -17,11 +17,14 @@ import org.chicagoedt.robocode.robots.*
 open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	var tableElement = document.createElement("td") as HTMLElement
 	var element  = document.createElement("div") as HTMLElement
+	val itemCountElement = document.createElement("div") as HTMLElement
 	var player : RobotPlayer? = null
 
 	init{
 		tableElement.classList.add("gridTileCell")
 		tableElement.appendChild(element)
+		itemCountElement.classList.add("tileItemCount")
+		element.appendChild(itemCountElement)
 		element.classList.add("gridTile")
 		setWidth()
 		refresh()
@@ -38,7 +41,8 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	/**
 	 * Refreshed the content in this tile
 	 */
-	open fun refresh(){
+	fun refresh(){
+		displayItemCount()
 		element.classList.remove("obstacleTile")
 		element.classList.remove("neutralTile")
 		element.classList.remove("victoryTile")
@@ -56,5 +60,11 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 		else if (level.tileAt(gridX, gridY) is VictoryTile){
 			element.classList.add("victoryTile")
 		}
+	}
+
+	fun displayItemCount(){
+		val totalCount = level.tileAt(gridX, gridY).items.totalItemQuantity()
+		if (totalCount == 0)itemCountElement.innerText = ""
+		else itemCountElement.innerText = totalCount.toString()
 	}
 }

@@ -86,12 +86,30 @@ class ItemInventory {
      */
     fun itemQuantity(itemID: Int): Int = if (hasItem(itemID)) inventory[itemID]!! else 0
 
+    /**
+     * Gets the total count of all items in the inventory
+     * @return The total count of all items in the inventory
+     */
+    fun totalItemQuantity() : Int{
+        var totalCount = 0
+        for ((id, count) in inventory){
+            totalCount += count
+        }
+        return totalCount
+    }
+
+    /**
+     * Saves the state of the inventory to restore later
+     */
     fun saveCheckpoint(){
         for ((first, second) in inventory){
             checkpointInventory[first] = second
         }
     }
 
+    /**
+     * Restores the state of the inventory that was saved previously
+     */
     fun restoreCheckpoint(){
         inventory = checkpointInventory
     }

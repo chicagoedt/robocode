@@ -10,133 +10,133 @@
 			<robot name="Hushpuppy" x="3" y="3" direction="up"/>
 			<grid>
 				<gridRow>
-					<gridTile type="victory"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="victory"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="obstacle"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"><item name="sand" count="3"/></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 			</grid>
 		</level>
@@ -145,99 +145,99 @@
 			<robot name="Surus" x="0" y="1" direction="down"/>
 			<grid>
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="victory"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="victory"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 
 				<gridRow>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
-					<gridTile type="neutral"/>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 				</gridRow>
 			</grid>
 		</level>

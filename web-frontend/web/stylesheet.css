@@ -135,7 +135,7 @@ td, th, tr {
 }
 
 .gridTile{
-	padding-top: 100%;
+	width: auto;
 }
 
 .gridPlayer{
@@ -152,6 +152,12 @@ td, th, tr {
 
 .victoryTile{
 	background-color: #FFEB3B;
+}
+
+.tileItemCount{
+	height: 100%;
+	bottom: 0;
+	float: right;
 }
 
 .popup{

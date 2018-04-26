@@ -14,6 +14,7 @@ class GridDriver(val game: Game){
     var tableBody = document.getElementById("grid")!!.children.item(0)!! as HTMLElement
     var level = game.currentLevel
     var gridTiles = arrayListOf<ArrayList<GridTile>>()
+    private var tileWidth = 0
 
     /**
      * Calculates all of the necessary information when switching levels
@@ -39,7 +40,10 @@ class GridDriver(val game: Game){
             tableBody.prepend(tableRow)
         }
 
+        tileWidth = gridTiles[0][0].element.getBoundingClientRect().width.toInt()
+
         calculatePlayers()
+        handleResize()
     }
 
     /**
@@ -67,5 +71,18 @@ class GridDriver(val game: Game){
         }
 
         calculatePlayers()
+    }
+
+    /**
+     * Handles resizing of the window
+     */
+    fun handleResize(){
+        tileWidth = gridTiles[0][0].element.getBoundingClientRect().width.toInt()
+        for (row in gridTiles){
+            for (tile in row){
+                tile.element.style.height = tileWidth.toString() + "px"
+                tile.element.style.fontSize = (tileWidth - 5).toString() + "px"
+            }
+        }
     }
 }

@@ -52,7 +52,7 @@ fun onLoad(){
 
 @JsName("onResize")
 fun onResize(){
-    //do nothing
+    gridDriver.handleResize()
 }
 
 /**
