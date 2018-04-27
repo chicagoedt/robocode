@@ -4,7 +4,9 @@
 
 The goal of Robocode is to teach programming & the fundamentals of building a robot. It has taken inspiration from great educational tools like Code.org and Scratch
 
-[View the Robocode Docs](https://chicagoedt.org/rosette/)
+[Try the Robocode Open Alpha](https://outreach.chicagoedt.org/robocode/game/)
+
+[View the Robocode Docs](https://outreach.chicagoedt.org/robocode/docs)
 
 This project is in very early development. Expect bugs.
 
