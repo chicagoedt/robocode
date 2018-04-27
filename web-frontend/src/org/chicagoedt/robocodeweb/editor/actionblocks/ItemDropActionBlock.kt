@@ -10,6 +10,7 @@ class ItemDropActionBlock : ActionBlock<ItemDropAction>() {
     override val hasParameters = true
 
     init{
+        element.classList.add("itemsBlock")
         insertParameter("Sand", Sand.id)
     }
 }
