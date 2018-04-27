@@ -41,6 +41,7 @@ class Drawer(val parent : HTMLElement){
     fun populate(){
         checkMoveActionBlock(0)
         checkTurnActionBlock(1)
+        checkItemPickupActionBlock(2)
     }
 
 
@@ -64,6 +65,21 @@ class Drawer(val parent : HTMLElement){
         if (element.children.length <= index || 
             !(element.children.item(index).asDynamic().block is TurnActionBlock)){
             val block = TurnActionBlock()
+            block.addDraggable()
+
+            try{
+                element.insertBefore(block.element, element.children.item(index))
+            }
+            catch(e : Exception){
+                element.appendChild(block.element)
+            }
+        }
+    }
+
+    fun checkItemPickupActionBlock(index : Int){
+        if (element.children.length <= index ||
+                !(element.children.item(index).asDynamic().block is ItemPickupActionBlock)){
+            val block = ItemPickupActionBlock()
             block.addDraggable()
 
             try{

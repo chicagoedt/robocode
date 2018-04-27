@@ -1,0 +1,14 @@
+package org.chicagoedt.robocodeweb.editor.actionblocks
+
+import org.chicagoedt.robocode.actions.robotActions.ItemPickupAction
+import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocodeweb.editor.ActionBlock
+
+class ItemPickupActionBlock : ActionBlock<ItemPickupAction>() {
+    override val action =  ItemPickupAction()
+    override val hasParameters = true
+
+    init{
+        insertParameter("Sand", Sand.id)
+    }
+}

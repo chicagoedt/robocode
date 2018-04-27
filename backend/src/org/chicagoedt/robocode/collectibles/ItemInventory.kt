@@ -102,6 +102,7 @@ class ItemInventory {
      * Saves the state of the inventory to restore later
      */
     fun saveCheckpoint(){
+        checkpointInventory.clear()
         for ((first, second) in inventory){
             checkpointInventory[first] = second
         }
@@ -111,6 +112,10 @@ class ItemInventory {
      * Restores the state of the inventory that was saved previously
      */
     fun restoreCheckpoint(){
-        inventory = checkpointInventory
+        inventory.clear()
+        for ((first, second) in checkpointInventory){
+            inventory[first] = second
+        }
+
     }
 }
