@@ -17,15 +17,24 @@ import org.chicagoedt.robocode.robots.*
 open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	var tableElement = document.createElement("td") as HTMLElement
 	var element  = document.createElement("div") as HTMLElement
+	var playerElement  = document.createElement("div") as HTMLElement
 	val itemCountElement = document.createElement("div") as HTMLElement
 	var player : RobotPlayer? = null
+	val playerItemCountElement = document.createElement("div") as HTMLElement
 
 	init{
 		tableElement.classList.add("gridTileCell")
 		tableElement.appendChild(element)
 		itemCountElement.classList.add("tileItemCount")
-		element.appendChild(itemCountElement)
 		element.classList.add("gridTile")
+
+		playerElement.classList.add("gridPlayer")
+		playerElement.classList.add("gridTile")
+		playerItemCountElement.classList.add("tileItemCount")
+		playerElement.appendChild(playerItemCountElement)
+
+		element.appendChild(itemCountElement)
+		element.appendChild(playerElement)
 		setWidth()
 		refresh()
 	}
@@ -48,10 +57,7 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 		element.classList.remove("victoryTile")
 		element.classList.remove("gridPlayer")
 
-		if (player != null){
-			element.classList.add("gridPlayer")
-		}
-		else if (level.tileAt(gridX, gridY) is ObstacleTile){
+		if (level.tileAt(gridX, gridY) is ObstacleTile){
 			element.classList.add("obstacleTile")
 		}
 		else if (level.tileAt(gridX, gridY) is NeutralTile){
@@ -60,11 +66,27 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 		else if (level.tileAt(gridX, gridY) is VictoryTile){
 			element.classList.add("victoryTile")
 		}
+
+		if (player != null){
+			playerElement.style.display = "block"
+			itemCountElement.style.display = "none"
+		}
+		else{
+			playerElement.style.display = "none"
+			itemCountElement.style.display = "block"
+		}
 	}
 
 	fun displayItemCount(){
 		val totalCount = level.tileAt(gridX, gridY).items.totalItemQuantity()
 		if (totalCount == 0)itemCountElement.innerText = ""
 		else itemCountElement.innerText = totalCount.toString()
+
+		if (player != null){
+			val totalPlayerCount = player!!.itemInventory.totalItemQuantity()
+			if (totalPlayerCount == 0)playerItemCountElement.innerText = ""
+			else playerItemCountElement.innerText = totalPlayerCount.toString()
+		}
+
 	}
 }

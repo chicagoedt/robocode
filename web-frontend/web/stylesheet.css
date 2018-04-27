@@ -139,7 +139,14 @@ td, th, tr {
 }
 
 .gridPlayer{
+	position: relative;
 	background-color: #FF5722;
+	margin-bottom: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
+	top:2px;
+	height: calc(100% - 4px);
+	width: calc(100% - 4px);
 }
 
 .obstacleTile{
@@ -158,6 +165,7 @@ td, th, tr {
 	height: 100%;
 	bottom: 0;
 	float: right;
+	font-family: Verdana;
 }
 
 .popup{
