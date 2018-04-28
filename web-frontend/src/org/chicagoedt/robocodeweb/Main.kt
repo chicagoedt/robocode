@@ -43,11 +43,13 @@ fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>){
 fun onLoad(){
     gridDriver = GridDriver(game)
     gridDriver.calculateNewLevel()
+    jQuery("#leftPane").hide()
 
     editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
     editorDriver.calculateNewLevel()
 
     updateHeader()
+    fadeInGame()
 }
 
 @JsName("onResize")
@@ -66,8 +68,25 @@ fun main(args: Array<String>) {
     }
 }
 
-fun getTypeOf(elem : Any) : String{
-    return js("typeof elem")
+fun fadeInGame(){
+    val fadeSpeed = 500
+    val intervalTime = 100
+    var count = 1
+    var interval = 0;
+    val runner = {
+        if (count == 1){
+            jQuery("#leftPane").fadeIn(fadeSpeed)
+        }
+        if (count == 2){
+            jQuery("#panelContainer").fadeIn(fadeSpeed)
+        }
+        if (count > 2) {
+            window.clearInterval(interval)
+        }
+        count++
+    }
+    jQuery("#drawer").fadeIn(fadeSpeed)
+    interval = window.setInterval(runner, intervalTime)
 }
 
 /**
