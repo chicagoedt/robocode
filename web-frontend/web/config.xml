@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <game>
 	<robots>
-		<robot name="Surus" graphic=""/>
-		<robot name="Hushpuppy" graphic=""/>
+		<robot name="Surus" graphic="res/robot/"/>
+		<robot name="Hushpuppy" graphic="res/robot/"/>
 	</robots>
 	<levels>
 		<level name="Level 1" difficulty="1">

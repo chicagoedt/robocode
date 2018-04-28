@@ -1,5 +1,7 @@
 body{
 	background-color: #EFEFEF;
+	--grid-width: 35%;
+	--drawer-width: 20%;
 }
 
 #header{
@@ -19,7 +21,7 @@ body{
 #grid{
 	top: 50px;
 	left: 0;
-	width: calc(20% - 20px);
+	width: calc(var(--grid-width) - 20px);
 	margin: 10px;
 	float:left;
 	z-index: 5;
@@ -29,10 +31,10 @@ body{
 
 #editor{
 	top:50px;
-	position: absolute;
-	width: 80%;
+	position: fixed;
+	width: calc(100% - var(--grid-width));
 	height: calc(100% - 50px);
-	left: 20%;
+	left: var(--grid-width);
 	overflow: hidden;
 }
 
@@ -43,19 +45,20 @@ body{
 }
 
 #panelContainer{
-	position: absolute;
-	width:80%;
-	height:100%;
-	right: 20%;
+	position: fixed;
+	width:calc(100% - var(--drawer-width) - var(--grid-width));
+	height:calc(100% - 50px);
+	right: var(--drawer-width);
+	left: var(--grid-width);
 	float: left;
 	overflow: auto;
 }
 
 #drawer{
-	position: absolute;
-	width:20%;
+	position: fixed;
+	width:var(--drawer-width);
 	height:100%;
-	left: 80%;
+	left: calc(100% - var(--drawer-width));
 	float: right;
 	background-color: #BBDEFB;
 	box-shadow: 0px 0px 20px grey;
@@ -69,7 +72,7 @@ table{
 }
 
 .panelTd{
-	min-width: 200px;
+	min-width: 300px;
 }
 
 .panel{
@@ -90,6 +93,7 @@ table{
 	padding: 10px;
 	font-family: Verdana;
     text-align: left;
+	cursor: default;
 }
 
 .actionBlockParameter{
@@ -147,13 +151,13 @@ td, th, tr {
 
 .gridPlayer{
 	position: relative;
-	background-color: #FF5722;
 	margin-bottom: 2px;
 	margin-left: 2px;
 	margin-right: 2px;
 	top:2px;
 	height: calc(100% - 4px);
 	width: calc(100% - 4px);
+	z-index: 2;
 }
 
 .obstacleTile{
@@ -169,10 +173,12 @@ td, th, tr {
 }
 
 .tileItemCount{
+	position: relative;
 	height: 100%;
 	bottom: 0;
 	float: right;
 	font-family: Verdana;
+	z-index: 3;
 }
 
 .popup{

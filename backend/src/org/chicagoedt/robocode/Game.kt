@@ -33,7 +33,7 @@ class Game (private val levelsList: ArrayList<Level>,
      * The current level number. Starts at 0
      */
     private var levelNumber = 0
-    private var robots: HashMap<String, Robot> = hashMapOf()
+    var robots: HashMap<String, Robot> = hashMapOf()
 
     var currentLevel : Level
     var mainTopic = Topic()
