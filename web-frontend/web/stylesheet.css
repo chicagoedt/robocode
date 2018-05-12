@@ -18,7 +18,12 @@ body{
     font-size: 40px;
 }
 
+#leftPane{
+	height:100%;
+}
+
 #grid{
+	position:fixed;
 	top: 50px;
 	left: 0;
 	width: calc(var(--grid-width) - 20px);
@@ -45,6 +50,7 @@ body{
 }
 
 #panelContainer{
+	display:none;
 	position: fixed;
 	width:calc(100% - var(--drawer-width) - var(--grid-width));
 	height:calc(100% - 50px);
@@ -55,6 +61,7 @@ body{
 }
 
 #drawer{
+	display:none;
 	position: fixed;
 	width:var(--drawer-width);
 	height:100%;
