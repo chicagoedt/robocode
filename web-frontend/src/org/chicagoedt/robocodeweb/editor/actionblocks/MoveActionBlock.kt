@@ -11,6 +11,7 @@ class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
 	override val hasParameters = true;
 
 	init{
+		element.classList.add("movementBlock")
 		for (i in 1..10){
 			insertParameter(i.toString(), i.toInt())
 		}

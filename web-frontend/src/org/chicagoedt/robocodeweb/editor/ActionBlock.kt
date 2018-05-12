@@ -6,6 +6,7 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 import org.chicagoedt.robocode.actions.*
+import org.w3c.dom.HTMLSelectElement
 
 /**
  * The blocks that the user is dragging around
@@ -14,7 +15,7 @@ import org.chicagoedt.robocode.actions.*
  */
 abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
-    val parameterElement = document.createElement("select") as HTMLElement
+    val parameterElement = document.createElement("select") as HTMLSelectElement
     abstract val action : T
     protected abstract val hasParameters : Boolean
 
@@ -79,10 +80,14 @@ abstract class ActionBlock<T : Action<*>>(){
      */
     fun insertParameter(s : String, onSelectedParameter: dynamic){
         val option = document.createElement("option") as HTMLElement
+        val firstOption = (parameterElement.childNodes.length == 0)
         option.innerHTML = s
         option.asDynamic().parameter = onSelectedParameter
         option.setAttribute("value", s)
         parameterElement.appendChild(option)
+        if (firstOption){
+            action.parameter = onSelectedParameter
+        }
     }
 
     /**

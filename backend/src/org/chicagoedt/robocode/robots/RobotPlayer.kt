@@ -260,10 +260,12 @@ class RobotPlayer(val name: String,
     fun handleEndOfRun(reset : Boolean){
         if (level.tileAt(x, y) is VictoryTile){
             eventListener.invoke(Event.LEVEL_VICTORY)
+            eventListener.invoke(Event.LEVEL_UPDATE)
         }
         else {
             if (reset) level.restoreCheckpoint()
             eventListener.invoke(Event.LEVEL_FAILURE)
+            eventListener.invoke(Event.LEVEL_UPDATE)
         }
     }
 }

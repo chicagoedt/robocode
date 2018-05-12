@@ -57,6 +57,7 @@ class Level(var properties: Properties) {
         for (i in 0..properties.height - 1){
             val list = ArrayList<Tile>()
             for (j in 0..properties.width - 1){
+                newGrid[properties.height - 1 - i][j].items.oneTypeOnly = true
                 list.add(newGrid[properties.height - 1 - i][j])
             }
             grid.add(list)

@@ -12,6 +12,7 @@ class TurnActionBlock() : ActionBlock<TurnAction>(){
 	override val hasParameters = true
 
 	init{
+		element.classList.add("movementBlock")
 		insertParameter("Clockwise", RobotRotation.CLOCKWISE)
 		insertParameter("Counter-Clockwise", RobotRotation.COUNTERCLOCKWISE)
 	}

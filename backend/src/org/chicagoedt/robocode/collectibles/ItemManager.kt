@@ -1,6 +1,7 @@
 package org.chicagoedt.robocode.collectibles
 
 import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocode.collectibles.etc.Water
 
 /**
  * An object used to manage all the known items supported in the game
@@ -15,6 +16,7 @@ object ItemManager {
 
         // Load all items to be used for the game
         addItem(Sand)
+        addItem(Water)
     }
 
     /**
@@ -30,4 +32,14 @@ object ItemManager {
      * @return The Collectible object if exists, null if not
      */
     fun getItem(itemID: Int): Collectible? = itemList[itemID]
+
+    /**
+     * Gets a list of all possible items in the game
+     * @return A list of all possible items in the game
+     */
+    fun getAllItems() : ArrayList<Collectible>{
+        val list = arrayListOf<Collectible>()
+        list.addAll(itemList.values)
+        return list
+    }
 }

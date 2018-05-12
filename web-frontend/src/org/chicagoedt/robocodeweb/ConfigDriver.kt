@@ -7,6 +7,9 @@ import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.tiles.*
 import jQuery
+import org.chicagoedt.robocode.collectibles.ItemManager
+import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocode.collectibles.etc.Water
 
 /**
  * Retrieves and parses the configuration file
@@ -108,10 +111,21 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 
 			for (k in 0 until rowDataTiles.length){
 				val type = (rowDataTiles.item(k) as Element).attributes.getNamedItem("type")!!.value
+				var tile : Tile? = null
 				when(type){
-					"obstacle" -> row.add(ObstacleTile())
-					"neutral" -> row.add(NeutralTile())
-					"victory" -> row.add(VictoryTile())
+					"obstacle" -> tile = ObstacleTile()
+					"neutral" -> tile = NeutralTile()
+					"victory" -> tile = VictoryTile()
+				}
+
+				row.add(tile!!)
+
+				val items = (rowDataTiles.item(k) as Element).querySelectorAll("item")
+				for (t in 0 until items.length){
+					val itemName = (items[t] as Element).attributes["name"]!!.value
+					val itemCount = (items[t] as Element).attributes["count"]!!.value.toInt()
+					val id = getItemIDFromName(itemName)
+					for (y in 0 until itemCount) tile.items.addItem(id)
 				}
 			}
 			grid.add(row)
@@ -138,5 +152,17 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			robots.add(robot)
 		}
 		return robots
+	}
+
+	/**
+	 * Gets the ID of an item from the name
+	 * @return The ID of an item with the name [name]
+	 */
+	fun getItemIDFromName(name : String) : Int{
+		for (item in ItemManager.getAllItems()){
+			if (name.toLowerCase() == item.name.toLowerCase())
+				return item.id
+		}
+		return -1
 	}
 }
