@@ -87,15 +87,13 @@ class ItemInventory {
     fun itemQuantity(itemID: Int): Int = if (hasItem(itemID)) inventory[itemID]!! else 0
 
     /**
-     * Gets the total count of all items in the inventory
-     * @return The total count of all items in the inventory
+     * Gets a list of IDs for all the items in this inventory
+     * @return A list of IDs for all the items in this inventory
      */
-    fun totalItemQuantity() : Int{
-        var totalCount = 0
-        for ((id, count) in inventory){
-            totalCount += count
-        }
-        return totalCount
+    fun allItemTypes() : ArrayList<Int> {
+        val list = arrayListOf<Int>()
+        list.addAll(inventory.keys.toMutableList())
+        return list
     }
 
     /**
