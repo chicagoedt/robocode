@@ -179,10 +179,25 @@ td, th, tr {
 	background-color: #FFEB3B;
 }
 
-.tileItemImage{
+.itemQuantityContainer{
 	position: relative;
 	width: 100%;
 	height:100%;
+}
+
+.itemQuantityText{
+	position: absolute;
+	font-family: Verdana;
+	right: 0;
+	top: 0;
+	font-size: 2vw;
+	z-index: 2;
+}
+
+.itemQuantityImage{
+	width: 100%;
+	height:100%;
+	z-index: 1;
 }
 
 .popup{

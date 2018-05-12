@@ -5,7 +5,7 @@ import org.chicagoedt.robocode.actions.operations.TopicEqualsComparison
 import org.chicagoedt.robocode.actions.robotActions.*
 import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.collectibles.ItemManager
-import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocode.collectibles.etc.*
 import org.chicagoedt.robocode.levels.Level
 import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.sensors.DistanceSensor
@@ -634,24 +634,121 @@ class BackendTests {
     }
 
     @Test
-    fun itemDrop() {
+    fun ItemDropTypeMatch(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        level1.tileAt(0, 0).items.oneTypeOnly = false
+
+        level1.tileAt(0, 0).items.addItem(Sand.id)
+
+        game = Game(testLevels, testRobots)
+
+        robotPlayer1.itemInventory.addItem(Water.id)
+
+        val dropInstruction = ItemDropAction()
+        dropInstruction.parameter = Water.id
+        robotPlayer1.appendAction(dropInstruction)
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(Water.id), 0)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Water.id), 1)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Sand.id), 1)
+    }
+
+    @Test
+    fun ItemDropTypeMismatch(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        level1.tileAt(0, 0).items.addItem(Sand.id)
+
+        game = Game(testLevels, testRobots)
+
+        robotPlayer1.itemInventory.addItem(Water.id)
+
+        val dropInstruction = ItemDropAction()
+        dropInstruction.parameter = Water.id
+        robotPlayer1.appendAction(dropInstruction)
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(Water.id), 1)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Water.id), 0)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Sand.id), 1)
+    }
+
+    @Test
+    fun itemOneTypeOnly() {
         for (level in levels) {
-            for ((name, robot) in level.players) {
-                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id)
-                val robotOldQuantity = robot.itemInventory.itemQuantity(Sand.id)
+            for (x in 0 until level.properties.width){
+                for (y in 0 until level.properties.height){
+                    level.tileAt(x, y).items.oneTypeOnly = true
+                    level.tileAt(x, y).items.addItem(Sand.id)
+                    level.tileAt(x, y).items.addItem(Sand.id)
+                    level.tileAt(x, y).items.addItem(Water.id)
 
-                robot.itemInventory.addItem(Sand.id)
-                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity + 1)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(Sand.id), 2)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(Water.id), 0)
+                }
+            }
+        }
+    }
 
-                val action = ItemDropAction()
-                action.parameter = Sand.id
+    @Test
+    fun itemOneTypeOnlyFalse() {
+        for (level in levels) {
+            for (x in 0 until level.properties.width){
+                for (y in 0 until level.properties.height){
+                    level.tileAt(x, y).items.oneTypeOnly = false
+                    level.tileAt(x, y).items.addItem(Sand.id)
+                    level.tileAt(x, y).items.addItem(Sand.id)
+                    level.tileAt(x, y).items.addItem(Water.id)
 
-                robot.appendAction(action)
-                robot.runInstructions(false)
-                robot.removeAction(action)
-
-                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
-                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(Sand.id), 2)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(Water.id), 1)
+                }
             }
         }
     }

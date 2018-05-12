@@ -55,7 +55,7 @@
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"><item name="sand" count="3"/></gridTile>
-					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"><item name="water" count="3"/></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>

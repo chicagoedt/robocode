@@ -16,7 +16,7 @@ class ItemDropAction: Action<Int>() {
         if (!robot.itemInventory.hasItem(parameter)) return
 
         // Yes, remove from player and add item back to board
-        robot.itemInventory.removeItem(parameter)
-        level.tileAt(robot.x, robot.y).items.addItem(parameter)
+        val dropped = level.tileAt(robot.x, robot.y).items.addItem(parameter)
+        if (dropped) robot.itemInventory.removeItem(parameter)
     }
 }

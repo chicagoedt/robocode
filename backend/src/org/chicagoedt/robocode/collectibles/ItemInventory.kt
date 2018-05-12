@@ -4,23 +4,33 @@ package org.chicagoedt.robocode.collectibles
  * A single inventory of collectible items
  * @property inventory The current inventory for the items
  * @property checkpointInventory The saved state of an inventory for the items
+ * @property oneTypeOnly True if this inventory should only contain a single item type, false otherwise
  */
 class ItemInventory {
     private var inventory = HashMap<Int, Int>() // <ItemID, Count>
     private val checkpointInventory = HashMap<Int, Int>()
+    var oneTypeOnly = false
 
     /**
      * Adds an item to inventory
      * @param itemID The item to add by its itemID
      */
-    fun addItem(itemID: Int) {
+    fun addItem(itemID: Int) : Boolean{
         // See if item exists, if exists, increment item counter. Otherwise, add it to the list
         if (inventory.containsKey(itemID)) {
             val oldCount = inventory[itemID]!!
             inventory[itemID] = oldCount + 1
         }
-        else
-            inventory[itemID] = 1
+        else{
+            if (this.allItemTypes().size > 0){
+                if (!oneTypeOnly) inventory[itemID] = 1
+                else return false
+            }
+            else{
+                inventory[itemID] = 1
+            }
+        }
+        return true
     }
 
     /**

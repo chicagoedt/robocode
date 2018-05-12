@@ -7,7 +7,9 @@ import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.tiles.*
 import jQuery
+import org.chicagoedt.robocode.collectibles.ItemManager
 import org.chicagoedt.robocode.collectibles.etc.Sand
+import org.chicagoedt.robocode.collectibles.etc.Water
 
 /**
  * Retrieves and parses the configuration file
@@ -157,7 +159,10 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 	 * @return The ID of an item with the name [name]
 	 */
 	fun getItemIDFromName(name : String) : Int{
-		if (name == "sand") return Sand.id
+		for (item in ItemManager.getAllItems()){
+			if (name.toLowerCase() == item.name.toLowerCase())
+				return item.id
+		}
 		return -1
 	}
 }

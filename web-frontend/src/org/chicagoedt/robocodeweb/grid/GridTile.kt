@@ -7,6 +7,7 @@ import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.tiles.*
 import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocodeweb.game
+import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLImageElement
 import kotlin.dom.addClass
 
@@ -25,20 +26,28 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	var tableElement = document.createElement("td") as HTMLElement
 	var element  = document.createElement("div") as HTMLElement
 	var playerElement  = document.createElement("img") as HTMLImageElement
-	val itemQuantityImage = document.createElement("img") as HTMLImageElement
 	var player : RobotPlayer? = null
+
+	val itemQuantityImage = document.createElement("img") as HTMLImageElement
+	val itemQuantityText = document.createElement("div") as HTMLDivElement
+	val itemQuantityContainer = document.createElement("div") as HTMLDivElement
 
 	init{
 		tableElement.classList.add("gridTileCell")
 		tableElement.appendChild(element)
-		itemQuantityImage.addClass("tileItemImage")
-		itemQuantityImage.src = "res/items/item.png"
+
+		itemQuantityImage.addClass("itemQuantityImage")
+		itemQuantityText.addClass("itemQuantityText")
+		itemQuantityContainer.addClass("itemQuantityContainer")
+		itemQuantityContainer.appendChild(itemQuantityImage)
+		itemQuantityContainer.appendChild(itemQuantityText)
+
 		element.classList.add("gridTile")
 
 		playerElement.classList.add("gridPlayer")
 		playerElement.classList.add("gridTile")
 
-		element.appendChild(itemQuantityImage)
+		element.appendChild(itemQuantityContainer)
 		element.appendChild(playerElement)
 
 		setWidth()
@@ -89,10 +98,26 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	fun displayItemIndicator(){
 		val hasItem = level.tileAt(gridX, gridY).items.allItemTypes().size > 0
 		if (player == null && hasItem){
-			itemQuantityImage.style.display = "block"
+			val hasMultipleItemTypes = level.tileAt(gridX, gridY).items.allItemTypes().size > 1
+			if (hasMultipleItemTypes){
+
+			}
+			else{
+				val typeID = level.tileAt(gridX, gridY).items.allItemTypes()[0]
+				val typeName = ItemManager.getItem(typeID)!!.name
+
+				itemQuantityImage.src = "res/items/" + typeName + ".png"
+
+				val hasMultipleItems = level.tileAt(gridX, gridY).items.itemQuantity(typeID) > 1
+				if (hasMultipleItems){
+					val itemCount = level.tileAt(gridX, gridY).items.itemQuantity(typeID)
+					itemQuantityText.innerHTML = itemCount.toString()
+				}
+			}
+			itemQuantityContainer.style.display = "block"
 		}
 		else{
-			itemQuantityImage.style.display = "none"
+			itemQuantityContainer.style.display = "none"
 		}
 	}
 
