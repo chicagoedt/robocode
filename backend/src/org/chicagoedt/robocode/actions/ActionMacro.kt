@@ -21,7 +21,7 @@ abstract class ActionMacro<T> : Action<T>() {
      * Adds an action to the macro
      * @param action The action to add to the macro's list
      */
-    internal fun addToMacro(action: Action<*>){
+    fun addToMacro(action: Action<*>){
         macro.add(action as Action<Any>)
     }
 
@@ -29,7 +29,7 @@ abstract class ActionMacro<T> : Action<T>() {
      * Removes an action from the macro
      * @param action The action to remove from the macro's list
      */
-    internal fun removeFromMacro(action: Action<*>){
+    fun removeFromMacro(action: Action<*>){
         macro.remove(action)
     }
 
@@ -37,14 +37,14 @@ abstract class ActionMacro<T> : Action<T>() {
      * Removes an action from the macro
      * @param i The index of the action to remove from the macro
      */
-    internal fun removeFromMacroAt(i : Int){
+    fun removeFromMacroAt(i : Int){
         macro.removeAt(i)
     }
 
     /**
      * @return A sequential list of the macro's actions
      */
-    internal fun getMacro() : ArrayList<Action<Any>>{
+    fun getMacro() : ArrayList<Action<Any>>{
         val arrayList = arrayListOf<Action<Any>>()
         arrayList.addAll(macro)
         return arrayList

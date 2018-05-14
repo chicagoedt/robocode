@@ -1,6 +1,9 @@
 package org.chicagoedt.robocode.actions.robotActions
 
 import org.chicagoedt.robocode.actions.*
+import org.chicagoedt.robocode.levels.Level
+import org.chicagoedt.robocode.robots.RobotOrientation
+import org.chicagoedt.robocode.tiles.TileType
 
 /**
  * Moves the robot by [parameter] tiles in the direction that it's facing

@@ -170,7 +170,7 @@ class BackendTests {
         robot.runInstructions(false)
         robot.removeAction(instruction)
 
-        val difference = instruction.distanceCanMove(x, y, orientation, parameter, game.currentLevel)
+        val difference = distanceCanMove(x, y, orientation, parameter, game.currentLevel)
         if (orientation == RobotOrientation.DIRECTION_UP) {
             if (assert)assertEquals(robot.y, y + difference)
             if (assert)assertEquals(robot.x, x)
@@ -925,7 +925,7 @@ class BackendTests {
                 robot.runInstructions(false)
                 robot.removeAction(action)
 
-                val difference = (action.getMacro()[0] as MoveAction).distanceCanMove(x, y, orientation, action.parameter, game.currentLevel)
+                val difference = distanceCanMove(x, y, orientation, action.parameter, game.currentLevel)
                 if (orientation == RobotOrientation.DIRECTION_UP) {
                     assertEquals(robot.y, y + difference)
                     assertEquals(robot.x, x)
@@ -967,6 +967,115 @@ class BackendTests {
                 assertEquals(robot.getProcedure()[1] is TurnAction, true)
                 assertEquals(robot.getProcedure()[2] is MoveActionMacro, true)
 
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun ForLoopActionMove(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveAction()
+                action.parameter = 1
+
+                val loopAction = ForLoopAction()
+                loopAction.addToMacro(action)
+                loopAction.parameter = 3
+
+                robot.appendAction(loopAction)
+
+                val distance = distanceCanMove(robot.x, robot.y, robot.direction, 3, level)
+                val originalX = robot.x
+                val originalY = robot.y
+                robot.runInstructions(false)
+
+                if (robot.direction == RobotOrientation.DIRECTION_DOWN){
+                    assertEquals(robot.y, originalY - distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_UP){
+                    assertEquals(robot.y, originalY + distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_RIGHT){
+                    assertEquals(robot.x, originalX + distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_LEFT){
+                    assertEquals(robot.x, originalX - distance)
+                }
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun ForLoopActionMoveMacro(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveActionMacro()
+                action.parameter = 2
+
+                val loopAction = ForLoopAction()
+                loopAction.addToMacro(action)
+                loopAction.parameter = 3
+
+                robot.appendAction(loopAction)
+
+                val distance = distanceCanMove(robot.x, robot.y, robot.direction, 6, level)
+                val originalX = robot.x
+                val originalY = robot.y
+                robot.runInstructions(false)
+
+                if (robot.direction == RobotOrientation.DIRECTION_DOWN){
+                    assertEquals(robot.y, originalY - distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_UP){
+                    assertEquals(robot.y, originalY + distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_RIGHT){
+                    assertEquals(robot.x, originalX + distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_LEFT){
+                    assertEquals(robot.x, originalX - distance)
+                }
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun ForLoopActionNested(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action = MoveActionMacro()
+                action.parameter = 1
+
+                val loopAction = ForLoopAction()
+                loopAction.addToMacro(action)
+                loopAction.parameter = 2
+
+                val loopAction2 = ForLoopAction()
+                loopAction2.addToMacro(loopAction)
+                loopAction2.parameter = 3
+
+                robot.appendAction(loopAction2)
+
+                val distance = distanceCanMove(robot.x, robot.y, robot.direction, 6, level)
+                val originalX = robot.x
+                val originalY = robot.y
+                robot.runInstructions(false)
+
+                if (robot.direction == RobotOrientation.DIRECTION_DOWN){
+                    assertEquals(robot.y, originalY - distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_UP){
+                    assertEquals(robot.y, originalY + distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_RIGHT){
+                    assertEquals(robot.x, originalX + distance)
+                }
+                else if (robot.direction == RobotOrientation.DIRECTION_LEFT){
+                    assertEquals(robot.x, originalX - distance)
+                }
             }
             game.nextLevel()
         }

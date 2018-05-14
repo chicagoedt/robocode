@@ -22,41 +22,41 @@ class MoveAction : Action<Int>() {
             RobotOrientation.DIRECTION_LEFT -> robot.x -= difference
         }
     }
+}
 
-    fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, level: Level): Int{
-        var currentX = x
-        var currentY = y
-        var possibleDistance = 0
-        for (i in 0..distance-1){
-            if (orientation == RobotOrientation.DIRECTION_UP){
-                if (currentY + 1 >= level.properties.height || level.tileAt(currentX, currentY+1).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentY++
-                }
-            }
-            else if (orientation == RobotOrientation.DIRECTION_DOWN){
-                if (currentY - 1 < 0 || level.tileAt(currentX, currentY-1).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentY--
-                }
-            }
-            else if (orientation == RobotOrientation.DIRECTION_RIGHT){
-                if (currentX + 1 >= level.properties.width || level.tileAt(currentX+1, currentY).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentX++
-                }
-            }
-            else if (orientation == RobotOrientation.DIRECTION_LEFT){
-                if (currentX - 1 < 0 || level.tileAt(currentX-1, currentY).type == TileType.OBSTACLE) return possibleDistance
-                else {
-                    possibleDistance++
-                    currentX--
-                }
+fun distanceCanMove(x: Int, y: Int, orientation: RobotOrientation, distance: Int, level: Level): Int{
+    var currentX = x
+    var currentY = y
+    var possibleDistance = 0
+    for (i in 0..distance-1){
+        if (orientation == RobotOrientation.DIRECTION_UP){
+            if (currentY + 1 >= level.properties.height || level.tileAt(currentX, currentY+1).type == TileType.OBSTACLE) return possibleDistance
+            else {
+                possibleDistance++
+                currentY++
             }
         }
-        return possibleDistance
+        else if (orientation == RobotOrientation.DIRECTION_DOWN){
+            if (currentY - 1 < 0 || level.tileAt(currentX, currentY-1).type == TileType.OBSTACLE) return possibleDistance
+            else {
+                possibleDistance++
+                currentY--
+            }
+        }
+        else if (orientation == RobotOrientation.DIRECTION_RIGHT){
+            if (currentX + 1 >= level.properties.width || level.tileAt(currentX+1, currentY).type == TileType.OBSTACLE) return possibleDistance
+            else {
+                possibleDistance++
+                currentX++
+            }
+        }
+        else if (orientation == RobotOrientation.DIRECTION_LEFT){
+            if (currentX - 1 < 0 || level.tileAt(currentX-1, currentY).type == TileType.OBSTACLE) return possibleDistance
+            else {
+                possibleDistance++
+                currentX--
+            }
+        }
     }
+    return possibleDistance
 }
