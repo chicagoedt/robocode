@@ -8,12 +8,12 @@ import org.chicagoedt.robocodeweb.editor.*
  */
 class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
 	override val action = MoveActionMacro()
-	override val hasParameters = true;
 
 	init{
+		parameterType = BlockParameterType.NUMBER_INPUT
 		element.classList.add("movementBlock")
 		for (i in 1..10){
-			insertParameter(i.toString(), i.toInt())
+			insertDropdownParameter(i.toString(), i.toInt())
 		}
 	}
 }

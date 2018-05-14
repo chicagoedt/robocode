@@ -9,15 +9,33 @@ import org.chicagoedt.robocode.actions.*
 import org.w3c.dom.HTMLSelectElement
 
 /**
+ * Types of parameter selectors that a block can take
+ * @property NONE The block takes no parameter
+ * @property DROPDOWN The block parameter should be selected from a dropdown menu
+ * @property NUMBER_INPUT The block parameter should be a number entered in a text box
+ */
+enum class BlockParameterType{
+    NONE,
+    DROPDOWN,
+    NUMBER_INPUT
+}
+
+/**
  * The blocks that the user is dragging around
  * @property element The HTML element that this block corresponds to
- * @property action The action 
+ * @property parameterElement The HTML element containing the parameter selector for this block
+ * @property action The action that this block contains
+ * @property parameterType The type of parameter selector that this block uses
  */
 abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
-    val parameterElement = document.createElement("select") as HTMLSelectElement
+    lateinit var parameterElement : HTMLElement
     abstract val action : T
-    protected abstract val hasParameters : Boolean
+    protected var parameterType = BlockParameterType.NONE
+        set(value) {
+            field = value
+            addParameterSelector()
+        }
 
     init {
         element.addClass("actionBlock")
@@ -37,17 +55,34 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.draggable("option", "opacity", 0.8)
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
-        element.innerHTML = action.name
-        if (hasParameters){
-            parameterElement.addClass("actionBlockParameter")
-            parameterElement.onchange = ::parameterChanged
-            element.appendChild(parameterElement)
-        }
+
+        //add the name of the action to the block
+        element.appendChild(document.createTextNode(action.name))
 
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
         drag.droppable("option", "over", ::over)
         drag.droppable("option", "out", ::overout)
+    }
+
+    /**
+     * Adds the appropriate parameter selector to this block
+     */
+    fun addParameterSelector(){
+        if (parameterType != BlockParameterType.NONE){
+            if (parameterType == BlockParameterType.DROPDOWN){
+                parameterElement = document.createElement("select") as HTMLSelectElement
+            }
+            else if (parameterType == BlockParameterType.NUMBER_INPUT){
+                parameterElement = document.createElement("input") as HTMLElement
+                parameterElement.asDynamic().type = "number"
+                parameterElement.asDynamic().value = "1"
+                action.parameter = parameterElement.asDynamic().value
+            }
+            parameterElement.addClass("actionBlockParameter")
+            element.appendChild(parameterElement)
+            parameterElement.onchange = ::parameterChanged
+        }
     }
 
     /**
@@ -78,15 +113,17 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param s The string representation of the parameter
      * @param onSelectedParameter The value that the parameter should be set to when this option is selected
      */
-    fun insertParameter(s : String, onSelectedParameter: dynamic){
-        val option = document.createElement("option") as HTMLElement
-        val firstOption = (parameterElement.childNodes.length == 0)
-        option.innerHTML = s
-        option.asDynamic().parameter = onSelectedParameter
-        option.setAttribute("value", s)
-        parameterElement.appendChild(option)
-        if (firstOption){
-            action.parameter = onSelectedParameter
+    fun insertDropdownParameter(s : String, onSelectedParameter: dynamic){
+        if (parameterType == BlockParameterType.DROPDOWN){
+            val option = document.createElement("option") as HTMLElement
+            val firstOption = (parameterElement.childNodes.length == 0)
+            option.innerHTML = s
+            option.asDynamic().parameter = onSelectedParameter
+            option.setAttribute("value", s)
+            parameterElement.appendChild(option)
+            if (firstOption){
+                action.parameter = onSelectedParameter
+            }
         }
     }
 
@@ -95,8 +132,13 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param e The event of the changed parameter
      */
     fun parameterChanged(e : Event) : dynamic{
-        action.parameter = e.target.asDynamic().selectedOptions[0].parameter
-        return 0
+        if (parameterType == BlockParameterType.DROPDOWN){
+            action.parameter = e.target.asDynamic().selectedOptions[0].parameter
+        }
+        else if (parameterType == BlockParameterType.NUMBER_INPUT){
+            action.parameter = e.target.asDynamic().value
+        }
+        return 1
     }
 
     /**

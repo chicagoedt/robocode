@@ -9,11 +9,11 @@ import org.chicagoedt.robocodeweb.editor.*
  */
 class TurnActionBlock() : ActionBlock<TurnAction>(){
 	override val action = TurnAction()
-	override val hasParameters = true
 
 	init{
+		parameterType = BlockParameterType.DROPDOWN
 		element.classList.add("movementBlock")
-		insertParameter("Clockwise", RobotRotation.CLOCKWISE)
-		insertParameter("Counter-Clockwise", RobotRotation.COUNTERCLOCKWISE)
+		insertDropdownParameter("Clockwise", RobotRotation.CLOCKWISE)
+		insertDropdownParameter("Counter-Clockwise", RobotRotation.COUNTERCLOCKWISE)
 	}
 }
