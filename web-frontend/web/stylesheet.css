@@ -117,6 +117,10 @@ table{
 	background-color: #FFC107;
 }
 
+.controlBlock{
+	background-color: #f17bff;
+}
+
 td, th, tr {
 	padding: 0px;
 }

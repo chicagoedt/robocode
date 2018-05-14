@@ -43,6 +43,7 @@ class Drawer(val parent : HTMLElement) {
         checkTurnActionBlock(1)
         checkItemPickupActionBlock(2)
         checkItemDropActionBlock(3)
+        checkForLoopActionBlock(4)
     }
 
 
@@ -93,6 +94,20 @@ class Drawer(val parent : HTMLElement) {
         if (element.children.length <= index ||
                 !(element.children.item(index).asDynamic().block is ItemDropActionBlock)) {
             val block = ItemDropActionBlock()
+            block.addDraggable()
+
+            try {
+                element.insertBefore(block.element, element.children.item(index))
+            } catch (e: Exception) {
+                element.appendChild(block.element)
+            }
+        }
+    }
+
+    fun checkForLoopActionBlock(index: Int) {
+        if (element.children.length <= index ||
+                !(element.children.item(index).asDynamic().block is ForLoopActionBlock)) {
+            val block = ForLoopActionBlock()
             block.addDraggable()
 
             try {
