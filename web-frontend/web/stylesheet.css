@@ -108,7 +108,7 @@ table{
 	position: absolute;
 	right: 10px;
 	top: 10px;
-	height:calc(100% - 20px);
+	height:20px;
 	width:40%;
 	z-index: 6;
 }

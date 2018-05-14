@@ -30,21 +30,22 @@ abstract class ActionBlockMacro<T : ActionMacro<*>> : ActionBlock<T>(){
     fun helperDrop(event : Event, ui : dynamic){
         val panel : Panel = element.parentElement.asDynamic().panelObject
         jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
-        element.style.fontWeight = ""
+        element.style.backgroundColor = ""
         val blockElement : HTMLElement = ui.draggable[0]
         action.addToMacro(blockElement.asDynamic().block.action)
         element.appendChild(blockElement)
+        panel.drawer.populate()
     }
 
     fun helperOver(){
         element.style.marginBottom = ""
-        element.style.fontWeight = "bold"
+        element.style.backgroundColor = "white"
         val panel : Panel = element.parentElement.asDynamic().panelObject
         jQuery(panel.element as HTMLElement).asDynamic().droppable("disable")
     }
 
     fun helperOverOut(event : Event, ui : dynamic){
-        element.style.fontWeight = ""
+        element.style.backgroundColor = ""
         val panel : Panel = element.parentElement.asDynamic().panelObject
         jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
         val blockElement : HTMLElement = ui.draggable[0]
