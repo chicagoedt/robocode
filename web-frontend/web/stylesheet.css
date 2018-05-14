@@ -92,6 +92,7 @@ table{
 }
 
 .actionBlock{
+	position: relative;
 	width:calc(100% - 20px);
 	height:20px;
 	box-shadow: 0px 0px 2px grey;
@@ -104,9 +105,27 @@ table{
 }
 
 .actionBlockParameter{
-	float: right;
-	height:100%;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	height:calc(100% - 20px);
 	width:40%;
+	z-index: 6;
+}
+
+.actionBlockMacro{
+	height: auto;
+	min-height: 20px;
+	padding-bottom: 10px;
+}
+
+.dropHelper{
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 10px);
+	top: 0px;
+	right: 0px;
+	z-index: 5;
 }
 
 .movementBlock{
