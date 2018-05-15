@@ -87,6 +87,10 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         
         robot.insertAction(blockElement.asDynamic().block.action, pos)
 
+        if (blockElement.asDynamic().block is ActionBlockMacro<*>){
+            blockElement.asDynamic().block.addDropHelperDroppable()
+        }
+
         drawer.populate()
     }
 

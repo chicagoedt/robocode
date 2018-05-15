@@ -93,7 +93,7 @@ table{
 
 .actionBlock{
 	position: relative;
-	width:calc(100% - 20px);
+	width:calc(100% - 30px);
 	height:20px;
 	box-shadow: 0px 0px 2px grey;
 	line-height: 20px;
@@ -102,6 +102,7 @@ table{
 	font-family: Verdana;
     text-align: left;
 	cursor: default;
+	margin: 5px;
 }
 
 .actionBlockParameter{
@@ -111,6 +112,7 @@ table{
 	height:20px;
 	width:40%;
 	z-index: 6;
+	margin-bottom: 10px;
 }
 
 .actionBlockMacro{

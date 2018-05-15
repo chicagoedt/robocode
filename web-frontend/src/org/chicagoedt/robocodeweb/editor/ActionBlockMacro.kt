@@ -15,7 +15,6 @@ abstract class ActionBlockMacro<T : ActionMacro<*>> : ActionBlock<T>(){
         element.addClass("actionBlockMacro")
         dropHelperElement.addClass("dropHelper")
         element.appendChild(dropHelperElement)
-        addDropHelperDroppable()
     }
 
     fun addDropHelperDroppable(){
@@ -28,27 +27,35 @@ abstract class ActionBlockMacro<T : ActionMacro<*>> : ActionBlock<T>(){
     }
 
     fun helperDrop(event : Event, ui : dynamic){
-        val panel : Panel = element.parentElement.asDynamic().panelObject
-        jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
         element.style.backgroundColor = ""
         val blockElement : HTMLElement = ui.draggable[0]
         action.addToMacro(blockElement.asDynamic().block.action)
         element.appendChild(blockElement)
+
+        val panel : Panel = element.parentElement.asDynamic().panelObject
+        jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
+        jQuery(element).asDynamic().droppable("enable")
+
         panel.drawer.populate()
     }
 
     fun helperOver(){
-        element.style.marginBottom = ""
         element.style.backgroundColor = "white"
+
         val panel : Panel = element.parentElement.asDynamic().panelObject
         jQuery(panel.element as HTMLElement).asDynamic().droppable("disable")
+        jQuery(element).asDynamic().droppable("disable")
+        element.style.marginBottom = ""
     }
 
     fun helperOverOut(event : Event, ui : dynamic){
         element.style.backgroundColor = ""
-        val panel : Panel = element.parentElement.asDynamic().panelObject
-        jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
         val blockElement : HTMLElement = ui.draggable[0]
         action.removeFromMacro(blockElement.asDynamic().block.action)
+
+        val panel : Panel = element.parentElement.asDynamic().panelObject
+        jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
+        jQuery(element).asDynamic().droppable("enable")
+        element.style.marginBottom = "10px"
     }
 }
