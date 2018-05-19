@@ -107,7 +107,7 @@ class Drawer(val parent : HTMLElement) {
     fun checkForLoopActionBlock(index: Int) {
         if (element.children.length <= index ||
                 !(element.children.item(index).asDynamic().block is ForLoopActionBlock)) {
-            val block = ForLoopActionBlock()
+            val block = ForLoopActionBlock(this)
             block.addDraggable()
 
             try {

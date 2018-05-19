@@ -19,19 +19,17 @@ import kotlin.*
  * @property lastHoveredBlock The last block that a draggable was hovered over
  * @property hoverOverHeader True if the header is being hovered over, false otherwise
  */
-class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer) : BlockList{
-    lateinit var element : HTMLDivElement
+class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var drawer : Drawer) : BlockList{
+    override var element : HTMLElement = document.createElement("div") as HTMLDivElement
     override var lastHoveredBlock : ActionBlock<*>? = null
-    private var hoverOverHeader = false
+    override var firstIndexDrop = false
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
         tdElement.addClass("panelTd")
-        
-        element = document.createElement("div") as HTMLDivElement
+
         element.addClass("panel")
         element.asDynamic().panelObject = this
-
 
         element.appendChild(getHeader())
         tdElement.appendChild(element)
@@ -47,51 +45,9 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val drop = jQuery(element).asDynamic()
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
-        drop.droppable("option", "drop", ::drop)
+        drop.droppable("option", "drop", ::dropInList)
         drop.droppable("option", "over", ::over)
         drop.droppable("option", "out", ::overout)
-    }
-
-    /**
-     * Called when a draggable is dropped over this panel
-     * @param event The drop event
-     * @param ui The element being dropped
-     */
-    fun drop(event : Event, ui : dynamic){
-        val blockElement : HTMLElement = ui.draggable[0]
-        blockElement.style.top = "0px"
-        blockElement.style.left = "0px"
-        element.style.boxShadow = ""
-
-        val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
-        var pos = 0
-        if (hoverOverHeader){
-            if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
-            else element.appendChild(blockElement)
-            hoverOverHeader = false
-        }
-        else{
-            try{
-                lastHoveredBlock!!.element.style.marginBottom = ""
-                pos = blocks.indexOf(lastHoveredBlock!!.element) + 1
-                val block = blocks[pos] as HTMLElement
-                element.insertBefore(blockElement, block)
-            }
-            catch(e : Exception){
-                pos = blocks.size
-                element.appendChild(blockElement)
-            }
-        }
-
-        lastHoveredBlock = null
-        
-        robot.insertAction(blockElement.asDynamic().block.action, pos)
-
-        if (blockElement.asDynamic().block is ActionBlockMacro<*>){
-            blockElement.asDynamic().block.addDropHelperDroppable()
-        }
-
-        drawer.populate()
     }
 
     /**
@@ -146,30 +102,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         return header
     }
 
-    /**
-     * Adds droppable properties to the header. Necessary to determine block drop positions
-     * @param header The header element
-     */
-    fun addHeaderDroppable(header : HTMLElement){
-        val onOver = {
-            header.style.marginBottom = "10px"
-            hoverOverHeader = true
-        }
-
-        val onOverOut = {
-            header.style.marginBottom = ""
-            hoverOverHeader = false
-        }
-
-        val onDrop = {
-            header.style.marginBottom = ""
-        }
-
-        val drop = jQuery(header).asDynamic()
-        drop.droppable()
-        drop.droppable("option", "tolerance", "pointer")
-        drop.droppable("option", "drop", onDrop)
-        drop.droppable("option", "over", onOver)
-        drop.droppable("option", "out", onOverOut)
+    override fun addAction(action : Action<*>, pos : Int){
+        robot.insertAction(action, pos)
     }
 }

@@ -121,6 +121,14 @@ table{
 	padding-bottom: 10px;
 }
 
+.actionBlockMacroHeader{
+	position: absolute;
+	width: 100%;
+	left: 0px;
+	top:0px;
+	height:40px;
+}
+
 .dropHelper{
 	position: absolute;
 	width: 100%;

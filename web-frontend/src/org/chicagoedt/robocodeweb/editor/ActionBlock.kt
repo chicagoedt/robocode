@@ -64,6 +64,7 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.droppable("option", "tolerance", "pointer")
         drag.droppable("option", "over", ::over)
         drag.droppable("option", "out", ::overout)
+        drag.droppable("option", "drop", ::drop)
     }
 
     /**
@@ -162,6 +163,13 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The element being moved
      */
     fun overout(event : Event, ui : dynamic){
+        element.style.marginBottom = ""
+    }
+
+    /**
+     * Called when a draggable that was hovering over this block is dropped
+     */
+    fun drop(){
         element.style.marginBottom = ""
     }
 }

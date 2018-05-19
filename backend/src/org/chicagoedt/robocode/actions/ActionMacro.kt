@@ -26,6 +26,15 @@ abstract class ActionMacro<T> : Action<T>() {
     }
 
     /**
+     * Adds an action to the macro
+     * @param action The action to add to the macro's list
+     * @param pos The position to add the action at
+     */
+    fun addToMacro(action: Action<*>, pos : Int){
+        macro.add(pos, action as Action<Any>)
+    }
+
+    /**
      * Removes an action from the macro
      * @param action The action to remove from the macro's list
      */
