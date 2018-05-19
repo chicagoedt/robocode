@@ -70,17 +70,30 @@ interface BlockList {
      */
     fun addHeaderDroppable(header : HTMLElement){
         val onOver = {
-            header.style.marginBottom = "10px"
+            val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            try{
+                (blocks[0] as HTMLElement).style.marginTop = "10px"
+            }
+            catch (e : Exception){}
+
             firstIndexDrop = true
         }
 
         val onOverOut = {
-            header.style.marginBottom = ""
+            val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            try{
+                (blocks[0] as HTMLElement).style.marginTop = ""
+            }
+            catch (e : Exception){}
             firstIndexDrop = false
         }
 
         val onDrop = {
-            header.style.marginBottom = ""
+            val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            try{
+                (blocks[1] as HTMLElement).style.marginTop = ""
+            }
+            catch (e : Exception){}
         }
 
         val drop = jQuery(header).asDynamic()
