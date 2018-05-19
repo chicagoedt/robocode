@@ -19,9 +19,9 @@ import kotlin.*
  * @property lastHoveredBlock The last block that a draggable was hovered over
  * @property hoverOverHeader True if the header is being hovered over, false otherwise
  */
-class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer){
+class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer) : BlockList{
     lateinit var element : HTMLDivElement
-    var lastHoveredBlock : ActionBlock<Action<Any>>? = null
+    override var lastHoveredBlock : ActionBlock<*>? = null
     private var hoverOverHeader = false
 
     init {

@@ -8,8 +8,9 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 
-abstract class ActionBlockMacro<T : ActionMacro<*>> : ActionBlock<T>(){
+abstract class ActionBlockMacro<T : ActionMacro<*>> : ActionBlock<T>(), BlockList{
     private val dropHelperElement = document.createElement("div") as HTMLElement
+    override var lastHoveredBlock: ActionBlock<*>? = null
 
     init{
         element.addClass("actionBlockMacro")

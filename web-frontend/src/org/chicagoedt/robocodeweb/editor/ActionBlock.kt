@@ -36,6 +36,7 @@ abstract class ActionBlock<T : Action<*>>(){
             field = value
             addParameterSelector()
         }
+    var parentBlockList : BlockList? = null
 
     init {
         element.addClass("actionBlock")
@@ -147,8 +148,10 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The element being hovered
      */
     fun over(event : Event, ui : dynamic){
-        if (element.parentElement!!.classList.contains("panel")){
-            element.parentElement!!.asDynamic().panelObject.lastHoveredBlock = this
+        if (element.parentElement!!.id != "drawer"){
+            if (parentBlockList != null){
+                parentBlockList!!.lastHoveredBlock = this
+            }
             element.style.marginBottom = "10px"
         }
     }
