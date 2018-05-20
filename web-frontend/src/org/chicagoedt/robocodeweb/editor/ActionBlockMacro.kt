@@ -70,6 +70,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
         jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
         jQuery(element).asDynamic().droppable("enable")
         element.style.marginBottom = "10px"
+        lastHoveredBlock = null
     }
 
     override fun addAction(action: Action<*>, pos: Int) {

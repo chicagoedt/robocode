@@ -32,7 +32,8 @@ interface BlockList {
         blockElement.style.left = "0px"
         element.style.boxShadow = ""
 
-        val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+        var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList()
+        blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
         if (firstIndexDrop){
             if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
@@ -70,7 +71,8 @@ interface BlockList {
      */
     fun addHeaderDroppable(header : HTMLElement){
         val onOver = {
-            val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            blocks = trimToDirectChildren(blocks.toMutableList())
             try{
                 (blocks[0] as HTMLElement).style.marginTop = "10px"
             }
@@ -80,7 +82,8 @@ interface BlockList {
         }
 
         val onOverOut = {
-            val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            blocks = trimToDirectChildren(blocks.toMutableList())
             try{
                 (blocks[0] as HTMLElement).style.marginTop = ""
             }
@@ -89,8 +92,10 @@ interface BlockList {
         }
 
         val onDrop = {
-            val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+            blocks = trimToDirectChildren(blocks.toMutableList())
             try{
+                (blocks[0] as HTMLElement).style.marginTop = ""
                 (blocks[1] as HTMLElement).style.marginTop = ""
             }
             catch (e : Exception){}
@@ -110,4 +115,25 @@ interface BlockList {
      * @param pos The position to add it at
      */
     fun addAction(action : Action<*>, pos : Int)
+
+    /**
+     * Trims a list of elements to include only direct children of [element]
+     * @param list The list to trim
+     * @return A list of elements from [list] which are direct children of [element]
+     */
+    private fun trimToDirectChildren(list : MutableList<Element>) : List<Element>{
+        val toRemove = arrayListOf<Element>()
+
+        for (element in list){
+            if (element.parentElement == null || element.parentElement != this.element){
+                toRemove.add(element)
+            }
+        }
+
+        for (element in toRemove){
+            list.remove(element)
+        }
+
+        return list
+    }
 }
