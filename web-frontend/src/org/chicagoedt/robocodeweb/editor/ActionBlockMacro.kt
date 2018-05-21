@@ -54,7 +54,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
         val action = ui.draggable[0].block.action
         this.action.removeFromMacro(action)
 
-        element.style.backgroundColor = "white"
+        setIndicator(true)
 
         val parent : BlockList = element.parentElement.asDynamic().container
         parent.setDropInto(false)
@@ -70,17 +70,19 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
      * @param ui The element being hovered
      */
     fun helperOverOut(event : Event, ui : dynamic){
-        element.style.backgroundColor = ""
+        setIndicator(false)
 
         val parent : BlockList = element.parentElement.asDynamic().container
         parent.setDropInto(true)
+        if (parent is ActionBlockMacro<*>){
+            parent.setIndicator(true)
+        }
         jQuery(element).asDynamic().droppable("enable")
         element.style.marginBottom = "10px"
         lastHoveredBlock = null
     }
 
     override fun addAction(action: Action<*>, pos: Int) {
-        console.log("adding action")
         this.action.addToMacro(action, pos)
 
         val parent : BlockList = element.parentElement.asDynamic().container
@@ -94,6 +96,19 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
         }
         else{
             jQuery(dropHelperElement).asDynamic().droppable("disable")
+        }
+    }
+
+    /**
+     * Sets the indicator that this block can be dropped into
+     * @param status True if the indicator should show, false if it should hide
+     */
+    fun setIndicator(status : Boolean){
+        if (status) {
+            element.style.backgroundColor = "white"
+        }
+        else {
+            element.style.backgroundColor = ""
         }
     }
 }
