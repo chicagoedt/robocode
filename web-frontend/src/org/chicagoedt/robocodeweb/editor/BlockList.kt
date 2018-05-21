@@ -136,4 +136,10 @@ interface BlockList {
 
         return list
     }
+
+    /**
+     * Enables or disables dropping into this list
+     * @param status True to enable dropping into, false otherwise
+     */
+    fun setDropInto(status : Boolean)
 }

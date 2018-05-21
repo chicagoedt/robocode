@@ -29,6 +29,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
         tdElement.addClass("panelTd")
 
         element.addClass("panel")
+        element.asDynamic().container = this
         element.asDynamic().panelObject = this
 
         element.appendChild(getHeader())
@@ -104,5 +105,14 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
 
     override fun addAction(action : Action<*>, pos : Int){
         robot.insertAction(action, pos)
+    }
+
+    override fun setDropInto(status : Boolean){
+        if (status){
+            jQuery(element).asDynamic().droppable("enable")
+        }
+        else{
+            jQuery(element).asDynamic().droppable("disable")
+        }
     }
 }

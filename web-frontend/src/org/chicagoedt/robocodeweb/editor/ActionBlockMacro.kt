@@ -3,7 +3,10 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import org.chicagoedt.robocode.actions.Action
 import org.chicagoedt.robocode.actions.ActionMacro
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.ItemArrayLike
+import org.w3c.dom.asList
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
@@ -39,6 +42,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
         drop.droppable("option", "out", ::helperOverOut)
 
         addHeaderDroppable(headerElement)
+        element.asDynamic().container = this
     }
 
     /**
@@ -52,9 +56,11 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
 
         element.style.backgroundColor = "white"
 
-        val panel : Panel = element.parentElement.asDynamic().panelObject
-        jQuery(panel.element as HTMLElement).asDynamic().droppable("disable")
+        val parent : BlockList = element.parentElement.asDynamic().container
+        parent.setDropInto(false)
+        parent.element.style.backgroundColor = ""
         jQuery(element).asDynamic().droppable("disable")
+        parent.lastHoveredBlock = null
         element.style.marginBottom = ""
     }
 
@@ -66,18 +72,28 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
     fun helperOverOut(event : Event, ui : dynamic){
         element.style.backgroundColor = ""
 
-        val panel : Panel = element.parentElement.asDynamic().panelObject
-        jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
+        val parent : BlockList = element.parentElement.asDynamic().container
+        parent.setDropInto(true)
         jQuery(element).asDynamic().droppable("enable")
         element.style.marginBottom = "10px"
         lastHoveredBlock = null
     }
 
     override fun addAction(action: Action<*>, pos: Int) {
+        console.log("adding action")
         this.action.addToMacro(action, pos)
 
-        val panel : Panel = element.parentElement.asDynamic().panelObject
-        jQuery(panel.element as HTMLElement).asDynamic().droppable("enable")
+        val parent : BlockList = element.parentElement.asDynamic().container
+        parent.setDropInto(true)
         jQuery(element).asDynamic().droppable("enable")
+    }
+
+    override fun setDropInto(status : Boolean){
+        if (status){
+            jQuery(dropHelperElement).asDynamic().droppable("enable")
+        }
+        else{
+            jQuery(dropHelperElement).asDynamic().droppable("disable")
+        }
     }
 }
