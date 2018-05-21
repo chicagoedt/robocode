@@ -109,10 +109,11 @@ table{
 	position: absolute;
 	right: 10px;
 	top: 10px;
-	height:20px;
+	max-height:20px;
+	padding: 0;
 	width:40%;
 	z-index: 6;
-	margin-bottom: 10px;
+	bottom: 10px;
 }
 
 .actionBlockMacro{
