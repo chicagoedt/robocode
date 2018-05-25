@@ -21,6 +21,7 @@ import kotlin.*
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var drawer : Drawer) : BlockList{
     override var element : HTMLElement = document.createElement("div") as HTMLDivElement
+    override var dropElement: HTMLElement = element
     override var lastHoveredBlock : ActionBlock<*>? = null
     override var firstIndexDrop = false
 
@@ -37,39 +38,6 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
         parent.appendChild(tdElement)
 
         addDrop()
-    }
-
-    /**
-     * Adds the necessary options for this panel to be a droppable
-     */
-    fun addDrop(){
-        val drop = jQuery(element).asDynamic()
-        drop.droppable()
-        drop.droppable("option", "tolerance", "pointer")
-        drop.droppable("option", "drop", ::dropInList)
-        drop.droppable("option", "over", ::over)
-        drop.droppable("option", "out", ::overout)
-    }
-
-    /**
-     * Called when a draggable is hovered over this panel
-     * @param event The over event
-     * @param ui The element being hovered
-     */
-    fun over(event : Event, ui : dynamic){
-        element.style.boxShadow = "0px 0px 2px grey"
-        val blockElement : HTMLElement = ui.draggable[0]
-        robot.removeAction(blockElement.asDynamic().block.action)
-    }
-
-    /**
-     * Called when a draggable that was hovering over this panel is moved out
-     * @param event The out event
-     * @param ui The element being moved
-     */
-    fun overout(event : Event, ui : dynamic){
-        element.style.boxShadow = ""
-        lastHoveredBlock = null
     }
 
     /**
@@ -105,6 +73,10 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
 
     override fun addAction(action : Action<*>, pos : Int){
         robot.insertAction(action, pos)
+    }
+
+    override fun removeAction(action : Action<*>){
+        robot.removeAction(action)
     }
 
     override fun setDropInto(status : Boolean){

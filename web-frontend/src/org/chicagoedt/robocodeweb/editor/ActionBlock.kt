@@ -31,6 +31,7 @@ abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
     lateinit var parameterElement : HTMLElement
     abstract val action : T
+
     protected var parameterType = BlockParameterType.NONE
         set(value) {
             field = value
@@ -62,7 +63,7 @@ abstract class ActionBlock<T : Action<*>>(){
 
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
-        drag.droppable("option", "over", ::over)
+        drag.droppable("option", "dropOver", ::over)
         drag.droppable("option", "out", ::overout)
         drag.droppable("option", "drop", ::drop)
     }

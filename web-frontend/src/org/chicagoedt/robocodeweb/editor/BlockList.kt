@@ -18,8 +18,21 @@ import org.w3c.dom.events.Event
 interface BlockList {
     var lastHoveredBlock : ActionBlock<*>?
     var element : HTMLElement
+    var dropElement : HTMLElement
     var drawer : Drawer
     var firstIndexDrop : Boolean
+
+    /**
+     * Adds the necessary options for this list to be a droppable
+     */
+    fun addDrop(){
+        val drop = jQuery(dropElement).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "drop", ::dropInList)
+        drop.droppable("option", "dropOver", ::dropOver)
+        drop.droppable("option", "out", ::dropOverOut)
+    }
 
     /**
      * Called when a draggable is dropped over this list
@@ -28,6 +41,9 @@ interface BlockList {
      */
     fun dropInList(event : Event, ui : dynamic){
         val blockElement : HTMLElement = ui.draggable[0]
+
+        val block = (blockElement.asDynamic().block as ActionBlock<*>)
+
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
         element.style.boxShadow = ""
@@ -52,17 +68,15 @@ interface BlockList {
             }
         }
 
-        (blockElement.asDynamic().block as ActionBlock<*>).parentBlockList = this
+        block.parentBlockList = this
 
         lastHoveredBlock = null
-
-        if (blockElement.asDynamic().block is ActionBlockMacro<*>){
-            blockElement.asDynamic().block.addDropHelperDroppable()
-        }
 
         drawer.populate()
 
         addAction(blockElement.asDynamic().block.action, pos)
+
+        //console.log("adding ${blockElement.asDynamic().block.action.name} to ${element.classList}")
     }
 
     /**
@@ -105,7 +119,7 @@ interface BlockList {
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
         drop.droppable("option", "drop", onDrop)
-        drop.droppable("option", "over", onOver)
+        drop.droppable("option", "dropOver", onOver)
         drop.droppable("option", "out", onOverOut)
     }
 
@@ -115,6 +129,12 @@ interface BlockList {
      * @param pos The position to add it at
      */
     fun addAction(action : Action<*>, pos : Int)
+
+    /**
+     * Removes an action from the list backend
+     * @param action The action to remove
+     */
+    fun removeAction(action : Action<*>)
 
     /**
      * Trims a list of elements to include only direct children of [element]
@@ -135,6 +155,27 @@ interface BlockList {
         }
 
         return list
+    }
+
+    /**
+     * Called when a draggable is hovered over this list
+     * @param event The over event
+     * @param ui The element being hovered
+     */
+    fun dropOver(event : Event, ui : dynamic){
+        element.style.boxShadow = "0px 0px 2px grey"
+        val blockElement : HTMLElement = ui.draggable[0]
+        removeAction(blockElement.asDynamic().block.action)
+    }
+
+    /**
+     * Called when a draggable that was hovering over this list is moved out
+     * @param event The out event
+     * @param ui The element being moved
+     */
+    fun dropOverOut(event : Event, ui : dynamic){
+        element.style.boxShadow = ""
+        lastHoveredBlock = null
     }
 
     /**
