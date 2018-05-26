@@ -16,6 +16,5 @@ class ForLoopActionBlock(override var drawer: Drawer) : ActionBlockMacro<ForLoop
     init{
         parameterType = BlockParameterType.NUMBER_INPUT
         element.classList.add("controlBlock")
-        addDrop()
     }
 }

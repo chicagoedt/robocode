@@ -10,17 +10,22 @@ import org.w3c.dom.events.Event
 
 /**
  * An list containing blocks
+ * @property header The header that, when dropped into, the element will be added as the first index of the list
  * @property lastHoveredBlock The last block to be hovered over
  * @property element The element to insert the blocks into
+ * @property dropElement The element that, when dropped into, elements are added to this list
  * @property drawer The drawer to repopulate after a drop
  * @property firstIndexDrop True if the block should be placed at the first index in the list, false otherwise
+ * @property acceptMacros True if this list can have macros added to it, false otherwise
  */
 interface BlockList {
+    var header : HTMLElement
     var lastHoveredBlock : ActionBlock<*>?
     var element : HTMLElement
     var dropElement : HTMLElement
     var drawer : Drawer
     var firstIndexDrop : Boolean
+    var acceptMacros : Boolean
 
     /**
      * Adds the necessary options for this list to be a droppable
@@ -29,9 +34,14 @@ interface BlockList {
         val drop = jQuery(dropElement).asDynamic()
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "greedy", true)
         drop.droppable("option", "drop", ::dropInList)
-        drop.droppable("option", "dropOver", ::dropOver)
+        drop.droppable("option", "over", ::dropOver)
         drop.droppable("option", "out", ::dropOverOut)
+        if (acceptMacros) drop.droppable("option", "accept", ".actionBlock")
+        else drop.droppable("option", "accept", ".nonMacroActionBlock")
+
+        addHeaderDroppable()
     }
 
     /**
@@ -41,8 +51,6 @@ interface BlockList {
      */
     fun dropInList(event : Event, ui : dynamic){
         val blockElement : HTMLElement = ui.draggable[0]
-
-        val block = (blockElement.asDynamic().block as ActionBlock<*>)
 
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
@@ -68,22 +76,31 @@ interface BlockList {
             }
         }
 
-        block.parentBlockList = this
+        if (blockElement.asDynamic().block is ActionBlockMacro<*>){
+            (blockElement.asDynamic().block).addDrop()
+        }
+
+        val isDroppable = jQuery(blockElement).data("uiDroppable") != undefined
+
+        if (isDroppable){
+            if (acceptMacros) jQuery(blockElement).asDynamic().droppable("option", "accept", ".actionBlock")
+            else jQuery(blockElement).asDynamic().droppable("option", "accept", ".nonMacroActionBlock")
+        }
+
+        (blockElement.asDynamic().block as ActionBlock<*>).parentBlockList = this
 
         lastHoveredBlock = null
 
         drawer.populate()
 
         addAction(blockElement.asDynamic().block.action, pos)
-
-        //console.log("adding ${blockElement.asDynamic().block.action.name} to ${element.classList}")
     }
 
     /**
      * Adds droppable properties to the header. Necessary to determine block drop positions
      * @param header The header element
      */
-    fun addHeaderDroppable(header : HTMLElement){
+    fun addHeaderDroppable(){
         val onOver = {
             var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
             blocks = trimToDirectChildren(blocks.toMutableList())
@@ -105,7 +122,7 @@ interface BlockList {
             firstIndexDrop = false
         }
 
-        val onDrop = {
+        val onDrop = { event : Event, ui : dynamic ->
             var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
             blocks = trimToDirectChildren(blocks.toMutableList())
             try{
@@ -119,8 +136,10 @@ interface BlockList {
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
         drop.droppable("option", "drop", onDrop)
-        drop.droppable("option", "dropOver", onOver)
+        drop.droppable("option", "over", onOver)
         drop.droppable("option", "out", onOverOut)
+        if (acceptMacros) drop.droppable("option", "accept", ".actionBlock")
+        else drop.droppable("option", "accept", ".nonMacroActionBlock")
     }
 
     /**
@@ -177,10 +196,4 @@ interface BlockList {
         element.style.boxShadow = ""
         lastHoveredBlock = null
     }
-
-    /**
-     * Enables or disables dropping into this list
-     * @param status True to enable dropping into, false otherwise
-     */
-    fun setDropInto(status : Boolean)
 }

@@ -41,6 +41,7 @@ abstract class ActionBlock<T : Action<*>>(){
 
     init {
         element.addClass("actionBlock")
+        element.addClass("nonMacroActionBlock")
         element.asDynamic().block = this
     }
 
@@ -63,7 +64,7 @@ abstract class ActionBlock<T : Action<*>>(){
 
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
-        drag.droppable("option", "dropOver", ::over)
+        drag.droppable("option", "over", ::over)
         drag.droppable("option", "out", ::overout)
         drag.droppable("option", "drop", ::drop)
     }

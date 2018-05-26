@@ -15,15 +15,14 @@ import kotlin.*
  * @param parent The parent element for this panel
  * @param robot The robot corresponding to this panel
  * @param drawer The drawer where the blocks are being dragged from
- * @property element The HTML element for this panel
- * @property lastHoveredBlock The last block that a draggable was hovered over
- * @property hoverOverHeader True if the header is being hovered over, false otherwise
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var drawer : Drawer) : BlockList{
     override var element : HTMLElement = document.createElement("div") as HTMLDivElement
     override var dropElement: HTMLElement = element
     override var lastHoveredBlock : ActionBlock<*>? = null
     override var firstIndexDrop = false
+    override var acceptMacros = true
+    override var header = document.createElement("div") as HTMLElement
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -33,7 +32,9 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
         element.asDynamic().container = this
         element.asDynamic().panelObject = this
 
-        element.appendChild(getHeader())
+        setHeader()
+
+        element.appendChild(header)
         tdElement.appendChild(element)
         parent.appendChild(tdElement)
 
@@ -44,13 +45,12 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
      * Generates the header for the panel
      * @return The HTMLElement for the header
      */
-    private fun getHeader() : HTMLElement{
-        val header = document.createElement("div") as HTMLElement
+    private fun setHeader(){
         header.addClass("panelHeader")
 
         header.innerHTML = robot.name
 
-        addHeaderDroppable(header)
+        addHeaderDroppable()
 
         val runButton = document.createElement("button") as HTMLElement
         runButton.addClass("panelHeaderButton")
@@ -67,8 +67,6 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
                 })
         }
         header.appendChild(runButton)
-
-        return header
     }
 
     override fun addAction(action : Action<*>, pos : Int){
@@ -77,14 +75,5 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
 
     override fun removeAction(action : Action<*>){
         robot.removeAction(action)
-    }
-
-    override fun setDropInto(status : Boolean){
-        if (status){
-            jQuery(element).asDynamic().droppable("enable")
-        }
-        else{
-            jQuery(element).asDynamic().droppable("disable")
-        }
     }
 }
