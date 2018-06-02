@@ -17,6 +17,7 @@ import org.w3c.dom.events.Event
  * @property drawer The drawer to repopulate after a drop
  * @property firstIndexDrop True if the block should be placed at the first index in the list, false otherwise
  * @property acceptMacros True if this list can have macros added to it, false otherwise
+ * @property parentList The BlockList that this BlockList belongs to
  */
 interface BlockList {
     var header : HTMLElement
@@ -26,6 +27,7 @@ interface BlockList {
     var drawer : Drawer
     var firstIndexDrop : Boolean
     var acceptMacros : Boolean
+    var parentList : BlockList?
 
     /**
      * Adds the necessary options for this list to be a droppable
@@ -54,7 +56,6 @@ interface BlockList {
 
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
-        element.style.boxShadow = ""
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList()
         blocks = trimToDirectChildren(blocks.toMutableList())
@@ -87,6 +88,8 @@ interface BlockList {
             else jQuery(blockElement).asDynamic().droppable("option", "accept", ".nonMacroActionBlock")
         }
 
+        if (blockElement.asDynamic().block is BlockList) (blockElement.asDynamic().block as BlockList).parentList = this
+
         (blockElement.asDynamic().block as ActionBlock<*>).parentBlockList = this
 
         lastHoveredBlock = null
@@ -94,6 +97,8 @@ interface BlockList {
         drawer.populate()
 
         addAction(blockElement.asDynamic().block.action, pos)
+
+        showOverOutToAllParents(this)
     }
 
     /**
@@ -105,7 +110,7 @@ interface BlockList {
             var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
             blocks = trimToDirectChildren(blocks.toMutableList())
             try{
-                (blocks[0] as HTMLElement).style.marginTop = "10px"
+                (blocks[0] as HTMLElement).style.marginTop = "20px"
             }
             catch (e : Exception){}
 
@@ -182,9 +187,9 @@ interface BlockList {
      * @param ui The element being hovered
      */
     fun dropOver(event : Event, ui : dynamic){
-        element.style.boxShadow = "0px 0px 2px grey"
         val blockElement : HTMLElement = ui.draggable[0]
         removeAction(blockElement.asDynamic().block.action)
+        showOver()
     }
 
     /**
@@ -193,7 +198,39 @@ interface BlockList {
      * @param ui The element being moved
      */
     fun dropOverOut(event : Event, ui : dynamic){
-        element.style.boxShadow = ""
         lastHoveredBlock = null
+        showOverOut()
+    }
+
+    /**
+     * To be run when a block is hovered over the drop area. It should show an indicator that the block can be dropped
+     */
+    fun showOver()
+
+    /**
+     * To be run when a block is hovered out of the drop area. It should remove the indicator that the block can be dropped
+     */
+    fun showOverOut()
+
+    /**
+     * Calls [showOverOut] on this list and all (direct and indirect) parents of this list
+     */
+    fun showOverOutToAllParents(list : BlockList){
+        var currentList : BlockList? = list
+        while (currentList != null){
+            currentList.showOverOut()
+            currentList = currentList.parentList
+        }
+    }
+
+    /**
+     * Calls [showOver] on this list and all (direct and indirect) parents of this list
+     */
+    fun showOverToAllParents(list : BlockList){
+        var currentList : BlockList? = list
+        while (currentList != null){
+            currentList.showOver()
+            currentList = currentList.parentList
+        }
     }
 }

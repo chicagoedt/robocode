@@ -160,7 +160,7 @@ abstract class ActionBlock<T : Action<*>>(){
             if (parentBlockList != null){
                 parentBlockList!!.lastHoveredBlock = this
             }
-            element.style.marginBottom = "10px"
+            element.style.marginBottom = "20px"
         }
     }
 

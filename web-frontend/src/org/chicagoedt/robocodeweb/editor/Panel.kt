@@ -23,6 +23,10 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
     override var firstIndexDrop = false
     override var acceptMacros = true
     override var header = document.createElement("div") as HTMLElement
+    override var parentList: BlockList? = null
+
+    private var originalHeight = ""
+    private var originalMargin = ""
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -75,5 +79,26 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, override var draw
 
     override fun removeAction(action : Action<*>){
         robot.removeAction(action)
+    }
+
+    override fun showOver() {
+        originalHeight = jQuery(element).css("height")
+        originalMargin = jQuery(element).css("margin")
+        val margin = window.getComputedStyle(element).margin
+        val marginVal = margin.substring(0, margin.length - 2).toDouble().toInt()
+        val height = window.getComputedStyle(element).height
+        val heightVal = height.substring(0, height.length - 2).toDouble().toInt()
+
+        val animation : Any = {}
+        animation.asDynamic().margin = "0px"
+        animation.asDynamic().height = (heightVal + (marginVal * 2)).toString() + "px"
+        jQuery(element).animate(animation, 100)
+    }
+
+    override fun showOverOut() {
+        val animation : Any = {}
+        animation.asDynamic().margin = originalMargin
+        animation.asDynamic().height = originalHeight
+        jQuery(element).animate(animation, 100)
     }
 }

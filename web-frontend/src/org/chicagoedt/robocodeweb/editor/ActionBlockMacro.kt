@@ -6,6 +6,7 @@ import org.chicagoedt.robocode.actions.ActionMacro
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
+import kotlin.browser.window
 import kotlin.dom.addClass
 
 /**
@@ -18,6 +19,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
     override var lastHoveredBlock: ActionBlock<*>? = null
     override var firstIndexDrop = false
     override var acceptMacros = false
+    override var parentList: BlockList? = null
 
     init{
         element.addClass("actionBlockMacro")
@@ -34,5 +36,13 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer)
 
     override fun removeAction(action : Action<*>){
         this.action.removeFromMacro(action)
+    }
+
+    override fun showOver() {
+        element.style.backgroundColor = "white"
+    }
+
+    override fun showOverOut() {
+        element.style.backgroundColor = ""
     }
 }
