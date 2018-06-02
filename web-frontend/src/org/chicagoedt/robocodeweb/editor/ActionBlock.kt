@@ -95,6 +95,11 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     fun onDrag(event : Event, ui : dynamic){
+        //console.log(event.target as HTMLElement)
+        if ((event.target as HTMLElement) != element){
+            over(event, ui)
+            return
+        }
         element.style.backgroundColor = "grey"
         ui.helper[0].style.width = element.clientWidth.toString() + "px"
         ui.helper[0].style.left = ui.position.left.toString() + "px"

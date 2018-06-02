@@ -31,7 +31,8 @@ abstract class ActionMacro<T> : Action<T>() {
      * @param pos The position to add the action at
      */
     fun addToMacro(action: Action<*>, pos : Int){
-        macro.add(pos, action as Action<Any>)
+        if (pos < macro.size) macro.add(pos, action as Action<Any>)
+        else macro.add(action as Action<Any>)
     }
 
     /**
