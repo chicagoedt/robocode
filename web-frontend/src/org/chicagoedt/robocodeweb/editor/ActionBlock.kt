@@ -61,10 +61,12 @@ abstract class ActionBlock<T : Action<*>>(){
         //add the name of the action to the block
         if (!(this is ActionBlockMacro))element.appendChild(document.createTextNode(action.name))
 
-        drag.droppable()
-        drag.droppable("option", "tolerance", "pointer")
-        drag.droppable("option", "over", ::over)
-        drag.droppable("option", "out", ::overout)
+        if (!(this is ActionBlockMacro)){
+            drag.droppable()
+            drag.droppable("option", "tolerance", "pointer")
+            drag.droppable("option", "over", ::over)
+            drag.droppable("option", "out", ::overout)
+        }
     }
 
     /**
