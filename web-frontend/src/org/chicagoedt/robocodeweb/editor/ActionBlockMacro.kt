@@ -17,6 +17,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     var lastHoveredBlock : ActionBlock<Action<Any>>? = null
     var header : HTMLElement = document.createElement("div") as HTMLElement
     var footer : HTMLElement = document.createElement("div") as HTMLElement
+    var side : HTMLElement = document.createElement("div") as HTMLElement
 
     var panelParent : Panel? = null
     var cancelDrag = false
@@ -27,9 +28,10 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
     fun addHeader(){
         initHeader()
-        initFooter()
+        initFooterAndSide()
         element.appendChild(header)
         element.appendChild(footer)
+        element.appendChild(side)
         addDrop()
     }
 
@@ -76,17 +78,18 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
      * Generates the header for the macro
      * @return The HTMLElement for the header
      */
-    private fun initFooter(){
+    private fun initFooterAndSide(){
         footer.addClass("macroFooter")
+        side.addClass("macroSide")
 
-        addFooterDroppable(footer)
+        addFooterAndSideDroppable(footer)
     }
 
     /**
      * Adds droppable properties to the footer. Necessary to drop directly after this macro
      * @param header The footer element
      */
-    fun addFooterDroppable(footer : HTMLElement){
+    fun addFooterAndSideDroppable(footer : HTMLElement){
         val onFooterOver = ::over
 
         val onFooterOverOut = ::overout
@@ -100,7 +103,15 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
             }
         }
 
-        val drop = jQuery(footer).asDynamic()
+        var drop = jQuery(footer).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "over", onFooterOver)
+        drop.droppable("option", "out", onFooterOverOut)
+        drop.droppable("option", "drop", onFooterDrop)
+        drop.droppable("option", "greedy", true)
+
+        drop = jQuery(side).asDynamic()
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
         drop.droppable("option", "over", onFooterOver)
