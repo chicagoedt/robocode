@@ -12,6 +12,15 @@ import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.addClass
 
+/**
+ * @param drawer That drawer to repopulate after a drop into this macro
+ * @property hoverOverHeader True if the header was last hovered over, false otherwise
+ * @property header The header element for this macro
+ * @property footer The footer element for this macro
+ * @property side The side element for this macro
+ * @property panelParent The panel if the panel is a direct parent, null otherwise
+ * @property cancelDrag True if drag should be ignored on the next call, false otherwise
+ */
 abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : ActionBlock<T>() {
     private var hoverOverHeader = false
     var lastHoveredBlock : ActionBlock<Action<Any>>? = null
