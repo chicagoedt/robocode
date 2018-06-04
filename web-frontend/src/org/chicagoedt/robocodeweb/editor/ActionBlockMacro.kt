@@ -16,6 +16,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     private var hoverOverHeader = false
     var lastHoveredBlock : ActionBlock<Action<Any>>? = null
     var header : HTMLElement = document.createElement("div") as HTMLElement
+    var footer : HTMLElement = document.createElement("div") as HTMLElement
 
     var panelParent : Panel? = null
     var cancelDrag = false
@@ -26,12 +27,14 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
     fun addHeader(){
         initHeader()
+        initFooter()
         element.appendChild(header)
+        element.appendChild(footer)
         addDrop()
     }
 
     /**
-     * Generates the header for the panel
+     * Generates the header for the macro
      * @return The HTMLElement for the header
      */
     private fun initHeader(){
@@ -70,7 +73,44 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     }
 
     /**
-     * Adds the necessary options for this panel to be a droppable
+     * Generates the header for the macro
+     * @return The HTMLElement for the header
+     */
+    private fun initFooter(){
+        footer.addClass("macroFooter")
+
+        addFooterDroppable(footer)
+    }
+
+    /**
+     * Adds droppable properties to the footer. Necessary to drop directly after this macro
+     * @param header The footer element
+     */
+    fun addFooterDroppable(footer : HTMLElement){
+        val onFooterOver = ::over
+
+        val onFooterOverOut = ::overout
+
+        val onFooterDrop = { event : Event, ui : dynamic ->
+            if (panelParent != null){
+                panelParent!!.drop(event, ui)
+            }
+            else if (macroParent != null){
+                macroParent!!.macroDrop(event, ui)
+            }
+        }
+
+        val drop = jQuery(footer).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "over", onFooterOver)
+        drop.droppable("option", "out", onFooterOverOut)
+        drop.droppable("option", "drop", onFooterDrop)
+        drop.droppable("option", "greedy", true)
+    }
+
+    /**
+     * Adds the necessary options for this macro to be a droppable
      */
     fun addDrop(){
         val drop = jQuery(element).asDynamic()
@@ -83,7 +123,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     }
 
     /**
-     * Called when a draggable is dropped over this panel
+     * Called when a draggable is dropped over this macro
      * @param event The drop event
      * @param ui The element being dropped
      */
@@ -126,7 +166,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     }
 
     /**
-     * Called when a draggable is hovered over this panel
+     * Called when a draggable is hovered over this macro
      * @param event The over event
      * @param ui The element being hovered
      */
@@ -138,7 +178,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     }
 
     /**
-     * Called when a draggable that was hovering over this panel is moved out
+     * Called when a draggable that was hovering over this macro is moved out
      * @param event The out event
      * @param ui The element being moved
      */
@@ -174,12 +214,14 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         }
         else{
             header.style.backgroundColor = "#616161"
+            footer.style.backgroundColor = "#616161"
             super.onDrag(event, ui)
         }
     }
 
     override fun onDragStop(event: Event, ui: dynamic) {
         header.style.backgroundColor = ""
+        footer.style.backgroundColor = ""
         super.onDragStop(event, ui)
     }
 }
