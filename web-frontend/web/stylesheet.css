@@ -131,7 +131,6 @@ table{
 	height:40px;
 	line-height: 40px;
 	text-align: center;
-	background-color: #ffaedf;
 	padding-left: 10px;
 	text-align: left;
 }
@@ -141,7 +140,6 @@ table{
 	bottom: 0;
 	width:calc(100% - 10px);
 	height:15px;
-	background-color: #ffaedf;
 }
 
 .macroSide{
@@ -150,7 +148,6 @@ table{
 	height:calc(100% - 40px);
 	left: 0;
 	width: 10px;
-	background-color: #ffaedf;
 }
 
 .movementBlock{
@@ -163,6 +160,10 @@ table{
 
 .controlBlock{
 	background-color: #f17bff;
+}
+
+.controlBlockBorder{
+	background-color: #ffaedf;
 }
 
 td, th, tr {

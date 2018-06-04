@@ -11,6 +11,7 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.addClass
+import kotlin.dom.removeClass
 
 /**
  * @param drawer That drawer to repopulate after a drop into this macro
@@ -30,6 +31,17 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
     var panelParent : Panel? = null
     var cancelDrag = false
+
+    var borderClass = ""
+        set(value) {
+            header.removeClass(field)
+            footer.removeClass(field)
+            side.removeClass(field)
+            field = value
+            header.addClass(value)
+            footer.addClass(value)
+            side.addClass(value)
+        }
 
     init{
         element.classList.add("actionBlockMacro")
