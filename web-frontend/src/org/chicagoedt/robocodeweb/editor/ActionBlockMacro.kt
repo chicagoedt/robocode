@@ -226,6 +226,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         else{
             header.style.backgroundColor = "#616161"
             footer.style.backgroundColor = "#616161"
+            side.style.backgroundColor = "#616161"
             super.onDrag(event, ui)
         }
     }
@@ -233,6 +234,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     override fun onDragStop(event: Event, ui: dynamic) {
         header.style.backgroundColor = ""
         footer.style.backgroundColor = ""
+        side.style.backgroundColor = ""
         super.onDragStop(event, ui)
     }
 }
