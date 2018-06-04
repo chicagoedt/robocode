@@ -11,7 +11,7 @@ class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
 
 	init{
 		parameterType = BlockParameterType.NUMBER_INPUT
-		element.classList.add("movementBlock")
+		blockClass = "movementBlock"
 		for (i in 1..10){
 			insertDropdownParameter(i.toString(), i.toInt())
 		}

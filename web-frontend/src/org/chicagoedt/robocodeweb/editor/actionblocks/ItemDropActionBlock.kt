@@ -10,7 +10,7 @@ class ItemDropActionBlock : ActionBlock<ItemDropAction>() {
 
     init{
         parameterType = BlockParameterType.DROPDOWN
-        element.classList.add("itemsBlock")
+        blockClass = "itemsBlock"
         for (item in ItemManager.getAllItems()){
             insertDropdownParameter(item.name, item.id)
         }

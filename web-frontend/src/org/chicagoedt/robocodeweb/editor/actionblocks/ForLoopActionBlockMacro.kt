@@ -11,7 +11,7 @@ class ForLoopActionBlockMacro(drawer : Drawer) : ActionBlockMacro<ForLoopAction>
 
     init{
         parameterType = BlockParameterType.NUMBER_INPUT
-        element.addClass("controlBlock")
+        blockClass = "controlBlock"
         borderClass = "controlBlockBorder"
         addHeader()
     }

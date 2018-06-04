@@ -12,7 +12,7 @@ class TurnActionBlock() : ActionBlock<TurnAction>(){
 
 	init{
 		parameterType = BlockParameterType.DROPDOWN
-		element.classList.add("movementBlock")
+		blockClass = "movementBlock"
 		insertDropdownParameter("Clockwise", RobotRotation.CLOCKWISE)
 		insertDropdownParameter("Counter-Clockwise", RobotRotation.COUNTERCLOCKWISE)
 	}

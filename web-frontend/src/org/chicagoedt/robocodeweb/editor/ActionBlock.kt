@@ -7,6 +7,7 @@ import kotlin.browser.document
 import kotlin.dom.addClass
 import org.chicagoedt.robocode.actions.*
 import org.w3c.dom.HTMLSelectElement
+import kotlin.dom.removeClass
 
 /**
  * Types of parameter selectors that a block can take
@@ -26,6 +27,7 @@ enum class BlockParameterType{
  * @property parameterElement The HTML element containing the parameter selector for this block
  * @property action The action that this block contains
  * @property parameterType The type of parameter selector that this block uses
+ * @property macroParent The macro if a macro is a direct parent of this block, null otherwise
  */
 abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
@@ -37,6 +39,13 @@ abstract class ActionBlock<T : Action<*>>(){
             addParameterSelector()
         }
     var macroParent : ActionBlockMacro<*>? = null
+
+    var blockClass = ""
+        set(value) {
+            element.removeClass(field)
+            field = value
+            element.addClass(value)
+        }
 
     init {
         element.addClass("actionBlock")
