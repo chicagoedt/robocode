@@ -3,46 +3,183 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import org.chicagoedt.robocode.actions.Action
 import org.chicagoedt.robocode.actions.ActionMacro
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.ItemArrayLike
+import org.w3c.dom.asList
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.addClass
 
-/**
- * An action block containing other action blocks
- * @param drawer The drawer than this drawer is initialized into
- */
-abstract class ActionBlockMacro<T : ActionMacro<*>>(override var drawer: Drawer) : ActionBlock<T>(), BlockList{
-    override var header = document.createElement("div") as HTMLElement
-    override var dropElement = document.createElement("div") as HTMLElement
-    override var lastHoveredBlock: ActionBlock<*>? = null
-    override var firstIndexDrop = false
-    override var acceptMacros = false
-    override var parentList: BlockList? = null
+abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : ActionBlock<T>() {
+    private var hoverOverHeader = false
+    var lastHoveredBlock : ActionBlock<Action<Any>>? = null
+    var header : HTMLElement = document.createElement("div") as HTMLElement
+
+    var panelParent : Panel? = null
+    var cancelDrag = false
 
     init{
-        element.addClass("actionBlockMacro")
-        dropElement.addClass("dropHelper")
-        element.appendChild(dropElement)
-        header.addClass("actionBlockMacroHeader")
+        element.classList.add("actionBlockMacro")
+    }
+
+    fun addHeader(){
+        initHeader()
         element.appendChild(header)
-        element.classList.remove("nonMacroActionBlock")
+        addDrop()
     }
 
-    override fun addAction(action: Action<*>, pos: Int) {
-        this.action.addToMacro(action, pos)
+    /**
+     * Generates the header for the panel
+     * @return The HTMLElement for the header
+     */
+    private fun initHeader(){
+        header.addClass("macroHeader")
+
+        header.innerHTML = action.name
+
+        addHeaderDroppable(header)
     }
 
-    override fun removeAction(action : Action<*>){
-        this.action.removeFromMacro(action)
+    /**
+     * Adds droppable properties to the header. Necessary to determine block drop positions
+     * @param header The header element
+     */
+    fun addHeaderDroppable(header : HTMLElement){
+        val onOver = {
+            header.style.marginBottom = "10px"
+            hoverOverHeader = true
+        }
+
+        val onOverOut = {
+            header.style.marginBottom = ""
+            hoverOverHeader = false
+        }
+
+        val onDrop = {
+            header.style.marginBottom = ""
+        }
+
+        val drop = jQuery(header).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "drop", onDrop)
+        drop.droppable("option", "over", onOver)
+        drop.droppable("option", "out", onOverOut)
     }
 
-    override fun showOver() {
-        element.style.backgroundColor = "white"
+    /**
+     * Adds the necessary options for this panel to be a droppable
+     */
+    fun addDrop(){
+        val drop = jQuery(element).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "drop", ::macroDrop)
+        drop.droppable("option", "over", ::macroOver)
+        drop.droppable("option", "out", ::macroOverOut)
+        drop.droppable("option", "greedy", true)
     }
 
-    override fun showOverOut() {
+    /**
+     * Called when a draggable is dropped over this panel
+     * @param event The drop event
+     * @param ui The element being dropped
+     */
+    fun macroDrop(event : Event, ui : dynamic){
+        val blockElement : HTMLElement = ui.draggable[0]
+        blockElement.style.top = "0px"
+        blockElement.style.left = "0px"
+        element.style.boxShadow = ""
+
+        var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+        blocks = trimToDirectChildren(blocks.toMutableList())
+        var pos = 0
+        if (hoverOverHeader){
+            if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
+            else element.appendChild(blockElement)
+            hoverOverHeader = false
+        }
+        else{
+            try{
+                lastHoveredBlock!!.element.style.marginBottom = ""
+                pos = blocks.indexOf(lastHoveredBlock!!.element) + 1
+                val block = blocks[pos] as HTMLElement
+                element.insertBefore(blockElement, block)
+            }
+            catch(e : Exception){
+                pos = blocks.size
+                element.appendChild(blockElement)
+            }
+        }
+
+        lastHoveredBlock = null
+
+        val newAction : Action<*> = blockElement.asDynamic().block.action
+        val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
+        action.addToMacro(newAction, pos)
+
+        newActionBlock.macroParent = this
+
+        drawer.populate()
+    }
+
+    /**
+     * Called when a draggable is hovered over this panel
+     * @param event The over event
+     * @param ui The element being hovered
+     */
+    fun macroOver(event : Event, ui : dynamic){
+        element.style.boxShadow = "0px 0px 2px grey"
         element.style.backgroundColor = ""
+        val blockElement : HTMLElement = ui.draggable[0]
+        action.removeFromMacro(blockElement.asDynamic().block.action)
+    }
+
+    /**
+     * Called when a draggable that was hovering over this panel is moved out
+     * @param event The out event
+     * @param ui The element being moved
+     */
+    fun macroOverOut(event : Event, ui : dynamic){
+        element.style.boxShadow = ""
+        lastHoveredBlock = null
+    }
+
+    /**
+     * Trims a list of elements to include only direct children of [element]
+     * @param list The list to trim
+     * @return A list of elements from [list] which are direct children of [element]
+     */
+    private fun trimToDirectChildren(list : MutableList<Element>) : List<Element>{
+        val toRemove = arrayListOf<Element>()
+
+        for (element in list){
+            if (element.parentElement == null || element.parentElement != this.element){
+                toRemove.add(element)
+            }
+        }
+
+        for (element in toRemove){
+            list.remove(element)
+        }
+
+        return list
+    }
+
+    override fun onDrag(event: Event, ui: dynamic) {
+        if (cancelDrag){
+            cancelDrag = false
+        }
+        else{
+            header.style.backgroundColor = "#616161"
+            super.onDrag(event, ui)
+        }
+    }
+
+    override fun onDragStop(event: Event, ui: dynamic) {
+        header.style.backgroundColor = ""
+        super.onDragStop(event, ui)
     }
 }

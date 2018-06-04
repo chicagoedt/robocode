@@ -31,17 +31,15 @@ abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
     lateinit var parameterElement : HTMLElement
     abstract val action : T
-
     protected var parameterType = BlockParameterType.NONE
         set(value) {
             field = value
             addParameterSelector()
         }
-    var parentBlockList : BlockList? = null
+    var macroParent : ActionBlockMacro<*>? = null
 
     init {
         element.addClass("actionBlock")
-        element.addClass("nonMacroActionBlock")
         element.asDynamic().block = this
     }
 
@@ -49,24 +47,24 @@ abstract class ActionBlock<T : Action<*>>(){
      * Adds the necessary options to make this block a draggable. This must be called after the element is appended onto another element
      */
     fun addDraggable(){
-    	val drag = jQuery(element).asDynamic()
+        val drag = jQuery(element).asDynamic()
         drag.draggable()
         drag.draggable("option", "stack", ".actionBlock")
         drag.draggable("option", "helper", "clone")
         drag.draggable("option", "appendTo", "#editor")
         drag.draggable("option", "zIndex", 99)
         drag.draggable("option", "opacity", 0.8)
+        if (this is ActionBlockMacro) drag.draggable("option", "handle", ".macroHeader")
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
 
         //add the name of the action to the block
-        element.appendChild(document.createTextNode(action.name))
+        if (!(this is ActionBlockMacro))element.appendChild(document.createTextNode(action.name))
 
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
         drag.droppable("option", "over", ::over)
         drag.droppable("option", "out", ::overout)
-        drag.droppable("option", "drop", ::drop)
     }
 
     /**
@@ -94,17 +92,19 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param event The event which started the drag
      * @param ui The ui being dragged
      */
-    fun onDrag(event : Event, ui : dynamic){
-        //console.log(event.target as HTMLElement)
-        if ((event.target as HTMLElement) != element){
-            over(event, ui)
-            return
-        }
+    open fun onDrag(event : Event, ui : dynamic){
+        cancelDragAllParents(event, ui)
         element.style.backgroundColor = "grey"
         ui.helper[0].style.width = element.clientWidth.toString() + "px"
         ui.helper[0].style.left = ui.position.left.toString() + "px"
 
         ui.helper[0].style.boxShadow = "0px 0px 50px grey"
+        if (element.parentElement!!.classList.contains("panel")){
+            (element.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(this.action)
+        }
+        else if (macroParent != null){
+            this.macroParent!!.action.removeFromMacro(this.action)
+        }
     }
 
     /**
@@ -112,7 +112,7 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param event The event which ended the drag
      * @param ui The ui being dragged
      */
-    fun onDragStop(event : Event, ui : dynamic){
+    open fun onDragStop(event : Event, ui : dynamic){
         element.style.backgroundColor = ""
         element.style.boxShadow = ""
     }
@@ -156,11 +156,13 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The element being hovered
      */
     fun over(event : Event, ui : dynamic){
-        if (element.parentElement!!.id != "drawer"){
-            if (parentBlockList != null){
-                parentBlockList!!.lastHoveredBlock = this
-            }
-            element.style.marginBottom = "20px"
+        if (element.parentElement!!.classList.contains("panel")){
+            element.parentElement!!.asDynamic().panelObject.lastHoveredBlock = this
+            element.style.marginBottom = "10px"
+        }
+        else if (macroParent != null){
+            macroParent!!.lastHoveredBlock = this as ActionBlock<Action<Any>>
+            element.style.marginBottom = "10px"
         }
     }
 
@@ -173,10 +175,28 @@ abstract class ActionBlock<T : Action<*>>(){
         element.style.marginBottom = ""
     }
 
-    /**
-     * Called when a draggable that was hovering over this block is dropped
-     */
-    fun drop(){
-        element.style.marginBottom = ""
+    //this has to exist because of a bug in Jquery UI where all draggable parents of a draggable receive a drag event
+    fun cancelDragAllParents(event : Event, ui : dynamic){
+        ui.draggable = arrayListOf<Any>()
+
+        (ui.draggable as ArrayList<Any>).add(element)
+        val element = this.element
+        js("ui.draggable = [element]")
+
+        var panel : Panel? = null
+
+        if (this is ActionBlockMacro) panel = this.panelParent
+
+        var currentParent = macroParent
+        while (currentParent != null){
+            currentParent.macroOver(event, ui)
+            currentParent.cancelDrag = true
+            panel = currentParent.panelParent
+            currentParent = currentParent.macroParent
+        }
+
+        if (panel != null) {
+            panel.over(event, ui)
+        }
     }
 }

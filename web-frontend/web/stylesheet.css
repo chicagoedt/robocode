@@ -117,26 +117,21 @@ table{
 }
 
 .actionBlockMacro{
+	padding: 0;
+	min-height: 50px;
 	height: auto;
-	min-height: 20px;
-	padding-bottom: 10px;
+	width:calc(100% - 10px);
+	padding-bottom: 5px;
 }
 
-.actionBlockMacroHeader{
-	position: absolute;
-	width: 100%;
-	left: 0px;
-	top:0px;
-	height:35px;
-}
-
-.dropHelper{
-	position: absolute;
-	width: 100%;
-	height: calc(100% - 10px);
-	top: 0px;
-	right: 0px;
-	z-index: 5;
+.macroHeader{
+	width:calc(100% - 10px);
+	height:40px;
+	line-height: 40px;
+	text-align: center;
+	background-color: #ffaedf;
+	padding-left: 10px;
+	text-align: left;
 }
 
 .movementBlock{

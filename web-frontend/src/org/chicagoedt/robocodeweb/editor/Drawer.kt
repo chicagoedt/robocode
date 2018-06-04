@@ -43,7 +43,7 @@ class Drawer(val parent : HTMLElement) {
         checkTurnActionBlock(1)
         checkItemPickupActionBlock(2)
         checkItemDropActionBlock(3)
-        checkForLoopActionBlock(4)
+        checkForLoopActionBlockMacro(4)
     }
 
 
@@ -104,10 +104,10 @@ class Drawer(val parent : HTMLElement) {
         }
     }
 
-    fun checkForLoopActionBlock(index: Int) {
+    fun checkForLoopActionBlockMacro(index: Int) {
         if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is ForLoopActionBlock)) {
-            val block = ForLoopActionBlock(this)
+                !(element.children.item(index).asDynamic().block is ForLoopActionBlockMacro)) {
+            val block = ForLoopActionBlockMacro(this)
             block.addDraggable()
 
             try {
