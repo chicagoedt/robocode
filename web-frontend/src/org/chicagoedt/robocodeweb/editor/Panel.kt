@@ -63,7 +63,8 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         blockElement.style.left = "0px"
         element.style.boxShadow = ""
 
-        val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+        var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+        blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
         if (hoverOverHeader){
             if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
@@ -172,5 +173,26 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         drop.droppable("option", "drop", onDrop)
         drop.droppable("option", "over", onOver)
         drop.droppable("option", "out", onOverOut)
+    }
+
+    /**
+     * Trims a list of elements to include only direct children of [element]
+     * @param list The list to trim
+     * @return A list of elements from [list] which are direct children of [element]
+     */
+    private fun trimToDirectChildren(list : MutableList<Element>) : List<Element>{
+        val toRemove = arrayListOf<Element>()
+
+        for (element in list){
+            if (element.parentElement == null || element.parentElement != this.element){
+                toRemove.add(element)
+            }
+        }
+
+        for (element in toRemove){
+            list.remove(element)
+        }
+
+        return list
     }
 }
