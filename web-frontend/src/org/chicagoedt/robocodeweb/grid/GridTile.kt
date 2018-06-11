@@ -18,15 +18,11 @@ import kotlin.dom.addClass
  * @param gridY The Y position of this tile on the grid
  * @property tableElement The td element for this tile
  * @property element The div element to be contained in the td element
- * @property playerElement The image to indicate if a player is on this tile
  * @property itemQuantityImage The image to indicate if an item is on this tile
- * @property player The player that is current only this tile, or null if there is none
  */
 open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	var tableElement = document.createElement("td") as HTMLElement
 	var element  = document.createElement("div") as HTMLElement
-	var playerElement  = document.createElement("img") as HTMLImageElement
-	var player : RobotPlayer? = null
 
 	val itemQuantityImage = document.createElement("img") as HTMLImageElement
 	val itemQuantityText = document.createElement("div") as HTMLDivElement
@@ -44,11 +40,7 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 
 		element.classList.add("gridTile")
 
-		playerElement.classList.add("gridPlayer")
-		playerElement.classList.add("gridTile")
-
 		element.appendChild(itemQuantityContainer)
-		element.appendChild(playerElement)
 
 		setWidth()
 		refresh()
@@ -81,15 +73,6 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 		else if (level.tileAt(gridX, gridY) is VictoryTile){
 			element.classList.add("victoryTile")
 		}
-
-		if (player != null){
-			playerElement.style.display = "block"
-			playerElement.src = getPlayerImage(game.robots[player!!.name]!!.graphic)
-		}
-		else{
-			playerElement.style.display = "none"
-			playerElement.src = "";
-		}
 	}
 
 	/**
@@ -97,7 +80,7 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	 */
 	fun displayItemIndicator(){
 		val hasItem = level.tileAt(gridX, gridY).items.allItemTypes().size > 0
-		if (player == null && hasItem){
+		if (hasItem){
 			val hasMultipleItemTypes = level.tileAt(gridX, gridY).items.allItemTypes().size > 1
 			if (hasMultipleItemTypes){
 
@@ -119,17 +102,5 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 		else{
 			itemQuantityContainer.style.display = "none"
 		}
-	}
-
-	/**
-	 * Gets an image with the correct direction from a path
-	 * @param path The folder containing left.png, right.png, up.png, down.png
-	 * @return The path to the correct image
-	 */
-	fun getPlayerImage(path : String) : String{
-		if (player!!.direction == RobotOrientation.DIRECTION_UP) return path + "up.png"
-		else if (player!!.direction == RobotOrientation.DIRECTION_DOWN) return path + "down.png"
-		else if (player!!.direction == RobotOrientation.DIRECTION_RIGHT) return path + "right.png"
-		else return path + "left.png"
 	}
 }

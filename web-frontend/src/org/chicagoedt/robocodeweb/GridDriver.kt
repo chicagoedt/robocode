@@ -14,6 +14,7 @@ class GridDriver(val game: Game){
     var tableBody = document.getElementById("grid")!!.children.item(0)!! as HTMLElement
     var level = game.currentLevel
     var gridTiles = arrayListOf<ArrayList<GridTile>>()
+    var playerTiles = arrayListOf<PlayerTile>()
     private var tileWidth = 0
 
     /**
@@ -54,7 +55,9 @@ class GridDriver(val game: Game){
             val x = player.x
             val y = player.y
 
-            gridTiles[y][x].player = player
+            val newPlayer = PlayerTile(player, gridTiles, x, y)
+            playerTiles.add(newPlayer)
+
             gridTiles[y][x].refresh()
         }
     }
@@ -65,7 +68,6 @@ class GridDriver(val game: Game){
     fun refresh(){
         for (row in gridTiles){
             for (tile in row){
-                tile.player = null
                 tile.refresh()
             }
         }
