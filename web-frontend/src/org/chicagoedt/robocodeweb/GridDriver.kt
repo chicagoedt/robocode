@@ -55,7 +55,7 @@ class GridDriver(val game: Game){
             val x = player.x
             val y = player.y
 
-            val newPlayer = PlayerTile(player, gridTiles, x, y)
+            val newPlayer = PlayerTile(player, gridTiles)
             playerTiles.add(newPlayer)
 
             gridTiles[y][x].refresh()
@@ -72,7 +72,9 @@ class GridDriver(val game: Game){
             }
         }
 
-        calculatePlayers()
+        for (player in playerTiles){
+            player.refresh()
+        }
     }
 
     /**
@@ -85,6 +87,10 @@ class GridDriver(val game: Game){
                 tile.element.style.height = tileWidth.toString() + "px"
                 tile.element.style.fontSize = (tileWidth - 5).toString() + "px"
             }
+        }
+        for (player in playerTiles){
+            player.setWidth(tileWidth)
+            player.refresh()
         }
     }
 }

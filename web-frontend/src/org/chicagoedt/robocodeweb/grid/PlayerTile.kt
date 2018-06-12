@@ -1,5 +1,6 @@
 package org.chicagoedt.robocodeweb.grid
 
+import jQuery
 import org.chicagoedt.robocode.robots.RobotOrientation
 import org.chicagoedt.robocode.robots.RobotPlayer
 import org.chicagoedt.robocodeweb.game
@@ -14,26 +15,54 @@ import kotlin.dom.addClass
  * @param x The starting X value of this player
  * @param y The starting Y value of this player
  */
-class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTile>>, var x : Int, var y : Int) {
+class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTile>>) {
     val element = document.createElement("img") as HTMLImageElement
+    private var currentX = player.x
+    private var currentY = player.y
 
     init{
-        element.addClass("playerElement")
+        element.addClass("gridPlayer")
         element.style.display = "block"
         element.src = getPlayerImage(game.robots[player.name]!!.graphic)
 
         document.getElementById("grid")!!.appendChild(element)
+
+        this.refresh()
     }
 
     /**
-     * Moves the player to a new location
-     * @param x The new X location for the player
-     * @param y The new Y location for the player
+     * Refreshes the position of this player on the screen
      */
-    fun moveTo(x : Int, y : Int){
-        //TODO Make an animation to move players
-        this.x = x
-        this.y = y
+    fun refresh(){
+        val position = jQuery(grid[player.y][player.x].tableElement).position()
+
+        var changed = false
+        if (player.x != currentX || player.y != currentY) changed = true
+
+        if (changed){
+            this.currentX = player.x
+            this.currentY = player.y
+
+            val properties : dynamic = {}
+            properties.top = position.top
+            properties.left = position.left
+
+            jQuery(element).animate(properties, 100)
+        }
+        else{
+            jQuery(element).css("top", position.top)
+            jQuery(element).css("left", position.left)
+        }
+    }
+
+    /**
+     * Sets the width that this player should display at
+     * @param width The new width to add, in px
+     */
+    fun setWidth(width : Int){
+        element.style.width = width.toString() + "px"
+        element.style.height = width.toString() + "px"
+        element.style.fontSize = (width - 5).toString() + "px"
     }
 
     /**

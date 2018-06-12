@@ -206,14 +206,7 @@ td, th, tr {
 }
 
 .gridPlayer{
-	position: relative;
-	margin-bottom: 2px;
-	margin-left: 2px;
-	margin-right: 2px;
-	top:2px;
-	height: calc(100% - 4px);
-	width: calc(100% - 4px);
-	z-index: 2;
+	position: absolute;
 }
 
 .obstacleTile{
