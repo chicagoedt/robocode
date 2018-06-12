@@ -19,11 +19,12 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
     val element = document.createElement("img") as HTMLImageElement
     private var currentX = player.x
     private var currentY = player.y
+    private var currentDirection = RobotOrientation.DIRECTION_UP
 
     init{
         element.addClass("gridPlayer")
         element.style.display = "block"
-        element.src = getPlayerImage(game.robots[player.name]!!.graphic)
+        element.src = game.robots[player.name]!!.graphic
 
         document.getElementById("grid")!!.appendChild(element)
 
@@ -34,25 +35,50 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
      * Refreshes the position of this player on the screen
      */
     fun refresh(){
-        val position = jQuery(grid[player.y][player.x].tableElement).position()
 
-        var changed = false
-        if (player.x != currentX || player.y != currentY) changed = true
+        var positionChanged = false
+        if (player.x != currentX || player.y != currentY) positionChanged = true
 
-        if (changed){
-            this.currentX = player.x
-            this.currentY = player.y
+        var directionChanged = false
+        if (player.direction != currentDirection) directionChanged = true
 
-            val properties : dynamic = {}
-            properties.top = position.top
-            properties.left = position.left
-
-            jQuery(element).animate(properties, 100)
+        if (positionChanged){
+            animateToNewPosition()
         }
         else{
+            val position = jQuery(grid[player.y][player.x].tableElement).position()
             jQuery(element).css("top", position.top)
             jQuery(element).css("left", position.left)
         }
+
+        if (directionChanged){
+            changeDirection()
+        }
+    }
+
+    fun changeDirection(){
+        val direction = player.direction
+        if (direction == RobotOrientation.DIRECTION_RIGHT) jQuery(element).css("transform", "rotate(90deg)")
+        else if (direction == RobotOrientation.DIRECTION_DOWN) jQuery(element).css("transform", "rotate(180deg)")
+        else if (direction == RobotOrientation.DIRECTION_LEFT) jQuery(element).css("transform", "rotate(270deg)")
+        else if (direction == RobotOrientation.DIRECTION_UP) jQuery(element).css("transform", "rotate(0deg)")
+
+        currentDirection = direction
+    }
+
+    /**
+     * Moves the player to the new position with an animation
+     */
+    private fun animateToNewPosition(){
+        val position = jQuery(grid[player.y][player.x].tableElement).position()
+        this.currentX = player.x
+        this.currentY = player.y
+
+        val properties : dynamic = {}
+        properties.top = position.top
+        properties.left = position.left
+
+        jQuery(element).animate(properties, 100)
     }
 
     /**
@@ -63,18 +89,6 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         element.style.width = width.toString() + "px"
         element.style.height = width.toString() + "px"
         element.style.fontSize = (width - 5).toString() + "px"
-    }
-
-    /**
-     * Gets an image with the correct direction from a path
-     * @param path The folder containing left.png, right.png, up.png, down.png
-     * @return The path to the correct image
-     */
-    fun getPlayerImage(path : String) : String{
-        if (player.direction == RobotOrientation.DIRECTION_UP) return path + "up.png"
-        else if (player.direction == RobotOrientation.DIRECTION_DOWN) return path + "down.png"
-        else if (player.direction == RobotOrientation.DIRECTION_RIGHT) return path + "right.png"
-        else return path + "left.png"
     }
 
 }
