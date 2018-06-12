@@ -56,6 +56,9 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         }
     }
 
+    /**
+     * Sets the direction displayed to the direction that the robot is facing
+     */
     fun changeDirection(){
         val direction = player.direction
         if (direction == RobotOrientation.DIRECTION_RIGHT) jQuery(element).css("transform", "rotate(90deg)")
