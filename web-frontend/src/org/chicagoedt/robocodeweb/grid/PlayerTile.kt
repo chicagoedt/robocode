@@ -4,7 +4,9 @@ import jQuery
 import org.chicagoedt.robocode.robots.RobotOrientation
 import org.chicagoedt.robocode.robots.RobotPlayer
 import org.chicagoedt.robocodeweb.game
+import org.chicagoedt.robocodeweb.sensorconfig.SensorConfigurator
 import org.w3c.dom.HTMLImageElement
+import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 
@@ -17,6 +19,7 @@ import kotlin.dom.addClass
  */
 class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTile>>) {
     val element = document.createElement("img") as HTMLImageElement
+    val sensorConfigurator = SensorConfigurator()
     private var currentX = player.x
     private var currentY = player.y
     private var currentDirection = RobotOrientation.DIRECTION_UP
@@ -25,6 +28,12 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         element.addClass("gridPlayer")
         element.style.display = "block"
         element.src = game.robots[player.name]!!.graphic
+
+        jQuery(sensorConfigurator.element).hide()
+
+        element.onclick = ::showSensorConfigurator
+
+        element.appendChild(sensorConfigurator.element)
 
         document.getElementById("grid")!!.appendChild(element)
 
@@ -92,6 +101,11 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         element.style.width = width.toString() + "px"
         element.style.height = width.toString() + "px"
         element.style.fontSize = (width - 5).toString() + "px"
+    }
+
+    fun showSensorConfigurator(event : Event){
+        println("showing sensor config")
+        jQuery(sensorConfigurator.element).show()
     }
 
 }
