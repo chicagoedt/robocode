@@ -26,6 +26,9 @@ class SensorConfigurator (val playerTile : PlayerTile){
         playerTile.imageElement.onclick = {toggleShowHide()}
     }
 
+    /**
+     * If the configurator is shown, this method hides it. If it's hidden, this shows it
+     */
     fun toggleShowHide(){
         val shown = jQuery(element).`is`(":visible")
         if (shown){
@@ -48,7 +51,10 @@ class SensorConfigurator (val playerTile : PlayerTile){
         }
     }
 
-    fun setHeightAndWidth(){
+    /**
+     * Sets the height and width to reset to after being hidden
+     */
+    private fun setHeightAndWidth(){
         val heightString = jQuery(element).css("height")
         val height = heightString.substring(0, heightString.length - 2).toDouble()
         val widthString = jQuery(element).css("width")
