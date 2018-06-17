@@ -10,6 +10,7 @@ import kotlin.dom.addClass
 
 class SensorConfigurator (val playerTile : PlayerTile){
     val element = document.createElement("div") as HTMLElement
+    val drawer = SensorDrawer()
     var initialHeight = "0px"
     var initialWidth = "0px"
 
@@ -24,6 +25,9 @@ class SensorConfigurator (val playerTile : PlayerTile){
         element.style.width = "0"
 
         playerTile.imageElement.onclick = {toggleShowHide()}
+
+        element.appendChild(drawer.element)
+        drawer.populate()
     }
 
     /**
@@ -60,16 +64,10 @@ class SensorConfigurator (val playerTile : PlayerTile){
         val widthString = jQuery(element).css("width")
         val width = widthString.substring(0, widthString.length - 2).toDouble()
 
-        println("child height is $height, width is $width")
-
         val parentHeight = window.innerHeight
         val parentWidth = window.innerWidth
 
-        println("parent height is $parentHeight, width is $parentWidth")
-
         initialHeight = ((height / parentHeight) * 100.0).toString() + "%"
         initialWidth = ((width / parentWidth) * 100.0).toString() + "%"
-
-        println("initial height is $initialHeight, width is $initialWidth")
     }
 }

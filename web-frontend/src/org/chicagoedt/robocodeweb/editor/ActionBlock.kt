@@ -60,6 +60,7 @@ abstract class ActionBlock<T : Action<*>>(){
         drag.draggable()
         drag.draggable("option", "stack", ".actionBlock")
         drag.draggable("option", "helper", "clone")
+        drag.draggable("option", "scope", "actions")
         drag.draggable("option", "appendTo", "#editor")
         drag.draggable("option", "zIndex", 99)
         drag.draggable("option", "opacity", 0.8)
@@ -73,6 +74,7 @@ abstract class ActionBlock<T : Action<*>>(){
         if (!(this is ActionBlockMacro)){
             drag.droppable()
             drag.droppable("option", "tolerance", "pointer")
+            drag.droppable("option", "scope", "actions")
             drag.droppable("option", "over", ::over)
             drag.droppable("option", "out", ::overout)
         }

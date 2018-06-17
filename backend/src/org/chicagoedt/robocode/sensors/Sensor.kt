@@ -27,6 +27,7 @@ abstract class Sensor {
      * The type of sensor for the current instance
      */
     internal abstract val type : SensorType
+    abstract val name : String
 
     /**
      * Stores the value from a sensor in [topic]

@@ -12,6 +12,7 @@ import org.chicagoedt.robocode.robots.RobotPosition
  * It measures outwards from the side that the sensor is attached to
  */
 class DistanceSensor : Sensor() {
+    override val name = "Distance"
     override val type: SensorType = SensorType.DISTANCE
 
      override fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic) {

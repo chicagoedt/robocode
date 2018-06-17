@@ -311,3 +311,31 @@ td, th, tr {
 	z-index: 299;
 	overflow: auto;
 }
+
+.sensorDrawer{
+	width: 20%;
+	height: calc(100% - 10px);
+	box-shadow: 0px 0px 10px grey;
+	background-color: #f0f0a4;
+	float: left;
+	padding: 5px;
+}
+
+.sensorBlock{
+	font-family: Verdana;
+	font-size: 15px;
+	box-shadow: 0px 0px 2px grey;
+	border-color: black;
+	border-width: thin;
+	border-radius: 12px;
+	width: calc(100% - 10px);
+	height: 20px;
+	z-index: 399;
+	cursor: default;
+	text-align: center;
+	padding: 5px;
+}
+
+.distanceSensorBlock{
+	background-color: #0b97c4;
+}

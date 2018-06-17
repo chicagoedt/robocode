@@ -21,6 +21,7 @@ class Drawer(val parent : HTMLElement) {
         val drag = jQuery(element).asDynamic()
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
+        drag.droppable("option", "scope", "actions")
         drag.droppable("option", "drop", ::drop)
     }
 
