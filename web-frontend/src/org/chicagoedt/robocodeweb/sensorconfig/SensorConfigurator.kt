@@ -9,6 +9,18 @@ import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.addClass
 
+/**
+ * The window that allows the user to configure the sensors on a robot
+ * @param playerTile The player that this configurator manages
+ * @property element The main element of the configurator
+ * @property drawer The drawer element in this configurator
+ * @property initialHeight The height that [element] returns to after shrinking
+ * @property initialWidth The width that [element] returns to after shrinking
+ * @property backSensorPanel The sensor back to insert sensors in the back position
+ * @property frontSensorPanel The sensor back to insert sensors in the front position
+ * @property leftSensorPanel The sensor back to insert sensors in the left position
+ * @property rightSensorPanel The sensor back to insert sensors in the right position
+ */
 class SensorConfigurator (val playerTile : PlayerTile){
     val element = document.createElement("div") as HTMLElement
     val drawer = SensorDrawer()

@@ -7,6 +7,10 @@ import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 import kotlin.dom.addClass
 
+/**
+ * The drawer that sensors can be dragged from
+ * @property element The main element of the drawer
+ */
 class SensorDrawer {
     val element = document.createElement("div") as HTMLElement
 

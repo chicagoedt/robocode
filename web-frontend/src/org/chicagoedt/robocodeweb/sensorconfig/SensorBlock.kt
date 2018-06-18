@@ -10,6 +10,12 @@ import kotlin.browser.document
 import kotlin.dom.addClass
 import kotlin.dom.removeClass
 
+/**
+ * A block, representing a sensor, that can be dragged and dropped into various places
+ * @property sensor The sensor that this block represents
+ * @property element The element of this block being dragged
+ * @property blockClass The class to add to this block (for visual differences between blocks)
+ */
 abstract class SensorBlock<T : Sensor> {
     abstract val sensor : T
     val element = document.createElement("div") as HTMLElement
@@ -25,6 +31,9 @@ abstract class SensorBlock<T : Sensor> {
         element.addClass("sensorBlock")
     }
 
+    /**
+     * Adds the necessary draggable properties to this block
+     */
     fun addDraggable(){
         val drag = jQuery(element).asDynamic()
         drag.draggable()

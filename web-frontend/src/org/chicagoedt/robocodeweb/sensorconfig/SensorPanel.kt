@@ -9,6 +9,12 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 
+/**
+ * The panel where sensors are dropped into to insert them into a side of a robot
+ * @param position The side of the robot that this panel manages
+ * @param playerTile The player that this robot manages
+ * @param drawer The drawer to repopulate after taking a sensor from it
+ */
 class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val drawer : SensorDrawer){
     val element = document.createElement("div") as HTMLElement
 
@@ -29,6 +35,9 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
         addDroppable()
     }
 
+    /**
+     * Adds the necessary droppable properties to this panel
+     */
     private fun addDroppable(){
         val drop = jQuery(element).asDynamic()
         drop.droppable()
