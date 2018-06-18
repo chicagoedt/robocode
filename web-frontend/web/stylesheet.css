@@ -339,3 +339,36 @@ td, th, tr {
 .distanceSensorBlock{
 	background-color: #0b97c4;
 }
+
+.sensorList{
+	position: absolute;
+	left: calc(20% + 15px);
+	margin: 5px;
+	height: 20%;
+	width: calc(80% - 25px);
+	box-shadow: 0px 0px 1px grey;
+}
+
+.sideSensorList{
+	margin: 5px;
+	height: calc(60% - 30px);
+	width: 20%;
+	top: calc(20% + 10px);
+}
+
+.backSensorList{
+	bottom: 0;
+}
+
+.frontSensorList{
+	top: 0;
+}
+
+.leftSensorList{
+	left: calc(20% + 15px);
+}
+
+.rightSensorList{
+	left: calc(80% - 10px);
+}
+

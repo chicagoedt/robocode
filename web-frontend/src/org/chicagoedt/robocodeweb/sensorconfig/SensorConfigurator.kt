@@ -1,6 +1,7 @@
 package org.chicagoedt.robocodeweb.sensorconfig
 
 import jQuery
+import org.chicagoedt.robocode.robots.RobotPosition
 import org.chicagoedt.robocodeweb.grid.PlayerTile
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLImageElement
@@ -14,6 +15,11 @@ class SensorConfigurator (val playerTile : PlayerTile){
     var initialHeight = "0px"
     var initialWidth = "0px"
 
+    val backSensorPanel = SensorPanel(RobotPosition.BACK)
+    val frontSensorPanel = SensorPanel(RobotPosition.FRONT)
+    val leftSensorPanel = SensorPanel(RobotPosition.LEFT)
+    val rightSensorPanel = SensorPanel(RobotPosition.RIGHT)
+
 
     init{
         document.body!!.appendChild(element)
@@ -26,7 +32,13 @@ class SensorConfigurator (val playerTile : PlayerTile){
 
         playerTile.imageElement.onclick = {toggleShowHide()}
 
+        element.appendChild(backSensorPanel.element)
+        element.appendChild(frontSensorPanel.element)
+        element.appendChild(leftSensorPanel.element)
+        element.appendChild(rightSensorPanel.element)
+
         element.appendChild(drawer.element)
+
         drawer.populate()
     }
 
