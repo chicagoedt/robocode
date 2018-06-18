@@ -2,12 +2,14 @@ package org.chicagoedt.robocodeweb.sensorconfig
 
 import jQuery
 import org.chicagoedt.robocode.robots.RobotPosition
+import org.chicagoedt.robocode.sensors.SensorType
+import org.chicagoedt.robocodeweb.grid.PlayerTile
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 
-class SensorPanel (val position : RobotPosition, val drawer : SensorDrawer){
+class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val drawer : SensorDrawer){
     val element = document.createElement("div") as HTMLElement
 
     init{
@@ -43,10 +45,18 @@ class SensorPanel (val position : RobotPosition, val drawer : SensorDrawer){
      * @param ui The element being hovered
      */
     private fun onDrop(event : Event, ui : dynamic){
+        element.style.boxShadow = ""
         val blockElement : HTMLElement = ui.draggable[0]
+        val block : SensorBlock<*> = blockElement.asDynamic().block
+
+        if (sensorTypeExists(block)) return
+        if (!slotAvailable()) return
+
+        playerTile.player.addSensorTo(position, block.sensor)
+
         element.appendChild(blockElement)
         drawer.populate()
-        element.style.boxShadow = ""
+
     }
 
     /**
@@ -65,5 +75,29 @@ class SensorPanel (val position : RobotPosition, val drawer : SensorDrawer){
      */
     private fun onOverOut(event : Event, ui : dynamic){
         element.style.boxShadow = ""
+    }
+
+    /**
+     * Checks if the a sensor with the same type is [block] is already in this panel
+     * @return True if a sensor of the same type exists, false otherwise
+     */
+    private fun sensorTypeExists(block : SensorBlock<*>) : Boolean{
+        val sensors = playerTile.player.getSensorsExceptEmpty(position)
+        for (sensor in sensors){
+            if (sensor.type == block.sensor.type) return true
+        }
+        return false
+    }
+
+    /**
+     * Checks if there is a slot available in this panel
+     * @return True if there is a slot available, false otherwise
+     */
+    private fun slotAvailable() : Boolean{
+        val totalSensorSlots = playerTile.player.sensorCountAt(position)
+        val usedSlots = playerTile.player.getSensorsExceptEmpty(position).size
+
+        if (totalSensorSlots == usedSlots) return false
+        else return true
     }
 }

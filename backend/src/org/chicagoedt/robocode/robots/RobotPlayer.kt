@@ -148,6 +148,16 @@ class RobotPlayer(val name: String,
     }
 
     /**
+     * @param pos The side to retrieve the sensors from
+     * @return A list, in order, of all sensors on a side, excluding the empty sensor
+     */
+    fun getSensorsExceptEmpty(pos: RobotPosition): ArrayList<Sensor> {
+        val list = arrayListOf<Sensor>()
+        list.addAll(sensors[pos]!!)
+        return list
+    }
+
+    /**
      * Adds an action to a robot's procedure
      * @param action The action to append
      */

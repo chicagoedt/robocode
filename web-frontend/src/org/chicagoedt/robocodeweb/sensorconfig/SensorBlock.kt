@@ -21,6 +21,7 @@ abstract class SensorBlock<T : Sensor> {
         }
 
     init{
+        element.asDynamic().block = this
         element.addClass("sensorBlock")
     }
 
