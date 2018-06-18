@@ -15,10 +15,10 @@ class SensorConfigurator (val playerTile : PlayerTile){
     var initialHeight = "0px"
     var initialWidth = "0px"
 
-    val backSensorPanel = SensorPanel(RobotPosition.BACK)
-    val frontSensorPanel = SensorPanel(RobotPosition.FRONT)
-    val leftSensorPanel = SensorPanel(RobotPosition.LEFT)
-    val rightSensorPanel = SensorPanel(RobotPosition.RIGHT)
+    val backSensorPanel = SensorPanel(RobotPosition.BACK, drawer)
+    val frontSensorPanel = SensorPanel(RobotPosition.FRONT, drawer)
+    val leftSensorPanel = SensorPanel(RobotPosition.LEFT, drawer)
+    val rightSensorPanel = SensorPanel(RobotPosition.RIGHT, drawer)
 
 
     init{
