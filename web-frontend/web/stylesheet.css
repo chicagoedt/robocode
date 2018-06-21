@@ -407,3 +407,11 @@ td, th, tr {
 .rightSensorList{
 	left: calc(80% - 10px);
 }
+
+.actionSensorDrop{
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	width: 40%;
+	height: calc(100% - 4px);
+}

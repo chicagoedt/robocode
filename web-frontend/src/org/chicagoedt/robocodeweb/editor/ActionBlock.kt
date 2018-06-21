@@ -18,7 +18,8 @@ import kotlin.dom.removeClass
 enum class BlockParameterType{
     NONE,
     DROPDOWN,
-    NUMBER_INPUT
+    NUMBER_INPUT,
+    SENSOR
 }
 
 /**
@@ -93,6 +94,10 @@ abstract class ActionBlock<T : Action<*>>(){
                 parameterElement.asDynamic().type = "number"
                 parameterElement.asDynamic().value = "1"
                 action.parameter = parameterElement.asDynamic().value
+            }
+            else if (parameterType == BlockParameterType.SENSOR){
+                parameterElement = document.createElement("div") as HTMLElement
+                parameterElement.addClass("actionSensorDrop")
             }
             parameterElement.addClass("actionBlockParameter")
             element.appendChild(parameterElement)

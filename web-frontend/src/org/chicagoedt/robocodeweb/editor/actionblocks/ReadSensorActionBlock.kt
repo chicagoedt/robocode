@@ -12,7 +12,7 @@ class ReadSensorActionBlock : ActionBlock<ReadSensorAction>() {
     override val action = ReadSensorAction(game.mainTopic)
 
     init{
-        parameterType = BlockParameterType.NONE
+        parameterType = BlockParameterType.SENSOR
         blockClass = "sensorActionBlock"
     }
 }
