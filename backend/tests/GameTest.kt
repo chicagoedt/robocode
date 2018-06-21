@@ -1080,4 +1080,14 @@ class BackendTests {
             game.nextLevel()
         }
     }
+
+    @Test
+    fun TopicListener(){
+        var topicVal = 6
+        game.mainTopic.topicListener = {value -> topicVal = value as Int}
+
+        game.mainTopic.value = 8
+
+        assertEquals(topicVal, game.mainTopic.value)
+    }
 }
