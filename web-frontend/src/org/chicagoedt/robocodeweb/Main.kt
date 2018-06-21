@@ -48,6 +48,8 @@ fun onLoad(){
     editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
     editorDriver.calculateNewLevel()
 
+    setTopicListener()
+
     updateHeader()
     fadeInGame()
 }
@@ -107,6 +109,15 @@ fun update(e : Event){
 fun refresh(){
     if (::gridDriver.isInitialized){
         gridDriver.refresh()
+    }
+}
+
+fun setTopicListener(){
+    val topic = document.getElementById("topicValue")
+    topic!!.innerHTML = game.mainTopic.value.toString()
+
+    game.mainTopic.topicListener = {value ->
+        topic.innerHTML = (value as Int).toString()
     }
 }
 

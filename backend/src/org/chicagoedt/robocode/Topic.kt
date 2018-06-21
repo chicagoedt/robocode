@@ -6,7 +6,7 @@ package org.chicagoedt.robocode
  * @property topicListener The function to be called when the topic is changed
  */
 class Topic {
-    var value : Any = -1
+    var value : Any = 0
         set(value){
             field = value
             topicListener(value)
