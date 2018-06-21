@@ -1,5 +1,5 @@
 body{
-	background-color: #EFEFEF;
+	background-color: #ffffff;
 	--grid-width: 35%;
 	--drawer-width: 20%;
 }
@@ -19,8 +19,37 @@ body{
 }
 
 #leftPane{
+	position: fixed;
+	width: var(--grid-width);
 	height:100%;
 }
+
+#topic{
+	margin: 10px;
+	box-shadow: 0px 0px 20px grey;
+	width: 40%;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #FFEB3B;
+	line-height: 30px;
+	padding: 10px;
+	font-family: Verdana;
+	text-align: left;
+}
+
+#topicValue{
+	float: right;
+	box-shadow: 0px 0px 40px grey;
+	width: 20%;
+	height: 10px;
+	border-radius: 2px;
+	background-color: #FFFFFF;
+	line-height: 10px;
+	padding: 10px;
+	font-family: Verdana;
+	text-align: center;
+}
+
 
 #grid{
 	position:fixed;
@@ -373,4 +402,3 @@ td, th, tr {
 .rightSensorList{
 	left: calc(80% - 10px);
 }
-

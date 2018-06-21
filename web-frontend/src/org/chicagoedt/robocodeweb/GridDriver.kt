@@ -1,5 +1,6 @@
 package org.chicagoedt.robocodeweb
 
+import jQuery
 import kotlin.browser.*
 import org.chicagoedt.robocode.*
 import org.w3c.dom.HTMLElement
@@ -92,5 +93,9 @@ class GridDriver(val game: Game){
             player.setWidth(tileWidth)
             player.refresh()
         }
+
+        val totalHeight = jQuery(document.getElementById("grid") as HTMLElement).outerHeight(true)
+        val topicElement = document.getElementById("topic") as HTMLElement
+        topicElement.style.marginTop = totalHeight.toString() + "px"
     }
 }
