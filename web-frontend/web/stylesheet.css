@@ -196,6 +196,10 @@ table{
 	background-color: #f17bff;
 }
 
+.sensorActionBlock{
+	background-color: #ff8e75;
+}
+
 td, th, tr {
 	padding: 0px;
 }
