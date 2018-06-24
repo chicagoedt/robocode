@@ -13,4 +13,11 @@ class Topic {
         }
 
     var topicListener = {value : Any -> }
+
+    /**
+     * Restores the topic to its original value
+     */
+    fun reset(){
+        value = 0
+    }
 }

@@ -273,7 +273,10 @@ class RobotPlayer(val name: String,
             eventListener.invoke(Event.LEVEL_UPDATE)
         }
         else {
-            if (reset) level.restoreCheckpoint()
+            if (reset) {
+                level.restoreCheckpoint()
+                mainTopic.reset()
+            }
             eventListener.invoke(Event.LEVEL_FAILURE)
             eventListener.invoke(Event.LEVEL_UPDATE)
         }

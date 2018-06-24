@@ -488,12 +488,12 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val readSensorInstruction = ReadSensorAction(game.mainTopic)
+        val readSensorInstruction = ReadSensorAction(mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.appendAction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
-        instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
+        instruction.parameter = TopicEqualsComparison(mainTopic, 2)
         val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToMacro(turnInstruction)
@@ -542,12 +542,12 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
-        val readSensorInstruction = ReadSensorAction(game.mainTopic)
+        val readSensorInstruction = ReadSensorAction(mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.appendAction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
-        instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
+        instruction.parameter = TopicEqualsComparison(mainTopic, 1)
         val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToMacro(turnInstruction)
@@ -852,6 +852,64 @@ class BackendTests {
     }
 
     @Test
+    fun RobotCheckpointRestoreTopic(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val originalVal = mainTopic.value
+                val action = ReadSensorAction(mainTopic)
+
+                val sensor = DistanceSensor()
+                robot.addSensorTo(RobotPosition.FRONT, sensor)
+
+                action.parameter = sensor
+
+                robot.appendAction(action)
+                robot.runInstructions(true)
+                assertEquals(originalVal, mainTopic.value)
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun RobotCheckpointRestoreTopicFalse(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val sensor = DistanceSensor()
+        robotPlayer1.addSensorTo(RobotPosition.FRONT, sensor)
+
+        val action = ReadSensorAction(mainTopic)
+        action.parameter = sensor
+        robotPlayer1.appendAction(action)
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(mainTopic.value, 2)
+    }
+
+    @Test
     fun RobotCheckpointRestoreVictoryFalse(){
         var won = false
         val testRobots = ArrayList<Robot>()
@@ -879,6 +937,13 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
+        val sensor = DistanceSensor()
+        robotPlayer1.addSensorTo(RobotPosition.FRONT, sensor)
+
+        val action = ReadSensorAction(mainTopic)
+        action.parameter = sensor
+        robotPlayer1.appendAction(action)
+
         val turnAction = TurnAction()
         turnAction.parameter = RobotRotation.COUNTERCLOCKWISE
         robotPlayer1.appendAction(turnAction)
@@ -890,6 +955,7 @@ class BackendTests {
 
         assertEquals(robotPlayer1.y, 1)
         assertEquals(robotPlayer1.direction, RobotOrientation.DIRECTION_UP)
+        assertEquals(mainTopic.value, 2)
     }
 
     @Test
@@ -1084,10 +1150,10 @@ class BackendTests {
     @Test
     fun TopicListener(){
         var topicVal = 6
-        game.mainTopic.topicListener = {value -> topicVal = value as Int}
+        mainTopic.topicListener = {value -> topicVal = value as Int}
 
-        game.mainTopic.value = 8
+        mainTopic.value = 8
 
-        assertEquals(topicVal, game.mainTopic.value)
+        assertEquals(topicVal, mainTopic.value)
     }
 }

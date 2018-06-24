@@ -14,6 +14,11 @@ enum class Event {
 }
 
 /**
+ * The main topic used for the program
+ */
+var mainTopic = Topic()
+
+/**
  * A callback lambda when an event occurs
  */
 internal var eventListener : (Event) -> Unit = {}
@@ -36,7 +41,7 @@ class Game (private val levelsList: ArrayList<Level>,
     var robots: HashMap<String, Robot> = hashMapOf()
 
     var currentLevel : Level
-    var mainTopic = Topic()
+
 
     init{
         for (robot in robotsList){
