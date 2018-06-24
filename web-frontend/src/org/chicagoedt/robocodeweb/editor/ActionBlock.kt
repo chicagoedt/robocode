@@ -6,6 +6,7 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 import org.chicagoedt.robocode.actions.*
+import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.w3c.dom.HTMLSelectElement
 import kotlin.dom.removeClass
 
@@ -98,11 +99,40 @@ abstract class ActionBlock<T : Action<*>>(){
             else if (parameterType == BlockParameterType.SENSOR){
                 parameterElement = document.createElement("div") as HTMLElement
                 parameterElement.addClass("actionSensorDrop")
+                addDroppableSensorField()
             }
             parameterElement.addClass("actionBlockParameter")
             element.appendChild(parameterElement)
             parameterElement.onchange = ::parameterChanged
         }
+    }
+
+    /**
+     * Adds droppable properties to the sensor field for the sensor parameter type
+     */
+    fun addDroppableSensorField(){
+        val dropSensor = { event : Event, ui : dynamic ->
+            val sensorElement : HTMLElement = ui.draggable[0]
+            val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
+            action.parameter = sensorBlock.sensor.asDynamic()
+            val clone = sensorElement.cloneNode(true) as HTMLElement
+            clone.style.backgroundColor = ""
+            clone.addClass("sensorBlockInAction")
+            parameterElement.appendChild(clone)
+
+        }
+        val drop = jQuery(parameterElement).asDynamic()
+        drop.droppable()
+        drop.droppable("option", "tolerance", "pointer")
+        drop.droppable("option", "scope", "sensors")
+        drop.droppable("option", "drop", dropSensor)
+    }
+
+    /**
+     * Adds droppable properties to the sensor for the sensor parameter type
+     */
+    fun addDroppableSensor(){
+
     }
 
     /**

@@ -357,18 +357,20 @@ td, th, tr {
 
 .sensorBlock{
 	font-family: Verdana;
-	font-size: 15px;
 	box-shadow: 0px 0px 2px grey;
 	border-color: black;
 	border-width: thin;
 	border-radius: 12px;
 	width: calc(100% - 16px);
-	height: 20px;
+	height: 100%;
+	max-height: 20px;
 	z-index: 399;
 	cursor: default;
 	text-align: center;
 	padding: 5px;
 	margin: 3px;
+	font-size: 0.75vw;
+
 }
 
 .distanceSensorBlock{
@@ -414,4 +416,11 @@ td, th, tr {
 	border-width: 1px;
 	width: 40%;
 	height: calc(100% - 4px);
+}
+
+.sensorBlockInAction{
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	font-size: 10px;
 }
