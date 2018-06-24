@@ -16,8 +16,9 @@ import kotlin.dom.removeClass
  * @property element The element of this block being dragged
  * @property blockClass The class to add to this block (for visual differences between blocks)
  */
-abstract class SensorBlock<T : Sensor> {
+abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
     abstract val sensor : T
+    var name = ""
     val element = document.createElement("div") as HTMLElement
     var blockClass = ""
         set(value) {
@@ -35,6 +36,7 @@ abstract class SensorBlock<T : Sensor> {
      * Adds the necessary draggable properties to this block
      */
     fun addDraggable(){
+        this.name = sensor.name + " " + sensorNum.toString()
         val drag = jQuery(element).asDynamic()
         drag.draggable()
         drag.draggable("option", "helper", "clone")
@@ -45,7 +47,7 @@ abstract class SensorBlock<T : Sensor> {
         drag.on("dragstart", ::onDrag)
         drag.on("dragstop", ::onDragStop)
 
-        element.appendChild(document.createTextNode(sensor.name))
+        element.appendChild(document.createTextNode(this.name))
     }
 
     /**

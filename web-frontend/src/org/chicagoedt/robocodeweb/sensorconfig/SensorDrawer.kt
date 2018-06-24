@@ -13,6 +13,7 @@ import kotlin.dom.addClass
  */
 class SensorDrawer {
     val element = document.createElement("div") as HTMLElement
+    var numDistanceSensorBlocks = 1
 
     init{
         element.addClass("sensorDrawer")
@@ -50,7 +51,8 @@ class SensorDrawer {
     fun checkDistanceSensorBlock(index: Int) {
         if (element.children.length <= index ||
                 !(element.children.item(index).asDynamic().block is DistanceSensorBlock)) {
-            val block = DistanceSensorBlock()
+            val block = DistanceSensorBlock(numDistanceSensorBlocks)
+            numDistanceSensorBlocks++
             block.addDraggable()
 
             try {
