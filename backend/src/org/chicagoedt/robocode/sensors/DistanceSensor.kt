@@ -26,6 +26,8 @@ class DistanceSensor : Sensor() {
                 x < level.properties.width &&
                 y >= 0 &&
                 y < level.properties.height){
+            sum++
+            tile = level.tileAt(x,y)
             if (position == RobotPosition.FRONT){
                 when (player.direction){
                     RobotOrientation.DIRECTION_UP -> y++
@@ -58,8 +60,7 @@ class DistanceSensor : Sensor() {
                     RobotOrientation.DIRECTION_RIGHT -> x--
                 }
             }
-            sum++
-            tile = level.tileAt(x,y)
+
         }
         topic.value = sum
     }

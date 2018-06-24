@@ -493,7 +493,7 @@ class BackendTests {
         robotPlayer1.appendAction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
-        instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
+        instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
         val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToMacro(turnInstruction)
@@ -547,7 +547,7 @@ class BackendTests {
         robotPlayer1.appendAction(readSensorInstruction)
 
         val instruction = ConditionalWithList()
-        instruction.parameter = TopicEqualsComparison(game.mainTopic, 2)
+        instruction.parameter = TopicEqualsComparison(game.mainTopic, 1)
         val turnInstruction = TurnAction()
         turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
         instruction.addToMacro(turnInstruction)
