@@ -114,9 +114,9 @@ fun refresh(){
 
 fun setTopicListener(){
     val topic = document.getElementById("topicValue")
-    topic!!.innerHTML = game.mainTopic.value.toString()
+    topic!!.innerHTML = mainTopic.value.toString()
 
-    game.mainTopic.topicListener = {value ->
+    mainTopic.topicListener = {value ->
         topic.innerHTML = (value as Int).toString()
     }
 }
