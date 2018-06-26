@@ -123,7 +123,11 @@ abstract class ActionBlock<T : Action<*>>(){
 
             if (sensorBlock.sensorPanel != null){
                 action.parameter = sensorBlock.sensor.asDynamic()
-                val clone = sensorElement.cloneNode(true) as HTMLElement
+                var clone : HTMLElement? = null
+                if (sensorElement.asDynamic().actionSensor == true) {
+                    clone = sensorElement
+                }
+                else clone = sensorElement.cloneNode(true) as HTMLElement
 
                 clone.asDynamic().block = sensorBlock
                 clone.asDynamic().actionSensor = true
