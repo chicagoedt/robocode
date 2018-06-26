@@ -58,6 +58,11 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
         val blockElement : HTMLElement = ui.draggable[0]
         val block : SensorBlock<*> = blockElement.asDynamic().block
 
+        //if this is true, this element should only be used among actions
+        if (blockElement.asDynamic().actionSensor == true) return
+
+        block.sensorPanel = this
+
         if (sensorTypeExists(block)) return
         if (!slotAvailable()) return
 
@@ -74,6 +79,9 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
      * @param ui The element being hovered
      */
     private fun onOver(event : Event, ui : dynamic){
+        //if this is true, this element should only be used among actions
+        if (ui.draggable[0].actionSensor == true) return
+
         element.style.boxShadow = "0px 0px 10px grey"
     }
 
@@ -83,6 +91,9 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
      * @param ui The element being hovered
      */
     private fun onOverOut(event : Event, ui : dynamic){
+        //if this is true, this element should only be used among actions
+        if (ui.draggable[0].actionSensor == true) return
+
         element.style.boxShadow = ""
     }
 

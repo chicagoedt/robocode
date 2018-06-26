@@ -7,6 +7,7 @@ import kotlin.browser.document
 import kotlin.dom.addClass
 import org.chicagoedt.robocode.actions.*
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
+import org.chicagoedt.robocodeweb.showPopup
 import org.w3c.dom.HTMLSelectElement
 import kotlin.dom.removeClass
 
@@ -41,6 +42,7 @@ abstract class ActionBlock<T : Action<*>>(){
             addParameterSelector()
         }
     var macroParent : ActionBlockMacro<*>? = null
+    var cancelDrag = false
 
     var blockClass = ""
         set(value) {
@@ -114,12 +116,25 @@ abstract class ActionBlock<T : Action<*>>(){
         val dropSensor = { event : Event, ui : dynamic ->
             val sensorElement : HTMLElement = ui.draggable[0]
             val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
-            action.parameter = sensorBlock.sensor.asDynamic()
-            val clone = sensorElement.cloneNode(true) as HTMLElement
-            clone.style.backgroundColor = ""
-            clone.addClass("sensorBlockInAction")
-            parameterElement.appendChild(clone)
 
+
+            if (sensorBlock.sensorPanel != null){
+                action.parameter = sensorBlock.sensor.asDynamic()
+                val clone = sensorElement.cloneNode(true) as HTMLElement
+
+                clone.asDynamic().block = sensorBlock
+                clone.asDynamic().actionSensor = true
+                clone.style.borderRadius = "0px"
+
+                addDraggableSensor(clone)
+
+                clone.style.backgroundColor = ""
+                clone.addClass("sensorBlockInAction")
+                parameterElement.appendChild(clone)
+            }
+            else{
+                showPopup("Sensor is not attached to a robot!")
+            }
         }
         val drop = jQuery(parameterElement).asDynamic()
         drop.droppable()
@@ -131,8 +146,30 @@ abstract class ActionBlock<T : Action<*>>(){
     /**
      * Adds droppable properties to the sensor for the sensor parameter type
      */
-    fun addDroppableSensor(){
+    fun addDraggableSensor(sensorElement : HTMLElement){
+        val dragSensor = { event : Event, ui : dynamic ->
+            cancelDragAllSensorParents(event, ui, sensorElement)
+            sensorElement.style.backgroundColor = "grey"
+            ui.helper[0].style.width = sensorElement.clientWidth.toString() + "px"
+            ui.helper[0].style.left = ui.position.left.toString() + "px"
 
+            ui.helper[0].style.boxShadow = "0px 0px 50px grey"
+        }
+
+        val dragSensorStop = {
+            sensorElement.style.backgroundColor = ""
+            sensorElement.style.boxShadow = ""
+        }
+
+        val drag = jQuery(sensorElement).asDynamic()
+        drag.draggable()
+        drag.draggable("option", "helper", "clone")
+        drag.draggable("option", "scope", "sensors")
+        drag.draggable("option", "appendTo", "body")
+        drag.draggable("option", "zIndex", 499)
+        drag.draggable("option", "opacity", 0.8)
+        drag.on("dragstart", dragSensor)
+        drag.on("dragstop", dragSensorStop)
     }
 
     /**
@@ -141,17 +178,22 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     open fun onDrag(event : Event, ui : dynamic){
-        cancelDragAllParents(event, ui)
-        element.style.backgroundColor = "grey"
-        ui.helper[0].style.width = element.clientWidth.toString() + "px"
-        ui.helper[0].style.left = ui.position.left.toString() + "px"
-
-        ui.helper[0].style.boxShadow = "0px 0px 50px grey"
-        if (element.parentElement!!.classList.contains("panel")){
-            (element.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(this.action)
+        if (cancelDrag){
+            cancelDrag = false
         }
-        else if (macroParent != null){
-            this.macroParent!!.action.removeFromMacro(this.action)
+        else{
+            cancelDragAllParents(event, ui)
+            element.style.backgroundColor = "grey"
+            ui.helper[0].style.width = element.clientWidth.toString() + "px"
+            ui.helper[0].style.left = ui.position.left.toString() + "px"
+
+            ui.helper[0].style.boxShadow = "0px 0px 50px grey"
+            if (element.parentElement!!.classList.contains("panel")){
+                (element.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(this.action)
+            }
+            else if (macroParent != null){
+                this.macroParent!!.action.removeFromMacro(this.action)
+            }
         }
     }
 
@@ -245,6 +287,23 @@ abstract class ActionBlock<T : Action<*>>(){
 
         if (panel != null) {
             panel.over(event, ui)
+        }
+    }
+
+    //this has to exist because of a bug in Jquery UI where all draggable parents of a draggable receive a drag event
+    fun cancelDragAllSensorParents(event : Event, ui : dynamic, sensorElement : HTMLElement){
+        ui.draggable = arrayListOf<Any>()
+
+        (ui.draggable as ArrayList<Any>).add(sensorElement)
+        js("ui.draggable = [sensorElement]")
+
+        this.cancelDrag = true
+
+
+        var currentParent = macroParent
+        while (currentParent != null){
+            currentParent.cancelDrag = true
+            currentParent = currentParent.macroParent
         }
     }
 }

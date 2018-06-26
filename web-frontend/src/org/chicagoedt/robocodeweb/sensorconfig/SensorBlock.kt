@@ -18,6 +18,7 @@ import kotlin.dom.removeClass
  */
 abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
     abstract val sensor : T
+    var sensorPanel : SensorPanel? = null
     var name = ""
     val element = document.createElement("div") as HTMLElement
     var blockClass = ""
@@ -27,7 +28,10 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
             element.addClass(value)
         }
 
+
     init{
+        //@property actionSensor True if this sensor is only to be used among actions, false if it can be used in the sensor window
+        element.asDynamic().actionSensor = false
         element.asDynamic().block = this
         element.addClass("sensorBlock")
     }

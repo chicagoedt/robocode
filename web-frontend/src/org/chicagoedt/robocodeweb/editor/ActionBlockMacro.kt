@@ -30,7 +30,6 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     var side : HTMLElement = document.createElement("div") as HTMLElement
 
     var panelParent : Panel? = null
-    var cancelDrag = false
 
     var borderClass = ""
         set(value) {
