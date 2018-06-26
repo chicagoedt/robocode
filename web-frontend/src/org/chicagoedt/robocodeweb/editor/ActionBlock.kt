@@ -6,6 +6,8 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
 import org.chicagoedt.robocode.actions.*
+import org.chicagoedt.robocode.mainTopic
+import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.chicagoedt.robocodeweb.showPopup
 import org.w3c.dom.HTMLSelectElement
@@ -114,6 +116,7 @@ abstract class ActionBlock<T : Action<*>>(){
      */
     fun addDroppableSensorField(){
         val dropSensor = { event : Event, ui : dynamic ->
+            parameterElement.style.boxShadow = ""
             val sensorElement : HTMLElement = ui.draggable[0]
             val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
 
@@ -136,11 +139,37 @@ abstract class ActionBlock<T : Action<*>>(){
                 showPopup("Sensor is not attached to a robot!")
             }
         }
+
+        val overSensor = {event : Event, ui : dynamic ->
+
+            val sensorElement : HTMLElement = ui.draggable[0]
+            val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
+
+            if (sensorBlock.sensorPanel != null){
+                if (action.parameter == sensorBlock.sensor.asDynamic()){
+                    action.parameter = EmptySensor().asDynamic()
+                }
+
+                parameterElement.style.boxShadow = "0px 0px 30px grey"
+            }
+        }
+
+        val overOutSensor = {event : Event, ui : dynamic ->
+            val sensorElement : HTMLElement = ui.draggable[0]
+            val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
+
+            if (sensorBlock.sensorPanel != null){
+                parameterElement.style.boxShadow = ""
+            }
+        }
+
         val drop = jQuery(parameterElement).asDynamic()
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
         drop.droppable("option", "scope", "sensors")
         drop.droppable("option", "drop", dropSensor)
+        drop.droppable("option", "over", overSensor)
+        drop.droppable("option", "out", overOutSensor)
     }
 
     /**

@@ -2,6 +2,7 @@ package org.chicagoedt.robocodeweb.sensorconfig
 
 import jQuery
 import JQueryEventObject
+import org.chicagoedt.robocodeweb.editor.ActionBlock
 import org.chicagoedt.robocodeweb.sensorconfig.sensorblocks.DistanceSensorBlock
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
@@ -17,6 +18,7 @@ class SensorDrawer {
 
     init{
         element.addClass("sensorDrawer")
+        setDroppable()
     }
 
     /**
@@ -26,6 +28,7 @@ class SensorDrawer {
         val drag = jQuery(element).asDynamic()
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
+        drag.droppable("option", "scope", "sensors")
         drag.droppable("option", "drop", ::drop)
     }
 
