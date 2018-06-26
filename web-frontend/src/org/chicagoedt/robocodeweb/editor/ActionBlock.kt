@@ -129,6 +129,8 @@ abstract class ActionBlock<T : Action<*>>(){
                 }
                 else clone = sensorElement.cloneNode(true) as HTMLElement
 
+                clone.addClass("sensorInActions")
+
                 clone.asDynamic().block = sensorBlock
                 clone.asDynamic().actionSensor = true
                 clone.style.borderRadius = "0px"

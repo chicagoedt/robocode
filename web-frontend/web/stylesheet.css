@@ -424,3 +424,7 @@ td, th, tr {
 	width: 100%;
 	font-size: 10px;
 }
+
+.sensorInActions{
+	background-color: #FFFFFF;
+}
