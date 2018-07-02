@@ -40,11 +40,10 @@ class SensorDrawer {
     fun drop(event: JQueryEventObject, ui: dynamic) {
         val uiElement = ui.draggable[0] as HTMLElement
         uiElement.parentElement!!.removeChild(uiElement)
-        val block = uiElement.asDynamic().block
+        val block : SensorBlock<*> = uiElement.asDynamic().block
 
         if (block.sensorPanel != null){
-            //val sensorPos = block.sensor.getSensorPos(playerTile.player)
-            //playerTile.player.removeSensorFrom(sensorPos, block.sensor)
+            block.sensor.player!!.removeSensorFrom(block.sensor.sensorPosition!!, block.sensor)
         }
 
         populate()
