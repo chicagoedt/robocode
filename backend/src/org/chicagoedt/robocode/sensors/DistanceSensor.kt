@@ -15,10 +15,9 @@ class DistanceSensor : Sensor() {
     override val name = "Distance Sensor"
     override val type: SensorType = SensorType.DISTANCE
 
-     override fun readFromSensor(player : RobotPlayer, level: Level, topic: Topic) {
-        val position = getSensorPos(player)
-        var x = player.x
-        var y = player.y
+     override fun readFromSensor(level: Level, topic: Topic) {
+        var x = player!!.x
+        var y = player!!.y
         var tile = level.tileAt(x, y)
         var sum = 0
         while (tile.type != TileType.OBSTACLE &&
@@ -28,32 +27,32 @@ class DistanceSensor : Sensor() {
                 y < level.properties.height){
             sum++
             tile = level.tileAt(x,y)
-            if (position == RobotPosition.FRONT){
-                when (player.direction){
+            if (sensorPosition == RobotPosition.FRONT){
+                when (player!!.direction){
                     RobotOrientation.DIRECTION_UP -> y++
                     RobotOrientation.DIRECTION_DOWN -> y--
                     RobotOrientation.DIRECTION_LEFT -> x--
                     RobotOrientation.DIRECTION_RIGHT -> x++
                 }
             }
-            else if (position == RobotPosition.LEFT){
-                when (player.direction){
+            else if (sensorPosition == RobotPosition.LEFT){
+                when (player!!.direction){
                     RobotOrientation.DIRECTION_UP -> x--
                     RobotOrientation.DIRECTION_DOWN -> x++
                     RobotOrientation.DIRECTION_LEFT -> y--
                     RobotOrientation.DIRECTION_RIGHT -> y++
                 }
             }
-            else if (position == RobotPosition.RIGHT){
-                when (player.direction){
+            else if (sensorPosition == RobotPosition.RIGHT){
+                when (player!!.direction){
                     RobotOrientation.DIRECTION_UP -> x++
                     RobotOrientation.DIRECTION_DOWN -> x--
                     RobotOrientation.DIRECTION_LEFT -> y++
                     RobotOrientation.DIRECTION_RIGHT -> y--
                 }
             }
-            else if (position == RobotPosition.BACK){
-                when (player.direction){
+            else if (sensorPosition == RobotPosition.BACK){
+                when (player!!.direction){
                     RobotOrientation.DIRECTION_UP -> y--
                     RobotOrientation.DIRECTION_DOWN -> y++
                     RobotOrientation.DIRECTION_LEFT -> x++

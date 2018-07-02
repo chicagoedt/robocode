@@ -10,7 +10,7 @@ import org.chicagoedt.robocode.Topic
 class EmptySensor() : Sensor() {
     override val name = "Empty"
     override val type: SensorType = SensorType.EMPTY
-    override fun readFromSensor(player: RobotPlayer, level: Level, topic: Topic) {
+    override fun readFromSensor(level: Level, topic: Topic) {
         //nothing
     }
 }

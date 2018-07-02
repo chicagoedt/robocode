@@ -62,8 +62,10 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
         if (blockElement.asDynamic().actionSensor == true) return
 
         if (block.sensorPanel != this && block.sensorPanel != null){
-            val sensorPos = block.sensor.getSensorPos(playerTile.player)
-            playerTile.player.removeSensorFrom(sensorPos, block.sensor)
+            if (block.sensor.sensorPosition != null){
+                val sensorPos = block.sensor.sensorPosition!!
+                playerTile.player.removeSensorFrom(sensorPos, block.sensor)
+            }
         }
 
         block.sensorPanel = this
