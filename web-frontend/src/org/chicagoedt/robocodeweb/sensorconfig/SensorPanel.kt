@@ -14,23 +14,37 @@ import kotlin.dom.addClass
  * @param position The side of the robot that this panel manages
  * @param playerTile The player that this robot manages
  * @param drawer The drawer to repopulate after taking a sensor from it
+ * @property element The main element of the sensor panel
+ * @property titleElement The element indicating the posiiton of this sensor panel
  */
 class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val drawer : SensorDrawer){
     val element = document.createElement("div") as HTMLElement
+    val titleElement = document.createElement("div") as HTMLElement
 
     init{
         element.addClass("sensorList")
+        titleElement.addClass("sensorListTitle")
 
-        when(position){
-            RobotPosition.FRONT -> element.addClass("frontSensorList")
-            RobotPosition.BACK -> element.addClass("backSensorList")
-            RobotPosition.LEFT -> element.addClass("leftSensorList")
-            RobotPosition.RIGHT -> element.addClass("rightSensorList")
+        if (position == RobotPosition.FRONT){
+            element.addClass("frontSensorList")
+            titleElement.innerHTML = "FRONT"
         }
-
-        if (position == RobotPosition.LEFT || position == RobotPosition.RIGHT){
+        else if (position == RobotPosition.BACK){
+            element.addClass("backSensorList")
+            titleElement.innerHTML = "BACK"
+        }
+        else if (position == RobotPosition.LEFT){
+            element.addClass("leftSensorList")
             element.addClass("sideSensorList")
+            titleElement.innerHTML = "LEFT"
         }
+        else if (position == RobotPosition.RIGHT){
+            element.addClass("rightSensorList")
+            element.addClass("sideSensorList")
+            titleElement.innerHTML = "RIGHT"
+        }
+
+        element.appendChild(titleElement)
 
         addDroppable()
     }
