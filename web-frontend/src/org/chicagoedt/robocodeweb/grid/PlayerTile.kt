@@ -32,6 +32,7 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         imageElement.addClass("gridPlayerImage")
         imageElement.style.display = "block"
         imageElement.src = game.robots[player.name]!!.graphic
+        sensorConfigurator.imageElement.src = imageElement.src
 
         element.appendChild(imageElement)
 

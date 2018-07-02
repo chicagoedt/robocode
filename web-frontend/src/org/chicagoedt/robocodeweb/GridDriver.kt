@@ -91,6 +91,7 @@ class GridDriver(val game: Game){
         }
         for (player in playerTiles){
             player.setWidth(tileWidth)
+            player.sensorConfigurator.resizeImage()
             player.refresh()
         }
 

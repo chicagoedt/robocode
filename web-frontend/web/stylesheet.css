@@ -346,6 +346,14 @@ td, th, tr {
 	overflow: auto;
 }
 
+.sensorConfigImage{
+	position: absolute;
+	top: 30%;
+	left: calc(40% + 25px);
+	height: calc(40% - 10px);
+	width: calc(40% - 35px);
+}
+
 .sensorDrawer{
 	width: 20%;
 	height: calc(100% - 10px);
