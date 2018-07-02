@@ -460,6 +460,31 @@ class BackendTests {
     }
 
     @Test
+    fun SensorPlayers(){
+        val sensor1 = DistanceSensor()
+        val sensor2 = DistanceSensor()
+
+        assertEquals(null, sensor1.player)
+        assertEquals(null, sensor2.player)
+
+        for(level in levels){
+            for((name, robot) in level.players){
+                robot.addSensorTo(RobotPosition.FRONT, sensor1)
+                assertEquals(robot, sensor1.player)
+                assertEquals(null, sensor2.player)
+
+            }
+            game.nextLevel()
+        }
+
+        //remove the sensor from the player
+        sensor1.player!!.removeSensorFrom(sensor1.sensorPosition!!, sensor1)
+
+        assertEquals(null, sensor1.player)
+        assertEquals(null, sensor2.player)
+    }
+
+    @Test
     fun ReadDistanceSensor(){
         var won = false
         val testRobots = ArrayList<Robot>()

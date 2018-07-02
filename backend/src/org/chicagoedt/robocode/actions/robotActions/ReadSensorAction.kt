@@ -16,7 +16,7 @@ class ReadSensorAction(val topic: Topic) : Action<Sensor>() {
     override val name: String = "Read Sensor"
 
     override fun function(level: Level, robot: RobotPlayer, parameter: Sensor) {
-        parameter.readFromSensor(robot, level, topic)
+        parameter.readFromSensor(level, topic)
     }
 
 }

@@ -109,6 +109,7 @@ class RobotPlayer(val name: String,
     fun addSensorTo(pos: RobotPosition, sensor: Sensor): Boolean {
         if (sensors[pos]!!.size + 1 <= sensorCounts[pos]!!) {
             sensors[pos]!!.add(sensor)
+            sensor.player = this
             return true
         }
         return false
@@ -120,6 +121,7 @@ class RobotPlayer(val name: String,
      * @param sensor The sensor to remove
      */
     fun removeSensorFrom(pos: RobotPosition, sensor: Sensor) {
+        sensor.player = null
         sensors[pos]!!.remove(sensor)
     }
 
@@ -129,6 +131,7 @@ class RobotPlayer(val name: String,
      * @param index The index of the sensor to remove
      */
     fun removeSensorFrom(pos: RobotPosition, index: Int) {
+        sensors[pos]!![index].player = null
         sensors[pos]!!.removeAt(index)
     }
 
