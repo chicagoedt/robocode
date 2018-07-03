@@ -264,12 +264,6 @@ abstract class ActionBlock<T : Action<*>>(){
             ui.helper[0].style.left = ui.position.left.toString() + "px"
 
             ui.helper[0].style.boxShadow = "0px 0px 50px grey"
-            if (element.parentElement!!.classList.contains("panel")){
-                (element.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(this.action)
-            }
-            else if (macroParent != null){
-                this.macroParent!!.action.removeFromMacro(this.action)
-            }
         }
     }
 
