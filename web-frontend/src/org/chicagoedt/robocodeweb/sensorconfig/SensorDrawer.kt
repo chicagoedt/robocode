@@ -44,6 +44,7 @@ class SensorDrawer {
 
         if (block.sensorPanel != null){
             block.sensor.player!!.removeSensorFrom(block.sensor.sensorPosition!!, block.sensor)
+            block.sensorPanel!!.updateRemaining()
         }
 
         populate()

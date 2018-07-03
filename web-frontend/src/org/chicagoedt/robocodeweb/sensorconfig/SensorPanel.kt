@@ -16,14 +16,17 @@ import kotlin.dom.addClass
  * @param drawer The drawer to repopulate after taking a sensor from it
  * @property element The main element of the sensor panel
  * @property titleElement The element indicating the posiiton of this sensor panel
+ * @property remainingElement The element indicating how many sensor slots are remaining
  */
 class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val drawer : SensorDrawer){
     val element = document.createElement("div") as HTMLElement
     val titleElement = document.createElement("div") as HTMLElement
+    val remainingElement = document.createElement("div") as HTMLElement
 
     init{
         element.addClass("sensorList")
         titleElement.addClass("sensorListTitle")
+        remainingElement.addClass("sensorListRemaining")
 
         if (position == RobotPosition.FRONT){
             element.addClass("frontSensorList")
@@ -44,6 +47,9 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
             titleElement.innerHTML = "RIGHT"
         }
 
+        remainingElement.innerHTML = playerTile.player.sensorCountAt(position).toString()
+
+        element.appendChild(remainingElement)
         element.appendChild(titleElement)
 
         addDroppable()
@@ -80,18 +86,31 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
                 val sensorPos = block.sensor.sensorPosition!!
                 playerTile.player.removeSensorFrom(sensorPos, block.sensor)
             }
+            block.sensorPanel!!.updateRemaining()
         }
-
-        block.sensorPanel = this
 
         if (sensorTypeExists(block)) return
         if (!slotAvailable()) return
 
+        block.sensorPanel = this
+
         playerTile.player.addSensorTo(position, block.sensor)
+
+        updateRemaining()
 
         element.appendChild(blockElement)
         drawer.populate()
 
+    }
+
+    /**
+     * Updates the count of remaining slots in the panel
+     */
+    fun updateRemaining(){
+        val totalSlots = playerTile.player.sensorCountAt(position)
+        val usedSlots = playerTile.player.getSensorsExceptEmpty(position).size
+
+        remainingElement.innerHTML = (totalSlots - usedSlots).toString()
     }
 
     /**
