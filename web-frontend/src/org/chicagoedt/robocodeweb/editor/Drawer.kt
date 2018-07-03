@@ -52,13 +52,24 @@ class Drawer(val parent : HTMLElement) {
      */
     fun sensorDrop(event: JQueryEventObject, ui: dynamic) {
         val uiElement = ui.draggable[0] as HTMLElement
-        uiElement.parentElement!!.removeChild(uiElement)
         val block : SensorBlock<*> = uiElement.asDynamic().block
 
         if (block.sensorPanel != null && uiElement.asDynamic().actionSensor == false){
             block.sensor.player!!.removeSensorFrom(block.sensor.sensorPosition!!, block.sensor)
             block.sensorPanel!!.updateRemaining()
         }
+        else if (uiElement.asDynamic().actionSensor == true){
+            val parameterElement : HTMLElement = uiElement.parentElement!! as HTMLElement
+            val toolTip : HTMLElement = parameterElement.asDynamic().toolTip
+            parameterElement.onmouseover = {
+                jQuery(toolTip).show()
+            }
+            parameterElement.onmouseout = {
+                jQuery(toolTip).hide()
+            }
+        }
+
+        uiElement.parentElement!!.removeChild(uiElement)
 
         block.drawer.populate()
     }

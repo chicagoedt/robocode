@@ -106,8 +106,14 @@ abstract class ActionBlock<T : Action<*>>(){
                 action.parameter = parameterElement.asDynamic().value
             }
             else if (parameterType == BlockParameterType.SENSOR){
+                val toolTip = document.createElement("div") as HTMLElement
+                toolTip.addClass("sensorBlockTooltip")
+                toolTip.innerHTML = "Drag a sensor here"
+                jQuery(toolTip).hide()
                 parameterElement = document.createElement("div") as HTMLElement
                 parameterElement.addClass("actionSensorDrop")
+                parameterElement.appendChild(toolTip)
+                parameterElement.asDynamic().toolTip = toolTip
                 addDroppableSensorField()
             }
             parameterElement.addClass("actionBlockParameter")
@@ -120,6 +126,8 @@ abstract class ActionBlock<T : Action<*>>(){
      * Adds droppable properties to the sensor field for the sensor parameter type
      */
     fun addDroppableSensorField(){
+        val toolTip : HTMLElement = parameterElement.asDynamic().toolTip
+
         val dropSensor = { event : Event, ui : dynamic ->
             parameterElement.style.boxShadow = ""
             val sensorElement : HTMLElement = ui.draggable[0]
@@ -148,6 +156,12 @@ abstract class ActionBlock<T : Action<*>>(){
                 clone.style.backgroundColor = ""
                 clone.addClass("sensorBlockInAction")
                 parameterElement.appendChild(clone)
+
+                parameterElement.onmouseover = {
+                }
+
+                parameterElement.onmouseout = {
+                }
             }
             else{
                 showPopup("Sensor is not attached to a robot!")
@@ -175,6 +189,14 @@ abstract class ActionBlock<T : Action<*>>(){
             if (sensorBlock.sensorPanel != null){
                 parameterElement.style.boxShadow = ""
             }
+        }
+
+        parameterElement.onmouseover = {
+            jQuery(toolTip).show()
+        }
+
+        parameterElement.onmouseout = {
+            jQuery(toolTip).hide()
         }
 
         val drop = jQuery(parameterElement).asDynamic()
