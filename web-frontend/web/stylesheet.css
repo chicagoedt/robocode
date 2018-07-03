@@ -94,7 +94,7 @@ body{
 	display:none;
 	position: fixed;
 	width:var(--drawer-width);
-	height:100%;
+	height:calc(100% - 50px);
 	left: calc(100% - var(--drawer-width));
 	float: right;
 	background-color: #BBDEFB;
@@ -109,17 +109,20 @@ body{
 	display:none;
 	position: absolute;
 	width:calc(100% - 10px);
-	height: calc(15% - 10px);
+	height: 14vh;
 	bottom: 0;
 	opacity: 10%;
 	background: #9fb9d6;
 	z-index: 299;
-	text-align: center;
-	color:white;
-	font-size: 5vw;
 	margin: 5px;
-	font-family: Verdana;
 	box-shadow: 0px 0px 20px grey;
+}
+
+.trashIcon{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
 }
 
 table{
