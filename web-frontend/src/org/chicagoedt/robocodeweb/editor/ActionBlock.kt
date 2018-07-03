@@ -128,13 +128,16 @@ abstract class ActionBlock<T : Action<*>>(){
     fun addDroppableSensorField(){
         val toolTip : HTMLElement = parameterElement.asDynamic().toolTip
 
+        parameterElement.asDynamic().sensor = null
+
         val dropSensor = { event : Event, ui : dynamic ->
             parameterElement.style.boxShadow = ""
             val sensorElement : HTMLElement = ui.draggable[0]
             val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
 
 
-            if (sensorBlock.sensorPanel != null){
+            if (sensorBlock.sensorPanel != null && parameterElement.asDynamic().sensor == null){
+                parameterElement.asDynamic().sensor = sensorBlock
                 action.parameter = sensorBlock.sensor.asDynamic()
                 var clone : HTMLElement? = null
                 if (sensorElement.asDynamic().actionSensor == true) {
@@ -162,6 +165,9 @@ abstract class ActionBlock<T : Action<*>>(){
 
                 parameterElement.onmouseout = {
                 }
+            }
+            else if (parameterElement.asDynamic().sensor != null){
+                showPopup("There is already a sensor in that block")
             }
             else{
                 showPopup("Sensor is not attached to a robot!")

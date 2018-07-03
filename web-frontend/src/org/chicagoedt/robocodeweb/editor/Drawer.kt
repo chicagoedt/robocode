@@ -61,6 +61,7 @@ class Drawer(val parent : HTMLElement) {
         else if (uiElement.asDynamic().actionSensor == true){
             val parameterElement : HTMLElement = uiElement.parentElement!! as HTMLElement
             val toolTip : HTMLElement = parameterElement.asDynamic().toolTip
+            parameterElement.asDynamic().sensor = null
             parameterElement.onmouseover = {
                 jQuery(toolTip).show()
             }
