@@ -16,7 +16,7 @@ import kotlin.dom.removeClass
  * @property element The element of this block being dragged
  * @property blockClass The class to add to this block (for visual differences between blocks)
  */
-abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
+abstract class SensorBlock<T : Sensor>(val sensorNum : Int, val drawer : SensorDrawer) {
     abstract val sensor : T
     var sensorPanel : SensorPanel? = null
     var name = ""
@@ -27,6 +27,8 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
             field = value
             element.addClass(value)
         }
+    val sensorDeleteDrawer = document.getElementById("sensorDelete") as HTMLElement
+    val sensorDeleteFadeTime = 100
 
 
     init{
@@ -34,6 +36,9 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
         element.asDynamic().actionSensor = false
         element.asDynamic().block = this
         element.addClass("sensorBlock")
+
+        element.asDynamic().sensorDeleteDrawer = sensorDeleteDrawer
+        element.asDynamic().sensorDeleteFadeTime = sensorDeleteFadeTime
     }
 
     /**
@@ -60,6 +65,7 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
      * @param ui The ui being dragged
      */
     fun onDrag(event : Event, ui : dynamic){
+        jQuery(sensorDeleteDrawer).fadeIn(sensorDeleteFadeTime)
         element.style.backgroundColor = "grey"
         ui.helper[0].style.width = element.clientWidth.toString() + "px"
         ui.helper[0].style.left = ui.position.left.toString() + "px"
@@ -73,6 +79,7 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
      * @param ui The ui being dragged
      */
     fun onDragStop(event : Event, ui : dynamic){
+        jQuery(sensorDeleteDrawer).fadeOut(sensorDeleteFadeTime)
         element.style.backgroundColor = ""
         element.style.boxShadow = ""
     }

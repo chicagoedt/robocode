@@ -33,6 +33,9 @@ enum class BlockParameterType{
  * @property action The action that this block contains
  * @property parameterType The type of parameter selector that this block uses
  * @property macroParent The macro if a macro is a direct parent of this block, null otherwise
+ * @property blockClass The class to add to the main element of this block
+ * @property actionDeleteDrawer The "delete" drawer that shows up when dragging this block
+ * @property actionDeleteFadeTime The time (in ms) for the drawer to fade
  */
 abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
@@ -52,6 +55,8 @@ abstract class ActionBlock<T : Action<*>>(){
             field = value
             element.addClass(value)
         }
+    val actionDeleteDrawer = document.getElementById("actionDelete") as HTMLElement
+    val actionDeleteFadeTime = 100
 
     init {
         element.addClass("actionBlock")
@@ -135,6 +140,9 @@ abstract class ActionBlock<T : Action<*>>(){
                 clone.asDynamic().actionSensor = true
                 clone.style.borderRadius = "0px"
 
+                clone.asDynamic().sensorDeleteDrawer = sensorElement.asDynamic().sensorDeleteDrawer
+                clone.asDynamic().sensorDeleteFadeTime = sensorElement.asDynamic().sensorDeleteFadeTime
+
                 addDraggableSensor(clone)
 
                 clone.style.backgroundColor = ""
@@ -182,8 +190,11 @@ abstract class ActionBlock<T : Action<*>>(){
      * Adds droppable properties to the sensor for the sensor parameter type
      */
     fun addDraggableSensor(sensorElement : HTMLElement){
+        val sensorDeleteDrawer : HTMLElement = sensorElement.asDynamic().sensorDeleteDrawer
+        val sensorDeleteFadeTime : Int = sensorElement.asDynamic().sensorDeleteFadeTime
         val dragSensor = { event : Event, ui : dynamic ->
             cancelDragAllSensorParents(event, ui, sensorElement)
+            jQuery(sensorDeleteDrawer).fadeIn(sensorDeleteFadeTime)
             sensorElement.style.backgroundColor = "grey"
             ui.helper[0].style.width = sensorElement.clientWidth.toString() + "px"
             ui.helper[0].style.left = ui.position.left.toString() + "px"
@@ -192,6 +203,7 @@ abstract class ActionBlock<T : Action<*>>(){
         }
 
         val dragSensorStop = {
+            jQuery(sensorDeleteDrawer).fadeOut(sensorDeleteFadeTime)
             sensorElement.style.backgroundColor = ""
             sensorElement.style.boxShadow = ""
         }
@@ -217,6 +229,7 @@ abstract class ActionBlock<T : Action<*>>(){
             cancelDrag = false
         }
         else{
+            jQuery(actionDeleteDrawer).fadeIn(actionDeleteFadeTime)
             cancelDragAllParents(event, ui)
             element.style.backgroundColor = "grey"
             ui.helper[0].style.width = element.clientWidth.toString() + "px"
@@ -238,6 +251,7 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     open fun onDragStop(event : Event, ui : dynamic){
+        jQuery(actionDeleteDrawer).fadeOut(actionDeleteFadeTime)
         element.style.backgroundColor = ""
         element.style.boxShadow = ""
     }

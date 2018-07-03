@@ -18,36 +18,6 @@ class SensorDrawer {
 
     init{
         element.addClass("sensorDrawer")
-        setDroppable()
-    }
-
-    /**
-     * Sets the droppable properties for this drawer
-     */
-    fun setDroppable() {
-        val drag = jQuery(element).asDynamic()
-        drag.droppable()
-        drag.droppable("option", "tolerance", "pointer")
-        drag.droppable("option", "scope", "sensors")
-        drag.droppable("option", "drop", ::drop)
-    }
-
-    /**
-     * Called when a draggable is dropped over this drawer
-     * @param event The Jquery event corresponding to the drop
-     * @param ui The element being dropped
-     */
-    fun drop(event: JQueryEventObject, ui: dynamic) {
-        val uiElement = ui.draggable[0] as HTMLElement
-        uiElement.parentElement!!.removeChild(uiElement)
-        val block : SensorBlock<*> = uiElement.asDynamic().block
-
-        if (block.sensorPanel != null){
-            block.sensor.player!!.removeSensorFrom(block.sensor.sensorPosition!!, block.sensor)
-            block.sensorPanel!!.updateRemaining()
-        }
-
-        populate()
     }
 
     /**
@@ -61,7 +31,7 @@ class SensorDrawer {
     fun checkDistanceSensorBlock(index: Int) {
         if (element.children.length <= index ||
                 !(element.children.item(index).asDynamic().block is DistanceSensorBlock)) {
-            val block = DistanceSensorBlock(numDistanceSensorBlocks)
+            val block = DistanceSensorBlock(numDistanceSensorBlocks, this)
             numDistanceSensorBlocks++
             block.addDraggable()
 

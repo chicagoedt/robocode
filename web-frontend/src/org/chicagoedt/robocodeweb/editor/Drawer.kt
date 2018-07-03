@@ -3,6 +3,7 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import JQueryEventObject
 import org.chicagoedt.robocodeweb.editor.actionblocks.*
+import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.w3c.dom.HTMLElement
 import kotlin.browser.document
 
@@ -13,27 +14,53 @@ import kotlin.browser.document
  */
 class Drawer(val parent : HTMLElement) {
     val element = document.getElementById("drawer") as HTMLElement
+    val actionDeleteElement = document.getElementById("actionDelete") as HTMLElement
+    val sensorDeleteElement = document.getElementById("sensorDelete") as HTMLElement
 
     /**
      * Sets the droppable properties for this drawer
      */
     fun setDroppable() {
-        val drag = jQuery(element).asDynamic()
+        var drag = jQuery(actionDeleteElement).asDynamic()
         drag.droppable()
         drag.droppable("option", "tolerance", "pointer")
         drag.droppable("option", "scope", "actions")
-        drag.droppable("option", "drop", ::drop)
+        drag.droppable("option", "drop", ::actionDrop)
+
+        drag = jQuery(sensorDeleteElement).asDynamic()
+        drag.droppable()
+        drag.droppable("option", "tolerance", "pointer")
+        drag.droppable("option", "scope", "sensors")
+        drag.droppable("option", "drop", ::sensorDrop)
     }
 
     /**
-     * Called when a draggable is dropped over this drawer
+     * Called when an action draggable is dropped over this drawer
      * @param event The Jquery event corresponding to the drop
      * @param ui The element being dropped
      */
-    fun drop(event: JQueryEventObject, ui: dynamic) {
+    fun actionDrop(event: JQueryEventObject, ui: dynamic) {
         val uiElement = ui.draggable[0] as HTMLElement
         uiElement.parentElement!!.removeChild(uiElement)
         populate()
+    }
+
+    /**
+     * Called when a sensor draggable is dropped over this drawer
+     * @param event The Jquery event corresponding to the drop
+     * @param ui The element being dropped
+     */
+    fun sensorDrop(event: JQueryEventObject, ui: dynamic) {
+        val uiElement = ui.draggable[0] as HTMLElement
+        uiElement.parentElement!!.removeChild(uiElement)
+        val block : SensorBlock<*> = uiElement.asDynamic().block
+
+        if (block.sensorPanel != null && uiElement.asDynamic().actionSensor == false){
+            block.sensor.player!!.removeSensorFrom(block.sensor.sensorPosition!!, block.sensor)
+            block.sensorPanel!!.updateRemaining()
+        }
+
+        block.drawer.populate()
     }
 
     /**
