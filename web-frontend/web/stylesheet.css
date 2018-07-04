@@ -493,7 +493,7 @@ td, th, tr {
 .sensorBlockTooltip{
 	position: absolute;
 	bottom: 100%;
-	background: white;
+	background: #FFFFFF7F;
 	font-family: Verdana;
 	box-shadow: 0px 0px 20px grey;
 	font-size: 12px;
