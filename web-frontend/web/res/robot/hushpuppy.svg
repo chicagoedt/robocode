@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="200mm"
+   height="200mm"
+   viewBox="0 0 200 200"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="hushpuppy.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="909.64647"
+     inkscape:cy="367.65766"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:pagecheckerboard="true" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-97)">
+    <rect
+       id="rect3751"
+       width="150"
+       height="170"
+       x="25"
+       y="112"
+       style="stroke-width:0.25017399" />
+    <g
+       id="g3757"
+       transform="matrix(1,0,0,0.80636667,-10,93.78243)">
+      <rect
+         style="stroke-width:0.26824835"
+         y="34.993469"
+         x="10"
+         height="62.006531"
+         width="25"
+         id="rect3734" />
+      <rect
+         style="fill:#999999;stroke-width:0.25750709"
+         y="37.080383"
+         x="12.5"
+         height="57.195675"
+         width="20"
+         id="rect3753" />
+    </g>
+    <g
+       transform="matrix(1,0,0,0.80636667,-10,193.78243)"
+       id="g3757-8">
+      <rect
+         style="stroke-width:0.26824835"
+         y="34.993469"
+         x="10"
+         height="62.006531"
+         width="25"
+         id="rect3734-0" />
+      <rect
+         style="fill:#999999;stroke-width:0.25750709"
+         y="37.080383"
+         x="12.5"
+         height="57.195675"
+         width="20"
+         id="rect3753-2" />
+    </g>
+    <g
+       transform="matrix(1,0,0,0.80636667,165,93.78243)"
+       id="g3757-5">
+      <rect
+         style="stroke-width:0.26824835"
+         y="34.993469"
+         x="10"
+         height="62.006531"
+         width="25"
+         id="rect3734-7" />
+      <rect
+         style="fill:#999999;stroke-width:0.25750709"
+         y="37.080383"
+         x="12.5"
+         height="57.195675"
+         width="20"
+         id="rect3753-0" />
+    </g>
+    <g
+       transform="matrix(1,0,0,0.80636667,165,193.78243)"
+       id="g3757-5-1">
+      <rect
+         style="stroke-width:0.26824835"
+         y="34.993469"
+         x="10"
+         height="62.006531"
+         width="25"
+         id="rect3734-7-7" />
+      <rect
+         style="fill:#999999;stroke-width:0.25750709"
+         y="37.080383"
+         x="12.5"
+         height="57.195675"
+         width="20"
+         id="rect3753-0-1" />
+    </g>
+    <rect
+       style="fill:#00ffff;stroke-width:0.18158959"
+       id="rect3822"
+       width="70"
+       height="162.17288"
+       x="75.805992"
+       y="118.58892"
+       transform="matrix(1,0,-0.16314894,0.98660145,0,0)" />
+    <rect
+       style="fill:#00ffff;stroke-width:0.18158959"
+       id="rect3822-1"
+       width="70"
+       height="162.17288"
+       x="54.194344"
+       y="118.58892"
+       transform="matrix(1,0,0.16314894,0.98660145,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="46.980118"
+       y="248.2975"
+       id="text3826"><tspan
+         sodipodi:role="line"
+         id="tspan3824"
+         x="46.980118"
+         y="248.2975"
+         style="font-size:141.1111145px;line-height:2.25;stroke-width:0.26458332">H</tspan></text>
+  </g>
+</svg>

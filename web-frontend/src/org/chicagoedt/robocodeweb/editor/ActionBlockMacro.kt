@@ -168,6 +168,15 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         blockElement.style.left = "0px"
         element.style.boxShadow = ""
 
+        val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
+
+        if (blockElement.parentElement!!.classList.contains("panel")){
+            (blockElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(newActionBlock.action)
+        }
+        else if (newActionBlock.macroParent != null){
+            newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
+        }
+
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
@@ -192,7 +201,6 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         lastHoveredBlock = null
 
         val newAction : Action<*> = blockElement.asDynamic().block.action
-        val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
         action.addToMacro(newAction, pos)
 
         newActionBlock.macroParent = this
@@ -208,8 +216,6 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
     fun macroOver(event : Event, ui : dynamic){
         element.style.boxShadow = "0px 0px 2px grey"
         element.style.backgroundColor = ""
-        val blockElement : HTMLElement = ui.draggable[0]
-        action.removeFromMacro(blockElement.asDynamic().block.action)
     }
 
     /**

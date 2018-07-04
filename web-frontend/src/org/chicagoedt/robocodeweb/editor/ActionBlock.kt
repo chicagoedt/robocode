@@ -10,6 +10,7 @@ import org.chicagoedt.robocode.mainTopic
 import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.chicagoedt.robocodeweb.showPopup
+import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
 import kotlin.dom.removeClass
 
@@ -33,6 +34,9 @@ enum class BlockParameterType{
  * @property action The action that this block contains
  * @property parameterType The type of parameter selector that this block uses
  * @property macroParent The macro if a macro is a direct parent of this block, null otherwise
+ * @property blockClass The class to add to the main element of this block
+ * @property actionDeleteDrawer The "delete" drawer that shows up when dragging this block
+ * @property actionDeleteFadeTime The time (in ms) for the drawer to fade
  */
 abstract class ActionBlock<T : Action<*>>(){
     val element = document.createElement("div") as HTMLElement
@@ -52,6 +56,8 @@ abstract class ActionBlock<T : Action<*>>(){
             field = value
             element.addClass(value)
         }
+    val actionDeleteDrawer = document.getElementById("actionDelete") as HTMLElement
+    val actionDeleteFadeTime = 100
 
     init {
         element.addClass("actionBlock")
@@ -95,14 +101,31 @@ abstract class ActionBlock<T : Action<*>>(){
                 parameterElement = document.createElement("select") as HTMLSelectElement
             }
             else if (parameterType == BlockParameterType.NUMBER_INPUT){
-                parameterElement = document.createElement("input") as HTMLElement
-                parameterElement.asDynamic().type = "number"
-                parameterElement.asDynamic().value = "1"
-                action.parameter = parameterElement.asDynamic().value
+                parameterElement = document.createElement("div") as HTMLElement
+                val inputElement = document.createElement("input") as HTMLInputElement
+                inputElement.asDynamic().type = "number"
+                inputElement.asDynamic().value = "1"
+                inputElement.addClass("actionBlockNumberInput")
+                action.parameter = inputElement.asDynamic().value
+
+                val topicSelector = document.createElement("div") as HTMLElement
+                topicSelector.addClass("topicSelectorInput")
+                topicSelector.innerHTML = "Use Topic"
+                jQuery(topicSelector).hide()
+                addTopicSelectorProperties(topicSelector, inputElement)
+                parameterElement.appendChild(topicSelector)
+                parameterElement.appendChild(inputElement)
+                inputElement.onchange = ::parameterChanged
             }
             else if (parameterType == BlockParameterType.SENSOR){
+                val toolTip = document.createElement("div") as HTMLElement
+                toolTip.addClass("sensorBlockTooltip")
+                toolTip.innerHTML = "Drag a sensor here"
+                jQuery(toolTip).hide()
                 parameterElement = document.createElement("div") as HTMLElement
                 parameterElement.addClass("actionSensorDrop")
+                parameterElement.appendChild(toolTip)
+                parameterElement.asDynamic().toolTip = toolTip
                 addDroppableSensorField()
             }
             parameterElement.addClass("actionBlockParameter")
@@ -112,34 +135,116 @@ abstract class ActionBlock<T : Action<*>>(){
     }
 
     /**
+     * Adds the hover and onclick properties to the topic selector
+     * @param topicSelector The element to show when the mouse is hovered over
+     * @param inputElement The element that selects the number for input
+     */
+    fun addTopicSelectorProperties(topicSelector : HTMLElement, inputElement : HTMLInputElement){
+        var shouldToggle = true
+
+        parameterElement.onmouseover = {
+            if (shouldToggle) jQuery(topicSelector).show()
+        }
+
+        parameterElement.onmouseout = {
+            if (shouldToggle) jQuery(topicSelector).hide()
+        }
+
+        val onTopicChanged = {value : Any ->
+            action.parameter = value.asDynamic()
+        }
+
+        var topicSelectorCancel = {event : dynamic ->}
+
+        val topicSelectorOnClick = { event : dynamic ->
+            topicSelector.innerHTML = "Topic"
+            topicSelector.style.lineHeight = "normal"
+            topicSelector.style.fontSize = "100%"
+            topicSelector.style.bottom = "0px"
+            topicSelector.style.width = "100%"
+            topicSelector.style.height = "100%"
+            topicSelector.style.boxShadow = "none"
+            topicSelector.style.backgroundColor = "white"
+            topicSelector.style.color = "black"
+            jQuery(inputElement).hide()
+            shouldToggle = false
+            onTopicChanged(mainTopic.value)
+            mainTopic.topicListeners.add(onTopicChanged)
+            topicSelector.onclick = topicSelectorCancel
+        }
+
+        topicSelectorCancel = {
+            topicSelector.innerHTML = "Use Topic"
+            topicSelector.style.width = ""
+            topicSelector.style.lineHeight = ""
+            topicSelector.style.fontSize = ""
+            topicSelector.style.height = ""
+            topicSelector.style.bottom = ""
+            topicSelector.style.boxShadow = ""
+            topicSelector.style.backgroundColor = ""
+            topicSelector.style.color = ""
+            jQuery(inputElement).show()
+            shouldToggle = true
+            action.parameter = inputElement.value.toInt().asDynamic()
+            mainTopic.topicListeners.remove(onTopicChanged)
+            jQuery(topicSelector).hide()
+            topicSelector.onclick = topicSelectorOnClick
+
+        }
+
+        topicSelector.onclick = topicSelectorOnClick
+    }
+
+    /**
      * Adds droppable properties to the sensor field for the sensor parameter type
      */
     fun addDroppableSensorField(){
+        val toolTip : HTMLElement = parameterElement.asDynamic().toolTip
+
+        parameterElement.asDynamic().sensor = null
+
         val dropSensor = { event : Event, ui : dynamic ->
             parameterElement.style.boxShadow = ""
             val sensorElement : HTMLElement = ui.draggable[0]
             val sensorBlock = sensorElement.asDynamic().block as SensorBlock<*>
 
 
-            if (sensorBlock.sensorPanel != null){
+            if (sensorBlock.sensorPanel != null && parameterElement.asDynamic().sensor == null){
+                parameterElement.asDynamic().sensor = sensorBlock
                 action.parameter = sensorBlock.sensor.asDynamic()
                 var clone : HTMLElement? = null
                 if (sensorElement.asDynamic().actionSensor == true) {
                     clone = sensorElement
                 }
-                else clone = sensorElement.cloneNode(true) as HTMLElement
+                else {
+                    clone = sensorElement.cloneNode(true) as HTMLElement
+                    sensorBlock.actionSensorChildren.add(clone)
+                }
 
                 clone.addClass("sensorInActions")
 
+                clone.asDynamic().action = this
                 clone.asDynamic().block = sensorBlock
                 clone.asDynamic().actionSensor = true
                 clone.style.borderRadius = "0px"
+
+                clone.asDynamic().sensorDeleteDrawer = sensorElement.asDynamic().sensorDeleteDrawer
+                clone.asDynamic().sensorDeleteFadeTime = sensorElement.asDynamic().sensorDeleteFadeTime
 
                 addDraggableSensor(clone)
 
                 clone.style.backgroundColor = ""
                 clone.addClass("sensorBlockInAction")
                 parameterElement.appendChild(clone)
+
+                parameterElement.onmouseover = {
+                }
+
+                parameterElement.onmouseout = {
+                }
+            }
+            else if (parameterElement.asDynamic().sensor != null){
+                showPopup("There is already a sensor in that block")
             }
             else{
                 showPopup("Sensor is not attached to a robot!")
@@ -169,6 +274,14 @@ abstract class ActionBlock<T : Action<*>>(){
             }
         }
 
+        parameterElement.onmouseover = {
+            jQuery(toolTip).show()
+        }
+
+        parameterElement.onmouseout = {
+            jQuery(toolTip).hide()
+        }
+
         val drop = jQuery(parameterElement).asDynamic()
         drop.droppable()
         drop.droppable("option", "tolerance", "pointer")
@@ -179,11 +292,23 @@ abstract class ActionBlock<T : Action<*>>(){
     }
 
     /**
+     * Sets the parameter to empty sensor if the parameter is in sensor mode
+     */
+    fun removeSensorParameter(){
+        if (this.parameterType == BlockParameterType.SENSOR){
+            action.parameter = EmptySensor().asDynamic()
+        }
+    }
+
+    /**
      * Adds droppable properties to the sensor for the sensor parameter type
      */
     fun addDraggableSensor(sensorElement : HTMLElement){
+        val sensorDeleteDrawer : HTMLElement = sensorElement.asDynamic().sensorDeleteDrawer
+        val sensorDeleteFadeTime : Int = sensorElement.asDynamic().sensorDeleteFadeTime
         val dragSensor = { event : Event, ui : dynamic ->
             cancelDragAllSensorParents(event, ui, sensorElement)
+            jQuery(sensorDeleteDrawer).fadeIn(sensorDeleteFadeTime)
             sensorElement.style.backgroundColor = "grey"
             ui.helper[0].style.width = sensorElement.clientWidth.toString() + "px"
             ui.helper[0].style.left = ui.position.left.toString() + "px"
@@ -192,6 +317,7 @@ abstract class ActionBlock<T : Action<*>>(){
         }
 
         val dragSensorStop = {
+            jQuery(sensorDeleteDrawer).fadeOut(sensorDeleteFadeTime)
             sensorElement.style.backgroundColor = ""
             sensorElement.style.boxShadow = ""
         }
@@ -217,18 +343,13 @@ abstract class ActionBlock<T : Action<*>>(){
             cancelDrag = false
         }
         else{
+            jQuery(actionDeleteDrawer).fadeIn(actionDeleteFadeTime)
             cancelDragAllParents(event, ui)
             element.style.backgroundColor = "grey"
             ui.helper[0].style.width = element.clientWidth.toString() + "px"
             ui.helper[0].style.left = ui.position.left.toString() + "px"
 
             ui.helper[0].style.boxShadow = "0px 0px 50px grey"
-            if (element.parentElement!!.classList.contains("panel")){
-                (element.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(this.action)
-            }
-            else if (macroParent != null){
-                this.macroParent!!.action.removeFromMacro(this.action)
-            }
         }
     }
 
@@ -238,6 +359,7 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param ui The ui being dragged
      */
     open fun onDragStop(event : Event, ui : dynamic){
+        jQuery(actionDeleteDrawer).fadeOut(actionDeleteFadeTime)
         element.style.backgroundColor = ""
         element.style.boxShadow = ""
     }

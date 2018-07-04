@@ -64,6 +64,15 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         blockElement.style.left = "0px"
         element.style.boxShadow = ""
 
+        val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
+
+        if (blockElement.parentElement!!.classList.contains("panel")){
+            (blockElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(newActionBlock.action)
+        }
+        else if (newActionBlock.macroParent != null){
+            newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
+        }
+
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
@@ -89,7 +98,6 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         robot.insertAction(blockElement.asDynamic().block.action, pos)
 
-        val newActionBlock = blockElement.asDynamic().block
         if (newActionBlock is ActionBlockMacro<*>){
             newActionBlock.panelParent = this
         }
@@ -104,8 +112,6 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
      */
     fun over(event : Event, ui : dynamic){
         element.style.boxShadow = "0px 0px 2px grey"
-        val blockElement : HTMLElement = ui.draggable[0]
-        robot.removeAction(blockElement.asDynamic().block.action)
     }
 
     /**

@@ -3,6 +3,7 @@ package org.chicagoedt.robocodeweb.sensorconfig
 import jQuery
 import org.chicagoedt.robocode.sensors.Sensor
 import org.chicagoedt.robocodeweb.editor.ActionBlockMacro
+import org.chicagoedt.robocodeweb.editor.Drawer
 import org.chicagoedt.robocodeweb.editor.Panel
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
@@ -15,8 +16,10 @@ import kotlin.dom.removeClass
  * @property sensor The sensor that this block represents
  * @property element The element of this block being dragged
  * @property blockClass The class to add to this block (for visual differences between blocks)
+ * @property sensorDeleteDrawer The "delete" drawer that shows up when dragging this block
+ * @property sensorDeleteFadeTime The time (in ms) for the drawer to fade
  */
-abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
+abstract class SensorBlock<T : Sensor>(val sensorNum : Int, val drawer : SensorDrawer) {
     abstract val sensor : T
     var sensorPanel : SensorPanel? = null
     var name = ""
@@ -27,6 +30,9 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
             field = value
             element.addClass(value)
         }
+    val sensorDeleteDrawer = document.getElementById("sensorDelete") as HTMLElement
+    val sensorDeleteFadeTime = 100
+    val actionSensorChildren = arrayListOf<HTMLElement>()
 
 
     init{
@@ -34,6 +40,9 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
         element.asDynamic().actionSensor = false
         element.asDynamic().block = this
         element.addClass("sensorBlock")
+
+        element.asDynamic().sensorDeleteDrawer = sensorDeleteDrawer
+        element.asDynamic().sensorDeleteFadeTime = sensorDeleteFadeTime
     }
 
     /**
@@ -60,6 +69,7 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
      * @param ui The ui being dragged
      */
     fun onDrag(event : Event, ui : dynamic){
+        jQuery(sensorDeleteDrawer).fadeIn(sensorDeleteFadeTime)
         element.style.backgroundColor = "grey"
         ui.helper[0].style.width = element.clientWidth.toString() + "px"
         ui.helper[0].style.left = ui.position.left.toString() + "px"
@@ -73,7 +83,23 @@ abstract class SensorBlock<T : Sensor>(val sensorNum : Int) {
      * @param ui The ui being dragged
      */
     fun onDragStop(event : Event, ui : dynamic){
+        jQuery(sensorDeleteDrawer).fadeOut(sensorDeleteFadeTime)
         element.style.backgroundColor = ""
         element.style.boxShadow = ""
+    }
+
+    /**
+     * Removes all action sensor children. To be used when deleting this sensor
+     */
+    fun removeAllChildren(){
+        val drawerElement = document.getElementById("drawer")
+        val globalDrawer : Drawer = drawerElement.asDynamic().drawer
+
+        for (child in actionSensorChildren){
+            val ui : dynamic = {}
+            ui.draggable = arrayListOf<HTMLElement>()
+            ui.draggable[0] = child
+            globalDrawer.sensorDrop(ui, ui)
+        }
     }
 }

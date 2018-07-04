@@ -61,7 +61,7 @@ class SensorDrawer {
     fun checkDistanceSensorBlock(index: Int) {
         if (element.children.length <= index ||
                 !(element.children.item(index).asDynamic().block is DistanceSensorBlock)) {
-            val block = DistanceSensorBlock(numDistanceSensorBlocks)
+            val block = DistanceSensorBlock(numDistanceSensorBlocks, this)
             numDistanceSensorBlocks++
             block.addDraggable()
 

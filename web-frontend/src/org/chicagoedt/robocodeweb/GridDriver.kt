@@ -28,6 +28,10 @@ class GridDriver(val game: Game){
 
         level = game.currentLevel
         gridTiles.clear()
+        for (playerTile in playerTiles){
+            playerTile.remove()
+        }
+        playerTiles.clear()
 
         for (y in 0 until level.properties.height){
             val row = arrayListOf<GridTile>()
@@ -91,6 +95,7 @@ class GridDriver(val game: Game){
         }
         for (player in playerTiles){
             player.setWidth(tileWidth)
+            player.sensorConfigurator.resizeImage()
             player.refresh()
         }
 

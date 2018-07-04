@@ -32,6 +32,7 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         imageElement.addClass("gridPlayerImage")
         imageElement.style.display = "block"
         imageElement.src = game.robots[player.name]!!.graphic
+        sensorConfigurator.imageElement.src = imageElement.src
 
         element.appendChild(imageElement)
 
@@ -68,6 +69,15 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         val areaToBottom = window.innerHeight - element.getBoundingClientRect().bottom
         sensorConfigurator.element.style.maxHeight = (areaToBottom - 5.0).toString() + "px"
 
+    }
+
+    /**
+     * Removes this player from the grid
+     */
+    fun remove(){
+        element.parentElement!!.removeChild(element)
+        imageElement.parentElement!!.removeChild(imageElement)
+        sensorConfigurator.element.parentElement!!.removeChild(sensorConfigurator.element)
     }
 
     /**

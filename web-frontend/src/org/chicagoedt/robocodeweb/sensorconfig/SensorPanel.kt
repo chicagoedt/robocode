@@ -14,23 +14,43 @@ import kotlin.dom.addClass
  * @param position The side of the robot that this panel manages
  * @param playerTile The player that this robot manages
  * @param drawer The drawer to repopulate after taking a sensor from it
+ * @property element The main element of the sensor panel
+ * @property titleElement The element indicating the posiiton of this sensor panel
+ * @property remainingElement The element indicating how many sensor slots are remaining
  */
 class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val drawer : SensorDrawer){
     val element = document.createElement("div") as HTMLElement
+    val titleElement = document.createElement("div") as HTMLElement
+    val remainingElement = document.createElement("div") as HTMLElement
 
     init{
         element.addClass("sensorList")
+        titleElement.addClass("sensorListTitle")
+        remainingElement.addClass("sensorListRemaining")
 
-        when(position){
-            RobotPosition.FRONT -> element.addClass("frontSensorList")
-            RobotPosition.BACK -> element.addClass("backSensorList")
-            RobotPosition.LEFT -> element.addClass("leftSensorList")
-            RobotPosition.RIGHT -> element.addClass("rightSensorList")
+        if (position == RobotPosition.FRONT){
+            element.addClass("frontSensorList")
+            titleElement.innerHTML = "FRONT"
         }
-
-        if (position == RobotPosition.LEFT || position == RobotPosition.RIGHT){
+        else if (position == RobotPosition.BACK){
+            element.addClass("backSensorList")
+            titleElement.innerHTML = "BACK"
+        }
+        else if (position == RobotPosition.LEFT){
+            element.addClass("leftSensorList")
             element.addClass("sideSensorList")
+            titleElement.innerHTML = "LEFT"
         }
+        else if (position == RobotPosition.RIGHT){
+            element.addClass("rightSensorList")
+            element.addClass("sideSensorList")
+            titleElement.innerHTML = "RIGHT"
+        }
+
+        remainingElement.innerHTML = playerTile.player.sensorCountAt(position).toString()
+
+        element.appendChild(remainingElement)
+        element.appendChild(titleElement)
 
         addDroppable()
     }
@@ -66,18 +86,31 @@ class SensorPanel (val position : RobotPosition, val playerTile: PlayerTile, val
                 val sensorPos = block.sensor.sensorPosition!!
                 playerTile.player.removeSensorFrom(sensorPos, block.sensor)
             }
+            block.sensorPanel!!.updateRemaining()
         }
-
-        block.sensorPanel = this
 
         if (sensorTypeExists(block)) return
         if (!slotAvailable()) return
 
+        block.sensorPanel = this
+
         playerTile.player.addSensorTo(position, block.sensor)
+
+        updateRemaining()
 
         element.appendChild(blockElement)
         drawer.populate()
 
+    }
+
+    /**
+     * Updates the count of remaining slots in the panel
+     */
+    fun updateRemaining(){
+        val totalSlots = playerTile.player.sensorCountAt(position)
+        val usedSlots = playerTile.player.getSensorsExceptEmpty(position).size
+
+        remainingElement.innerHTML = (totalSlots - usedSlots).toString()
     }
 
     /**

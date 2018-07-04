@@ -13,16 +13,14 @@ import kotlin.dom.addClass
  * The window that allows the user to configure the sensors on a robot
  * @param playerTile The player that this configurator manages
  * @property element The main element of the configurator
+ * @property imageElement The image in the middle of the configurator
  * @property drawer The drawer element in this configurator
  * @property initialHeight The height that [element] returns to after shrinking
  * @property initialWidth The width that [element] returns to after shrinking
- * @property backSensorPanel The sensor back to insert sensors in the back position
- * @property frontSensorPanel The sensor back to insert sensors in the front position
- * @property leftSensorPanel The sensor back to insert sensors in the left position
- * @property rightSensorPanel The sensor back to insert sensors in the right position
- */
+ **/
 class SensorConfigurator (val playerTile : PlayerTile){
     val element = document.createElement("div") as HTMLElement
+    val imageElement = document.createElement("img") as HTMLImageElement
     val drawer = SensorDrawer()
     var initialHeight = "0px"
     var initialWidth = "0px"
@@ -34,6 +32,10 @@ class SensorConfigurator (val playerTile : PlayerTile){
 
 
     init{
+        imageElement.addClass("sensorConfigImage")
+
+        element.appendChild(imageElement  )
+
         document.body!!.appendChild(element)
         element.addClass("sensorConfigurator")
         setHeightAndWidth()
@@ -64,6 +66,8 @@ class SensorConfigurator (val playerTile : PlayerTile){
             properties.height = "0"
             properties.width = "0"
 
+            jQuery(imageElement).hide()
+
             jQuery(element).animate(properties, 150, "swing", {
                 jQuery(element).hide()
             })
@@ -75,7 +79,10 @@ class SensorConfigurator (val playerTile : PlayerTile){
             properties.height = initialHeight
             properties.width = initialWidth
 
-            jQuery(element).animate(properties, 150)
+            jQuery(element).animate(properties, 150, "swing", {
+                jQuery(imageElement).show()
+                resizeImage()
+            })
         }
     }
 
@@ -93,5 +100,30 @@ class SensorConfigurator (val playerTile : PlayerTile){
 
         initialHeight = ((height / parentHeight) * 100.0).toString() + "%"
         initialWidth = ((width / parentWidth) * 100.0).toString() + "%"
+    }
+
+    /**
+     * Resizes the image in the center to always be square
+     */
+    fun resizeImage(){
+        imageElement.style.width = ""
+        imageElement.style.height = ""
+        imageElement.style.top = ""
+        imageElement.style.left = ""
+
+        val top = imageElement.getBoundingClientRect().top - element.getBoundingClientRect().top
+        val left = imageElement.getBoundingClientRect().left - element.getBoundingClientRect().left
+
+        val width = imageElement.clientWidth
+        val height = imageElement.clientHeight
+
+        if (height < width){
+            imageElement.style.width = height.toString() + "px"
+            imageElement.style.left = (left + ((width - height) / 2)).toString() + "px"
+        }
+        else{
+            imageElement.style.height = width.toString() + "px"
+            imageElement.style.top = (top + ((height - width) / 2)).toString() + "px"
+        }
     }
 }
