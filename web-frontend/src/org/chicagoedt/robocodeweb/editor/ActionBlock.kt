@@ -163,6 +163,10 @@ abstract class ActionBlock<T : Action<*>>(){
             topicSelector.style.bottom = "0px"
             topicSelector.style.width = "100%"
             topicSelector.style.height = "100%"
+            topicSelector.style.boxShadow = "none"
+            topicSelector.style.backgroundColor = "white"
+            topicSelector.style.color = "black"
+            jQuery(inputElement).hide()
             shouldToggle = false
             onTopicChanged(mainTopic.value)
             mainTopic.topicListeners.add(onTopicChanged)
@@ -176,6 +180,10 @@ abstract class ActionBlock<T : Action<*>>(){
             topicSelector.style.fontSize = ""
             topicSelector.style.height = ""
             topicSelector.style.bottom = ""
+            topicSelector.style.boxShadow = ""
+            topicSelector.style.backgroundColor = ""
+            topicSelector.style.color = ""
+            jQuery(inputElement).show()
             shouldToggle = true
             action.parameter = inputElement.value.toInt().asDynamic()
             mainTopic.topicListeners.remove(onTopicChanged)
