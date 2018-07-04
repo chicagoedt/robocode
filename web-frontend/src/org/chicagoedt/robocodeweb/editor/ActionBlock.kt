@@ -140,8 +140,6 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param inputElement The element that selects the number for input
      */
     fun addTopicSelectorProperties(topicSelector : HTMLElement, inputElement : HTMLInputElement){
-        println("adding properties")
-
         var shouldToggle = true
 
         parameterElement.onmouseover = {
