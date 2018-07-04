@@ -110,7 +110,7 @@ abstract class ActionBlock<T : Action<*>>(){
 
                 val topicSelector = document.createElement("div") as HTMLElement
                 topicSelector.addClass("topicSelectorInput")
-                topicSelector.innerHTML = "Topic"
+                topicSelector.innerHTML = "Use Topic"
                 jQuery(topicSelector).hide()
                 addTopicSelectorProperties(topicSelector, inputElement)
                 parameterElement.appendChild(topicSelector)
@@ -152,23 +152,38 @@ abstract class ActionBlock<T : Action<*>>(){
             if (shouldToggle) jQuery(topicSelector).hide()
         }
 
+        val onTopicChanged = {value : Any ->
+            action.parameter = value.asDynamic()
+        }
+
         var topicSelectorCancel = {event : dynamic ->}
 
         val topicSelectorOnClick = { event : dynamic ->
+            topicSelector.innerHTML = "Topic"
+            topicSelector.style.lineHeight = "normal"
+            topicSelector.style.fontSize = "100%"
             topicSelector.style.bottom = "0px"
             topicSelector.style.width = "100%"
             topicSelector.style.height = "100%"
             shouldToggle = false
+            onTopicChanged(mainTopic.value)
+            mainTopic.topicListeners.add(onTopicChanged)
             topicSelector.onclick = topicSelectorCancel
         }
 
         topicSelectorCancel = {
+            topicSelector.innerHTML = "Use Topic"
             topicSelector.style.width = ""
+            topicSelector.style.lineHeight = ""
+            topicSelector.style.fontSize = ""
             topicSelector.style.height = ""
             topicSelector.style.bottom = ""
             shouldToggle = true
+            action.parameter = inputElement.value.toInt().asDynamic()
+            mainTopic.topicListeners.remove(onTopicChanged)
             jQuery(topicSelector).hide()
             topicSelector.onclick = topicSelectorOnClick
+
         }
 
         topicSelector.onclick = topicSelectorOnClick

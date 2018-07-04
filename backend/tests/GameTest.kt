@@ -1175,7 +1175,7 @@ class BackendTests {
     @Test
     fun TopicListener(){
         var topicVal = 6
-        mainTopic.topicListener = {value -> topicVal = value as Int}
+        mainTopic.topicListeners.add{value -> topicVal = value as Int}
 
         mainTopic.value = 8
 

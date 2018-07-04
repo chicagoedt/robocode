@@ -116,7 +116,7 @@ fun setTopicListener(){
     val topic = document.getElementById("topicValue")
     topic!!.innerHTML = mainTopic.value.toString()
 
-    mainTopic.topicListener = {value ->
+    mainTopic.topicListeners.add {value ->
         topic.innerHTML = (value as Int).toString()
     }
 }
