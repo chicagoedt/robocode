@@ -72,6 +72,15 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
     }
 
     /**
+     * Removes this player from the grid
+     */
+    fun remove(){
+        element.parentElement!!.removeChild(element)
+        imageElement.parentElement!!.removeChild(imageElement)
+        sensorConfigurator.element.parentElement!!.removeChild(sensorConfigurator.element)
+    }
+
+    /**
      * Sets the direction displayed to the direction that the robot is facing
      */
     fun changeDirection(){
