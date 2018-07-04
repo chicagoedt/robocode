@@ -10,6 +10,7 @@ import org.chicagoedt.robocode.mainTopic
 import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.chicagoedt.robocodeweb.showPopup
+import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
 import kotlin.dom.removeClass
 
@@ -101,7 +102,7 @@ abstract class ActionBlock<T : Action<*>>(){
             }
             else if (parameterType == BlockParameterType.NUMBER_INPUT){
                 parameterElement = document.createElement("div") as HTMLElement
-                val inputElement = document.createElement("input") as HTMLElement
+                val inputElement = document.createElement("input") as HTMLInputElement
                 inputElement.asDynamic().type = "number"
                 inputElement.asDynamic().value = "1"
                 inputElement.addClass("actionBlockNumberInput")
@@ -111,7 +112,7 @@ abstract class ActionBlock<T : Action<*>>(){
                 topicSelector.addClass("topicSelectorInput")
                 topicSelector.innerHTML = "Topic"
                 jQuery(topicSelector).hide()
-                addTopicSelectorProperties(topicSelector)
+                addTopicSelectorProperties(topicSelector, inputElement)
                 parameterElement.appendChild(topicSelector)
                 parameterElement.appendChild(inputElement)
                 inputElement.onchange = ::parameterChanged
@@ -136,17 +137,41 @@ abstract class ActionBlock<T : Action<*>>(){
     /**
      * Adds the hover and onclick properties to the topic selector
      * @param topicSelector The element to show when the mouse is hovered over
+     * @param inputElement The element that selects the number for input
      */
-    fun addTopicSelectorProperties(topicSelector : HTMLElement){
+    fun addTopicSelectorProperties(topicSelector : HTMLElement, inputElement : HTMLInputElement){
         println("adding properties")
+
+        var shouldToggle = true
+
         parameterElement.onmouseover = {
-            println("mouseover")
-            jQuery(topicSelector).show()
+            if (shouldToggle) jQuery(topicSelector).show()
         }
 
         parameterElement.onmouseout = {
-            jQuery(topicSelector).hide()
+            if (shouldToggle) jQuery(topicSelector).hide()
         }
+
+        var topicSelectorCancel = {event : dynamic ->}
+
+        val topicSelectorOnClick = { event : dynamic ->
+            topicSelector.style.bottom = "0px"
+            topicSelector.style.width = "100%"
+            topicSelector.style.height = "100%"
+            shouldToggle = false
+            topicSelector.onclick = topicSelectorCancel
+        }
+
+        topicSelectorCancel = {
+            topicSelector.style.width = ""
+            topicSelector.style.height = ""
+            topicSelector.style.bottom = ""
+            shouldToggle = true
+            jQuery(topicSelector).hide()
+            topicSelector.onclick = topicSelectorOnClick
+        }
+
+        topicSelector.onclick = topicSelectorOnClick
     }
 
     /**
