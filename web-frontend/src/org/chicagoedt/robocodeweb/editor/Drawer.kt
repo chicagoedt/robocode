@@ -2,6 +2,7 @@ package org.chicagoedt.robocodeweb.editor
 
 import jQuery
 import JQueryEventObject
+import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.editor.actionblocks.*
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.w3c.dom.HTMLElement
@@ -16,6 +17,10 @@ class Drawer(val parent : HTMLElement) {
     val element = document.getElementById("drawer") as HTMLElement
     val actionDeleteElement = document.getElementById("actionDelete") as HTMLElement
     val sensorDeleteElement = document.getElementById("sensorDelete") as HTMLElement
+
+    init{
+        element.asDynamic().drawer = this
+    }
 
     /**
      * Sets the droppable properties for this drawer
@@ -39,7 +44,7 @@ class Drawer(val parent : HTMLElement) {
      * @param event The Jquery event corresponding to the drop
      * @param ui The element being dropped
      */
-    fun actionDrop(event: JQueryEventObject, ui: dynamic) {
+    fun actionDrop(event: dynamic, ui: dynamic) {
         val uiElement = ui.draggable[0] as HTMLElement
 
         val actionBlock : ActionBlock<*> = uiElement.asDynamic().block
@@ -68,8 +73,15 @@ class Drawer(val parent : HTMLElement) {
         if (block.sensorPanel != null && uiElement.asDynamic().actionSensor == false){
             block.sensor.player!!.removeSensorFrom(block.sensor.sensorPosition!!, block.sensor)
             block.sensorPanel!!.updateRemaining()
+            block.removeAllChildren()
         }
         else if (uiElement.asDynamic().actionSensor == true){
+            val originalBlock = uiElement.asDynamic().block as SensorBlock<*>
+            originalBlock.actionSensorChildren.remove(uiElement)
+
+            val action = uiElement.asDynamic().action as ActionBlock<*>
+            action.removeSensorParameter()
+
             val parameterElement : HTMLElement = uiElement.parentElement!! as HTMLElement
             val toolTip : HTMLElement = parameterElement.asDynamic().toolTip
             parameterElement.asDynamic().sensor = null

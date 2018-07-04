@@ -208,10 +208,14 @@ abstract class ActionBlock<T : Action<*>>(){
                 if (sensorElement.asDynamic().actionSensor == true) {
                     clone = sensorElement
                 }
-                else clone = sensorElement.cloneNode(true) as HTMLElement
+                else {
+                    clone = sensorElement.cloneNode(true) as HTMLElement
+                    sensorBlock.actionSensorChildren.add(clone)
+                }
 
                 clone.addClass("sensorInActions")
 
+                clone.asDynamic().action = this
                 clone.asDynamic().block = sensorBlock
                 clone.asDynamic().actionSensor = true
                 clone.style.borderRadius = "0px"
@@ -277,6 +281,15 @@ abstract class ActionBlock<T : Action<*>>(){
         drop.droppable("option", "drop", dropSensor)
         drop.droppable("option", "over", overSensor)
         drop.droppable("option", "out", overOutSensor)
+    }
+
+    /**
+     * Sets the parameter to empty sensor if the parameter is in sensor mode
+     */
+    fun removeSensorParameter(){
+        if (this.parameterType == BlockParameterType.SENSOR){
+            action.parameter = EmptySensor().asDynamic()
+        }
     }
 
     /**
