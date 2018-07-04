@@ -167,6 +167,25 @@ table{
 	bottom: 10px;
 }
 
+.topicSelectorInput{
+	position: absolute;
+	bottom: 100%;
+	background: #222222;
+	color: white;
+	font-family: Verdana;
+	box-shadow: 0px 0px 20px grey;
+	font-size: 12px;
+	cursor: pointer;
+	width: calc(100% - 4px);
+	padding: 2px;
+	text-align: center;
+}
+
+.actionBlockNumberInput{
+	width: 100%;
+	height: 100%;
+}
+
 .actionBlockMacro{
 	padding: 0;
 	min-height: 45px;

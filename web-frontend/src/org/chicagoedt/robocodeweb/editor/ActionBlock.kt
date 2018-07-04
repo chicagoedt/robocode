@@ -100,10 +100,21 @@ abstract class ActionBlock<T : Action<*>>(){
                 parameterElement = document.createElement("select") as HTMLSelectElement
             }
             else if (parameterType == BlockParameterType.NUMBER_INPUT){
-                parameterElement = document.createElement("input") as HTMLElement
-                parameterElement.asDynamic().type = "number"
-                parameterElement.asDynamic().value = "1"
-                action.parameter = parameterElement.asDynamic().value
+                parameterElement = document.createElement("div") as HTMLElement
+                val inputElement = document.createElement("input") as HTMLElement
+                inputElement.asDynamic().type = "number"
+                inputElement.asDynamic().value = "1"
+                inputElement.addClass("actionBlockNumberInput")
+                action.parameter = inputElement.asDynamic().value
+
+                val topicSelector = document.createElement("div") as HTMLElement
+                topicSelector.addClass("topicSelectorInput")
+                topicSelector.innerHTML = "Topic"
+                jQuery(topicSelector).hide()
+                addTopicSelectorProperties(topicSelector)
+                parameterElement.appendChild(topicSelector)
+                parameterElement.appendChild(inputElement)
+                inputElement.onchange = ::parameterChanged
             }
             else if (parameterType == BlockParameterType.SENSOR){
                 val toolTip = document.createElement("div") as HTMLElement
@@ -119,6 +130,22 @@ abstract class ActionBlock<T : Action<*>>(){
             parameterElement.addClass("actionBlockParameter")
             element.appendChild(parameterElement)
             parameterElement.onchange = ::parameterChanged
+        }
+    }
+
+    /**
+     * Adds the hover and onclick properties to the topic selector
+     * @param topicSelector The element to show when the mouse is hovered over
+     */
+    fun addTopicSelectorProperties(topicSelector : HTMLElement){
+        println("adding properties")
+        parameterElement.onmouseover = {
+            println("mouseover")
+            jQuery(topicSelector).show()
+        }
+
+        parameterElement.onmouseout = {
+            jQuery(topicSelector).hide()
         }
     }
 
