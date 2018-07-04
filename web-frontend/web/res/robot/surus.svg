@@ -32,10 +32,10 @@
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1080"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
      inkscape:pagecheckerboard="true" />
   <metadata
      id="metadata5">
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -133,13 +133,27 @@
          width="20"
          id="rect3753-0-1" />
     </g>
-    <rect
-       style="fill:#ff9955;stroke-width:0.25508025"
-       id="rect3822"
-       width="140"
-       height="160"
-       x="30"
-       y="117" />
+    <g
+       id="g3865"
+       transform="translate(-113.17841,70.845238)"
+       style="fill:#ff7f2a">
+      <rect
+         transform="matrix(1,0,-0.16314894,0.98660145,0,0)"
+         y="46.781567"
+         x="177.2691"
+         height="162.17288"
+         width="70"
+         id="rect3822-4"
+         style="fill:#ff7f2a;stroke-width:0.18158959" />
+      <rect
+         transform="matrix(1,0,0.16314894,0.98660145,0,0)"
+         y="46.781567"
+         x="179.08804"
+         height="162.17288"
+         width="70"
+         id="rect3822-1"
+         style="fill:#ff7f2a;stroke-width:0.18158959" />
+    </g>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
