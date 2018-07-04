@@ -495,7 +495,7 @@ class BackendTests {
 
         val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
         val distanceSensor = DistanceSensor()
         robotPlayer1.addSensorTo(RobotPosition.FRONT, distanceSensor)
 
@@ -517,29 +517,15 @@ class BackendTests {
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.appendAction(readSensorInstruction)
 
-        val instruction = ConditionalWithList()
-        instruction.parameter = TopicEqualsComparison(mainTopic, 1)
-        val turnInstruction = TurnAction()
-        turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
-        instruction.addToMacro(turnInstruction)
-        instruction.addToMacro(MoveAction())
-        robotPlayer1.appendAction(instruction)
-
-        game.attachEventListener {e ->
-            when (e){
-                Event.LEVEL_VICTORY -> won = true
-            }
-        }
-
         robotPlayer1.runInstructions(false)
 
         game.attachEventListener {}
 
-        assertEquals(won, true)
+        assertEquals(mainTopic.value, 2)
     }
 
     @Test
-    fun ReadDistanceSensorFalse(){
+    fun ReadDistanceSensorObstacle(){
         var won = false
         val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "")
@@ -567,29 +553,16 @@ class BackendTests {
 
         game = Game(testLevels, testRobots)
 
+
         val readSensorInstruction = ReadSensorAction(mainTopic)
         readSensorInstruction.parameter = distanceSensor
         robotPlayer1.appendAction(readSensorInstruction)
-
-        val instruction = ConditionalWithList()
-        instruction.parameter = TopicEqualsComparison(mainTopic, 0)
-        val turnInstruction = TurnAction()
-        turnInstruction.parameter = RobotRotation.COUNTERCLOCKWISE
-        instruction.addToMacro(turnInstruction)
-        instruction.addToMacro(MoveAction())
-        robotPlayer1.appendAction(instruction)
-
-        game.attachEventListener {e ->
-            when (e){
-                Event.LEVEL_VICTORY -> won = true
-            }
-        }
 
         robotPlayer1.runInstructions(false)
 
         game.attachEventListener {}
 
-        assertEquals(won, false)
+        assertEquals(mainTopic.value, 0)
     }
 
     @Test
@@ -878,6 +851,7 @@ class BackendTests {
 
     @Test
     fun RobotCheckpointRestoreTopic(){
+        mainTopic.reset()
         for(level in levels){
             for((name, robot) in level.players){
                 val originalVal = mainTopic.value
@@ -902,12 +876,13 @@ class BackendTests {
         val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "")
         testRobots.add(surus)
+        mainTopic.reset()
 
         val testLevels = ArrayList<Level>()
 
         val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
 
-        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
         val list1 = ArrayList<RobotPlayer>()
         list1.add(robotPlayer1)
 
@@ -931,7 +906,7 @@ class BackendTests {
 
         robotPlayer1.runInstructions(false)
 
-        assertEquals(mainTopic.value, 1)
+        assertEquals(mainTopic.value, 2)
     }
 
     @Test
@@ -954,7 +929,7 @@ class BackendTests {
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
-                arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+                arrayListOf(NeutralTile(), NeutralTile(), ObstacleTile())) as ArrayList<ArrayList<Tile>>)
 
         level1.tileAt(0,0).items.addItem(Sand.id)
 

@@ -18,8 +18,9 @@
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 					<gridTile type="obstacle"></gridTile>
+					<gridTile type="neutral"></gridTile>
+
 				</gridRow>
 
 				<gridRow>

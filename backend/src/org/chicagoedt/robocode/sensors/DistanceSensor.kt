@@ -23,13 +23,15 @@ class DistanceSensor : Sensor() {
          //start at -1 since it will always be incremented at least once
         var sum = -1
 
-        while (tile.type != TileType.OBSTACLE &&
-                x >= 0 &&
+        while (x >= 0 &&
                 x < level.properties.width &&
                 y >= 0 &&
                 y < level.properties.height){
-            sum++
             tile = level.tileAt(x,y)
+            if (tile.type == TileType.OBSTACLE) break
+
+            sum++
+
             if (sensorPosition == RobotPosition.FRONT){
                 when (player!!.direction){
                     RobotOrientation.DIRECTION_UP -> y++
