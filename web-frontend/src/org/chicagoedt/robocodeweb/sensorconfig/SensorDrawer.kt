@@ -18,6 +18,36 @@ class SensorDrawer {
 
     init{
         element.addClass("sensorDrawer")
+        setDroppable()
+    }
+
+    /**
+     * Sets the droppable properties for this drawer
+     */
+    fun setDroppable() {
+        val drag = jQuery(element).asDynamic()
+        drag.droppable()
+        drag.droppable("option", "tolerance", "pointer")
+        drag.droppable("option", "scope", "sensors")
+        drag.droppable("option", "drop", ::drop)
+    }
+
+    /**
+     * Called when a draggable is dropped over this drawer
+     * @param event The Jquery event corresponding to the drop
+     * @param ui The element being dropped
+     */
+    fun drop(event: JQueryEventObject, ui: dynamic) {
+        val uiElement = ui.draggable[0] as HTMLElement
+        uiElement.parentElement!!.removeChild(uiElement)
+        val block = uiElement.asDynamic().block
+
+        if (block.sensorPanel != null){
+            //val sensorPos = block.sensor.getSensorPos(playerTile.player)
+            //playerTile.player.removeSensorFrom(sensorPos, block.sensor)
+        }
+
+        populate()
     }
 
     /**

@@ -31,7 +31,7 @@ class DistanceSensor : Sensor() {
             if (tile.type == TileType.OBSTACLE) break
 
             sum++
-
+          
             if (sensorPosition == RobotPosition.FRONT){
                 when (player!!.direction){
                     RobotOrientation.DIRECTION_UP -> y++
