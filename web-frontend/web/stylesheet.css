@@ -26,7 +26,7 @@ body{
 
 #topic{
 	margin: 10px;
-	box-shadow: 0px 0px 20px grey;
+	box-shadow: 0px 0px 2px grey;
 	width: 40%;
 	height: 30px;
 	border-radius: 2px;
@@ -40,7 +40,7 @@ body{
 
 #topicValue{
 	float: right;
-	box-shadow: 0px 0px 40px grey;
+	box-shadow: 0px 0px 2px grey;
 	width: 20%;
 	height: 10px;
 	border-radius: 2px;
@@ -60,7 +60,7 @@ body{
 	margin: 10px;
 	float:left;
 	z-index: 5;
-	box-shadow: 0px 0px 20px grey;
+	box-shadow: 0px 0px 2px grey;
 	background-color: #8BC34A;
 }
 
@@ -98,7 +98,7 @@ body{
 	left: calc(100% - var(--drawer-width));
 	float: right;
 	background-color: #BBDEFB;
-	box-shadow: 0px 0px 20px grey;
+	box-shadow: 0px 0px 2px grey;
 	z-index: 10;
 	overflow: auto;
 	z-index: 5;
@@ -115,7 +115,7 @@ body{
 	background: #9fb9d6;
 	z-index: 299;
 	margin: 5px;
-	box-shadow: 0px 0px 20px grey;
+	box-shadow: 0px 0px 2px grey;
 }
 
 .trashIcon{
@@ -137,7 +137,7 @@ table{
 	background-color: #9DA6DB;
 	height: calc(95% - 10px);
 	margin: 10px;
-	box-shadow: 0px 0px 10px grey;
+	box-shadow: 0px 0px 2px grey;
 	border-radius: 0px;
 	overflow: auto;
 }
@@ -146,7 +146,7 @@ table{
 	position: relative;
 	width:calc(100% - 30px);
 	height:20px;
-	box-shadow: 0px 0px 2px grey;
+	box-shadow: 0px 0px 20px grey;
 	line-height: 20px;
 	text-align: center;
 	padding: 10px;
@@ -283,6 +283,7 @@ td, th, tr {
 
 .gridPlayer{
 	position: absolute;
+	box-shadow: 0px 0px 40px grey;
 }
 
 .gridPlayerImage{
@@ -292,15 +293,15 @@ td, th, tr {
 }
 
 .obstacleTile{
-	background-color: #673AB7;
+	background-color: #8f90b7;
 }
 
 .neutralTile{
-	background-color: #8BC34A;
+	background-color: #b0f6a9;
 }
 
 .victoryTile{
-	background-color: #FFEB3B;
+	background-color: #fffab7;
 }
 
 .itemQuantityContainer{
@@ -332,7 +333,7 @@ td, th, tr {
 	bottom:20px;
 	right:20px;
 	background-color: white;
-	box-shadow: 0px 0px 40px grey;
+	box-shadow: 0px 0px 2px grey;
 	z-index: 999;
 	padding: 10px;
 
@@ -379,11 +380,11 @@ td, th, tr {
 }
 
 .sensorConfigurator{
-	background-color: #C8E6C9;
+	background-color: #d6d6d6;
 	position: absolute;
 	width: 40%;
 	height: 30%;
-	box-shadow: 0px 0px 40px grey;
+	box-shadow: 0px 0px 6px grey;
 	z-index: 299;
 	overflow: auto;
 	border-radius: 10px;
@@ -400,7 +401,7 @@ td, th, tr {
 .sensorDrawer{
 	width: 20%;
 	height: calc(100% - 10px);
-	box-shadow: 0px 0px 10px grey;
+	box-shadow: 0px 0px 2px grey;
 	background-color: #f0f0a4;
 	float: left;
 	padding: 5px;
@@ -408,7 +409,7 @@ td, th, tr {
 
 .sensorBlock{
 	font-family: Verdana;
-	box-shadow: 0px 0px 2px grey;
+	box-shadow: 0px 0px 20px grey;
 	border-color: black;
 	border-width: thin;
 	border-radius: 12px;
@@ -495,7 +496,7 @@ td, th, tr {
 	bottom: 100%;
 	background: #FFFFFF7F;
 	font-family: Verdana;
-	box-shadow: 0px 0px 20px grey;
+	box-shadow: 0px 0px 2px grey;
 	font-size: 12px;
 }
 
