@@ -29,6 +29,11 @@ private lateinit var editorDriver : EditorDriver
  */
 private lateinit var configDriver : ConfigDriver
 
+/**
+ * The conditions for the current level
+ */
+internal lateinit var currentLevelConditions : Level.Conditions
+
 fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>){
     game = Game(levels, robots)
     game.attachEventListener(::update)
@@ -43,6 +48,7 @@ fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>){
 
 @JsName("onLoad")
 fun onLoad(){
+    currentLevelConditions = game.currentLevel.conditions
     gridDriver = GridDriver(game)
     gridDriver.calculateNewLevel()
     jQuery("#leftPane").hide()
@@ -125,6 +131,7 @@ fun setTopicListener(){
 
 fun nextLevel(){
     game.nextLevel()
+    currentLevelConditions = game.currentLevel.conditions
     gridDriver.calculateNewLevel()
     editorDriver.calculateNewLevel()
     updateHeader()

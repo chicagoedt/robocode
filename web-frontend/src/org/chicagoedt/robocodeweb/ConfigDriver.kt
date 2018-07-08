@@ -148,7 +148,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			if (levelData.getAttribute("useReadSensor")!!.equals("false", true))
 				useReadSensor = false
 		}
-		
+
 		level.conditions = Level.Conditions(useTopic,
 				useSensors,
 				useMove,

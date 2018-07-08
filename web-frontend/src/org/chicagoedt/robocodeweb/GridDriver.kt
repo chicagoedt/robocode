@@ -48,6 +48,14 @@ class GridDriver(val game: Game){
 
         tileWidth = gridTiles[0][0].element.getBoundingClientRect().width.toInt()
 
+        val topicElement = document.getElementById("topic") as HTMLElement
+        if (currentLevelConditions.useTopic){
+            topicElement.style.visibility = "visible"
+        }
+        else{
+            topicElement.style.visibility = "hidden"
+        }
+
         calculatePlayers()
         handleResize()
     }

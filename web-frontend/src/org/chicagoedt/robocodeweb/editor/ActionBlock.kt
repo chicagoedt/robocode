@@ -8,6 +8,7 @@ import kotlin.dom.addClass
 import org.chicagoedt.robocode.actions.*
 import org.chicagoedt.robocode.mainTopic
 import org.chicagoedt.robocode.sensors.EmptySensor
+import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.chicagoedt.robocodeweb.showPopup
 import org.w3c.dom.HTMLInputElement
@@ -108,12 +109,14 @@ abstract class ActionBlock<T : Action<*>>(){
                 inputElement.addClass("actionBlockNumberInput")
                 action.parameter = inputElement.asDynamic().value
 
-                val topicSelector = document.createElement("div") as HTMLElement
-                topicSelector.addClass("topicSelectorInput")
-                topicSelector.innerHTML = "Use Topic"
-                jQuery(topicSelector).hide()
-                addTopicSelectorProperties(topicSelector, inputElement)
-                parameterElement.appendChild(topicSelector)
+                if (currentLevelConditions.useTopic){
+                    val topicSelector = document.createElement("div") as HTMLElement
+                    topicSelector.addClass("topicSelectorInput")
+                    topicSelector.innerHTML = "Use Topic"
+                    jQuery(topicSelector).hide()
+                    addTopicSelectorProperties(topicSelector, inputElement)
+                    parameterElement.appendChild(topicSelector)
+                }
                 parameterElement.appendChild(inputElement)
                 inputElement.onchange = ::parameterChanged
             }
