@@ -64,6 +64,9 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val grid = readGrid(gridData)
 
 			val level = Level(Level.Properties(name, difficulty, width, height))
+
+			readLevelConditions(levelData, level)
+
 			level.makeGrid(grid)
 
 			val robots = arrayListOf<RobotPlayer>()
@@ -89,6 +92,73 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			levels.add(level)
 		}
 		return levels
+	}
+
+	/**
+	 * Reads which features should be enabled for the levels
+	 * @param levelData The XML element containing config data for the level
+	 * @param level The Level to set the conditions for
+	 */
+	fun readLevelConditions(levelData : Element, level : Level){
+		var useTopic = true
+		var useSensors = true
+		var useMove = true
+		var useTurn = true
+		var usePickUpItem = true
+		var useDropItem = true
+		var useForLoop = true
+		var useReadSensor = true
+
+		if (levelData.hasAttribute("useTopic")){
+			if (levelData.getAttribute("useTopic")!!.equals("false", true))
+				useTopic = false
+		}
+
+		if (levelData.hasAttribute("useSensors")){
+			if (levelData.getAttribute("useSensors")!!.equals("false", true))
+				useSensors = false
+		}
+
+		if (levelData.hasAttribute("useMove")){
+			if (levelData.getAttribute("useMove")!!.equals("false", true))
+				useMove = false
+		}
+
+		if (levelData.hasAttribute("useTurn")){
+			if (levelData.getAttribute("useTurn")!!.equals("false", true))
+				useTurn = false
+		}
+
+		if (levelData.hasAttribute("usePickUpItem")){
+			if (levelData.getAttribute("usePickUpItem")!!.equals("false", true))
+				usePickUpItem = false
+		}
+
+		if (levelData.hasAttribute("useDropItem")){
+			if (levelData.getAttribute("useDropItem")!!.equals("false", true))
+				useDropItem = false
+		}
+
+		if (levelData.hasAttribute("useForLoop")){
+			if (levelData.getAttribute("useForLoop")!!.equals("false", true))
+				useForLoop = false
+		}
+
+		if (levelData.hasAttribute("useReadSensor")){
+			if (levelData.getAttribute("useReadSensor")!!.equals("false", true))
+				useReadSensor = false
+		}
+
+		println(useMove)
+
+		level.conditions = Level.Conditions(useTopic,
+				useSensors,
+				useMove,
+				useTurn,
+				usePickUpItem,
+				useDropItem,
+				useForLoop,
+				useReadSensor)
 	}
 
 	/**

@@ -25,6 +25,35 @@ class Level(var properties: Properties) {
                           val width : Int,
                           val height : Int)
 
+    /**
+     * The conditions for what should be displayed in a Level
+     * @param useTopic True if topic features should be used, false otherwise
+     * @param useSensors True if sensor features should be used, false otherwise
+     * @param useMove True if Move block should be enabled, false otherwise
+     * @param useTurn True if Turn block should be enabled, false otherwise
+     * @param usePickUpItem True if Pick Up Item block should be enabled, false otherwise
+     * @param useDropItem True if Drop Item block should be enabled, false otherwise
+     * @param useForLoop True if For Loop block should be enabled, false otherwise
+     * @param useReadSensor True if Read Sensor block should be enabled, false otherwise
+     */
+    data class Conditions(val useTopic : Boolean,
+                          val useSensors : Boolean,
+                          val useMove : Boolean,
+                          val useTurn : Boolean,
+                          val usePickUpItem : Boolean,
+                          val useDropItem : Boolean,
+                          val useForLoop : Boolean,
+                          val useReadSensor : Boolean)
+
+    var conditions = Level.Conditions(true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true)
+
     private var grid = arrayListOf<ArrayList<Tile>>()
     val players: HashMap<String, RobotPlayer> = hashMapOf()
 
