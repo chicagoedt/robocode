@@ -283,13 +283,11 @@ td, th, tr {
 
 .gridPlayer{
 	position: absolute;
-	box-shadow: 0px 0px 40px grey;
 }
 
 .gridPlayerImage{
 	height: 100%;
 	width: 100%;
-	cursor: pointer;
 }
 
 .obstacleTile{

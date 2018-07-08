@@ -18,17 +18,17 @@ import kotlin.dom.addClass
  * @property initialHeight The height that [element] returns to after shrinking
  * @property initialWidth The width that [element] returns to after shrinking
  **/
-class SensorConfigurator (val playerTile : PlayerTile){
+class SensorConfigurator (){
     val element = document.createElement("div") as HTMLElement
     val imageElement = document.createElement("img") as HTMLImageElement
     val drawer = SensorDrawer()
     var initialHeight = "0px"
     var initialWidth = "0px"
 
-    val backSensorPanel = SensorPanel(RobotPosition.BACK, playerTile, drawer)
-    val frontSensorPanel = SensorPanel(RobotPosition.FRONT, playerTile, drawer)
-    val leftSensorPanel = SensorPanel(RobotPosition.LEFT, playerTile, drawer)
-    val rightSensorPanel = SensorPanel(RobotPosition.RIGHT, playerTile, drawer)
+    lateinit var backSensorPanel : SensorPanel
+    lateinit var frontSensorPanel : SensorPanel
+    lateinit var leftSensorPanel : SensorPanel
+    lateinit var rightSensorPanel : SensorPanel
 
 
     init{
@@ -43,8 +43,21 @@ class SensorConfigurator (val playerTile : PlayerTile){
         jQuery(element).hide()
         element.style.height = "0"
         element.style.width = "0"
+    }
+
+    /**
+     * Attaches this sensor configurator to a PlayerTile
+     * @param playerTile The PlayerTile to attach to
+     */
+    fun attachTo(playerTile: PlayerTile){
+        backSensorPanel = SensorPanel(RobotPosition.BACK, playerTile, drawer)
+        frontSensorPanel = SensorPanel(RobotPosition.FRONT, playerTile, drawer)
+        leftSensorPanel = SensorPanel(RobotPosition.LEFT, playerTile, drawer)
+        rightSensorPanel = SensorPanel(RobotPosition.RIGHT, playerTile, drawer)
 
         playerTile.imageElement.onclick = {toggleShowHide()}
+        playerTile.element.style.boxShadow = "0px 0px 40px grey"
+        playerTile.imageElement.style.cursor = "pointer"
 
         element.appendChild(backSensorPanel.element)
         element.appendChild(frontSensorPanel.element)

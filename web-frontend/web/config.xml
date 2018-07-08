@@ -5,7 +5,7 @@
 		<robot name="Hushpuppy" graphic="res/robot/hushpuppy.svg"/>
 	</robots>
 	<levels>
-		<level name="Level 1" difficulty="1" useTopic="false">
+		<level name="Level 1" difficulty="1" useSensors="false">
 			<robot name="Surus" x="0" y="8" direction="up"/>
 			<robot name="Hushpuppy" x="3" y="3" direction="up"/>
 			<grid>

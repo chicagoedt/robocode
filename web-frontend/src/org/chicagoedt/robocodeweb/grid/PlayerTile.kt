@@ -3,6 +3,7 @@ package org.chicagoedt.robocodeweb.grid
 import jQuery
 import org.chicagoedt.robocode.robots.RobotOrientation
 import org.chicagoedt.robocode.robots.RobotPlayer
+import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.game
 import org.chicagoedt.robocodeweb.sensorconfig.SensorConfigurator
 import org.w3c.dom.HTMLDivElement
@@ -22,7 +23,7 @@ import kotlin.dom.addClass
 class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTile>>) {
     val element = document.createElement("div") as HTMLDivElement
     val imageElement = document.createElement("img") as HTMLImageElement
-    val sensorConfigurator = SensorConfigurator(this)
+    val sensorConfigurator = SensorConfigurator()
     private var currentX = player.x
     private var currentY = player.y
     private var currentDirection = RobotOrientation.DIRECTION_UP
@@ -32,7 +33,11 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         imageElement.addClass("gridPlayerImage")
         imageElement.style.display = "block"
         imageElement.src = game.robots[player.name]!!.graphic
-        sensorConfigurator.imageElement.src = imageElement.src
+
+        if (currentLevelConditions.useSensors){
+            sensorConfigurator.imageElement.src = imageElement.src
+            sensorConfigurator.attachTo(this)
+        }
 
         element.appendChild(imageElement)
 
