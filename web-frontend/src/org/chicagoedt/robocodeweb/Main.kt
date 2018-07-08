@@ -6,6 +6,8 @@ import kotlin.browser.*
 import org.chicagoedt.robocode.*
 import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.levels.*
+import kotlin.dom.addClass
+import kotlin.math.exp
 
 /**
  * The game that the browser is running
@@ -147,6 +149,14 @@ fun showPopup(title: String, buttonTitle: String, buttonClick: () -> Unit){
     popupText.innerHTML = title
     popup.appendChild(popupText)
 
+
+    val dismissButton = document.createElement("img") as HTMLImageElement
+    dismissButton.classList.add("popupDismissButton")
+    dismissButton.src = "res/x.svg"
+    dismissButton.onclick = {
+        document.body!!.removeChild(popup)
+    }
+
     if (buttonTitle != ""){
         val popupButton = document.createElement("button") as HTMLElement
         popupButton.classList.add("popupButton")
@@ -159,23 +169,53 @@ fun showPopup(title: String, buttonTitle: String, buttonClick: () -> Unit){
         }
 
         popup.appendChild(popupButton)
+
+        popupText.style.bottom = jQuery(popupButton).css("height")
     }
     else{
         popup.style.textAlign = "center"
     }
 
-    val dismissButton = document.createElement("div") as HTMLElement
-    dismissButton.classList.add("popupDismissButton")
-    dismissButton.innerHTML = "Dismiss"
-    dismissButton.onclick = {
-        document.body!!.removeChild(popup)
-    }
     popup.prepend(dismissButton)
 
     document.body!!.appendChild(popup)
 
-    if (oldPopups.length == 0) jQuery(popup).fadeIn("slow")
-    else jQuery(popup).fadeIn(0)
+    if (oldPopups.length == 0) jQuery(popup).fadeIn("fast", {checkForExpand(popup)})
+    else jQuery(popup).fadeIn(0, {checkForExpand(popup)})
+}
+
+fun checkForExpand(popup : HTMLElement) : dynamic{
+    val textElement = popup.getElementsByClassName("popupText")[0] as HTMLElement
+
+    var scroll = false
+
+    if (textElement.scrollHeight > textElement.clientHeight) scroll = true
+
+    if (scroll){
+        val expandElement = document.createElement("img") as HTMLImageElement
+        expandElement.addClass("popupExpandButton")
+        expandElement.src = "res/arrow.svg"
+
+        var undoExpand = { event : org.w3c.dom.events.Event ->}
+
+        val expand = { event : org.w3c.dom.events.Event ->
+            popup.style.height = textElement.scrollHeight.toString() + "px"
+            jQuery(expandElement).css("transform", "rotate(180deg)")
+            expandElement.onclick = undoExpand
+        }
+
+        expandElement.onclick = expand
+
+        undoExpand = {
+            popup.style.height = ""
+            jQuery(expandElement).css("transform", "rotate(0deg)")
+            expandElement.onclick = expand
+        }
+
+        popup.appendChild(expandElement)
+    }
+
+    return true
 }
 
 fun showPopup(title: String){
