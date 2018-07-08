@@ -6,6 +6,7 @@ import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.editor.actionblocks.*
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.asList
 import kotlin.browser.document
 
 /**
@@ -20,6 +21,17 @@ class Drawer(val parent : HTMLElement) {
 
     init{
         element.asDynamic().drawer = this
+    }
+
+    /**
+     * Removes and re-adds all blocks in the drawer
+     */
+    fun refresh(){
+        val blockList = element.getElementsByClassName("actionBlock").asList()
+        for (block in blockList){
+            element.removeChild(block)
+        }
+        populate()
     }
 
     /**

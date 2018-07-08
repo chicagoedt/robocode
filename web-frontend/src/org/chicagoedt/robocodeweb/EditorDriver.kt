@@ -32,6 +32,6 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 
 		drawer.setDroppable()
 
-		drawer.populate()
+		drawer.refresh()
 	}
 }
