@@ -7,6 +7,7 @@ import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.tiles.*
 import jQuery
+import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.collectibles.ItemManager
 import org.chicagoedt.robocode.collectibles.etc.Sand
 import org.chicagoedt.robocode.collectibles.etc.Water
@@ -170,7 +171,24 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 		val type = victoryData.getAttribute("type")!!
 
 		if (type.equals("tile", true)) level.victoryType = VictoryType.TILE
-		if (type.equals("itemposition", true)) level.victoryType = VictoryType.ITEM_POSITION
+		if (type.equals("itemposition", true)){
+
+			val inventoryData = levelData.querySelector("inventory")!!
+			val x = inventoryData.getAttribute("x")!!.toInt()
+			val y = inventoryData.getAttribute("y")!!.toInt()
+			val inventory = ItemInventory()
+
+			val items = inventoryData.querySelectorAll("item")!!
+			for (i in 0 until items.length){
+				val itemName = (items[i] as Element).attributes["name"]!!.value
+				val itemCount = (items[i] as Element).attributes["count"]!!.value.toInt()
+				val id = getItemIDFromName(itemName)
+				for (j in 0 until itemCount) inventory.addItem(id)
+			}
+
+			level.itemPositionData = Level.ItemPositionData(x, y, inventory)
+			level.victoryType = VictoryType.ITEM_POSITION
+		}
 	}
 
 	/**

@@ -6,17 +6,33 @@
 	</robots>
 	<!--
 	Level options as follows:
-	useTopic: True if topic features should be enabled, false otherwise. Default true.
-	useSensors: True if sensor features should be enabled, false otherwise. Default true.
-	useMove: True if the Move block should be enabled, false otherwise. Default true.
-	useTurn: True if the Turn block should be enabled, false otherwise. Default true.
-	usePickUpItem: True if the Pick Up Item block should be enabled, false otherwise. Default true.
-	useDropItem: True if the Drop Item block should be enabled, false otherwise. Default true.
-	useForLoop: True if the For Loop block should be enabled, false otherwise. Default true.
-	useReadSensor: True if the Read Sensor block should be enabled, false otherwise. Default true.
+		Features/Block Management:
+			useTopic: True if topic features should be enabled, false otherwise. Default true.
+			useSensors: True if sensor features should be enabled, false otherwise. Default true.
+			useMove: True if the Move block should be enabled, false otherwise. Default true.
+			useTurn: True if the Turn block should be enabled, false otherwise. Default true.
+			usePickUpItem: True if the Pick Up Item block should be enabled, false otherwise. Default true.
+			useDropItem: True if the Drop Item block should be enabled, false otherwise. Default true.
+			useForLoop: True if the For Loop block should be enabled, false otherwise. Default true.
+			useReadSensor: True if the Read Sensor block should be enabled, false otherwise. Default true.
 
-	Example:
-	<level name="Level 1" difficulty="1" useTopic="false" useMove="false">
+			Example:
+			<level name="Level 1" difficulty="1" useTopic="false" useMove="false">
+
+		Victory Management:
+			Tile: The player must be on a certain tile at the end of the code
+			ItemPosition: The item inventory on a tile must match a specified inventory at the end of the code
+
+			Example:
+			<victory type="tile"/>
+
+			Example 2:
+			<victory type="tile">
+				<inventory x="0" y="6">
+					<item name="sand" count="3"/>
+				</inventory>
+			</victory>
+
 	-->
 	<levels>
 		<level name="Level 1" difficulty="1">
