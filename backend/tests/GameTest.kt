@@ -7,6 +7,7 @@ import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.collectibles.ItemManager
 import org.chicagoedt.robocode.collectibles.etc.*
 import org.chicagoedt.robocode.levels.Level
+import org.chicagoedt.robocode.levels.VictoryType
 import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.sensors.DistanceSensor
 import org.chicagoedt.robocode.tiles.*
@@ -288,7 +289,7 @@ class BackendTests {
     }
 
     @Test
-    fun LevelVictory(){
+    fun LevelTileVictory(){
         var won = false
         val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "")
@@ -297,6 +298,8 @@ class BackendTests {
         val testLevels = ArrayList<Level>()
 
         val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        level1.victoryType = VictoryType.TILE
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -332,7 +335,7 @@ class BackendTests {
     }
 
     @Test
-    fun LevelFailure(){
+    fun LevelTileFailure(){
         var failed = false
         val testRobots = ArrayList<Robot>()
         val surus = Robot("Surus", "")
@@ -341,6 +344,8 @@ class BackendTests {
         val testLevels = ArrayList<Level>()
 
         val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        level1.victoryType = VictoryType.TILE
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 

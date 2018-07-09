@@ -271,17 +271,16 @@ class RobotPlayer(val name: String,
      * @param reset True to revert to checkpoint if not victorious, false otherwise
      */
     fun handleEndOfRun(reset : Boolean){
-        if (level.tileAt(x, y) is VictoryTile){
-            eventListener.invoke(Event.LEVEL_VICTORY)
-            eventListener.invoke(Event.LEVEL_UPDATE)
+        val victory = level.checkForVictory(this)
+        if (victory){
+            eventListener(Event.LEVEL_VICTORY)
         }
-        else {
-            if (reset) {
+        else{
+            if (reset){
                 level.restoreCheckpoint()
                 mainTopic.reset()
             }
             eventListener.invoke(Event.LEVEL_FAILURE)
-            eventListener.invoke(Event.LEVEL_UPDATE)
         }
     }
 }

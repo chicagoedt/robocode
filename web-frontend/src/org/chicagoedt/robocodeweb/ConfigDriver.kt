@@ -66,6 +66,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val level = Level(Level.Properties(name, difficulty, width, height))
 
 			readLevelConditions(levelData, level)
+			readLevelVictoryConditions(levelData, level)
 
 			level.makeGrid(grid)
 
@@ -157,6 +158,19 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				useDropItem,
 				useForLoop,
 				useReadSensor)
+	}
+
+	/**
+	 * Reads the type of victory that this level should have
+	 * @param levelData The XML element containing victory data for the level
+	 * @param level The Level to set the victory condition for
+	 */
+	fun readLevelVictoryConditions(levelData : Element, level : Level){
+		val victoryData = levelData.querySelector("victory")!!
+		val type = victoryData.getAttribute("type")!!
+
+		if (type.equals("tile", true)) level.victoryType = VictoryType.TILE
+		if (type.equals("itemposition", true)) level.victoryType = VictoryType.ITEM_POSITION
 	}
 
 	/**

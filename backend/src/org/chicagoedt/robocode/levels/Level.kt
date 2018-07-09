@@ -4,6 +4,13 @@ import org.chicagoedt.robocode.tiles.Tile
 import org.chicagoedt.robocode.robots.RobotPlayer
 import org.chicagoedt.robocode.tiles.NeutralTile
 import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.collectibles.ItemInventory
+import org.chicagoedt.robocode.tiles.VictoryTile
+
+enum class VictoryType{
+    TILE,
+    ITEM_POSITION
+}
 
 /**
  * A single challenge for the user to complete
@@ -11,6 +18,8 @@ import org.chicagoedt.robocode.*
  * @param playersList A list of all robot players in the level. The names should correspond to names of robots passed to the Game object
  * @property grid A 2D-Arraylist of all tiles in the level
  * @property players All of the RobotPlayers in the level
+ * @property victoryType The type of victory in this level
+ * @property itemPositionData The items and position using for Victory.ITEM_POSITION victory condition. Null if other victory.
  */
 class Level(var properties: Properties) {
     /**
@@ -45,6 +54,16 @@ class Level(var properties: Properties) {
                           val useForLoop : Boolean,
                           val useReadSensor : Boolean)
 
+    /**
+     * A position to check for items at. Used for Victory.ITEM_POSITION victory condition
+     * @param x The x position of the tile to check
+     * @param y The y position of the tile to check
+     * @param itemInventory The inventory representing the items that should be there
+     */
+    data class ItemPositionData(val x : Int,
+                                val y : Int,
+                                val itemInventory: ItemInventory)
+
     var conditions = Level.Conditions(true,
             true,
             true,
@@ -53,6 +72,9 @@ class Level(var properties: Properties) {
             true,
             true,
             true)
+
+    var victoryType = VictoryType.TILE
+    var itemPositionData : ItemPositionData? = null
 
     private var grid = arrayListOf<ArrayList<Tile>>()
     val players: HashMap<String, RobotPlayer> = hashMapOf()
@@ -129,5 +151,21 @@ class Level(var properties: Properties) {
      */
     fun tileAt(x: Int, y: Int): Tile {
         return grid[y][x]
+    }
+
+    /**
+     *
+     */
+    fun checkForVictory(player: RobotPlayer) : Boolean{
+        if (victoryType == VictoryType.TILE){
+            return isOnVictoryTile(player)
+        }
+        return false
+    }
+
+    private fun isOnVictoryTile(player: RobotPlayer) : Boolean{
+        if (this.tileAt(player.x, player.y) is VictoryTile) return true
+
+        return false
     }
 }

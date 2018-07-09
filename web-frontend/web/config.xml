@@ -20,6 +20,7 @@
 	-->
 	<levels>
 		<level name="Level 1" difficulty="1">
+			<victory type="tile"/>
 			<robot name="Surus" x="0" y="8" direction="up"/>
 			<robot name="Hushpuppy" x="3" y="3" direction="up"/>
 			<grid>
@@ -157,6 +158,7 @@
 		</level>
 
 		<level name="Level 2" difficulty="99">
+			<victory type="tile"/>
 			<robot name="Surus" x="0" y="1" direction="down"/>
 			<grid>
 				<gridRow>
