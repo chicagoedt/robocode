@@ -3,6 +3,7 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import JQueryEventObject
 import org.chicagoedt.robocode.sensors.EmptySensor
+import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.editor.actionblocks.*
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.w3c.dom.HTMLElement
@@ -13,6 +14,8 @@ import kotlin.browser.document
  * The section of the screen where users can select blocks
  * @param parent The parent element for this drawer
  * @property element The HTML element for this drawer
+ * @property actionDeleteElement The HTML element for the area to drag actions to delete them
+ * @property sensorDeleteElement The HTML element for the area to drag sensors to delete them
  */
 class Drawer(val parent : HTMLElement) {
     val element = document.getElementById("drawer") as HTMLElement
@@ -114,12 +117,30 @@ class Drawer(val parent : HTMLElement) {
      * Checks to make sure the drawer population is updates
      */
     fun populate() {
-        checkMoveActionBlock(0)
-        checkTurnActionBlock(1)
-        checkItemPickupActionBlock(2)
-        checkItemDropActionBlock(3)
-        checkForLoopActionBlockMacro(4)
-        checkReadSensorActionBlock(5)
+        var index = 0;
+        if (currentLevelConditions.useMove){
+            checkMoveActionBlock(index)
+            index++;
+        }
+        if (currentLevelConditions.useTurn){
+            checkTurnActionBlock(index)
+            index++;
+        }
+        if (currentLevelConditions.usePickUpItem){
+            checkItemPickupActionBlock(index)
+            index++;
+        }
+        if (currentLevelConditions.useDropItem){
+            checkItemDropActionBlock(index)
+            index++;
+        }
+        if (currentLevelConditions.useForLoop){
+            checkForLoopActionBlockMacro(index)
+            index++;
+        }
+        if (currentLevelConditions.useReadSensor){
+            checkReadSensorActionBlock(index)
+        }
     }
 
 

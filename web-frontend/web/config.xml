@@ -4,8 +4,22 @@
 		<robot name="Surus" graphic="res/robot/surus.svg"/>
 		<robot name="Hushpuppy" graphic="res/robot/hushpuppy.svg"/>
 	</robots>
+	<!--
+	Level options as follows:
+	useTopic: True if topic features should be enabled, false otherwise. Default true.
+	useSensors: True if sensor features should be enabled, false otherwise. Default true.
+	useMove: True if the Move block should be enabled, false otherwise. Default true.
+	useTurn: True if the Turn block should be enabled, false otherwise. Default true.
+	usePickUpItem: True if the Pick Up Item block should be enabled, false otherwise. Default true.
+	useDropItem: True if the Drop Item block should be enabled, false otherwise. Default true.
+	useForLoop: True if the For Loop block should be enabled, false otherwise. Default true.
+	useReadSensor: True if the Read Sensor block should be enabled, false otherwise. Default true.
+
+	Example:
+	<level name="Level 1" difficulty="1" useTopic="false" useMove="false">
+	-->
 	<levels>
-		<level name="Level 1" difficulty="1" useSensors="false">
+		<level name="Level 1" difficulty="1">
 			<robot name="Surus" x="0" y="8" direction="up"/>
 			<robot name="Hushpuppy" x="3" y="3" direction="up"/>
 			<grid>
