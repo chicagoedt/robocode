@@ -380,6 +380,150 @@ class BackendTests {
     }
 
     @Test
+    fun LevelItemPositionVictory(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
+
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        val itemInventory = ItemInventory()
+        itemInventory.addItem(Sand.id)
+        itemInventory.addItem(Sand.id)
+        val itemPositionData = Level.ItemPositionData(0, 2, itemInventory)
+
+        level1.victoryType = VictoryType.ITEM_POSITION
+        level1.itemPositionData = itemPositionData
+
+        val itemsTile = NeutralTile()
+        itemsTile.items.addItem(Sand.id)
+        itemsTile.items.addItem(Sand.id)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(itemsTile, NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val instruction = MoveAction()
+        instruction.parameter = 1
+        robotPlayer1.appendAction(instruction)
+
+        val instruction2 = ItemPickupAction()
+        instruction2.parameter = Sand.id
+        robotPlayer1.appendAction(instruction2)
+
+        val instruction3 = ItemPickupAction()
+        instruction3.parameter = Sand.id
+        robotPlayer1.appendAction(instruction3)
+
+        val instruction4 = MoveAction()
+        instruction4.parameter = 1
+        robotPlayer1.appendAction(instruction4)
+
+        val instruction5 = ItemDropAction()
+        instruction5.parameter = Sand.id
+        robotPlayer1.appendAction(instruction5)
+
+        val instruction6 = ItemDropAction()
+        instruction6.parameter = Sand.id
+        robotPlayer1.appendAction(instruction6)
+
+        game.attachEventListener {e ->
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+            }
+        }
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(won, true)
+    }
+
+    @Test
+    fun LevelItemPositionFailure(){
+        var won = false
+        val testRobots = ArrayList<Robot>()
+        val surus = Robot("Surus", "")
+        testRobots.add(surus)
+
+        val testLevels = ArrayList<Level>()
+
+        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+
+        val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
+
+        val list1 = ArrayList<RobotPlayer>()
+        list1.add(robotPlayer1)
+
+        level1.setPlayers(list1)
+
+        val itemInventory = ItemInventory()
+        itemInventory.addItem(Sand.id)
+        itemInventory.addItem(Sand.id)
+        val itemPositionData = Level.ItemPositionData(0, 2, itemInventory)
+
+        level1.victoryType = VictoryType.ITEM_POSITION
+        level1.itemPositionData = itemPositionData
+
+        val itemsTile = NeutralTile()
+        itemsTile.items.addItem(Water.id)
+        itemsTile.items.addItem(Water.id)
+
+        level1.makeGrid(arrayListOf(
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
+                arrayListOf(itemsTile, NeutralTile(), NeutralTile()),
+                arrayListOf(NeutralTile(), NeutralTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
+
+        testLevels.add(level1)
+
+        game = Game(testLevels, testRobots)
+
+        val instruction = MoveAction()
+        instruction.parameter = 1
+        robotPlayer1.appendAction(instruction)
+
+        val instruction2 = ItemPickupAction()
+        instruction2.parameter = Water.id
+        robotPlayer1.appendAction(instruction2)
+
+        val instruction3 = ItemPickupAction()
+        instruction3.parameter = Water.id
+        robotPlayer1.appendAction(instruction3)
+
+        val instruction4 = MoveAction()
+        instruction4.parameter = 1
+        robotPlayer1.appendAction(instruction4)
+
+        val instruction5 = ItemDropAction()
+        instruction5.parameter = Water.id
+        robotPlayer1.appendAction(instruction5)
+
+        game.attachEventListener {e ->
+            when (e){
+                Event.LEVEL_VICTORY -> won = true
+            }
+        }
+
+        robotPlayer1.runInstructions(false)
+
+        assertEquals(won, false)
+    }
+
+    @Test
     fun addSensors(){
         val distanceSensor  = DistanceSensor()
 

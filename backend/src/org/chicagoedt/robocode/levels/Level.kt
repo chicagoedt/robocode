@@ -154,18 +154,47 @@ class Level(var properties: Properties) {
     }
 
     /**
-     *
+     * Checks if the player has won the level according to the victory condition
+     * @param player The player to check the conditions for
+     * @return True if the player has won, false if they have not
      */
     fun checkForVictory(player: RobotPlayer) : Boolean{
         if (victoryType == VictoryType.TILE){
             return isOnVictoryTile(player)
         }
+        else if (victoryType == VictoryType.ITEM_POSITION){
+            return isItemPositionDataMatched()
+        }
         return false
     }
 
+    /**
+     * Checks if the player has won the level in a Victory.TILE victory condition scenario
+     * @param player The player to check the position for
+     * @return True if the player has won, false if they have not
+     */
     private fun isOnVictoryTile(player: RobotPlayer) : Boolean{
         if (this.tileAt(player.x, player.y) is VictoryTile) return true
 
         return false
+    }
+
+    /**
+     * Checks if the player has won the level in a Victory.ITEM_POSITION victory condition scenario
+     * @return True if the player has won, false if they have not
+     */
+    private fun isItemPositionDataMatched() : Boolean{
+        val inv1 = itemPositionData!!.itemInventory
+        val inv2 = this.tileAt(itemPositionData!!.x, itemPositionData!!.y).items
+
+        val inv1Types = inv1.allItemTypes()
+
+        for (type in inv1Types){
+            if (inv1.itemQuantity(type) != inv2.itemQuantity(type)){
+                return false
+            }
+        }
+
+        return true
     }
 }
