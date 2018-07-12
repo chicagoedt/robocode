@@ -277,6 +277,10 @@ td, th, tr {
 	cursor: pointer;
 }
 
+.disabledPanelHeaderButton{
+	background-color: #c2c2c2;
+}
+
 .gridTileCell{
 	border: 1px solid black;
 }

@@ -5,12 +5,18 @@ import org.chicagoedt.robocode.robots.Robot
 
 /**
  * A signal to communicate with the client running the program
- * @property LEVEL_VICTORY A robot has reached a victory tile
+ * @property LEVEL_VICTORY A robot has achieved the victory condition for the level
+ * @property LEVEL_UPDATE The game board has been updated (and the UI needs to reflect the update)
+ * @property LEVEL_FAILURE The robot  has finished its run and has not reached victory
+ * @property ROBOT_RUN_START A robot has started running its actions
+ * @property ROBOT_RUN_END A robot has finished running its actions
  */
 enum class Event {
     LEVEL_VICTORY,
     LEVEL_UPDATE,
-    LEVEL_FAILURE
+    LEVEL_FAILURE,
+    ROBOT_RUN_START,
+    ROBOT_RUN_END
 }
 
 /**
@@ -21,7 +27,17 @@ var mainTopic = Topic()
 /**
  * A callback lambda when an event occurs
  */
-internal var eventListener : (Event) -> Unit = {}
+internal var eventListeners : ArrayList<(Event) -> Unit> = arrayListOf()
+
+/**
+ * Calls all event listeners with the specified event
+ * @param event The event to call all listeners with
+ */
+internal fun broadcastEvent(event : Event){
+    for (listener in eventListeners){
+        listener(event)
+    }
+}
 
 /**
  * The main class to start a game of robocode
@@ -52,12 +68,19 @@ class Game (private val levelsList: ArrayList<Level>,
     }
 
     /**
-     * Replaces the current event listener.
-     *
+     * Adds a listener for all game events
      * @param newEventListener A lambda to be called when an occurs. The parameter is the event occurring
      */
     fun attachEventListener(newEventListener: (Event) -> Unit){
-        eventListener = newEventListener
+        eventListeners.add(newEventListener)
+    }
+
+    /**
+     * Removes a listener from receiving events
+     * @param eventListener A lambda that is already an event listener
+     */
+    fun removeEventListener(newEventListener: (Event) -> Unit){
+        eventListeners.remove(newEventListener)
     }
 
     /**

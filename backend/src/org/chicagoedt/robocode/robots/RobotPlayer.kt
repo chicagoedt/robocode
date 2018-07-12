@@ -225,6 +225,7 @@ class RobotPlayer(val name: String,
      * @param clear The function to call once all intervals have been run
      */
     fun runInstructions(reset : Boolean, run: (() -> Unit) -> Unit, clear: () -> Unit){
+        broadcastEvent(Event.ROBOT_RUN_START)
         val procedureCopy = arrayListOf<Action<Any>>()
         procedureCopy.addAll(getProcedure() as ArrayList<Action<Any>>)
         level.saveCheckpoint()
@@ -235,7 +236,7 @@ class RobotPlayer(val name: String,
                 actuallyRun = true
                 if (i < procedureCopy.size){
                     actuallyRun = interpretAction(procedureCopy[i] as Action<Any>, procedureCopy)
-                    eventListener.invoke(Event.LEVEL_UPDATE)
+                    broadcastEvent(Event.LEVEL_UPDATE)
                 }
                 else{
                     handleEndOfRun(reset)
@@ -247,7 +248,7 @@ class RobotPlayer(val name: String,
         }
         runNextAction()
         //console.log(procedureCopy)
-        run(runNextAction)
+        if (procedureCopy.size > 0) run(runNextAction)
     }
 
     /**
@@ -273,14 +274,15 @@ class RobotPlayer(val name: String,
     fun handleEndOfRun(reset : Boolean){
         val victory = level.checkForVictory(this)
         if (victory){
-            eventListener(Event.LEVEL_VICTORY)
+            broadcastEvent(Event.LEVEL_VICTORY)
         }
         else{
             if (reset){
                 level.restoreCheckpoint()
                 mainTopic.reset()
             }
-            eventListener.invoke(Event.LEVEL_FAILURE)
+            broadcastEvent(Event.LEVEL_FAILURE)
         }
+        broadcastEvent(Event.ROBOT_RUN_END)
     }
 }

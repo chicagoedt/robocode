@@ -15,11 +15,17 @@ import kotlin.browser.*
 class EditorDriver(val game : Game, val editor : HTMLElement){
 	var panelsTable = document.getElementById("panelsRow") as HTMLElement
 	val drawer = Drawer(editor)
+	val panels = arrayListOf<Panel>()
 
 	/**
 	 * Calculates everything necessary to switch levels
 	 */
 	fun calculateNewLevel(){
+		for (panel in panels){
+			panel.removeRunButtonListener()
+		}
+		panels.clear()
+
 		val cNode = panelsTable.cloneNode(false);
         panelsTable.parentNode!!.replaceChild(cNode, panelsTable);
         panelsTable = cNode as HTMLElement
@@ -27,6 +33,7 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 		val width = ((1.0  / game.currentLevel.players.size.toDouble()) * 100).toString() + "%"
 		for ((name, robot) in game.currentLevel.players){
 			val panel = Panel(panelsTable, robot, drawer)
+			panels.add(panel)
 			(panel.element.parentElement!! as HTMLElement).style.width = width
 		}
 

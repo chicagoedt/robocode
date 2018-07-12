@@ -3,12 +3,14 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import org.chicagoedt.robocode.robots.RobotPlayer
 import org.chicagoedt.robocode.actions.*
+import org.chicagoedt.robocodeweb.game
 import org.w3c.dom.events.Event
 import org.w3c.dom.*
 import kotlin.browser.*
 import kotlin.dom.addClass
 import kotlin.js.*
 import kotlin.*
+import kotlin.dom.removeClass
 
 /**
  * The area to show and manage the code corresponding to the robot
@@ -18,11 +20,15 @@ import kotlin.*
  * @property element The HTML element for this panel
  * @property lastHoveredBlock The last block that a draggable was hovered over
  * @property hoverOverHeader True if the header is being hovered over, false otherwise
+ * @property runButton The button that gets pressed to run the actions in this panel
+ * @property runButtonListener The listener for Robocode Events when the button is pressed
  */
 class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Drawer){
     lateinit var element : HTMLDivElement
     var lastHoveredBlock : ActionBlock<Action<Any>>? = null
     private var hoverOverHeader = false
+    private lateinit var runButton : HTMLButtonElement
+    private lateinit var runButtonListener : (org.chicagoedt.robocode.Event) -> Unit
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -136,7 +142,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         addHeaderDroppable(header)
 
-        val runButton = document.createElement("button") as HTMLElement
+        runButton = document.createElement("button") as HTMLButtonElement
         runButton.addClass("panelHeaderButton")
         runButton.innerHTML = "Go"
 
@@ -152,7 +158,31 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         }
         header.appendChild(runButton)
 
+        runButtonListener = {
+            when (it){
+                org.chicagoedt.robocode.Event.ROBOT_RUN_START ->{
+                    println("getting start")
+                    runButton.disabled = true
+                    runButton.addClass("disabledPanelHeaderButton")
+                }
+                org.chicagoedt.robocode.Event.ROBOT_RUN_END -> {
+                    println("getting end")
+                    runButton.disabled = false
+                    runButton.removeClass("disabledPanelHeaderButton")
+                }
+            }
+        }
+
+        game.attachEventListener(runButtonListener)
+
         return header
+    }
+
+    /**
+     * Removes the button event listener from the game
+     */
+    fun removeRunButtonListener(){
+        game.removeEventListener(runButtonListener)
     }
 
     /**

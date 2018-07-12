@@ -141,7 +141,7 @@ class Level(var properties: Properties) {
         for ((name, player) in players){
             player.restoreCheckpoint()
         }
-        eventListener.invoke(Event.LEVEL_UPDATE)
+        broadcastEvent(Event.LEVEL_UPDATE)
     }
 
     /**
