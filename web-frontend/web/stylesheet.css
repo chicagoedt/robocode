@@ -246,6 +246,10 @@ td, th, tr {
 	padding: 0px;
 }
 
+#panelsRow{
+	height: 100%;
+}
+
 .panelHeader{
 	width:calc(100% - 10px);
 	height:60px;
