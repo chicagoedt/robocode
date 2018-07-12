@@ -281,6 +281,25 @@ td, th, tr {
 	background-color: #c2c2c2;
 }
 
+.dragHint{
+	margin-top: 50px;
+	font-family: "Courier New";
+	text-align: center;
+	width: 100%;
+	font-size: 25px;
+}
+
+.dragHintText{
+	width: calc(100% - 20px);
+	margin: 10px;
+}
+
+.dragHintImage{
+	width: calc(100% - 20px);
+	margin: 10px;
+}
+
+
 .gridTileCell{
 	border: 1px solid black;
 }

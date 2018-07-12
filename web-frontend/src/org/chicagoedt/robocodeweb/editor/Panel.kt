@@ -29,6 +29,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
     private var hoverOverHeader = false
     private lateinit var runButton : HTMLButtonElement
     private lateinit var runButtonListener : (org.chicagoedt.robocode.Event) -> Unit
+    private var hintElement = document.createElement("div") as HTMLElement
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -38,8 +39,20 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         element.addClass("panel")
         element.asDynamic().panelObject = this
 
+        val hintImageElement = document.createElement("img") as HTMLImageElement
+        hintImageElement.src = "res/drag_hint.svg"
+        hintImageElement.addClass("dragHintImage")
+
+        val hintTextElement = document.createElement("div") as HTMLElement
+        hintTextElement.innerHTML = "Drag Blocks Here"
+        hintTextElement.addClass("dragHintText")
+
+        hintElement.addClass("dragHint")
+        hintElement.appendChild(hintTextElement)
+        hintElement.appendChild(hintImageElement)
 
         element.appendChild(getHeader())
+        element.appendChild(hintElement)
         tdElement.appendChild(element)
         parent.appendChild(tdElement)
 
@@ -108,7 +121,22 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
             newActionBlock.panelParent = this
         }
 
+        if (jQuery(hintElement).`is`(":visible")){
+            jQuery(hintElement).hide()
+        }
+
         drawer.populate()
+    }
+
+    /**
+     * Shows the "Drag Blocks Here" hint if there are no blocks left
+     */
+    fun checkAndShowHint(){
+        val blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
+        if (blocks.size == 0){
+            jQuery(hintElement).show()
+        }
+
     }
 
     /**

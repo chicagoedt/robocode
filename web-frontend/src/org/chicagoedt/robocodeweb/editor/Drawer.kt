@@ -64,14 +64,21 @@ class Drawer(val parent : HTMLElement) {
 
         val actionBlock : ActionBlock<*> = uiElement.asDynamic().block
 
+        var panel : Panel? = null
+
         if (uiElement.parentElement!!.classList.contains("panel")){
-            (uiElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(actionBlock.action)
+            panel = uiElement.parentElement!!.asDynamic().panelObject as Panel
+            panel.robot.removeAction(actionBlock.action)
         }
         else if (actionBlock.macroParent != null){
             actionBlock.macroParent!!.action.removeFromMacro(actionBlock.action)
         }
 
         uiElement.parentElement!!.removeChild(uiElement)
+
+        if (panel != null){
+            panel.checkAndShowHint()
+        }
 
         populate()
     }
