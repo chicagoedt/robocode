@@ -6,7 +6,9 @@ import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.editor.actionblocks.*
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.ItemArrayLike
 import org.w3c.dom.asList
 import kotlin.browser.document
 
@@ -21,6 +23,10 @@ class Drawer(val parent : HTMLElement) {
     val element = document.getElementById("drawer") as HTMLElement
     val actionDeleteElement = document.getElementById("actionDelete") as HTMLElement
     val sensorDeleteElement = document.getElementById("sensorDelete") as HTMLElement
+    private val allBlocks : List<HTMLElement>
+        get() {
+            return (element.querySelectorAll(".actionBlock") as ItemArrayLike<HTMLElement>).asList<HTMLElement>()
+        }
 
     init{
         element.asDynamic().drawer = this
@@ -159,7 +165,7 @@ class Drawer(val parent : HTMLElement) {
             block.addDraggable()
 
             try {
-                element.insertBefore(block.element, element.children.item(index))
+                element.insertBefore(block.element, allBlocks[index])
             } catch (e: Exception) {
                 element.appendChild(block.element)
             }
@@ -173,7 +179,7 @@ class Drawer(val parent : HTMLElement) {
             block.addDraggable()
 
             try {
-                element.insertBefore(block.element, element.children.item(index))
+                element.insertBefore(block.element, allBlocks[index])
             } catch (e: Exception) {
                 element.appendChild(block.element)
             }
@@ -187,7 +193,7 @@ class Drawer(val parent : HTMLElement) {
             block.addDraggable()
 
             try {
-                element.insertBefore(block.element, element.children.item(index))
+                element.insertBefore(block.element, allBlocks[index])
             } catch (e: Exception) {
                 element.appendChild(block.element)
             }
@@ -201,7 +207,7 @@ class Drawer(val parent : HTMLElement) {
             block.addDraggable()
 
             try {
-                element.insertBefore(block.element, element.children.item(index))
+                element.insertBefore(block.element, allBlocks[index])
             } catch (e: Exception) {
                 element.appendChild(block.element)
             }
@@ -215,7 +221,7 @@ class Drawer(val parent : HTMLElement) {
             block.addDraggable()
 
             try {
-                element.insertBefore(block.element, element.children.item(index))
+                element.insertBefore(block.element, allBlocks[index])
             } catch (e: Exception) {
                 element.appendChild(block.element)
             }
@@ -229,7 +235,7 @@ class Drawer(val parent : HTMLElement) {
             block.addDraggable()
 
             try {
-                element.insertBefore(block.element, element.children.item(index))
+                element.insertBefore(block.element, allBlocks[index])
             } catch (e: Exception) {
                 element.appendChild(block.element)
             }

@@ -104,6 +104,16 @@ body{
 	z-index: 5;
 }
 
+#drawerHeader{
+    font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    background: #9FA8DA;
+    padding: 10px;
+}
+
 .deleteDrawer{
 	border-radius: 10px;
 	display:none;
