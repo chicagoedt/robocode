@@ -161,12 +161,10 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         runButtonListener = {
             when (it){
                 org.chicagoedt.robocode.Event.ROBOT_RUN_START ->{
-                    println("getting start")
                     runButton.disabled = true
                     runButton.addClass("disabledPanelHeaderButton")
                 }
                 org.chicagoedt.robocode.Event.ROBOT_RUN_END -> {
-                    println("getting end")
                     runButton.disabled = false
                     runButton.removeClass("disabledPanelHeaderButton")
                 }
