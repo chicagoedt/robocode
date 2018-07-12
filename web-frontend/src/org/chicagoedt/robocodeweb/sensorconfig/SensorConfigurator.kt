@@ -24,6 +24,10 @@ class SensorConfigurator (){
     val drawer = SensorDrawer()
     var initialHeight = "0px"
     var initialWidth = "0px"
+    val shown : Boolean
+        get() {
+            return jQuery(element).`is`(":visible")
+        }
 
     lateinit var backSensorPanel : SensorPanel
     lateinit var frontSensorPanel : SensorPanel
@@ -56,8 +60,6 @@ class SensorConfigurator (){
         rightSensorPanel = SensorPanel(RobotPosition.RIGHT, playerTile, drawer)
 
         playerTile.imageElement.onclick = {toggleShowHide()}
-        playerTile.element.style.boxShadow = "0px 0px 40px grey"
-        playerTile.imageElement.style.cursor = "pointer"
 
         element.appendChild(backSensorPanel.element)
         element.appendChild(frontSensorPanel.element)

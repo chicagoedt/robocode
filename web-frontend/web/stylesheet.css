@@ -290,7 +290,14 @@ td, th, tr {
 }
 
 .gridPlayer{
+	box-shadow: 0px 0px 40px grey;
 	position: absolute;
+	cursor: pointer;
+}
+
+.gridPlayerNoClick{
+	box-shadow: 0px 0px 0px grey;
+	cursor: default;
 }
 
 .gridPlayerImage{

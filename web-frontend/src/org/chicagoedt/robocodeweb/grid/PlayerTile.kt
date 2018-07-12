@@ -12,13 +12,20 @@ import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.dom.addClass
+import kotlin.dom.removeClass
 
 /**
  * A screen element representing a player
  * @param player The player that this object represents
  * @param grid The grid that this player is on
- * @param x The starting X value of this player
- * @param y The starting Y value of this player
+ * @property element The main HTML element for this player
+ * @property imageElement The HTML element showing the image for this player
+ * @property sensorConfigurator The sensor configurator attached to this player
+ * @property currentX The X value of this player
+ * @property currentY The starting Y value of this player
+ * @property currentDirection The current direction that this player is facing
+ * @property startMovingListener The listener that sets the necessary properties on this robot to start when any robot is moving
+ * @property stopMovingListener The listener that sets the necessary properties on this robot to stop when any robot is moving
  */
 class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTile>>) {
     val element = document.createElement("div") as HTMLDivElement
@@ -27,6 +34,24 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
     private var currentX = player.x
     private var currentY = player.y
     private var currentDirection = RobotOrientation.DIRECTION_UP
+    private var startMovingListener : (org.chicagoedt.robocode.Event) -> Unit = {
+        if (it == org.chicagoedt.robocode.Event.ROBOT_RUN_START){
+            if (currentLevelConditions.useSensors){
+                val shown = sensorConfigurator.shown
+                if (shown){
+                    sensorConfigurator.toggleShowHide()
+                }
+                element.addClass("gridPlayerNoClick")
+            }
+        }
+    }
+    private var stopMovingListener : (org.chicagoedt.robocode.Event) -> Unit = {
+        if (it == org.chicagoedt.robocode.Event.ROBOT_RUN_END){
+            if (currentLevelConditions.useSensors){
+                element.removeClass("gridPlayerNoClick")
+            }
+        }
+    }
 
     init{
         element.addClass("gridPlayer")
@@ -38,12 +63,19 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
             sensorConfigurator.imageElement.src = imageElement.src
             sensorConfigurator.attachTo(this)
         }
+        else{
+            element.addClass("gridPlayerNoClick")
+        }
 
         element.appendChild(imageElement)
 
         document.getElementById("grid")!!.appendChild(element)
 
+        setStartMovingListener()
+        setStopMovingListener()
+
         this.refresh()
+
     }
 
     /**
@@ -63,23 +95,20 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
             val position = jQuery(grid[player.y][player.x].tableElement).position()
             jQuery(element).css("top", position.top)
             jQuery(element).css("left", position.left)
+            refreshSensorConfigPosition()
         }
 
         if (directionChanged){
             changeDirection()
         }
-
-        sensorConfigurator.element.style.top = element.getBoundingClientRect().bottom.toString() + "px"
-        sensorConfigurator.element.style.left = element.getBoundingClientRect().left.toString() + "px"
-        val areaToBottom = window.innerHeight - element.getBoundingClientRect().bottom
-        sensorConfigurator.element.style.maxHeight = (areaToBottom - 5.0).toString() + "px"
-
     }
 
     /**
      * Removes this player from the grid
      */
     fun remove(){
+        removeStartMovingListener()
+        removeStopMovingListener()
         element.parentElement!!.removeChild(element)
         imageElement.parentElement!!.removeChild(imageElement)
         sensorConfigurator.element.parentElement!!.removeChild(sensorConfigurator.element)
@@ -110,7 +139,19 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         properties.top = position.top
         properties.left = position.left
 
-        jQuery(element).animate(properties, 100)
+        jQuery(element).animate(properties, 100, {
+            refreshSensorConfigPosition()
+        })
+    }
+
+    /**
+     * Sets the position of the sensor configurator relative to the position of this player
+     */
+    private fun refreshSensorConfigPosition(){
+        sensorConfigurator.element.style.top = element.getBoundingClientRect().bottom.toString() + "px"
+        sensorConfigurator.element.style.left = element.getBoundingClientRect().left.toString() + "px"
+        val areaToBottom = window.innerHeight - element.getBoundingClientRect().bottom
+        sensorConfigurator.element.style.maxHeight = (areaToBottom - 5.0).toString() + "px"
     }
 
     /**
@@ -121,6 +162,34 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         element.style.width = width.toString() + "px"
         element.style.height = width.toString() + "px"
         element.style.fontSize = (width - 5).toString() + "px"
+    }
+
+    /**
+     * Sets the sensor configurator to minimize when any robot is run
+     */
+    private fun setStartMovingListener(){
+        game.attachEventListener(startMovingListener)
+    }
+
+    /**
+     * Removes the listener set in [setStartMovingListener]
+     */
+    private fun removeStartMovingListener(){
+        game.removeEventListener(startMovingListener)
+    }
+
+    /**
+     * Sets the sensor configurator to minimize when any robot is run
+     */
+    private fun setStopMovingListener(){
+        game.attachEventListener(stopMovingListener)
+    }
+
+    /**
+     * Removes the listener set in [setWhileMovingListener]
+     */
+    private fun removeStopMovingListener(){
+        game.removeEventListener(stopMovingListener)
     }
 
 }
