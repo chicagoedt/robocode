@@ -2,12 +2,16 @@ body{
 	background-color: #ffffff;
 	--grid-width: 35%;
 	--drawer-width: 20%;
+
+	--header-color: #3F51B5;
+	--panel-color: #9DA6DB;
+	--drawer-color: #BBDEFB;
 }
 
 #header{
 	height: 50px;
 	width: 100%;
-	background-color: #3F51B5;
+	background-color: var(--header-color);
 	box-shadow: 0px 2px 5px grey;
 	z-index: 199;
 	position: relative;
@@ -50,7 +54,6 @@ body{
 	font-family: Verdana;
 	text-align: center;
 }
-
 
 #grid{
 	position:fixed;
@@ -97,7 +100,7 @@ body{
 	height:calc(100% - 50px);
 	left: calc(100% - var(--drawer-width));
 	float: right;
-	background-color: #BBDEFB;
+	background-color: var(--drawer-color);
 	box-shadow: 0px 0px 2px grey;
 	z-index: 10;
 	overflow: auto;
@@ -110,8 +113,9 @@ body{
     color: white;
     text-transform: uppercase;
     text-align: center;
-    background: #9FA8DA;
+    background: var(--header-color);
     padding: 10px;
+	margin-top: 5px;
 }
 
 .deleteDrawer{
@@ -144,7 +148,7 @@ table{
 }
 
 .panel{
-	background-color: #9DA6DB;
+	background-color: var(--panel-color);
 	height: calc(95% - 10px);
 	margin: 10px;
 	box-shadow: 0px 0px 2px grey;
@@ -265,7 +269,7 @@ td, th, tr {
 	height:60px;
 	line-height: 60px;
 	text-align: center;
-	background-color: #454FFF;
+	background-color: var(--header-color);
 	padding-left: 10px;
 	font-family: Verdana;
     font-weight: bold;
