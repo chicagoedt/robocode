@@ -121,6 +121,8 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
             newActionBlock.panelParent = this
         }
 
+        newActionBlock.macroParent = null
+
         if (jQuery(hintElement).`is`(":visible")){
             jQuery(hintElement).hide()
         }
