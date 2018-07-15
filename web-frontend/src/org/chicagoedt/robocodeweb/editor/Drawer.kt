@@ -82,10 +82,6 @@ class Drawer(val parent : HTMLElement) {
 
         uiElement.parentElement!!.removeChild(uiElement)
 
-        if (panel != null){
-            panel.checkAndShowHint()
-        }
-
         populate()
     }
 
@@ -159,8 +155,8 @@ class Drawer(val parent : HTMLElement) {
 
     //there is a more elegant way to check these blocks, but kotlinJS doesn't support the necessary reflection methods yet
     fun checkMoveActionBlock(index: Int) {
-        if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is MoveActionBlock)) {
+        if (allBlocks.size <= index ||
+                !(allBlocks[index].asDynamic().block is MoveActionBlock)) {
             val block = MoveActionBlock()
             block.addDraggable()
 
@@ -173,8 +169,8 @@ class Drawer(val parent : HTMLElement) {
     }
 
     fun checkTurnActionBlock(index: Int) {
-        if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is TurnActionBlock)) {
+        if (allBlocks.size <= index ||
+                !(allBlocks[index].asDynamic().block is TurnActionBlock)) {
             val block = TurnActionBlock()
             block.addDraggable()
 
@@ -187,8 +183,8 @@ class Drawer(val parent : HTMLElement) {
     }
 
     fun checkItemPickupActionBlock(index: Int) {
-        if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is ItemPickupActionBlock)) {
+        if (allBlocks.size <= index ||
+                !(allBlocks[index].asDynamic().block is ItemPickupActionBlock)) {
             val block = ItemPickupActionBlock()
             block.addDraggable()
 
@@ -201,8 +197,8 @@ class Drawer(val parent : HTMLElement) {
     }
 
     fun checkItemDropActionBlock(index: Int) {
-        if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is ItemDropActionBlock)) {
+        if (allBlocks.size <= index ||
+                !(allBlocks[index].asDynamic().block is ItemDropActionBlock)) {
             val block = ItemDropActionBlock()
             block.addDraggable()
 
@@ -215,8 +211,8 @@ class Drawer(val parent : HTMLElement) {
     }
 
     fun checkForLoopActionBlockMacro(index: Int) {
-        if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is ForLoopActionBlockMacro)) {
+        if (allBlocks.size <= index ||
+                !(allBlocks[index].asDynamic().block is ForLoopActionBlockMacro)) {
             val block = ForLoopActionBlockMacro(this)
             block.addDraggable()
 
@@ -229,8 +225,8 @@ class Drawer(val parent : HTMLElement) {
     }
 
     fun checkReadSensorActionBlock(index: Int) {
-        if (element.children.length <= index ||
-                !(element.children.item(index).asDynamic().block is ReadSensorActionBlock)) {
+        if (allBlocks.size <= index ||
+                !(allBlocks[index].asDynamic().block is ReadSensorActionBlock)) {
             val block = ReadSensorActionBlock()
             block.addDraggable()
 

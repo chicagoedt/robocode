@@ -9,6 +9,7 @@ import org.chicagoedt.robocode.actions.*
 import org.chicagoedt.robocode.mainTopic
 import org.chicagoedt.robocode.sensors.EmptySensor
 import org.chicagoedt.robocodeweb.currentLevelConditions
+import org.chicagoedt.robocodeweb.editorDriver
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.chicagoedt.robocodeweb.showPopup
 import org.w3c.dom.HTMLInputElement
@@ -365,6 +366,8 @@ abstract class ActionBlock<T : Action<*>>(){
         jQuery(actionDeleteDrawer).fadeOut(actionDeleteFadeTime)
         element.style.backgroundColor = ""
         element.style.boxShadow = ""
+
+        editorDriver.checkAllPanelHints()
     }
 
     /**

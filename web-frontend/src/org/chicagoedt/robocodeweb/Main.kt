@@ -17,12 +17,12 @@ internal lateinit var game : Game
 /**
  * The driver for the grid canvas
  */
-private lateinit var gridDriver : GridDriver
+internal lateinit var gridDriver : GridDriver
 
 /**
  * The driver for the editor area
  */
-private lateinit var editorDriver : EditorDriver
+internal lateinit var editorDriver : EditorDriver
 
 /**
  * The configurator for the game

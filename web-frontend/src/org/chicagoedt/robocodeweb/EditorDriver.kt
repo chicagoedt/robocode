@@ -41,4 +41,13 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 
 		drawer.refresh()
 	}
+
+	/**
+	 * Checks all hints in the Panels, and shows them if necessary
+	 */
+	fun checkAllPanelHints(){
+		for (panel in panels){
+			panel.checkAndShowHint()
+		}
+	}
 }
