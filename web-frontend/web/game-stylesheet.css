@@ -1,0 +1,566 @@
+body{
+	background-color: #ffffff;
+	--grid-width: 35%;
+	--drawer-width: 20%;
+
+	--header-color: #3F51B5;
+	--panel-color: #9DA6DB;
+	--drawer-color: #BBDEFB;
+}
+
+#header{
+	height: 50px;
+	width: 100%;
+	background-color: var(--header-color);
+	box-shadow: 0px 2px 5px grey;
+	z-index: 199;
+	position: relative;
+	font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+}
+
+#leftPane{
+	position: fixed;
+	width: var(--grid-width);
+	height:100%;
+}
+
+#topic{
+	margin: 10px;
+	box-shadow: 0px 0px 2px grey;
+	width: 40%;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #FFEB3B;
+	line-height: 30px;
+	padding: 10px;
+	font-family: Verdana;
+	text-align: left;
+	cursor: default;
+}
+
+#topicValue{
+	float: right;
+	box-shadow: 0px 0px 2px grey;
+	width: 20%;
+	height: 10px;
+	border-radius: 2px;
+	background-color: #FFFFFF;
+	line-height: 10px;
+	padding: 10px;
+	font-family: Verdana;
+	text-align: center;
+}
+
+#grid{
+	position:fixed;
+	top: 50px;
+	left: 0;
+	width: calc(var(--grid-width) - 20px);
+	margin: 10px;
+	float:left;
+	z-index: 5;
+	box-shadow: 0px 0px 2px grey;
+	background-color: #8BC34A;
+}
+
+#editor{
+	top:50px;
+	position: fixed;
+	width: calc(100% - var(--grid-width));
+	height: calc(100% - 50px);
+	left: var(--grid-width);
+	overflow: hidden;
+}
+
+#panelTable{
+	position: absolute;
+	width:100%;
+	height:100%;
+}
+
+#panelContainer{
+	display:none;
+	position: fixed;
+	width:calc(100% - var(--drawer-width) - var(--grid-width));
+	height:calc(100% - 50px);
+	right: var(--drawer-width);
+	left: var(--grid-width);
+	float: left;
+	overflow: auto;
+}
+
+#drawer{
+	display:none;
+	position: fixed;
+	width:var(--drawer-width);
+	height:calc(100% - 50px);
+	left: calc(100% - var(--drawer-width));
+	float: right;
+	background-color: var(--drawer-color);
+	box-shadow: 0px 0px 2px grey;
+	z-index: 10;
+	overflow: auto;
+	z-index: 5;
+}
+
+#drawerHeader{
+    font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    background: var(--header-color);
+    padding: 10px;
+	margin-top: 5px;
+}
+
+.deleteDrawer{
+	border-radius: 10px;
+	display:none;
+	position: absolute;
+	width:calc(100% - 10px);
+	height: 14vh;
+	bottom: 0;
+	opacity: 10%;
+	background: #9fb9d6;
+	z-index: 299;
+	margin: 5px;
+	box-shadow: 0px 0px 2px grey;
+}
+
+.trashIcon{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+}
+
+table{
+	border-spacing: 0px;
+}
+
+.panelTd{
+	min-width: 300px;
+}
+
+.panel{
+	background-color: var(--panel-color);
+	height: calc(95% - 10px);
+	margin: 10px;
+	box-shadow: 0px 0px 2px grey;
+	border-radius: 0px;
+	overflow: auto;
+}
+
+.actionBlock{
+	position: relative;
+	width:calc(100% - 30px);
+	height:20px;
+	box-shadow: 0px 0px 20px grey;
+	line-height: 20px;
+	text-align: center;
+	padding: 10px;
+	font-family: Verdana;
+    text-align: left;
+	cursor: default;
+	margin: 5px;
+}
+
+.actionBlockParameter{
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	max-height:20px;
+	padding: 0;
+	width:40%;
+	z-index: 6;
+	bottom: 10px;
+}
+
+.topicSelectorInput{
+	position: absolute;
+	bottom: 100%;
+	background: #222222;
+	color: white;
+	font-family: Verdana;
+	box-shadow: 0px 0px 20px grey;
+	font-size: 10px;
+	height:12px;
+	line-height: 12px;
+	cursor: pointer;
+	width: calc(100% - 4px);
+	text-align: center;
+	z-index: 699;
+}
+
+.actionBlockNumberInput{
+	width: 100%;
+	height: calc(100% - 5px);
+}
+
+.actionBlockMacro{
+	padding: 0;
+	min-height: 45px;
+	height: auto;
+	width:calc(100% - 20px);
+	padding-bottom: 15px;
+	padding-left: 10px;
+}
+
+.macroHeader{
+	margin-left: -10px;
+	width:calc(100%);
+	height:40px;
+	line-height: 40px;
+	text-align: center;
+	padding-left: 10px;
+	text-align: left;
+}
+
+.macroFooter{
+	position: absolute;
+	bottom: 0;
+	width:calc(100% - 10px);
+	height:15px;
+}
+
+.macroSide{
+	position: absolute;
+	bottom: 0;
+	height:calc(100% - 40px);
+	left: 0;
+	width: 10px;
+}
+
+.movementBlock{
+	background-color: #DCEDC8;
+}
+
+.itemsBlock{
+	background-color: #FFC107;
+}
+
+.controlBlock{
+	background-color: #311B92;
+}
+
+.controlBlockBorder{
+	background-color: #f17bff;
+}
+
+.sensorActionBlock{
+	background-color: #ff8e75;
+}
+
+td, th, tr {
+	padding: 0px;
+}
+
+#panelsRow{
+	height: 100%;
+}
+
+.panelHeader{
+	width:calc(100% - 10px);
+	height:60px;
+	line-height: 60px;
+	text-align: center;
+	background-color: var(--header-color);
+	padding-left: 10px;
+	font-family: Verdana;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+.panelHeaderButton{
+	height:calc(100% - 20px);
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	border-radius: 5px;
+	width:20%;
+	float: right;
+	font-family: Verdana;
+	background-color: white;
+	cursor: pointer;
+}
+
+.disabledPanelHeaderButton{
+	background-color: #c2c2c2;
+}
+
+.dragHint{
+	margin-top: 50px;
+	font-family: "Courier New";
+	text-align: center;
+	width: 100%;
+	font-size: 25px;
+}
+
+.dragHintText{
+	width: calc(100% - 20px);
+	margin: 10px;
+}
+
+.dragHintImage{
+	width: calc(100% - 20px);
+	margin: 10px;
+}
+
+
+.gridTileCell{
+	border: 1px solid black;
+}
+
+.gridTile{
+	width: auto;
+}
+
+.gridPlayer{
+	box-shadow: 0px 0px 40px grey;
+	position: absolute;
+	cursor: pointer;
+}
+
+.gridPlayerNoClick{
+	box-shadow: 0px 0px 0px grey;
+	cursor: default;
+}
+
+.gridPlayerImage{
+	height: 100%;
+	width: 100%;
+}
+
+.obstacleTile{
+	background-color: #8f90b7;
+}
+
+.neutralTile{
+	background-color: #b0f6a9;
+}
+
+.victoryTile{
+	background-color: #fffab7;
+}
+
+.itemQuantityContainer{
+	position: relative;
+	width: 100%;
+	height:100%;
+}
+
+.itemQuantityText{
+	position: absolute;
+	font-family: Verdana;
+	right: 0;
+	top: 0;
+	font-size: 2vw;
+	z-index: 2;
+}
+
+.itemQuantityImage{
+	width: 100%;
+	height:100%;
+	z-index: 1;
+}
+
+.popup{
+	display: none;
+	position: absolute;
+	width: 15%;
+	height: 80px;
+	bottom:20px;
+	right:20px;
+	background-color: white;
+	box-shadow: 0px 0px 2px grey;
+	z-index: 999;
+	padding: 10px;
+
+	font-family: Verdana;
+    text-align: left;
+    font-size: 3vw;
+    
+}
+
+.popupText{
+	position: absolute;
+	float: left;
+	left: 20px;
+	right: 20px;
+	height: calc(100% - 20px);
+	width: calc(100% - 40px);
+	font-family: Verdana;
+	text-align: center;
+	font-size: 40px;
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+
+.popupButton{
+	position: absolute;
+	width: 30%;
+	height: 24px;
+	font-size: 0.7vw;
+	border-radius: 5px;
+	background-color: white;
+	bottom : -12px;
+	left : 35%;
+	cursor: pointer;
+}
+
+.popupDismissButton{
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	right: 8px;
+	top: 8px;
+	cursor: pointer;
+}
+
+.popupExpandButton{
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	right: 8px;
+	bottom: 8px;
+	cursor: pointer;
+}
+
+.sensorConfigurator{
+	background-color: #d6d6d6;
+	position: absolute;
+	width: 40%;
+	height: 30%;
+	box-shadow: 0px 0px 6px grey;
+	z-index: 299;
+	overflow: auto;
+	border-radius: 10px;
+}
+
+.sensorConfigImage{
+	position: absolute;
+	top: 30%;
+	left: calc(40% + 25px);
+	height: calc(40% - 10px);
+	width: calc(40% - 35px);
+}
+
+.sensorDrawer{
+	width: 20%;
+	height: calc(100% - 10px);
+	box-shadow: 0px 0px 2px grey;
+	background-color: #f0f0a4;
+	float: left;
+	padding: 5px;
+}
+
+.sensorBlock{
+	font-family: Verdana;
+	box-shadow: 0px 0px 20px grey;
+	border-color: black;
+	border-width: thin;
+	border-radius: 12px;
+	width: calc(100% - 16px);
+	height: 100%;
+	max-height: 20px;
+	z-index: 399;
+	cursor: default;
+	text-align: center;
+	padding: 5px;
+	margin: 3px;
+	font-size: 0.72vw;
+
+}
+
+.distanceSensorBlock{
+	background-color: #0b97c4;
+}
+
+.sensorList{
+	overflow: auto;
+	border-color: gray;
+	border-style: solid;
+	border-width: 1px;
+	position: absolute;
+	left: calc(40% + 20px);
+	margin: 5px;
+	height: 30%;
+	width: calc(40% - 35px);
+	background: white;
+	box-shadow: 0px 0px 2px grey;
+}
+
+.sensorListTitle{
+	position: absolute;
+	font-family: Verdana;
+	width: 100%;
+	height: 20px;
+	color: gray;
+	text-align: center;
+}
+
+.sensorListRemaining{
+	font-family: Verdana;
+	width: 100%;
+	height: 20px;
+	text-align: center;
+	background: gray;
+}
+
+.sideSensorList{
+	margin: 5px;
+	height: calc(60% - 30px);
+	width: 20%;
+	top: calc(20% + 10px);
+}
+
+.backSensorList{
+	bottom: 0;
+}
+
+.frontSensorList{
+	top: 0;
+}
+
+.leftSensorList{
+	left: calc(20% + 15px);
+}
+
+.rightSensorList{
+	left: calc(80% - 10px);
+}
+
+.actionSensorDrop{
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	width: 40%;
+	height: calc(100% - 4px);
+}
+
+.sensorBlockTooltip{
+	position: absolute;
+	bottom: 100%;
+	background: #FFFFFF7F;
+	font-family: Verdana;
+	box-shadow: 0px 0px 2px grey;
+	font-size: 12px;
+}
+
+.sensorBlockInAction{
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	font-size: 10px;
+}
+
+.sensorInActions{
+	background-color: #FFFFFF;
+}
