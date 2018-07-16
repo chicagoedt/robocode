@@ -36,3 +36,33 @@ body{
     text-align: center;
     font-size: 20px;
 }
+
+#footer{
+    height: 20px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    font-size: 15px;
+}
+
+/*#edt-credit{*/
+    /*background-color: black;*/
+/*}*/
+
+#edt-credit a{
+    text-decoration: none;
+    position: absolute;
+    color: black;
+    width: auto;
+    background-color: white;
+    bottom: 10px;
+    padding: 10px;
+    padding-top: 7px;
+    box-shadow: 0 0 20px grey;
+}
+
+#edt-credit a:visited{
+    text-decoration: none;
+    color: black;
+}
