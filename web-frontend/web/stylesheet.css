@@ -38,7 +38,6 @@ body{
 }
 
 #footer{
-    height: 20px;
     position: absolute;
     bottom: 10px;
     left: 10px;
@@ -46,23 +45,32 @@ body{
     font-size: 15px;
 }
 
-/*#edt-credit{*/
-    /*background-color: black;*/
-/*}*/
+.footer-credit{
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 0 20px grey;
+    bottom: 10px;
+    padding: 10px;
+    height: 20px;
+}
 
 #edt-credit a{
     text-decoration: none;
     position: absolute;
     color: black;
     width: auto;
-    background-color: white;
-    bottom: 10px;
-    padding: 10px;
-    padding-top: 7px;
-    box-shadow: 0 0 20px grey;
+
 }
 
 #edt-credit a:visited{
     text-decoration: none;
     color: black;
+}
+
+#github{
+    right: 10px;
+}
+
+#github img{
+    height: 100%;
 }
