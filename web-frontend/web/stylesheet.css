@@ -4,6 +4,9 @@ body{
 
     --content-padding: 20px;
     --header-height: 20%;
+    --default-shadow: 0 0 20px grey;
+    --hover-shadow: 0 0 40px grey;
+    --button-height: 100px;
     font-family: Verdana;
 }
 
@@ -22,9 +25,9 @@ body{
 }
 
 #screenshot{
-    display: block;
+    display: inline-block;
     width: 50%;
-    box-shadow: 0 0 20px grey;
+    box-shadow: var(--default-shadow);
     float: left;
 }
 
@@ -37,6 +40,35 @@ body{
     font-size: 20px;
 }
 
+#play_container{
+    display: inline-block;
+    width: 100%;
+    height: var(--button-height);;
+    margin-top: 50px;
+    text-align: center;
+}
+
+#play{
+    display: inline-block;
+    font-size: 50px;
+    margin: 0 auto;
+    width: 400px;
+    background-color: #A5D6A7;
+    height: 100%;
+    box-shadow: var(--default-shadow);
+    line-height: var(--button-height);
+    text-decoration: none;
+}
+
+#play:hover{
+    box-shadow: var(--hover-shadow);
+}
+
+#play_link{
+    text-decoration: none;
+    color: black;
+}
+
 #footer{
     position: absolute;
     bottom: 10px;
@@ -46,25 +78,32 @@ body{
 }
 
 .footer-credit{
-    position: absolute;
+    position: fixed;
     background-color: white;
-    box-shadow: 0 0 20px grey;
+    box-shadow: var(--default-shadow);
     bottom: 10px;
     padding: 10px;
     height: 20px;
+    width: 20px;
+}
+
+.footer-credit:hover{
+    box-shadow: var(--hover-shadow);
+}
+
+#edt-credit{
+    float: right;
+    right: 60px;
 }
 
 #edt-credit a{
     text-decoration: none;
-    position: absolute;
     color: black;
     width: auto;
-
 }
 
-#edt-credit a:visited{
-    text-decoration: none;
-    color: black;
+#edt-credit img{
+    height: 100%;
 }
 
 #github{
