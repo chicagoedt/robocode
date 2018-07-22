@@ -34,7 +34,7 @@ private lateinit var configDriver : ConfigDriver
  */
 internal lateinit var currentLevelConditions : Level.Conditions
 
-fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>){
+fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>, themes: ArrayList<Level.Theme>){
     game = Game(levels, robots)
     game.attachEventListener(::update)
     window.onresize = {onResize()}

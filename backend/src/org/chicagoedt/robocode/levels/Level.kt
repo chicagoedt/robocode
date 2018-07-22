@@ -55,6 +55,20 @@ class Level(var properties: Properties) {
                           val useReadSensor : Boolean)
 
     /**
+     * The theme to display for the level
+     * @param victoryImg The path to the image to display on a victory tile
+     * @param victoryString The name to call the victory tile
+     * @param obstacleImg The path to the image to display on an obstacle tile
+     * @param obstacleString The name to call the obstacle tile
+     * @param neutralImg The path to the image to display on a neutral tile
+     */
+    data class Theme(val victoryImg : String,
+                     val victoryString : String,
+                     val obstacleImg : String,
+                     val obstacleString : String,
+                     val neutralImg : String)
+
+    /**
      * A position to check for items at. Used for Victory.ITEM_POSITION victory condition
      * @param x The x position of the tile to check
      * @param y The y position of the tile to check

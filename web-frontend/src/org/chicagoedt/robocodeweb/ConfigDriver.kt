@@ -16,7 +16,7 @@ import org.chicagoedt.robocode.collectibles.etc.Water
  * Retrieves and parses the configuration file
  * @param name The name of the configuration file
  */
-class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayList<Level>) -> Unit){
+class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayList<Level>, ArrayList<Level.Theme>) -> Unit){
 	val request = XMLHttpRequest()
 
 	init{
@@ -36,11 +36,13 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val game = xml.querySelector("game")!!
 			val robots = game.querySelector("robots")!!
 			val levels = game.querySelector("levels")!!
+			val themes = game.querySelector("themes")!!
 			
 			val robotsList = readRobots(robots)
+			val themesList = readThemes(themes)
 			val levelsList = readLevels(levels)
-
-			callback.invoke(robotsList, levelsList)
+			
+			callback.invoke(robotsList, levelsList, themesList)
 		}
 	}
 
@@ -189,6 +191,43 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			level.itemPositionData = Level.ItemPositionData(x, y, inventory)
 			level.victoryType = VictoryType.ITEM_POSITION
 		}
+	}
+
+	/**
+	 * Reads the global themes for the game
+	 * @param themesElement The element containing the theme XML
+	 * @return An arraylist of Level.Theme objects
+	 */
+	fun readThemes(themesElement : Element) : ArrayList<Level.Theme>{
+		val themes = arrayListOf<Level.Theme>()
+		val themesElementList = themesElement.querySelectorAll("theme").asList() as List<Element>
+		for (theme in themesElementList){
+			var victoryImg = ""
+			var victoryString = "Victory"
+			var obstacleImg = ""
+			var obstacleString = "Obstacle"
+			var neutralImg = ""
+
+			val blocks = theme.querySelectorAll("block").asList() as List<Element>
+			for (block in blocks){
+				val type = block.getAttribute("type")
+				if (type == "victory"){
+					if (block.getAttribute("img") != null) victoryImg = block.getAttribute("img")!!
+					if (block.getAttribute("name") != null) victoryString = block.getAttribute("name")!!
+				}
+				else if (type == "obstacle"){
+					if (block.getAttribute("img") != null) obstacleImg = block.getAttribute("img")!!
+					if (block.getAttribute("name") != null) obstacleString = block.getAttribute("name")!!
+				}
+				else if (type == "neutral"){
+					if (block.getAttribute("img") != null) neutralImg = block.getAttribute("img")!!
+				}
+			}
+
+			themes.add(Level.Theme(victoryImg, victoryString, obstacleImg, obstacleString, neutralImg))
+		}
+
+		return themes
 	}
 
 	/**
