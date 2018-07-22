@@ -4,6 +4,13 @@
 		<robot name="Surus" graphic="res/robot/surus.svg"/>
 		<robot name="Hushpuppy" graphic="res/robot/hushpuppy.svg"/>
 	</robots>
+	<themes>
+		<theme name="desert">
+			<block type="victory" name="Victory" img="res/theme_desert/victory.svg"/>
+			<block type="neutral" name="Neutral" img="res/theme_desert/neutral.svg"/>
+			<block type="obstacle" name="Obstacle" img="res/theme_desert/obstacle.svg"/>
+		</theme>
+	</themes>
 	<!--
 	Level options as follows:
 		Features/Block Management:
