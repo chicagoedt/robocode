@@ -62,7 +62,8 @@ class Level(var properties: Properties) {
      * @param obstacleString The name to call the obstacle tile
      * @param neutralImg The path to the image to display on a neutral tile
      */
-    data class Theme(val victoryImg : String,
+    data class Theme(val name : String,
+                     val victoryImg : String,
                      val victoryString : String,
                      val obstacleImg : String,
                      val obstacleString : String,
@@ -86,6 +87,13 @@ class Level(var properties: Properties) {
             true,
             true,
             true)
+
+    var theme = Level.Theme("Default",
+            "",
+            "Victory",
+            "",
+            "Obstacle",
+            "")
 
     var victoryType = VictoryType.TILE
     var itemPositionData : ItemPositionData? = null

@@ -5,8 +5,6 @@ import org.w3c.dom.HTMLElement
 import kotlin.browser.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.tiles.*
-import org.chicagoedt.robocode.robots.*
-import org.chicagoedt.robocodeweb.game
 import org.w3c.dom.HTMLDivElement
 import org.w3c.dom.HTMLImageElement
 import kotlin.dom.addClass
@@ -18,29 +16,32 @@ import kotlin.dom.addClass
  * @param gridY The Y position of this tile on the grid
  * @property tableElement The td element for this tile
  * @property element The div element to be contained in the td element
- * @property itemQuantityImage The image to indicate if an item is on this tile
+ * @property tileImage The image to indicate if an item is on this tile
+ * @property itemQuantityText The text showing the number of items
+ * @property tileContainer The container for all item quantity elements
+ * @property tileImg The image to display on the tile
  */
 open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	var tableElement = document.createElement("td") as HTMLElement
 	var element  = document.createElement("div") as HTMLElement
 
-	val itemQuantityImage = document.createElement("img") as HTMLImageElement
+	val tileImage = document.createElement("img") as HTMLImageElement
 	val itemQuantityText = document.createElement("div") as HTMLDivElement
-	val itemQuantityContainer = document.createElement("div") as HTMLDivElement
+	val tileContainer = document.createElement("div") as HTMLDivElement
 
 	init{
 		tableElement.classList.add("gridTileCell")
 		tableElement.appendChild(element)
 
-		itemQuantityImage.addClass("itemQuantityImage")
+		tileImage.addClass("tileImage")
 		itemQuantityText.addClass("itemQuantityText")
-		itemQuantityContainer.addClass("itemQuantityContainer")
-		itemQuantityContainer.appendChild(itemQuantityImage)
-		itemQuantityContainer.appendChild(itemQuantityText)
+		tileContainer.addClass("tileContainer")
+		tileContainer.appendChild(tileImage)
+		tileContainer.appendChild(itemQuantityText)
 
 		element.classList.add("gridTile")
 
-		element.appendChild(itemQuantityContainer)
+		element.appendChild(tileContainer)
 
 		setWidth()
 		refresh()
@@ -58,21 +59,17 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 	 * Refreshed the content in this tile
 	 */
 	fun refresh(){
-		displayItemIndicator()
-		element.classList.remove("obstacleTile")
-		element.classList.remove("neutralTile")
-		element.classList.remove("victoryTile")
-		element.classList.remove("gridPlayer")
-
 		if (level.tileAt(gridX, gridY) is ObstacleTile){
-			element.classList.add("obstacleTile")
+			tileImage.src = level.theme.obstacleImg
 		}
 		else if (level.tileAt(gridX, gridY) is NeutralTile){
-			element.classList.add("neutralTile")
+			tileImage.src = level.theme.neutralImg
 		}
 		else if (level.tileAt(gridX, gridY) is VictoryTile){
-			element.classList.add("victoryTile")
+			tileImage.src = level.theme.victoryImg
 		}
+
+		displayItemIndicator()
 	}
 
 	/**
@@ -89,7 +86,7 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 				val typeID = level.tileAt(gridX, gridY).items.allItemTypes()[0]
 				val typeName = ItemManager.getItem(typeID)!!.name
 
-				itemQuantityImage.src = "res/items/" + typeName + ".png"
+				tileImage.src = "res/items/" + typeName + ".png"
 
 				val hasMultipleItems = level.tileAt(gridX, gridY).items.itemQuantity(typeID) > 1
 				if (hasMultipleItems){
@@ -97,10 +94,7 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 					itemQuantityText.innerHTML = itemCount.toString()
 				}
 			}
-			itemQuantityContainer.style.display = "block"
-		}
-		else{
-			itemQuantityContainer.style.display = "none"
+			tileContainer.style.display = "block"
 		}
 	}
 }

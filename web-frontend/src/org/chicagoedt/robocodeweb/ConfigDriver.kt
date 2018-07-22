@@ -40,8 +40,8 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			
 			val robotsList = readRobots(robots)
 			val themesList = readThemes(themes)
-			val levelsList = readLevels(levels)
-			
+			val levelsList = readLevels(levels, themesList)
+
 			callback.invoke(robotsList, levelsList, themesList)
 		}
 	}
@@ -51,7 +51,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 	 * @param robotsElement The <levels> element to read from
 	 * @return The arraylist of Level objects
 	 */
-	fun readLevels(levelsElement : Element) : ArrayList<Level>{
+	fun readLevels(levelsElement : Element, themes : ArrayList<Level.Theme>) : ArrayList<Level>{
 		val levels = arrayListOf<Level>()
 
 		val levelsElementList = levelsElement.querySelectorAll("level")
@@ -60,6 +60,8 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 
 			val name = levelData.attributes.getNamedItem("name")!!.value
 			val difficulty = levelData.attributes.getNamedItem("difficulty")!!.value.toInt()
+			val themeName = levelData.attributes.getNamedItem("theme")!!.value
+
 
 			val gridData = levelData.querySelector("grid")!!
 			val height = gridData.querySelectorAll("gridRow").length
@@ -67,6 +69,13 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val grid = readGrid(gridData)
 
 			val level = Level(Level.Properties(name, difficulty, width, height))
+
+			for (theme in themes){
+				if (theme.name == themeName){
+					level.theme = theme
+					break
+				}
+			}
 
 			readLevelConditions(levelData, level)
 			readLevelVictoryConditions(levelData, level)
@@ -202,6 +211,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 		val themes = arrayListOf<Level.Theme>()
 		val themesElementList = themesElement.querySelectorAll("theme").asList() as List<Element>
 		for (theme in themesElementList){
+			val name = theme.getAttribute("name")!!
 			var victoryImg = ""
 			var victoryString = "Victory"
 			var obstacleImg = ""
@@ -224,7 +234,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				}
 			}
 
-			themes.add(Level.Theme(victoryImg, victoryString, obstacleImg, obstacleString, neutralImg))
+			themes.add(Level.Theme(name, victoryImg, victoryString, obstacleImg, obstacleString, neutralImg))
 		}
 
 		return themes

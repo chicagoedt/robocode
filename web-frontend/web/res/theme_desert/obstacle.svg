@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="742.0966"
-     inkscape:cy="697.99733"
+     inkscape:cx="623.31176"
+     inkscape:cy="778.80953"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -45,7 +45,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -61,5 +61,61 @@
        height="400"
        x="0"
        y="-103" />
+    <rect
+       style="fill:#000080;fill-opacity:1;stroke-width:0.35760522"
+       id="rect1370"
+       width="50"
+       height="400"
+       x="0"
+       y="-103" />
+    <rect
+       y="-103"
+       x="350"
+       height="400"
+       width="50"
+       id="rect1372"
+       style="fill:#000080;fill-opacity:1;stroke-width:0.35760522" />
+    <rect
+       style="fill:#000080;fill-opacity:1;stroke-width:0.35760522"
+       id="rect1374"
+       width="400"
+       height="50"
+       x="0"
+       y="247" />
+    <rect
+       y="-103"
+       x="0"
+       height="50"
+       width="400"
+       id="rect1376"
+       style="fill:#000080;fill-opacity:1;stroke-width:0.35760522" />
+    <rect
+       y="-53"
+       x="50"
+       height="300"
+       width="50"
+       id="rect1378"
+       style="fill:#4545ff;fill-opacity:1;stroke-width:0.30969521" />
+    <rect
+       style="fill:#4545ff;fill-opacity:1;stroke-width:0.30969521"
+       id="rect1380"
+       width="300"
+       height="50"
+       x="50"
+       y="197" />
+    <rect
+       y="-53"
+       x="50"
+       height="50"
+       width="300"
+       id="rect1397"
+       style="fill:#4545ff;fill-opacity:1;stroke-width:0.30969521" />
+    <rect
+       style="fill:#4545ff;fill-opacity:1;stroke-width:0.30969521"
+       id="rect1399"
+       width="50"
+       height="300"
+       x="300"
+       y="-53" />
   </g>
 </svg>

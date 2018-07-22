@@ -338,19 +338,7 @@ td, th, tr {
 	width: 100%;
 }
 
-.obstacleTile{
-	background-color: #8f90b7;
-}
-
-.neutralTile{
-	background-color: #b0f6a9;
-}
-
-.victoryTile{
-	background-color: #fffab7;
-}
-
-.itemQuantityContainer{
+.tileContainer{
 	position: relative;
 	width: 100%;
 	height:100%;
@@ -365,7 +353,7 @@ td, th, tr {
 	z-index: 2;
 }
 
-.itemQuantityImage{
+.tileImage{
 	width: 100%;
 	height:100%;
 	z-index: 1;
