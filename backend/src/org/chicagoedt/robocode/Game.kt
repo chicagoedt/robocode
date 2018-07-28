@@ -1,5 +1,7 @@
 package org.chicagoedt.robocode
 
+import org.chicagoedt.robocode.collectibles.Collectible
+import org.chicagoedt.robocode.collectibles.ItemManager
 import org.chicagoedt.robocode.levels.Level
 import org.chicagoedt.robocode.robots.Robot
 
@@ -91,5 +93,12 @@ class Game (private val levelsList: ArrayList<Level>,
             levelNumber++
             currentLevel = levelsList[levelNumber]
         }
+    }
+
+    /**
+     * Adds an item to the list of available items in the game
+     */
+    fun addItem(item : Collectible){
+        ItemManager.addItem(item)
     }
 }

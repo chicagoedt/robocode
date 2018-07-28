@@ -10,13 +10,16 @@ object ItemManager {
     private val itemList = HashMap<Int, Collectible>()
 
     init {
-        fun addItem(item: Collectible) {
-            itemList[item.id] = item
-        }
-
         // Load all items to be used for the game
         addItem(Sand)
         addItem(Water)
+    }
+
+    /**
+     * Adds an item to the list of available items in the game
+     */
+    internal fun addItem(item: Collectible) {
+        itemList[item.id] = item
     }
 
     /**
