@@ -5,28 +5,11 @@ import org.chicagoedt.robocode.robots.RobotPlayer
 
 /**
  * An item that can be picked up by the RobotPlayer
- * @property id The unique identifier of the item
- * @property type The type of item
- * @property name The name of the item
- * @property graphic The image URI
- * @property useQuantity The minimum number of this item to use the item
+ * @param id The unique identifier of the item
+ * @param name The name of the item
+ * @param graphic The image URI
  */
-interface Collectible {
-    enum class ItemType {
-        EQUIPMENT,
-        CONSUMABLES,
-        ETC
-    }
-
-    val id: Int
-    val type: ItemType
-    val name: String
-    val graphic: String
-
-    val useQuantity: Int
-
-    /**
-     * Interact with the item
-     */
-    fun use(level: Level, robot: RobotPlayer)
+data class Collectible(val id : Int,
+                       val name : String,
+                       val graphic : String) {
 }

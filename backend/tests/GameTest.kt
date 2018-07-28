@@ -3,19 +3,27 @@ import org.chicagoedt.robocode.*
 import org.chicagoedt.robocode.actions.ConditionalWithList
 import org.chicagoedt.robocode.actions.operations.TopicEqualsComparison
 import org.chicagoedt.robocode.actions.robotActions.*
+import org.chicagoedt.robocode.collectibles.Collectible
 import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.collectibles.ItemManager
-import org.chicagoedt.robocode.collectibles.etc.*
 import org.chicagoedt.robocode.levels.Level
 import org.chicagoedt.robocode.levels.VictoryType
 import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.sensors.DistanceSensor
 import org.chicagoedt.robocode.tiles.*
 
+private val SAND_ID = 0
+private val WATER_ID = 1
+
 /**
  * @return All levels for the current game configuration
  */
 fun getLevels() : ArrayList<Level>{
+    if (!ItemManager.itemExist(SAND_ID) && !ItemManager.itemExist(WATER_ID)){
+        ItemManager.addItem(Collectible(SAND_ID, "sand", ""))
+        ItemManager.addItem(Collectible(WATER_ID, "water", ""))
+    }
+
     val levels = ArrayList<Level>()
 
     val level1 = Level(Level.Properties("levels 1", 0, 10, 10))
@@ -556,16 +564,16 @@ class BackendTests {
         level1.setPlayers(list1)
 
         val itemInventory = ItemInventory()
-        itemInventory.addItem(Sand.id)
-        itemInventory.addItem(Sand.id)
+        itemInventory.addItem(SAND_ID)
+        itemInventory.addItem(SAND_ID)
         val itemPositionData = Level.ItemPositionData(0, 2, itemInventory)
 
         level1.victoryType = VictoryType.ITEM_POSITION
         level1.itemPositionData = itemPositionData
 
         val itemsTile = NeutralTile()
-        itemsTile.items.addItem(Sand.id)
-        itemsTile.items.addItem(Sand.id)
+        itemsTile.items.addItem(SAND_ID)
+        itemsTile.items.addItem(SAND_ID)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -581,11 +589,11 @@ class BackendTests {
         robotPlayer1.appendAction(instruction)
 
         val instruction2 = ItemPickupAction()
-        instruction2.parameter = Sand.id
+        instruction2.parameter = SAND_ID
         robotPlayer1.appendAction(instruction2)
 
         val instruction3 = ItemPickupAction()
-        instruction3.parameter = Sand.id
+        instruction3.parameter = SAND_ID
         robotPlayer1.appendAction(instruction3)
 
         val instruction4 = MoveAction()
@@ -593,11 +601,11 @@ class BackendTests {
         robotPlayer1.appendAction(instruction4)
 
         val instruction5 = ItemDropAction()
-        instruction5.parameter = Sand.id
+        instruction5.parameter = SAND_ID
         robotPlayer1.appendAction(instruction5)
 
         val instruction6 = ItemDropAction()
-        instruction6.parameter = Sand.id
+        instruction6.parameter = SAND_ID
         robotPlayer1.appendAction(instruction6)
 
         game.attachEventListener {e ->
@@ -630,16 +638,16 @@ class BackendTests {
         level1.setPlayers(list1)
 
         val itemInventory = ItemInventory()
-        itemInventory.addItem(Sand.id)
-        itemInventory.addItem(Sand.id)
+        itemInventory.addItem(SAND_ID)
+        itemInventory.addItem(SAND_ID)
         val itemPositionData = Level.ItemPositionData(0, 2, itemInventory)
 
         level1.victoryType = VictoryType.ITEM_POSITION
         level1.itemPositionData = itemPositionData
 
         val itemsTile = NeutralTile()
-        itemsTile.items.addItem(Water.id)
-        itemsTile.items.addItem(Water.id)
+        itemsTile.items.addItem(WATER_ID)
+        itemsTile.items.addItem(WATER_ID)
 
         level1.makeGrid(arrayListOf(
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
@@ -655,11 +663,11 @@ class BackendTests {
         robotPlayer1.appendAction(instruction)
 
         val instruction2 = ItemPickupAction()
-        instruction2.parameter = Water.id
+        instruction2.parameter = WATER_ID
         robotPlayer1.appendAction(instruction2)
 
         val instruction3 = ItemPickupAction()
-        instruction3.parameter = Water.id
+        instruction3.parameter = WATER_ID
         robotPlayer1.appendAction(instruction3)
 
         val instruction4 = MoveAction()
@@ -667,7 +675,7 @@ class BackendTests {
         robotPlayer1.appendAction(instruction4)
 
         val instruction5 = ItemDropAction()
-        instruction5.parameter = Water.id
+        instruction5.parameter = WATER_ID
         robotPlayer1.appendAction(instruction5)
 
         game.attachEventListener {e ->
@@ -874,66 +882,66 @@ class BackendTests {
 
     @Test
     fun itemManager() {
-        assertEquals(ItemManager.itemExist(Sand.id), true)
-        assertEquals(ItemManager.getItem(Sand.id), Sand)
+        assertEquals(ItemManager.itemExist(SAND_ID), true)
+        assertEquals(ItemManager.itemExist(WATER_ID), true)
     }
 
     @Test
     fun itemInventory() {
         val inventory = ItemInventory()
-        val itemsList = intArrayOf(Sand.id, Sand.id, Sand.id, Sand.id, Sand.id)
+        val itemsList = intArrayOf(SAND_ID, SAND_ID, SAND_ID, SAND_ID, SAND_ID)
 
         // Test new inventory with no initial items
         assertEquals(inventory.hasItem(-1), false)
-        assertEquals(inventory.hasItem(Sand.id), false)
+        assertEquals(inventory.hasItem(SAND_ID), false)
 
         // Test addItem, hasItem
-        inventory.addItem(Sand.id)
-        assertEquals(inventory.hasItem(Sand.id), true)
+        inventory.addItem(SAND_ID)
+        assertEquals(inventory.hasItem(SAND_ID), true)
 
         // Test addItems, itemQuantity
         inventory.addItems(itemsList)
-        assertEquals(inventory.itemQuantity(Sand.id), 6)
+        assertEquals(inventory.itemQuantity(SAND_ID), 6)
 
         // Test removeItem
-        inventory.removeItem(Sand.id)
-        assertEquals(inventory.itemQuantity(Sand.id), 5)
+        inventory.removeItem(SAND_ID)
+        assertEquals(inventory.itemQuantity(SAND_ID), 5)
 
         // Test remove more item than in inventory
-        assertEquals(inventory.removeItem(Sand.id, 6), false)
-        assertEquals(inventory.itemQuantity(Sand.id), 5)
+        assertEquals(inventory.removeItem(SAND_ID, 6), false)
+        assertEquals(inventory.itemQuantity(SAND_ID), 5)
 
         // Test remove exactly all items
-        assertEquals(inventory.removeItem(Sand.id, 5), true)
-        assertEquals(inventory.hasItem(Sand.id), false)
-        assertEquals(inventory.itemQuantity(Sand.id), 0)
+        assertEquals(inventory.removeItem(SAND_ID, 5), true)
+        assertEquals(inventory.hasItem(SAND_ID), false)
+        assertEquals(inventory.itemQuantity(SAND_ID), 0)
 
         // Test removal of non-existent item
         assertEquals(inventory.removeItem(-1), false)
         assertEquals(inventory.removeItem(-1, 1), false)
-        assertEquals(inventory.removeItem(Sand.id), false)
-        assertEquals(inventory.removeItem(Sand.id, 5), false)
+        assertEquals(inventory.removeItem(SAND_ID), false)
+        assertEquals(inventory.removeItem(SAND_ID, 5), false)
     }
 
     @Test
     fun itemPickup() {
         for (level in levels) {
             for ((name, robot) in level.players) {
-                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id)
-                val robotOldQuantity = robot.itemInventory.itemQuantity(Sand.id)
+                val tileOldQuantity = level.tileAt(robot.x, robot.y).items.itemQuantity(SAND_ID)
+                val robotOldQuantity = robot.itemInventory.itemQuantity(SAND_ID)
 
-                level.tileAt(robot.x, robot.y).items.addItem(Sand.id)
-                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity + 1)
+                level.tileAt(robot.x, robot.y).items.addItem(SAND_ID)
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(SAND_ID), tileOldQuantity + 1)
 
                 val action = ItemPickupAction()
-                action.parameter = Sand.id
+                action.parameter = SAND_ID
 
                 robot.appendAction(action)
                 robot.runInstructions(false)
                 robot.removeAction(action)
 
-                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(Sand.id), tileOldQuantity)
-                assertEquals(robot.itemInventory.itemQuantity(Sand.id), robotOldQuantity + 1)
+                assertEquals(level.tileAt(robot.x, robot.y).items.itemQuantity(SAND_ID), tileOldQuantity)
+                assertEquals(robot.itemInventory.itemQuantity(SAND_ID), robotOldQuantity + 1)
             }
         }
     }
@@ -965,21 +973,21 @@ class BackendTests {
 
         level1.tileAt(0, 0).items.oneTypeOnly = false
 
-        level1.tileAt(0, 0).items.addItem(Sand.id)
+        level1.tileAt(0, 0).items.addItem(SAND_ID)
 
         game = Game(testLevels, testRobots)
 
-        robotPlayer1.itemInventory.addItem(Water.id)
+        robotPlayer1.itemInventory.addItem(WATER_ID)
 
         val dropInstruction = ItemDropAction()
-        dropInstruction.parameter = Water.id
+        dropInstruction.parameter = WATER_ID
         robotPlayer1.appendAction(dropInstruction)
 
         robotPlayer1.runInstructions(false)
 
-        assertEquals(robotPlayer1.itemInventory.itemQuantity(Water.id), 0)
-        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Water.id), 1)
-        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Sand.id), 1)
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(WATER_ID), 0)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(WATER_ID), 1)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(SAND_ID), 1)
     }
 
     @Test
@@ -1007,21 +1015,21 @@ class BackendTests {
 
         testLevels.add(level1)
 
-        level1.tileAt(0, 0).items.addItem(Sand.id)
+        level1.tileAt(0, 0).items.addItem(SAND_ID)
 
         game = Game(testLevels, testRobots)
 
-        robotPlayer1.itemInventory.addItem(Water.id)
+        robotPlayer1.itemInventory.addItem(WATER_ID)
 
         val dropInstruction = ItemDropAction()
-        dropInstruction.parameter = Water.id
+        dropInstruction.parameter = WATER_ID
         robotPlayer1.appendAction(dropInstruction)
 
         robotPlayer1.runInstructions(false)
 
-        assertEquals(robotPlayer1.itemInventory.itemQuantity(Water.id), 1)
-        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Water.id), 0)
-        assertEquals(level1.tileAt(0, 0).items.itemQuantity(Sand.id), 1)
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(WATER_ID), 1)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(WATER_ID), 0)
+        assertEquals(level1.tileAt(0, 0).items.itemQuantity(SAND_ID), 1)
     }
 
     @Test
@@ -1030,12 +1038,12 @@ class BackendTests {
             for (x in 0 until level.properties.width){
                 for (y in 0 until level.properties.height){
                     level.tileAt(x, y).items.oneTypeOnly = true
-                    level.tileAt(x, y).items.addItem(Sand.id)
-                    level.tileAt(x, y).items.addItem(Sand.id)
-                    level.tileAt(x, y).items.addItem(Water.id)
+                    level.tileAt(x, y).items.addItem(SAND_ID)
+                    level.tileAt(x, y).items.addItem(SAND_ID)
+                    level.tileAt(x, y).items.addItem(WATER_ID)
 
-                    assertEquals(level.tileAt(x, y).items.itemQuantity(Sand.id), 2)
-                    assertEquals(level.tileAt(x, y).items.itemQuantity(Water.id), 0)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(SAND_ID), 2)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(WATER_ID), 0)
                 }
             }
         }
@@ -1047,12 +1055,12 @@ class BackendTests {
             for (x in 0 until level.properties.width){
                 for (y in 0 until level.properties.height){
                     level.tileAt(x, y).items.oneTypeOnly = false
-                    level.tileAt(x, y).items.addItem(Sand.id)
-                    level.tileAt(x, y).items.addItem(Sand.id)
-                    level.tileAt(x, y).items.addItem(Water.id)
+                    level.tileAt(x, y).items.addItem(SAND_ID)
+                    level.tileAt(x, y).items.addItem(SAND_ID)
+                    level.tileAt(x, y).items.addItem(WATER_ID)
 
-                    assertEquals(level.tileAt(x, y).items.itemQuantity(Sand.id), 2)
-                    assertEquals(level.tileAt(x, y).items.itemQuantity(Water.id), 1)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(SAND_ID), 2)
+                    assertEquals(level.tileAt(x, y).items.itemQuantity(WATER_ID), 1)
                 }
             }
         }
@@ -1080,20 +1088,20 @@ class BackendTests {
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
-        level1.tileAt(0,0).items.addItem(Sand.id)
+        level1.tileAt(0,0).items.addItem(SAND_ID)
 
         testLevels.add(level1)
 
         game = Game(testLevels, testRobots)
 
         val pickupAction = ItemPickupAction()
-        pickupAction.parameter = Sand.id
+        pickupAction.parameter = SAND_ID
         robotPlayer1.appendAction(pickupAction)
 
         robotPlayer1.runInstructions(true)
 
-        assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 0)
-        assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 1)
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(SAND_ID), 0)
+        assertEquals(level1.tileAt(0,0).items.itemQuantity(SAND_ID), 1)
     }
 
     @Test
@@ -1118,20 +1126,20 @@ class BackendTests {
                 arrayListOf(NeutralTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(VictoryTile(), ObstacleTile(), NeutralTile())) as ArrayList<ArrayList<Tile>>)
 
-        level1.tileAt(0,0).items.addItem(Sand.id)
+        level1.tileAt(0,0).items.addItem(SAND_ID)
 
         testLevels.add(level1)
 
         game = Game(testLevels, testRobots)
 
         val pickupAction = ItemPickupAction()
-        pickupAction.parameter = Sand.id
+        pickupAction.parameter = SAND_ID
         robotPlayer1.appendAction(pickupAction)
 
         robotPlayer1.runInstructions(true)
 
-        assertEquals(robotPlayer1.itemInventory.itemQuantity(Sand.id), 1)
-        assertEquals(level1.tileAt(0,0).items.itemQuantity(Sand.id), 0)
+        assertEquals(robotPlayer1.itemInventory.itemQuantity(SAND_ID), 1)
+        assertEquals(level1.tileAt(0,0).items.itemQuantity(SAND_ID), 0)
     }
 
     @Test
@@ -1238,7 +1246,7 @@ class BackendTests {
                 arrayListOf(VictoryTile(), NeutralTile(), NeutralTile()),
                 arrayListOf(NeutralTile(), NeutralTile(), ObstacleTile())) as ArrayList<ArrayList<Tile>>)
 
-        level1.tileAt(0,0).items.addItem(Sand.id)
+        level1.tileAt(0,0).items.addItem(SAND_ID)
 
         testLevels.add(level1)
 

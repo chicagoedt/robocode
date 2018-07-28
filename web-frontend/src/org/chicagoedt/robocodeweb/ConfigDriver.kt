@@ -7,10 +7,9 @@ import org.chicagoedt.robocode.robots.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.tiles.*
 import jQuery
+import org.chicagoedt.robocode.collectibles.Collectible
 import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.collectibles.ItemManager
-import org.chicagoedt.robocode.collectibles.etc.Sand
-import org.chicagoedt.robocode.collectibles.etc.Water
 
 /**
  * Retrieves and parses the configuration file
@@ -37,9 +36,16 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val robots = game.querySelector("robots")!!
 			val levels = game.querySelector("levels")!!
 			val themes = game.querySelector("themes")!!
-			
+			val items = game.querySelector("items")!!
+
 			val robotsList = readRobots(robots)
 			val themesList = readThemes(themes)
+			val itemsList = readItems(items)
+
+			itemsList.forEach {item ->
+				ItemManager.addItem(item)
+			}
+
 			val levelsList = readLevels(levels, themesList)
 
 			callback.invoke(robotsList, levelsList, themesList)
@@ -241,6 +247,24 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 	}
 
 	/**
+	 * Reads the global items for the game
+	 * @param itemsElement The element containing the theme XML
+	 * @return An arraylist of Level.Theme objects
+	 */
+	fun readItems(itemsElement : Element) : ArrayList<Collectible>{
+		val items = arrayListOf<Collectible>()
+		val itemElementList = itemsElement.querySelectorAll("item").asList() as List<Element>
+		for (item in itemElementList){
+			val name = item.getAttribute("name")!!
+			val id = item.getAttribute("id")!!.toInt()
+			val graphic = item.getAttribute("graphic")!!.toString()
+
+			items.add(Collectible(id, name, graphic))
+		}
+		return items
+	}
+
+	/**
 	 * Reads the grid from a <grid> element
 	 * @param gridData The <grid> element to read from
 	 * @return The arraylist of arraylists of Tile objects
@@ -271,10 +295,9 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 
 				val items = (rowDataTiles.item(k) as Element).querySelectorAll("item")
 				for (t in 0 until items.length){
-					val itemName = (items[t] as Element).attributes["name"]!!.value
+					val itemID = (items[t] as Element).attributes["id"]!!.value.toInt()
 					val itemCount = (items[t] as Element).attributes["count"]!!.value.toInt()
-					val id = getItemIDFromName(itemName)
-					for (y in 0 until itemCount) tile.items.addItem(id)
+					for (y in 0 until itemCount) tile.items.addItem(itemID)
 				}
 			}
 			grid.add(row)

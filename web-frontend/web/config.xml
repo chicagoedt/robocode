@@ -11,6 +11,10 @@
 			<block type="neutral" img="res/theme_desert/neutral.svg"/>
 		</theme>
 	</themes>
+	<items>
+		<item name="sand" id="0" graphic="res/items/Sand.png"/>
+		<item name="water" id="1" graphic="res/items/Water.png"/>
+	</items>
 	<!--
 	Level options as follows:
 		Features/Block Management:
@@ -93,8 +97,8 @@
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"><item name="sand" count="3"/></gridTile>
-					<gridTile type="neutral"><item name="water" count="3"/></gridTile>
+					<gridTile type="neutral"><item id="0" count="3"/></gridTile>
+					<gridTile type="neutral"><item id="1" count="3"/></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>

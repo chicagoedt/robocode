@@ -84,9 +84,9 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 			}
 			else{
 				val typeID = level.tileAt(gridX, gridY).items.allItemTypes()[0]
-				val typeName = ItemManager.getItem(typeID)!!.name
+				val item = ItemManager.getItem(typeID)!!
 
-				tileImage.src = "res/items/" + typeName + ".png"
+				tileImage.src = item.graphic
 
 				val hasMultipleItems = level.tileAt(gridX, gridY).items.itemQuantity(typeID) > 1
 				if (hasMultipleItems){
