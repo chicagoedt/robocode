@@ -44,7 +44,7 @@
 	<levels>
 		<level name="Level 1" difficulty="1" theme="desert">
 			<victory type="tile"/>
-			<robot name="Surus" x="0" y="8" direction="up" actionLimit="5"/>
+			<robot name="Surus" x="0" y="8" direction="up" />
 			<robot name="Hushpuppy" x="3" y="3" direction="up" actionLimit="3"/>
 			<grid>
 				<gridRow>

@@ -1,6 +1,8 @@
 package org.chicagoedt.robocode.actions
 
+import org.chicagoedt.robocode.Event
 import org.chicagoedt.robocode.actions.robotActions.MoveActionMacro
+import org.chicagoedt.robocode.broadcastEvent
 import org.chicagoedt.robocode.levels.Level
 import org.chicagoedt.robocode.robots.RobotPlayer
 
@@ -68,14 +70,14 @@ abstract class ActionMacro<T> : Action<T>() {
                     totalSize += getFullMacroSize(action.getMacro())
             }
             catch (e : ClassCastException){
-
+                totalSize += getFullMacroSize(action.getMacro())
             }
         }
-
 
         if (actionsToLimit == -1 || totalSize < actionsToLimit){
             if (pos < macro.size) macro.add(pos, action as Action<Any>)
             else macro.add(action as Action<Any>)
+            broadcastEvent(Event.ACTION_ADDED)
             return true
         }
         return false
@@ -87,6 +89,7 @@ abstract class ActionMacro<T> : Action<T>() {
      */
     fun removeFromMacro(action: Action<*>){
         macro.remove(action)
+        broadcastEvent(Event.ACTION_REMOVED)
     }
 
     /**
@@ -95,6 +98,7 @@ abstract class ActionMacro<T> : Action<T>() {
      */
     fun removeFromMacroAt(i : Int){
         macro.removeAt(i)
+        broadcastEvent(Event.ACTION_REMOVED)
     }
 
     /**

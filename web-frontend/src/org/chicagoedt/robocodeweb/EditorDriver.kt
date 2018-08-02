@@ -22,7 +22,7 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 	 */
 	fun calculateNewLevel(){
 		for (panel in panels){
-			panel.removeRunButtonListener()
+			panel.removeListeners()
 		}
 		panels.clear()
 

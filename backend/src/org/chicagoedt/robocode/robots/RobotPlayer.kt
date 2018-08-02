@@ -185,7 +185,7 @@ class RobotPlayer(val name: String,
                     totalSize += getFullProcedureSize(action.getMacro())
             }
             catch (e : ClassCastException){
-
+                totalSize += getFullProcedureSize(action.getMacro())
             }
         }
 
@@ -209,6 +209,7 @@ class RobotPlayer(val name: String,
      */
     fun removeAction(action: Action<*>){
         procedure.remove(action)
+        broadcastEvent(Event.ACTION_REMOVED)
     }
 
     /**

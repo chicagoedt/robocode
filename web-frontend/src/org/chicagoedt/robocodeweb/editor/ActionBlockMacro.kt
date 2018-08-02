@@ -5,6 +5,7 @@ import org.chicagoedt.robocode.actions.Action
 import org.chicagoedt.robocode.actions.ActionMacro
 import org.chicagoedt.robocode.robots.Robot
 import org.chicagoedt.robocode.robots.RobotPlayer
+import org.chicagoedt.robocodeweb.showActionBlockLimitPopup
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.ItemArrayLike
@@ -179,12 +180,14 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
             newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
         }
 
+        var insertBlockElement = {}
+
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
         if (hoverOverHeader){
-            if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
-            else element.appendChild(blockElement)
+            if (blocks.size > 0) insertBlockElement = {element.insertBefore(blockElement, blocks[0])}
+            else insertBlockElement = {element.appendChild(blockElement)}
             hoverOverHeader = false
         }
         else{
@@ -192,11 +195,11 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
                 lastHoveredBlock!!.element.style.marginBottom = ""
                 pos = blocks.indexOf(lastHoveredBlock!!.element) + 1
                 val block = blocks[pos] as HTMLElement
-                element.insertBefore(blockElement, block)
+                insertBlockElement = {element.insertBefore(blockElement, block)}
             }
             catch(e : Exception){
                 pos = blocks.size
-                element.appendChild(blockElement)
+                insertBlockElement = {element.appendChild(blockElement)}
             }
         }
 
@@ -212,9 +215,12 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         robotParent = currentPanelParent.robot
 
         val newAction : Action<*> = blockElement.asDynamic().block.action
-        action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
-
-        newActionBlock.macroParent = this
+        val inserted = action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
+        if (inserted){
+            insertBlockElement()
+            newActionBlock.macroParent = this
+        }
+        else showActionBlockLimitPopup()
 
         drawer.populate()
     }
