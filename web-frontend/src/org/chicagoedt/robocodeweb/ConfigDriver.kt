@@ -90,6 +90,13 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				val x = robotData.attributes.getNamedItem("x")!!.value.toInt()
 				val y = robotData.attributes.getNamedItem("y")!!.value.toInt()
 				val directionString = robotData.attributes.getNamedItem("direction")!!.value
+				var actionLimit : Int
+				try{
+					actionLimit = robotData.attributes.getNamedItem("actionLimit")!!.value.toInt()
+				}
+				catch (e : NullPointerException){
+					actionLimit = -1
+				}
 
 				var direction = RobotOrientation.DIRECTION_UP
 
@@ -98,7 +105,10 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				else if (directionString == "left") direction = RobotOrientation.DIRECTION_LEFT
 				else if (directionString == "right") direction = RobotOrientation.DIRECTION_RIGHT
 
-				robots.add(RobotPlayer(robotName, x, y, direction, level))
+				val player = RobotPlayer(robotName, x, y, direction, level)
+				player.actionLimit = actionLimit
+
+				robots.add(player)
 			}
 
 			level.setPlayers(robots)

@@ -28,6 +28,7 @@ enum class RobotPosition{
  * @property checkpointX The X value at the last checkpoint
  * @property checkpointY The Y value at the last checkpoint
  * @property checkpointDirection The direction at the last checkpoint
+ * @property actionLimit The limit on the number of actions that this robot can have. -1 for unlimited
  */
 class RobotPlayer(val name: String,
                   var x: Int,
@@ -42,6 +43,7 @@ class RobotPlayer(val name: String,
     private var checkpointX = x
     private var checkpointY = y
     private var checkpointDirection = direction
+    var actionLimit = -1
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
