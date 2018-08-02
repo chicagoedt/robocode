@@ -4,6 +4,7 @@ import org.chicagoedt.robocode.actions.*
 import org.chicagoedt.robocode.sensors.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.actions.robotActions.MoveActionMacro
 import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.tiles.*
 
@@ -165,9 +166,25 @@ class RobotPlayer(val name: String,
     /**
      * Adds an action to a robot's procedure
      * @param action The action to append
+     * @return True if the action was appended, false if the [actionLimit] was reached
      */
-    fun appendAction(action: Action<*>){
-        procedure.add(action as Action<Any>)
+    fun appendAction(action: Action<*>) : Boolean{
+        var totalSize = getFullProcedureSize(procedure)
+        if (action is ActionMacro){
+            try{
+                if (action as ActionMacro<Int> !is MoveActionMacro)
+                    totalSize += getFullProcedureSize(action.getMacro())
+            }
+            catch (e : ClassCastException){
+
+            }
+        }
+
+        if (actionLimit == -1 || totalSize < actionLimit){
+            procedure.add(action as Action<Any>)
+            return true
+        }
+        return false
     }
 
     /**
@@ -192,6 +209,35 @@ class RobotPlayer(val name: String,
      */
     fun removeAction(action: Action<*>){
         procedure.remove(action)
+    }
+
+    /**
+     * @return The limit difference available for an ActionMacro
+     */
+    fun getLimitDifference() : Int{
+        if (actionLimit != -1) return actionLimit - getFullProcedureSize(getProcedure())
+        else return -1
+    }
+
+    /**
+     * @return A list of actions describing the robot's procedure
+     */
+    fun getFullProcedureSize(actions : List<Action<*>>) : Int{
+        var size = 0
+        for(action in actions){
+            size += 1
+            if (action is ActionMacro){
+                try{
+                    if (action as ActionMacro<Int> !is MoveActionMacro)
+                        size += getFullProcedureSize(action.getMacro())
+                }
+                catch (e : ClassCastException){
+
+                }
+
+            }
+        }
+        return size
     }
 
     /**

@@ -3,6 +3,8 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import org.chicagoedt.robocode.actions.Action
 import org.chicagoedt.robocode.actions.ActionMacro
+import org.chicagoedt.robocode.robots.Robot
+import org.chicagoedt.robocode.robots.RobotPlayer
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.ItemArrayLike
@@ -200,8 +202,17 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
         lastHoveredBlock = null
 
+        var robotParent : RobotPlayer? = null
+        var currentPanelParent = panelParent
+        var currentMacroParent= macroParent
+        while (currentPanelParent == null){
+            currentPanelParent = currentMacroParent!!.panelParent
+            if (currentPanelParent == null) currentMacroParent = currentMacroParent.macroParent
+        }
+        robotParent = currentPanelParent.robot
+
         val newAction : Action<*> = blockElement.asDynamic().block.action
-        action.addToMacro(newAction, pos)
+        action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
 
         newActionBlock.macroParent = this
 

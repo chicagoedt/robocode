@@ -1,5 +1,6 @@
 import kotlin.test.*
 import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.actions.Action
 import org.chicagoedt.robocode.actions.ConditionalWithList
 import org.chicagoedt.robocode.actions.operations.TopicEqualsComparison
 import org.chicagoedt.robocode.actions.robotActions.*
@@ -1353,7 +1354,7 @@ class BackendTests {
                 action.parameter = 1
 
                 val loopAction = ForLoopAction()
-                loopAction.addToMacro(action)
+                loopAction.addToMacro(action, robot.getLimitDifference())
                 loopAction.parameter = 3
 
                 robot.appendAction(loopAction)
@@ -1388,7 +1389,7 @@ class BackendTests {
                 action.parameter = 2
 
                 val loopAction = ForLoopAction()
-                loopAction.addToMacro(action)
+                loopAction.addToMacro(action, robot.getLimitDifference())
                 loopAction.parameter = 3
 
                 robot.appendAction(loopAction)
@@ -1423,11 +1424,11 @@ class BackendTests {
                 action.parameter = 1
 
                 val loopAction = ForLoopAction()
-                loopAction.addToMacro(action)
+                loopAction.addToMacro(action, robot.getLimitDifference())
                 loopAction.parameter = 2
 
                 val loopAction2 = ForLoopAction()
-                loopAction2.addToMacro(loopAction)
+                loopAction2.addToMacro(loopAction, robot.getLimitDifference())
                 loopAction2.parameter = 3
 
                 robot.appendAction(loopAction2)
@@ -1462,5 +1463,147 @@ class BackendTests {
         mainTopic.value = 8
 
         assertEquals(topicVal, mainTopic.value)
+    }
+
+    @Test
+    fun fullProcedureSize(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                val action1 = MoveActionMacro()
+                action1.parameter = 3
+                val action2 = TurnAction()
+                val action3 = TurnAction()
+
+                val action4 = ForLoopAction()
+                val action5 = TurnAction()
+                val action6 = TurnAction()
+                action4.addToMacro(action5, robot.getLimitDifference())
+                action4.addToMacro(action6, robot.getLimitDifference())
+
+                val action7 = ForLoopAction()
+                val action8 = TurnAction()
+                action7.addToMacro(action8, robot.getLimitDifference())
+                action4.addToMacro(action7, robot.getLimitDifference())
+
+                robot.appendAction(action1)
+                robot.appendAction(action2)
+                robot.appendAction(action3)
+                robot.appendAction(action4)
+
+                assertEquals(8, robot.getFullProcedureSize(robot.getProcedure()))
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun actionLimitNoMacro(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                robot.actionLimit = 3
+                val action1 = MoveActionMacro()
+                action1.parameter = 3
+                val action2 = TurnAction()
+                val action3 = TurnAction()
+                val action4 = MoveActionMacro()
+
+                assertEquals(true, robot.appendAction(action1))
+                assertEquals(true, robot.appendAction(action2))
+                assertEquals(true, robot.appendAction(action3))
+                assertEquals(false, robot.appendAction(action4))
+
+                assertEquals(3, robot.getFullProcedureSize(robot.getProcedure()))
+                assertEquals(robot.getProcedure()[0], action1)
+                assertEquals(robot.getProcedure()[1], action2)
+                assertEquals(robot.getProcedure()[2], action3)
+
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun actionLimitFullMacroAdded(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                robot.actionLimit = 3
+                val action1 = MoveActionMacro()
+                action1.parameter = 3
+                val action2 = TurnAction()
+
+                val action3 = ForLoopAction()
+                val action4 = TurnAction()
+                val action5 = TurnAction()
+
+                action3.addToMacro(action4, robot.getLimitDifference())
+                action3.addToMacro(action5, robot.getLimitDifference())
+
+                assertEquals(true, robot.appendAction(action1))
+                assertEquals(true, robot.appendAction(action2))
+                assertEquals(false, robot.appendAction(action3))
+
+                assertEquals(2, robot.getFullProcedureSize(robot.getProcedure()))
+                assertEquals(robot.getProcedure()[0], action1)
+                assertEquals(robot.getProcedure()[1], action2)
+
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun actionLimitUnlimitedNoMacro(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                robot.actionLimit = 3
+                robot.actionLimit = -1
+                val action1 = MoveActionMacro()
+                action1.parameter = 3
+                val action2 = TurnAction()
+                val action3 = TurnAction()
+                val action4 = MoveActionMacro()
+
+                assertEquals(true, robot.appendAction(action1))
+                assertEquals(true, robot.appendAction(action2))
+                assertEquals(true, robot.appendAction(action3))
+                assertEquals(true, robot.appendAction(action4))
+
+                assertEquals(4, robot.getFullProcedureSize(robot.getProcedure()))
+                assertEquals(robot.getProcedure()[0], action1)
+                assertEquals(robot.getProcedure()[1], action2)
+                assertEquals(robot.getProcedure()[2], action3)
+                assertEquals(robot.getProcedure()[3], action4)
+
+            }
+            game.nextLevel()
+        }
+    }
+
+    @Test
+    fun actionLimitMacroActionAddedWhileAttached(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                robot.actionLimit = 3
+                val action1 = TurnAction()
+
+                val action2 = ForLoopAction()
+                val action3 = TurnAction()
+                val action4 = MoveActionMacro()
+
+                assertEquals(true, robot.appendAction(action1))
+                assertEquals(true, action2.addToMacro(action3, robot.getLimitDifference()))
+
+                assertEquals(true, robot.appendAction(action2))
+
+                assertEquals(false, action2.addToMacro(action4, robot.getLimitDifference()))
+
+                assertEquals(3, robot.getFullProcedureSize(robot.getProcedure()))
+                assertEquals(robot.getProcedure()[0], action1)
+                assertEquals(robot.getProcedure()[1], action2)
+                assertEquals(action2.getMacro().size, 1)
+                assertEquals(action2.getMacro()[0], action3 as Action<Any>)
+            }
+            game.nextLevel()
+        }
     }
 }

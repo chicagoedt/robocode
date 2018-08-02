@@ -1,5 +1,6 @@
 package org.chicagoedt.robocode.actions
 
+import org.chicagoedt.robocode.actions.robotActions.MoveActionMacro
 import org.chicagoedt.robocode.levels.Level
 import org.chicagoedt.robocode.robots.RobotPlayer
 
@@ -18,21 +19,66 @@ abstract class ActionMacro<T> : Action<T>() {
     }
 
     /**
+     * @return A list of actions describing the robot's procedure
+     */
+    fun getFullMacroSize(actions : List<Action<*>>) : Int{
+        var size = 0
+        for(action in macro){
+            size += 1
+            if (action is ActionMacro){
+                try{
+                    if (action as ActionMacro<Int> !is MoveActionMacro)
+                        size += getFullMacroSize(action.getMacro())
+                }
+                catch (e : ClassCastException){
+
+                }
+
+            }
+        }
+        return size
+    }
+
+//    fun addToMacro(action: Action<*>){
+//        macro.add(action as Action<Any>)
+//    }
+
+    /**
      * Adds an action to the macro
      * @param action The action to add to the macro's list
+     * @param actionsToLimit The number of action until the limit is reached. -1 for unlimited
+     * @return True if the action was appended, false if the [actionLimit] was reached
      */
-    fun addToMacro(action: Action<*>){
-        macro.add(action as Action<Any>)
+    fun addToMacro(action: Action<*>, actionsToLimit : Int) : Boolean{
+        return addToMacroAt(action, macro.size, actionsToLimit)
     }
 
     /**
      * Adds an action to the macro
      * @param action The action to add to the macro's list
      * @param pos The position to add the action at
+     * @param actionsToLimit The number of action until the limit is reached. -1 for unlimited
+     * @return True if the action was appended, false if the [actionLimit] was reached
      */
-    fun addToMacro(action: Action<*>, pos : Int){
-        if (pos < macro.size) macro.add(pos, action as Action<Any>)
-        else macro.add(action as Action<Any>)
+    fun addToMacroAt(action: Action<*>, pos : Int, actionsToLimit : Int) : Boolean{
+        var totalSize = 0
+        if (action is ActionMacro){
+            try{
+                if (action as ActionMacro<Int> !is MoveActionMacro)
+                    totalSize += getFullMacroSize(action.getMacro())
+            }
+            catch (e : ClassCastException){
+
+            }
+        }
+
+
+        if (actionsToLimit == -1 || totalSize < actionsToLimit){
+            if (pos < macro.size) macro.add(pos, action as Action<Any>)
+            else macro.add(action as Action<Any>)
+            return true
+        }
+        return false
     }
 
     /**

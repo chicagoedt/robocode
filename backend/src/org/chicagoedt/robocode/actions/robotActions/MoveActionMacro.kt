@@ -17,7 +17,7 @@ class MoveActionMacro : ActionMacro<Int>() {
         }
 
     init{
-        addToMacro(MoveAction())
+        addToMacro(MoveAction(), -1)
     }
 
     override fun getActualMacro() : ArrayList<Action<Any>>{
@@ -34,7 +34,7 @@ class MoveActionMacro : ActionMacro<Int>() {
         }
         else if (count >= getMacro().size){
             for (i in count downTo getMacro().size){
-                addToMacro(MoveAction())
+                addToMacro(MoveAction(), -1)
             }
         }
     }
