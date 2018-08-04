@@ -166,6 +166,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
      * @param ui The element being dropped
      */
     fun macroDrop(event : Event, ui : dynamic){
+        if (panelParent == null && macroParent == null) return
         val blockElement : HTMLElement = ui.draggable[0]
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
