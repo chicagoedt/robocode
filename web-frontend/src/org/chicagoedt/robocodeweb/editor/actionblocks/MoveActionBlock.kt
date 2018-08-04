@@ -1,7 +1,10 @@
 package org.chicagoedt.robocodeweb.editor.actionblocks
 
+import jQuery
 import org.chicagoedt.robocode.actions.robotActions.*
 import org.chicagoedt.robocodeweb.editor.*
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.HTMLImageElement
 
 /**
  * The ActionBlock representing the MoveAction
@@ -12,8 +15,16 @@ class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
 	init{
 		parameterType = BlockParameterType.NUMBER_INPUT
 		blockClass = "movementBlock"
-		for (i in 1..10){
-			insertDropdownParameter(i.toString(), i.toInt())
-		}
+	}
+
+	fun enableTopicOnly(){
+		val topicSelector = parameterElement.querySelector(".topicSelectorInput") as HTMLElement
+
+		parameterElement.onmouseover!!.invoke(undefined.asDynamic())
+		topicSelector.onclick!!.invoke(undefined.asDynamic())
+
+		topicSelector.onclick = {}
+
+		topicSelector.style.cursor = "default"
 	}
 }
