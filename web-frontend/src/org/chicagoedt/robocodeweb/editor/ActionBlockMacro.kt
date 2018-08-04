@@ -173,14 +173,18 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
         val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
 
+        var insertBlockElement = {}
+        var removeBlockElement = {}
+
         if (blockElement.parentElement!!.classList.contains("panel")){
-            (blockElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(newActionBlock.action)
+            val panel = blockElement.parentElement!!.asDynamic().panelObject as Panel
+            removeBlockElement = {panel.robot.removeAction(newActionBlock.action)}
         }
         else if (newActionBlock.macroParent != null){
-            newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
+            removeBlockElement = {newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)}
         }
 
-        var insertBlockElement = {}
+
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
@@ -218,6 +222,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         val inserted = action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
         if (inserted){
             insertBlockElement()
+            removeBlockElement()
             newActionBlock.macroParent = this
         }
         else showActionBlockLimitPopup()

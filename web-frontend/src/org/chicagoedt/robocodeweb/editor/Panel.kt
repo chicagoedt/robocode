@@ -88,14 +88,16 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
 
+        var insertBlockElement = {}
+        var removeBlockElement = {}
+
         if (blockElement.parentElement!!.classList.contains("panel")){
-            (blockElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(newActionBlock.action)
+            val otherPanel = blockElement.parentElement!!.asDynamic().panelObject as Panel
+            removeBlockElement = {otherPanel.robot.removeAction(newActionBlock.action)}
         }
         else if (newActionBlock.macroParent != null){
-            newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
+            removeBlockElement = {newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)}
         }
-
-        var insertBlockElement = {}
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
@@ -123,6 +125,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         val inserted = robot.insertAction(blockElement.asDynamic().block.action, pos)
         if (inserted){
             insertBlockElement()
+            removeBlockElement()
             if (newActionBlock is ActionBlockMacro<*>){
                 newActionBlock.panelParent = this
             }
