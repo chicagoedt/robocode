@@ -59,7 +59,7 @@ abstract class ActionMacro<T> : Action<T>() {
      * @return True if the action was appended, false if the [actionLimit] was reached
      */
     fun addToMacroAt(action: Action<*>, pos : Int, actionsToLimit : Int) : Boolean{
-        var totalSize = 1
+        var totalSize = 0
         if (action is ActionMacro){
             try{
                 if (action as ActionMacro<Int> !is MoveActionMacro)
