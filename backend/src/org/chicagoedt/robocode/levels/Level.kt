@@ -52,7 +52,8 @@ class Level(var properties: Properties) {
                           val usePickUpItem : Boolean,
                           val useDropItem : Boolean,
                           val useForLoop : Boolean,
-                          val useReadSensor : Boolean)
+                          val useReadSensor : Boolean,
+                          val topicOnlyForMove : Boolean)
 
     /**
      * The theme to display for the level
@@ -86,7 +87,8 @@ class Level(var properties: Properties) {
             true,
             true,
             true,
-            true)
+            true,
+            false)
 
     var theme = Level.Theme("Default",
             "",

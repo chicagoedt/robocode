@@ -10,6 +10,8 @@ import org.chicagoedt.robocode.robots.Robot
  * @property LEVEL_VICTORY A robot has achieved the victory condition for the level
  * @property LEVEL_UPDATE The game board has been updated (and the UI needs to reflect the update)
  * @property LEVEL_FAILURE The robot  has finished its run and has not reached victory
+ * @property ACTION_ADDED An action was added to a robot
+ * @property ACTION_REMOVED An action was removed from a robot
  * @property ROBOT_RUN_START A robot has started running its actions
  * @property ROBOT_RUN_END A robot has finished running its actions
  */
@@ -17,6 +19,8 @@ enum class Event {
     LEVEL_VICTORY,
     LEVEL_UPDATE,
     LEVEL_FAILURE,
+    ACTION_ADDED,
+    ACTION_REMOVED,
     ROBOT_RUN_START,
     ROBOT_RUN_END
 }

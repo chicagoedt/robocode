@@ -1,5 +1,8 @@
 package org.chicagoedt.robocode.actions
 
+import org.chicagoedt.robocode.Event
+import org.chicagoedt.robocode.actions.robotActions.MoveActionMacro
+import org.chicagoedt.robocode.broadcastEvent
 import org.chicagoedt.robocode.levels.Level
 import org.chicagoedt.robocode.robots.RobotPlayer
 
@@ -18,21 +21,69 @@ abstract class ActionMacro<T> : Action<T>() {
     }
 
     /**
+     * @return A list of actions describing the robot's procedure
+     */
+    fun getFullMacroSize(actions : List<Action<*>>) : Int{
+        var size = 0
+        for(action in actions){
+            size += 1
+            if (action is ActionMacro){
+                try{
+                    if (action as ActionMacro<Int> !is MoveActionMacro)
+                        size += getFullMacroSize(action.getMacro())
+                }
+                catch (e : ClassCastException){
+                    size += getFullMacroSize(action.getMacro())
+                }
+
+            }
+        }
+        return size
+    }
+
+    /**
      * Adds an action to the macro
      * @param action The action to add to the macro's list
+     * @param actionsToLimit The number of action until the limit is reached. -1 for unlimited
+     * @return True if the action was appended, false if the [actionLimit] was reached
      */
-    fun addToMacro(action: Action<*>){
-        macro.add(action as Action<Any>)
+    fun addToMacro(action: Action<*>, actionsToLimit : Int) : Boolean{
+        return addToMacroAt(action, macro.size, actionsToLimit)
     }
 
     /**
      * Adds an action to the macro
      * @param action The action to add to the macro's list
      * @param pos The position to add the action at
+     * @param actionsToLimit The number of action until the limit is reached. -1 for unlimited
+     * @return True if the action was appended, false if the [actionLimit] was reached
      */
-    fun addToMacro(action: Action<*>, pos : Int){
-        if (pos < macro.size) macro.add(pos, action as Action<Any>)
-        else macro.add(action as Action<Any>)
+    fun addToMacroAt(action: Action<*>, pos : Int, actionsToLimit : Int) : Boolean{
+        val canInsert = canAddToMacro(action, actionsToLimit)
+        if (canInsert){
+            if (pos < macro.size) macro.add(pos, action as Action<Any>)
+            else macro.add(action as Action<Any>)
+            broadcastEvent(Event.ACTION_ADDED)
+        }
+        return canInsert
+    }
+
+    fun canAddToMacro(action: Action<*>, actionsToLimit : Int) : Boolean{
+        var totalSize = 0
+        if (action is ActionMacro){
+            try{
+                if (action as ActionMacro<Int> !is MoveActionMacro)
+                    totalSize += getFullMacroSize(action.getMacro())
+            }
+            catch (e : ClassCastException){
+                totalSize += getFullMacroSize(action.getMacro())
+            }
+        }
+
+        if (actionsToLimit == -1 || totalSize < actionsToLimit){
+            return true
+        }
+        return false
     }
 
     /**
@@ -41,6 +92,7 @@ abstract class ActionMacro<T> : Action<T>() {
      */
     fun removeFromMacro(action: Action<*>){
         macro.remove(action)
+        broadcastEvent(Event.ACTION_REMOVED)
     }
 
     /**
@@ -49,6 +101,7 @@ abstract class ActionMacro<T> : Action<T>() {
      */
     fun removeFromMacroAt(i : Int){
         macro.removeAt(i)
+        broadcastEvent(Event.ACTION_REMOVED)
     }
 
     /**

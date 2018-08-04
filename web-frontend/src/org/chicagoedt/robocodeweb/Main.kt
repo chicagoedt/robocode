@@ -228,3 +228,7 @@ fun checkForExpand(popup : HTMLElement) : dynamic{
 fun showPopup(title: String){
     showPopup(title, "", {})
 }
+
+fun showActionBlockLimitPopup(){
+    showPopup("Too many blocks!")
+}

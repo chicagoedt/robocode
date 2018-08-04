@@ -4,8 +4,9 @@ import jQuery
 import org.chicagoedt.robocode.robots.RobotPlayer
 import org.chicagoedt.robocode.actions.*
 import org.chicagoedt.robocodeweb.game
-import org.w3c.dom.events.Event
+import org.chicagoedt.robocodeweb.showActionBlockLimitPopup
 import org.w3c.dom.*
+import org.w3c.dom.events.Event
 import kotlin.browser.*
 import kotlin.dom.addClass
 import kotlin.js.*
@@ -30,6 +31,8 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
     private lateinit var runButton : HTMLButtonElement
     private lateinit var runButtonListener : (org.chicagoedt.robocode.Event) -> Unit
     private var hintElement = document.createElement("div") as HTMLElement
+    private var remainingElement = document.createElement("div") as HTMLElement
+    private var remainingElementListener : (org.chicagoedt.robocode.Event) -> Unit = {}
 
     init {
         val tdElement = document.createElement("td") as HTMLElement
@@ -85,19 +88,23 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
 
+        var insertBlockElement = {}
+        var removeBlockElement = {}
+
         if (blockElement.parentElement!!.classList.contains("panel")){
-            (blockElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(newActionBlock.action)
+            val otherPanel = blockElement.parentElement!!.asDynamic().panelObject as Panel
+            removeBlockElement = {otherPanel.robot.removeAction(newActionBlock.action)}
         }
         else if (newActionBlock.macroParent != null){
-            newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
+            removeBlockElement = {newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)}
         }
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
         if (hoverOverHeader){
-            if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
-            else element.appendChild(blockElement)
+            if (blocks.size > 0) insertBlockElement = {element.insertBefore(blockElement, blocks[0])}
+            else insertBlockElement = {element.appendChild(blockElement)}
             hoverOverHeader = false
         }
         else{
@@ -105,26 +112,33 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
                 lastHoveredBlock!!.element.style.marginBottom = ""
                 pos = blocks.indexOf(lastHoveredBlock!!.element) + 1
                 val block = blocks[pos] as HTMLElement
-                element.insertBefore(blockElement, block)
+                insertBlockElement = {element.insertBefore(blockElement, block)}
             }
             catch(e : Exception){
                 pos = blocks.size
-                element.appendChild(blockElement)
+                insertBlockElement = {element.appendChild(blockElement)}
             }
         }
 
         lastHoveredBlock = null
 
-        robot.insertAction(blockElement.asDynamic().block.action, pos)
+        val canInsert = robot.canInsertAction(blockElement.asDynamic().block.action)
+        if (canInsert){
+            insertBlockElement()
+            removeBlockElement()
+            robot.insertAction(blockElement.asDynamic().block.action, pos)
+            if (newActionBlock is ActionBlockMacro<*>){
+                newActionBlock.panelParent = this
+            }
 
-        if (newActionBlock is ActionBlockMacro<*>){
-            newActionBlock.panelParent = this
+            newActionBlock.macroParent = null
+
+            if (jQuery(hintElement).`is`(":visible")){
+                jQuery(hintElement).hide()
+            }
         }
-
-        newActionBlock.macroParent = null
-
-        if (jQuery(hintElement).`is`(":visible")){
-            jQuery(hintElement).hide()
+        else{
+            showActionBlockLimitPopup()
         }
 
         drawer.populate()
@@ -188,6 +202,27 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         }
         header.appendChild(runButton)
 
+        remainingElement.addClass("panelBlocksRemaining")
+        remainingElement.innerText = "Blocks: "
+
+        header.appendChild(remainingElement)
+        val remainingElementNumber = document.createElement("div") as HTMLElement
+        remainingElementNumber.addClass("panelBlocksRemainingNumber")
+        remainingElementNumber.innerText = robot.getLimitDifference().toString()
+
+        remainingElementListener = {
+            if (it == org.chicagoedt.robocode.Event.ACTION_ADDED ||
+                    it == org.chicagoedt.robocode.Event.ACTION_REMOVED)
+                remainingElementNumber.innerText = robot.getLimitDifference().toString()
+        }
+
+        game.attachEventListener(remainingElementListener)
+
+        remainingElement.appendChild(remainingElementNumber)
+
+        if (robot.actionLimit == -1) remainingElement.style.visibility = "hidden"
+        else header.addClass("panelHeaderWithRemainingBlocks")
+
         runButtonListener = {
             when (it){
                 org.chicagoedt.robocode.Event.ROBOT_RUN_START ->{
@@ -209,8 +244,9 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
     /**
      * Removes the button event listener from the game
      */
-    fun removeRunButtonListener(){
+    fun removeListeners(){
         game.removeEventListener(runButtonListener)
+        game.removeEventListener(remainingElementListener)
     }
 
     /**

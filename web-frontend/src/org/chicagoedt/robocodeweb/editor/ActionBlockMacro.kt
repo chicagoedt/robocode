@@ -3,6 +3,9 @@ package org.chicagoedt.robocodeweb.editor
 import jQuery
 import org.chicagoedt.robocode.actions.Action
 import org.chicagoedt.robocode.actions.ActionMacro
+import org.chicagoedt.robocode.robots.Robot
+import org.chicagoedt.robocode.robots.RobotPlayer
+import org.chicagoedt.robocodeweb.showActionBlockLimitPopup
 import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.ItemArrayLike
@@ -163,6 +166,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
      * @param ui The element being dropped
      */
     fun macroDrop(event : Event, ui : dynamic){
+        if (panelParent == null && macroParent == null) return
         val blockElement : HTMLElement = ui.draggable[0]
         blockElement.style.top = "0px"
         blockElement.style.left = "0px"
@@ -170,19 +174,25 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
         val newActionBlock : ActionBlock<*> = blockElement.asDynamic().block
 
+        var insertBlockElement = {}
+        var removeBlockElement = {}
+
         if (blockElement.parentElement!!.classList.contains("panel")){
-            (blockElement.parentElement!!.asDynamic().panelObject as Panel).robot.removeAction(newActionBlock.action)
+            val panel = blockElement.parentElement!!.asDynamic().panelObject as Panel
+            removeBlockElement = {panel.robot.removeAction(newActionBlock.action)}
         }
         else if (newActionBlock.macroParent != null){
-            newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)
+            removeBlockElement = {newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)}
         }
+
+
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
         var pos = 0
         if (hoverOverHeader){
-            if (blocks.size > 0) element.insertBefore(blockElement, blocks[0])
-            else element.appendChild(blockElement)
+            if (blocks.size > 0) insertBlockElement = {element.insertBefore(blockElement, blocks[0])}
+            else insertBlockElement = {element.appendChild(blockElement)}
             hoverOverHeader = false
         }
         else{
@@ -190,20 +200,34 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
                 lastHoveredBlock!!.element.style.marginBottom = ""
                 pos = blocks.indexOf(lastHoveredBlock!!.element) + 1
                 val block = blocks[pos] as HTMLElement
-                element.insertBefore(blockElement, block)
+                insertBlockElement = {element.insertBefore(blockElement, block)}
             }
             catch(e : Exception){
                 pos = blocks.size
-                element.appendChild(blockElement)
+                insertBlockElement = {element.appendChild(blockElement)}
             }
         }
 
         lastHoveredBlock = null
 
-        val newAction : Action<*> = blockElement.asDynamic().block.action
-        action.addToMacro(newAction, pos)
+        var robotParent : RobotPlayer? = null
+        var currentPanelParent = panelParent
+        var currentMacroParent= macroParent
+        while (currentPanelParent == null){
+            currentPanelParent = currentMacroParent!!.panelParent
+            if (currentPanelParent == null) currentMacroParent = currentMacroParent.macroParent
+        }
+        robotParent = currentPanelParent.robot
 
-        newActionBlock.macroParent = this
+        val newAction : Action<*> = blockElement.asDynamic().block.action
+        val canInsert = action.canAddToMacro(newAction, robotParent.getLimitDifference())
+        if (canInsert){
+            insertBlockElement()
+            removeBlockElement()
+            action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
+            newActionBlock.macroParent = this
+        }
+        else showActionBlockLimitPopup()
 
         drawer.populate()
     }

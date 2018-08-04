@@ -96,6 +96,13 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				val x = robotData.attributes.getNamedItem("x")!!.value.toInt()
 				val y = robotData.attributes.getNamedItem("y")!!.value.toInt()
 				val directionString = robotData.attributes.getNamedItem("direction")!!.value
+				var actionLimit : Int
+				try{
+					actionLimit = robotData.attributes.getNamedItem("actionLimit")!!.value.toInt()
+				}
+				catch (e : NullPointerException){
+					actionLimit = -1
+				}
 
 				var direction = RobotOrientation.DIRECTION_UP
 
@@ -104,7 +111,10 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				else if (directionString == "left") direction = RobotOrientation.DIRECTION_LEFT
 				else if (directionString == "right") direction = RobotOrientation.DIRECTION_RIGHT
 
-				robots.add(RobotPlayer(robotName, x, y, direction, level))
+				val player = RobotPlayer(robotName, x, y, direction, level)
+				player.actionLimit = actionLimit
+
+				robots.add(player)
 			}
 
 			level.setPlayers(robots)
@@ -127,6 +137,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 		var useDropItem = true
 		var useForLoop = true
 		var useReadSensor = true
+		var topicOnlyForMove = false
 
 		if (levelData.hasAttribute("useTopic")){
 			if (levelData.getAttribute("useTopic")!!.equals("false", true))
@@ -168,6 +179,11 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				useReadSensor = false
 		}
 
+		if (levelData.hasAttribute("topicOnlyForMove")){
+			if (levelData.getAttribute("topicOnlyForMove")!!.equals("true", true))
+				topicOnlyForMove = true
+		}
+
 		level.conditions = Level.Conditions(useTopic,
 				useSensors,
 				useMove,
@@ -175,7 +191,8 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				usePickUpItem,
 				useDropItem,
 				useForLoop,
-				useReadSensor)
+				useReadSensor,
+				topicOnlyForMove)
 	}
 
 	/**

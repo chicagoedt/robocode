@@ -4,6 +4,7 @@ import org.chicagoedt.robocode.actions.*
 import org.chicagoedt.robocode.sensors.*
 import org.chicagoedt.robocode.levels.*
 import org.chicagoedt.robocode.*
+import org.chicagoedt.robocode.actions.robotActions.MoveActionMacro
 import org.chicagoedt.robocode.collectibles.ItemInventory
 import org.chicagoedt.robocode.tiles.*
 
@@ -28,6 +29,7 @@ enum class RobotPosition{
  * @property checkpointX The X value at the last checkpoint
  * @property checkpointY The Y value at the last checkpoint
  * @property checkpointDirection The direction at the last checkpoint
+ * @property actionLimit The limit on the number of actions that this robot can have. -1 for unlimited
  */
 class RobotPlayer(val name: String,
                   var x: Int,
@@ -42,6 +44,7 @@ class RobotPlayer(val name: String,
     private var checkpointX = x
     private var checkpointY = y
     private var checkpointDirection = direction
+    var actionLimit = -1
 
     init{
         setSensorCountAt(RobotPosition.FRONT, 1)
@@ -163,24 +166,47 @@ class RobotPlayer(val name: String,
     /**
      * Adds an action to a robot's procedure
      * @param action The action to append
+     * @return True if the action was appended, false if the [actionLimit] was reached
      */
-    fun appendAction(action: Action<*>){
-        procedure.add(action as Action<Any>)
+    fun appendAction(action: Action<*>) : Boolean{
+        return insertAction(action, procedure.size)
     }
 
     /**
      * Inserts an action into a robot's procedure at a specific spot
+     * @return True if the action was appended, false if the [actionLimit] was reached
      * @param action The action to append
      */
-    fun insertAction(action: Action<*>, i : Int){
-        val lastIndex = procedure.size - 1
+    fun insertAction(action: Action<*>, i : Int) : Boolean{
+        val canInsert = canInsertAction(action)
+        if (canInsert){
+            if (i > procedure.size - 1){
+                procedure.add(action as Action<Any>)
+            }
+            else{
+                procedure.add(i, action as Action<Any>)
+            }
+            broadcastEvent(Event.ACTION_ADDED)
+        }
+        return canInsert
+    }
 
-        if (i > lastIndex){
-            procedure.add(action as Action<Any>)
+    fun canInsertAction(action: Action<*>) : Boolean{
+        var totalSize = getFullProcedureSize(procedure)
+        if (action is ActionMacro){
+            try{
+                if (action as ActionMacro<Int> !is MoveActionMacro)
+                    totalSize += getFullProcedureSize(action.getMacro())
+            }
+            catch (e : ClassCastException){
+                totalSize += getFullProcedureSize(action.getMacro())
+            }
         }
-        else{
-            procedure.add(i, action as Action<Any>)
+
+        if (actionLimit == -1 || totalSize < actionLimit){
+            return true
         }
+        return false
     }
 
     /**
@@ -190,6 +216,36 @@ class RobotPlayer(val name: String,
      */
     fun removeAction(action: Action<*>){
         procedure.remove(action)
+        broadcastEvent(Event.ACTION_REMOVED)
+    }
+
+    /**
+     * @return The limit difference available for an ActionMacro
+     */
+    fun getLimitDifference() : Int{
+        if (actionLimit != -1) return actionLimit - getFullProcedureSize(getProcedure())
+        else return -1
+    }
+
+    /**
+     * @return A list of actions describing the robot's procedure
+     */
+    fun getFullProcedureSize(actions : List<Action<*>>) : Int{
+        var size = 0
+        for(action in actions){
+            size += 1
+            if (action is ActionMacro){
+                try{
+                    if (action as ActionMacro<Int> !is MoveActionMacro)
+                        size += getFullProcedureSize(action.getMacro())
+                }
+                catch (e : ClassCastException){
+                    size += getFullProcedureSize(action.getMacro())
+                }
+
+            }
+        }
+        return size
     }
 
     /**
