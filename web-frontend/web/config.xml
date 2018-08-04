@@ -23,6 +23,8 @@
 			useForLoop: True if the For Loop block should be enabled, false otherwise. Default true.
 			useReadSensor: True if the Read Sensor block should be enabled, false otherwise. Default true.
 
+			topicOnlyForMove: True if the move block can only use the topic, false if it can use numbers
+
 			Example:
 			<level name="Level 1" difficulty="1" useTopic="false" useMove="false">
 
@@ -42,7 +44,7 @@
 
 	-->
 	<levels>
-		<level name="Level 1" difficulty="1" theme="desert">
+		<level name="Level 1" difficulty="1" theme="desert" topicOnlyForMove="true">
 			<victory type="tile"/>
 			<robot name="Surus" x="0" y="8" direction="up" />
 			<robot name="Hushpuppy" x="3" y="3" direction="up" actionLimit="3"/>

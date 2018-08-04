@@ -2,6 +2,7 @@ package org.chicagoedt.robocodeweb.editor.actionblocks
 
 import jQuery
 import org.chicagoedt.robocode.actions.robotActions.*
+import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.editor.*
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLImageElement
@@ -15,6 +16,8 @@ class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
 	init{
 		parameterType = BlockParameterType.NUMBER_INPUT
 		blockClass = "movementBlock"
+
+		if (currentLevelConditions.topicOnlyForMove) enableTopicOnly()
 	}
 
 	fun enableTopicOnly(){

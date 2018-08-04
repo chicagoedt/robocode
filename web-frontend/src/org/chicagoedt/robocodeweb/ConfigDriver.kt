@@ -131,6 +131,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 		var useDropItem = true
 		var useForLoop = true
 		var useReadSensor = true
+		var topicOnlyForMove = false
 
 		if (levelData.hasAttribute("useTopic")){
 			if (levelData.getAttribute("useTopic")!!.equals("false", true))
@@ -172,6 +173,11 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				useReadSensor = false
 		}
 
+		if (levelData.hasAttribute("topicOnlyForMove")){
+			if (levelData.getAttribute("topicOnlyForMove")!!.equals("true", true))
+				topicOnlyForMove = true
+		}
+
 		level.conditions = Level.Conditions(useTopic,
 				useSensors,
 				useMove,
@@ -179,7 +185,8 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				usePickUpItem,
 				useDropItem,
 				useForLoop,
-				useReadSensor)
+				useReadSensor,
+				topicOnlyForMove)
 	}
 
 	/**
