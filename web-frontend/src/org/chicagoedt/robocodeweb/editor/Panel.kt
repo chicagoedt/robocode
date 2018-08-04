@@ -122,10 +122,11 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         lastHoveredBlock = null
 
-        val inserted = robot.insertAction(blockElement.asDynamic().block.action, pos)
-        if (inserted){
+        val canInsert = robot.canInsertAction(blockElement.asDynamic().block.action)
+        if (canInsert){
             insertBlockElement()
             removeBlockElement()
+            robot.insertAction(blockElement.asDynamic().block.action, pos)
             if (newActionBlock is ActionBlockMacro<*>){
                 newActionBlock.panelParent = this
             }

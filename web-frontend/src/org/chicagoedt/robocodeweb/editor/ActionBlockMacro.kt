@@ -220,10 +220,11 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
         robotParent = currentPanelParent.robot
 
         val newAction : Action<*> = blockElement.asDynamic().block.action
-        val inserted = action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
-        if (inserted){
+        val canInsert = action.canAddToMacro(newAction, robotParent.getLimitDifference())
+        if (canInsert){
             insertBlockElement()
             removeBlockElement()
+            action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
             newActionBlock.macroParent = this
         }
         else showActionBlockLimitPopup()
