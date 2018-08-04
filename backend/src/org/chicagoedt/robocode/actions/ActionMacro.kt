@@ -25,7 +25,7 @@ abstract class ActionMacro<T> : Action<T>() {
      */
     fun getFullMacroSize(actions : List<Action<*>>) : Int{
         var size = 0
-        for(action in macro){
+        for(action in actions){
             size += 1
             if (action is ActionMacro){
                 try{
@@ -33,17 +33,13 @@ abstract class ActionMacro<T> : Action<T>() {
                         size += getFullMacroSize(action.getMacro())
                 }
                 catch (e : ClassCastException){
-
+                    size += getFullMacroSize(action.getMacro())
                 }
 
             }
         }
         return size
     }
-
-//    fun addToMacro(action: Action<*>){
-//        macro.add(action as Action<Any>)
-//    }
 
     /**
      * Adds an action to the macro
@@ -63,7 +59,7 @@ abstract class ActionMacro<T> : Action<T>() {
      * @return True if the action was appended, false if the [actionLimit] was reached
      */
     fun addToMacroAt(action: Action<*>, pos : Int, actionsToLimit : Int) : Boolean{
-        var totalSize = 0
+        var totalSize = 1
         if (action is ActionMacro){
             try{
                 if (action as ActionMacro<Int> !is MoveActionMacro)

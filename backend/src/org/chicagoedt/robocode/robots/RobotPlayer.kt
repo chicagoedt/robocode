@@ -233,7 +233,7 @@ class RobotPlayer(val name: String,
                         size += getFullProcedureSize(action.getMacro())
                 }
                 catch (e : ClassCastException){
-
+                    size += getFullProcedureSize(action.getMacro())
                 }
 
             }

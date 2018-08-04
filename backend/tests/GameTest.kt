@@ -1606,4 +1606,31 @@ class BackendTests {
             game.nextLevel()
         }
     }
+
+    @Test
+    fun actionLimitMacroNestedLoops(){
+        for(level in levels){
+            for((name, robot) in level.players){
+                robot.actionLimit = 3
+                val action1 = TurnAction()
+                val action2 = TurnAction()
+                val action3 = TurnAction()
+
+                val forLoopAction1 = ForLoopAction()
+                forLoopAction1.addToMacro(action1, -1)
+                forLoopAction1.addToMacro(action2, -1)
+                forLoopAction1.addToMacro(action3, -1)
+
+                val forLoopAction2 = ForLoopAction()
+
+                assertEquals(true, robot.appendAction(forLoopAction2))
+                assertEquals(false, forLoopAction2.addToMacro(forLoopAction1, robot.getLimitDifference()))
+
+                assertEquals(1, robot.getFullProcedureSize(robot.getProcedure()))
+                assertEquals(robot.getProcedure()[0], forLoopAction2)
+                assertEquals(forLoopAction2.getMacro().size, 0)
+            }
+            game.nextLevel()
+        }
+    }
 }
