@@ -16,6 +16,8 @@ class GridDriver(val game: Game){
     var level = game.currentLevel
     var gridTiles = arrayListOf<ArrayList<GridTile>>()
     var playerTiles = arrayListOf<PlayerTile>()
+    var instructionsElement = document.getElementById("instructions")
+
     private var tileWidth = 0
 
     /**
@@ -55,6 +57,8 @@ class GridDriver(val game: Game){
         else{
             topicElement.style.visibility = "hidden"
         }
+
+        instructionsElement!!.innerHTML = level.properties.instructions
 
         calculatePlayers()
         handleResize()

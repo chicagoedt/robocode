@@ -119,6 +119,12 @@ body{
 	margin-top: 5px;
 }
 
+#instructions{
+	padding: 10px;
+	font-family: Verdana;
+	text-align: left;
+}
+
 .deleteDrawer{
 	border-radius: 10px;
 	display:none;
