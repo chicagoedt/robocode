@@ -93,8 +93,14 @@ open class GridTile(var level : Level, var gridX : Int, var gridY : Int){
 					val itemCount = level.tileAt(gridX, gridY).items.itemQuantity(typeID)
 					itemQuantityText.innerHTML = itemCount.toString()
 				}
+				else{
+					itemQuantityText.innerHTML = ""
+				}
 			}
 			tileContainer.style.display = "block"
+		}
+		else{
+			itemQuantityText.innerHTML = ""
 		}
 	}
 }
