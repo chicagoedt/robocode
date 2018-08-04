@@ -49,6 +49,9 @@
 	-->
 	<levels>
 		<level name="Level 1" difficulty="1" theme="desert">
+			<instructions>
+				Win the level!
+			</instructions>
 			<victory type="tile"/>
 			<robot name="Surus" x="0" y="8" direction="up" />
 			<robot name="Hushpuppy" x="3" y="3" direction="up"/>

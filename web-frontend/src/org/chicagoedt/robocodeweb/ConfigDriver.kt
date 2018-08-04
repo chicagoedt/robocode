@@ -67,6 +67,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val name = levelData.attributes.getNamedItem("name")!!.value
 			val difficulty = levelData.attributes.getNamedItem("difficulty")!!.value.toInt()
 			val themeName = levelData.attributes.getNamedItem("theme")!!.value
+			val instructions = levelData.querySelector("instructions")!!.innerHTML
 
 
 			val gridData = levelData.querySelector("grid")!!
@@ -74,7 +75,7 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val width = (gridData.querySelectorAll("gridRow").item(0) as Element).querySelectorAll("gridTile").length
 			val grid = readGrid(gridData)
 
-			val level = Level(Level.Properties(name, difficulty, width, height))
+			val level = Level(Level.Properties(name, difficulty, instructions, width, height))
 
 			for (theme in themes){
 				if (theme.name == themeName){

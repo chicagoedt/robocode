@@ -31,6 +31,7 @@ class Level(var properties: Properties) {
      */
     data class Properties(val name: String,
                           val difficulty : Int,
+                          val instructions : String,
                           val width : Int,
                           val height : Int)
 

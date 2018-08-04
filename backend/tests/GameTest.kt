@@ -27,8 +27,8 @@ fun getLevels() : ArrayList<Level>{
 
     val levels = ArrayList<Level>()
 
-    val level1 = Level(Level.Properties("levels 1", 0, 10, 10))
-    val level2 = Level(Level.Properties("levels 2", 0, 5, 5))
+    val level1 = Level(Level.Properties("levels 1", 0, "",10, 10))
+    val level2 = Level(Level.Properties("levels 2", 0, "",5, 5))
 
     val robotPlayer1 = RobotPlayer("Surus", 5, 5, RobotOrientation.DIRECTION_UP, level1)
     val robotPlayer2 = RobotPlayer("Hushpuppy", 3, 3, RobotOrientation.DIRECTION_UP, level1)
@@ -224,7 +224,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_DOWN, level1)
 
@@ -269,7 +269,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -306,7 +306,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         level1.victoryType = VictoryType.TILE
 
@@ -352,7 +352,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         level1.victoryType = VictoryType.TILE
 
@@ -400,7 +400,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         level1.victoryType = VictoryType.TILE
 
@@ -464,7 +464,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         level1.victoryType = VictoryType.TILE
 
@@ -510,7 +510,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         level1.victoryType = VictoryType.TILE
 
@@ -555,7 +555,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
 
@@ -629,7 +629,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
 
@@ -809,7 +809,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
         val distanceSensor = DistanceSensor()
@@ -849,7 +849,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val distanceSensor = DistanceSensor()
@@ -956,7 +956,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -1000,7 +1000,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
 
@@ -1076,7 +1076,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val list1 = ArrayList<RobotPlayer>()
@@ -1114,7 +1114,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val list1 = ArrayList<RobotPlayer>()
@@ -1196,7 +1196,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_UP, level1)
         val list1 = ArrayList<RobotPlayer>()
@@ -1234,7 +1234,7 @@ class BackendTests {
 
         val testLevels = ArrayList<Level>()
 
-        val level1 = Level(Level.Properties("levels 1", 0, 3, 3))
+        val level1 = Level(Level.Properties("levels 1", 0, "",3, 3))
 
         val robotPlayer1 = RobotPlayer("Surus", 0, 0, RobotOrientation.DIRECTION_RIGHT, level1)
         val list1 = ArrayList<RobotPlayer>()
