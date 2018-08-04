@@ -56,7 +56,7 @@
 			   useForLoop="false"
 			   useReadSensor="false">
 			<instructions>
-				Get your robot to the oasis!
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
 				<br/>
 				Move your robot by dragging the blocks into your robots panel
@@ -99,7 +99,7 @@
 			   useForLoop="false"
 			   useReadSensor="false">
 			<instructions>
-				Get your robot to the oasis!
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
 				<br/>
 				You have to move farther for this one. Adjust the number in the "Move" block to move more
@@ -142,7 +142,7 @@
 			   useForLoop="false"
 			   useReadSensor="false">
 			<instructions>
-				Get your robot to the oasis!
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
 				<br/>
 				Use the "Turn" block to adjust which direction you move
@@ -184,7 +184,7 @@
 			   useDropItem="false"
 			   useReadSensor="false">
 			<instructions>
-				Get your robot to the oasis!
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
 				<br/>
 				Use the "For Loop" block to repeat code
@@ -226,7 +226,7 @@
 			   useDropItem="false"
 			   useReadSensor="false">
 			<instructions>
-				Get your robot to the oasis!
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
 				<br/>
 				This one is a little harder. Use the "For Loop" block to repeat code
@@ -256,7 +256,7 @@
 			   useDropItem="false"
 			   useReadSensor="false">
 			<instructions>
-				Get your robot to the oasis!
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
 				<br/>
 				This one is a little harder. Use the "For Loop" block to repeat code
