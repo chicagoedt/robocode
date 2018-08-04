@@ -48,139 +48,41 @@
 
 	-->
 	<levels>
-		<level name="Level 1" difficulty="1" theme="desert">
+		<level name="Level 1" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useForLoop="false"
+			   useReadSensor="false">
 			<instructions>
-				Win the level!
+				Get your robot to the oasis!
+				<br/>
+				<br/>
+				Move your robot by dragging the blocks into your robots panel
 			</instructions>
 			<victory type="tile"/>
-			<robot name="Surus" x="0" y="8" direction="up" />
-			<robot name="Hushpuppy" x="3" y="3" direction="up"/>
+			<robot name="Surus" x="1" y="2" direction="right" />
 			<grid>
 				<gridRow>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
 					<gridTile type="victory"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="obstacle"></gridTile>
-					<gridTile type="neutral"></gridTile>
-
 				</gridRow>
-
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
-
 				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"><item id="0" count="5"/></gridTile>
-					<gridTile type="neutral"><item id="1" count="5"/></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
@@ -189,107 +91,193 @@
 			</grid>
 		</level>
 
-		<level name="Level 2" difficulty="99" theme="desert">
+		<level name="Level 2" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useForLoop="false"
+			   useReadSensor="false">
 			<instructions>
-				Win the level!
+				Get your robot to the oasis!
+				<br/>
+				<br/>
+				You have to move farther for this one. Adjust the number in the "Move" block to move more
 			</instructions>
 			<victory type="tile"/>
-			<robot name="Surus" x="0" y="1" direction="down"/>
+			<robot name="Surus" x="1" y="2" direction="right" />
 			<grid>
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
-
-				<gridRow>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-				</gridRow>
-
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="victory"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
-
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
-
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
+			</grid>
+		</level>
 
+		<level name="Level 3" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useForLoop="false"
+			   useReadSensor="false">
+			<instructions>
+				Get your robot to the oasis!
+				<br/>
+				<br/>
+				Use the "Turn" block to adjust which direction you move
+			</instructions>
+			<victory type="tile"/>
+			<robot name="Surus" x="1" y="2" direction="right" />
+			<grid>
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
-
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
-					<gridTile type="neutral"></gridTile>
 				</gridRow>
-
+				<gridRow>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="victory"></gridTile>
+				</gridRow>
 				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 4" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useReadSensor="false">
+			<instructions>
+				Get your robot to the oasis!
+				<br/>
+				<br/>
+				Use the "For Loop" block to repeat code
+			</instructions>
+			<victory type="tile"/>
+			<robot name="Surus" x="2" y="2" direction="up" actionLimit="3"/>
+			<grid>
+				<gridRow>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
 					<gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
 					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+					<gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 5" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useReadSensor="false">
+			<instructions>
+				Get your robot to the oasis!
+				<br/>
+				<br/>
+				This one is a little harder. Use the "For Loop" block to repeat code
+			</instructions>
+			<victory type="tile"/>
+			<robot name="Surus" x="0" y="0" direction="up" actionLimit="5"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 6" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useReadSensor="false">
+			<instructions>
+				Get your robot to the oasis!
+				<br/>
+				<br/>
+				This one is a little harder. Use the "For Loop" block to repeat code
+			</instructions>
+			<victory type="tile"/>
+			<robot name="Surus" x="0" y="0" direction="up" actionLimit="7"/>
+			<grid>
+				<gridRow>
+					<gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
 				</gridRow>
 			</grid>
 		</level>
