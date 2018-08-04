@@ -59,6 +59,16 @@ abstract class ActionMacro<T> : Action<T>() {
      * @return True if the action was appended, false if the [actionLimit] was reached
      */
     fun addToMacroAt(action: Action<*>, pos : Int, actionsToLimit : Int) : Boolean{
+        val canInsert = canAddToMacro(action, actionsToLimit)
+        if (canInsert){
+            if (pos < macro.size) macro.add(pos, action as Action<Any>)
+            else macro.add(action as Action<Any>)
+            broadcastEvent(Event.ACTION_ADDED)
+        }
+        return canInsert
+    }
+
+    fun canAddToMacro(action: Action<*>, actionsToLimit : Int) : Boolean{
         var totalSize = 0
         if (action is ActionMacro){
             try{
@@ -71,9 +81,6 @@ abstract class ActionMacro<T> : Action<T>() {
         }
 
         if (actionsToLimit == -1 || totalSize < actionsToLimit){
-            if (pos < macro.size) macro.add(pos, action as Action<Any>)
-            else macro.add(action as Action<Any>)
-            broadcastEvent(Event.ACTION_ADDED)
             return true
         }
         return false

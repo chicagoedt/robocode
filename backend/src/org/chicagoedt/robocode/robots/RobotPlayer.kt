@@ -178,6 +178,20 @@ class RobotPlayer(val name: String,
      * @param action The action to append
      */
     fun insertAction(action: Action<*>, i : Int) : Boolean{
+        val canInsert = canInsertAction(action)
+        if (canInsert){
+            if (i > procedure.size - 1){
+                procedure.add(action as Action<Any>)
+            }
+            else{
+                procedure.add(i, action as Action<Any>)
+            }
+            broadcastEvent(Event.ACTION_ADDED)
+        }
+        return canInsert
+    }
+
+    fun canInsertAction(action: Action<*>) : Boolean{
         var totalSize = getFullProcedureSize(procedure)
         if (action is ActionMacro){
             try{
@@ -190,13 +204,6 @@ class RobotPlayer(val name: String,
         }
 
         if (actionLimit == -1 || totalSize < actionLimit){
-            if (i > procedure.size - 1){
-                procedure.add(action as Action<Any>)
-            }
-            else{
-                procedure.add(i, action as Action<Any>)
-            }
-            broadcastEvent(Event.ACTION_ADDED)
             return true
         }
         return false
