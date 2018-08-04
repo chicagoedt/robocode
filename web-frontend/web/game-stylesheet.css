@@ -123,6 +123,7 @@ body{
 	padding: 10px;
 	font-family: Verdana;
 	text-align: left;
+	overflow: auto;
 }
 
 .deleteDrawer{

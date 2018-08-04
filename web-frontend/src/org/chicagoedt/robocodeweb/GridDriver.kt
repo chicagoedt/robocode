@@ -16,7 +16,7 @@ class GridDriver(val game: Game){
     var level = game.currentLevel
     var gridTiles = arrayListOf<ArrayList<GridTile>>()
     var playerTiles = arrayListOf<PlayerTile>()
-    var instructionsElement = document.getElementById("instructions")
+    var instructionsElement = document.getElementById("instructions") as HTMLElement
 
     private var tileWidth = 0
 
@@ -58,7 +58,7 @@ class GridDriver(val game: Game){
             topicElement.style.visibility = "hidden"
         }
 
-        instructionsElement!!.innerHTML = level.properties.instructions
+        instructionsElement.innerHTML = level.properties.instructions
 
         calculatePlayers()
         handleResize()
@@ -114,5 +114,12 @@ class GridDriver(val game: Game){
         val totalHeight = jQuery(document.getElementById("grid") as HTMLElement).outerHeight(true)
         val topicElement = document.getElementById("topic") as HTMLElement
         topicElement.style.marginTop = totalHeight.toString() + "px"
+
+        val top = instructionsElement.getBoundingClientRect().top
+        val windowBottom = window.innerHeight
+        val paddingString = jQuery(instructionsElement).css("padding")
+        val padding = paddingString.substring(0, paddingString.length - 2).toDouble() * 2
+        instructionsElement.style.maxHeight = (windowBottom - top - padding).toString() + "px"
+
     }
 }
