@@ -52,10 +52,10 @@ class GridDriver(val game: Game){
 
         val topicElement = document.getElementById("topic") as HTMLElement
         if (currentLevelConditions.useTopic){
-            topicElement.style.visibility = "visible"
+            topicElement.style.display = "block"
         }
         else{
-            topicElement.style.visibility = "hidden"
+            topicElement.style.display = "none"
         }
 
         instructionsElement.innerHTML = level.properties.instructions
@@ -114,6 +114,13 @@ class GridDriver(val game: Game){
         val totalHeight = jQuery(document.getElementById("grid") as HTMLElement).outerHeight(true)
         val topicElement = document.getElementById("topic") as HTMLElement
         topicElement.style.marginTop = totalHeight.toString() + "px"
+
+        if (topicElement.style.display == "none"){
+            instructionsElement.style.marginTop = totalHeight.toString() + "px"
+        }
+        else{
+            instructionsElement.style.marginTop = ""
+        }
 
         val top = instructionsElement.getBoundingClientRect().top
         val windowBottom = window.innerHeight
