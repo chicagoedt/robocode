@@ -106,7 +106,10 @@ fun fadeInGame(){
 fun update(e : Event){
     when (e){
         Event.LEVEL_UPDATE -> refresh()
-        Event.LEVEL_VICTORY -> showPopup("Victory!", "Next Level", ::nextLevel)
+        Event.LEVEL_VICTORY -> {
+            if (game.hasNextLevel())showPopup("Victory!", "Next Level", ::nextLevel)
+            else showPopup("Victory!", "Done", ::toEndScreen)
+        }
         Event.LEVEL_FAILURE -> showPopup("Try again!")
     }
 }
@@ -135,6 +138,10 @@ fun nextLevel(){
     gridDriver.calculateNewLevel()
     editorDriver.calculateNewLevel()
     updateHeader()
+}
+
+fun toEndScreen(){
+    window.location.href = "done.html"
 }
 
 fun updateHeader(){

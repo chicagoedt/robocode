@@ -93,10 +93,17 @@ class Game (private val levelsList: ArrayList<Level>,
      * Moves the game on to the next level
      */
     fun nextLevel(){
-        if (levelsList.size > levelNumber + 1) {
+        if (hasNextLevel()) {
             levelNumber++
             currentLevel = levelsList[levelNumber]
         }
+    }
+
+    /**
+     * @return True if the game has another level, false otherwise
+     */
+    fun hasNextLevel() : Boolean{
+        return (levelsList.size > levelNumber + 1)
     }
 
     /**
