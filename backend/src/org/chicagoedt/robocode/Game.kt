@@ -64,6 +64,11 @@ class Game (private val levelsList: ArrayList<Level>,
 
     var currentLevel : Level
 
+    var currentLevelNumber = 0
+        get() {
+            return levelNumber + 1
+        }
+
 
     init{
         for (robot in robotsList){
@@ -87,6 +92,19 @@ class Game (private val levelsList: ArrayList<Level>,
      */
     fun removeEventListener(newEventListener: (Event) -> Unit){
         eventListeners.remove(newEventListener)
+    }
+
+    /**
+     * @param levelnum The level number to jump to
+     * @return True if the jump was successful, false otherwise
+     */
+    fun jumpToLevel(levelnum : Int) : Boolean{
+        if (levelnum - 1 < levelsList.size){
+            levelNumber = levelnum - 1
+            currentLevel = levelsList[levelNumber]
+            return true
+        }
+        return false
     }
 
     /**

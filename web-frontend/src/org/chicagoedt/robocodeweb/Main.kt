@@ -37,7 +37,9 @@ internal lateinit var currentLevelConditions : Level.Conditions
 fun setup(robots : ArrayList<Robot>, levels : ArrayList<Level>, themes: ArrayList<Level.Theme>){
     game = Game(levels, robots)
     game.attachEventListener(::update)
+
     window.onresize = {onResize()}
+    window.onhashchange = {checkHash()}
     if (document.readyState == DocumentReadyState.Companion.COMPLETE){
         onLoad()
     }
@@ -51,7 +53,6 @@ fun onLoad(){
     currentLevelConditions = game.currentLevel.conditions
     gridDriver = GridDriver(game)
     gridDriver.calculateNewLevel()
-    jQuery("#leftPane").hide()
 
     editorDriver = EditorDriver(game, (document.getElementById("editor") as HTMLElement))
     editorDriver.calculateNewLevel()
@@ -59,7 +60,25 @@ fun onLoad(){
     setTopicListener()
 
     updateHeader()
-    fadeInGame()
+
+    checkHash()
+}
+
+fun checkHash(){
+    if (window.location.hash != ""){
+        try{
+            val hashNumber = window.location.hash.substring(1).toInt()
+            if (game.jumpToLevel(hashNumber)){
+                updateLevel()
+            }
+            else
+                window.location.hash = "#${game.currentLevelNumber}"
+        }
+        catch (e : NumberFormatException){
+            window.location.hash = "#${game.currentLevelNumber}"
+        }
+    }
+    else window.location.hash = "#${game.currentLevelNumber}"
 }
 
 @JsName("onResize")
@@ -76,27 +95,6 @@ fun main(args: Array<String>) {
     if (windowType != "undefined"){
         configDriver = ConfigDriver("config.xml", ::setup)
     }
-}
-
-fun fadeInGame(){
-    val fadeSpeed = 500
-    val intervalTime = 100
-    var count = 1
-    var interval = 0;
-    val runner = {
-        if (count == 1){
-            jQuery("#leftPane").fadeIn(fadeSpeed)
-        }
-        if (count == 2){
-            jQuery("#panelContainer").fadeIn(fadeSpeed)
-        }
-        if (count > 2) {
-            window.clearInterval(interval)
-        }
-        count++
-    }
-    jQuery("#drawer").fadeIn(fadeSpeed)
-    interval = window.setInterval(runner, intervalTime)
 }
 
 /**
@@ -134,6 +132,11 @@ fun setTopicListener(){
 
 fun nextLevel(){
     game.nextLevel()
+    updateLevel()
+}
+
+fun updateLevel(){
+    window.location.hash = "#${game.currentLevelNumber}"
     currentLevelConditions = game.currentLevel.conditions
     gridDriver.calculateNewLevel()
     editorDriver.calculateNewLevel()

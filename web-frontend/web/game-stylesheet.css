@@ -84,7 +84,6 @@ body{
 }
 
 #panelContainer{
-	display:none;
 	position: fixed;
 	width:calc(100% - var(--drawer-width) - var(--grid-width));
 	height:calc(100% - 50px);
@@ -95,7 +94,6 @@ body{
 }
 
 #drawer{
-	display:none;
 	position: fixed;
 	width:var(--drawer-width);
 	height:calc(100% - 50px);
