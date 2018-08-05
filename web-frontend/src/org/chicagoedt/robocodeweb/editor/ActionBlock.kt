@@ -105,6 +105,7 @@ abstract class ActionBlock<T : Action<*>>(){
             else if (parameterType == BlockParameterType.NUMBER_INPUT){
                 parameterElement = document.createElement("div") as HTMLElement
                 val inputElement = document.createElement("input") as HTMLInputElement
+                inputElement.min = "0"
                 inputElement.asDynamic().type = "number"
                 inputElement.asDynamic().value = "1"
                 inputElement.addClass("actionBlockNumberInput")
@@ -398,7 +399,17 @@ abstract class ActionBlock<T : Action<*>>(){
             action.parameter = e.target.asDynamic().selectedOptions[0].parameter
         }
         else if (parameterType == BlockParameterType.NUMBER_INPUT){
-            action.parameter = e.target.asDynamic().value
+            try{
+                val num = (e.target.asDynamic().value as String).toInt()
+                if (num < 0) throw NumberFormatException()
+                action.parameter = num.asDynamic()
+            }
+            catch (e : NumberFormatException){
+                action.parameter = "1".asDynamic()
+                val inputElement = parameterElement.querySelector("input") as HTMLInputElement
+                inputElement.value = "1"
+            }
+
         }
         return 1
     }
