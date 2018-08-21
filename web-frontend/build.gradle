@@ -21,6 +21,7 @@ repositories {
 dependencies {
     expectedBy project(':backend')
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 

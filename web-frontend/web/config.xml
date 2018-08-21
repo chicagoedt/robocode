@@ -281,5 +281,44 @@
 				</gridRow>
 			</grid>
 		</level>
+
+		<level name="Level 7" difficulty="0" theme="desert"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   useTurn="false"
+			   topicOnlyForMove="true"
+			   useForLoop="false">
+			<instructions>
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
+				<br/>
+				<br/>
+				Click your robot above to add a sensor.
+				<br/>
+				<br/>
+				Your distance sensor can detect the how many spaces your robot can move before hitting the edge (or an obstacle).
+				<br/>
+				<br/>
+				Read your sensor using the "Read Sensor" block, and your sensor data will be stored in the "Topic" above
+				<br/>
+				<br/>
+				You can use the Topic as the number in the Move block
+			</instructions>
+			<victory type="tile"/>
+			<robot name="Surus" x="1" y="0" direction="up" actionLimit="2"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
 	</levels>
 </game>
