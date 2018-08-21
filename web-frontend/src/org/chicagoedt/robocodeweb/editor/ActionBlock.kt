@@ -249,10 +249,10 @@ abstract class ActionBlock<T : Action<*>>(){
                 }
             }
             else if (parameterElement.asDynamic().sensor != null){
-                showPopup("There is already a sensor in that block")
+                showPopup("There is already a sensor in that block", true)
             }
             else{
-                showPopup("Sensor is not attached to a robot!")
+                showPopup("Sensor is not attached to a robot!", true)
             }
         }
 

@@ -28,7 +28,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
     lateinit var element : HTMLDivElement
     var lastHoveredBlock : ActionBlock<Action<Any>>? = null
     private var hoverOverHeader = false
-    private lateinit var runButton : HTMLButtonElement
+    lateinit var runButton : HTMLButtonElement
     private lateinit var runButtonListener : (org.chicagoedt.robocode.Event) -> Unit
     private var hintElement = document.createElement("div") as HTMLElement
     private var remainingElement = document.createElement("div") as HTMLElement
@@ -229,7 +229,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
                     runButton.disabled = true
                     runButton.addClass("disabledPanelHeaderButton")
                 }
-                org.chicagoedt.robocode.Event.ROBOT_RUN_END -> {
+                org.chicagoedt.robocode.Event.LEVEL_FAILURE -> {
                     runButton.disabled = false
                     runButton.removeClass("disabledPanelHeaderButton")
                 }

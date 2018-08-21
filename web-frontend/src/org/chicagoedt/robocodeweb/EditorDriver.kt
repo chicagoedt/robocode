@@ -4,6 +4,8 @@ import org.chicagoedt.robocode.*
 import org.chicagoedt.robocodeweb.editor.*
 import org.w3c.dom.*
 import kotlin.browser.*
+import kotlin.dom.addClass
+import kotlin.dom.removeClass
 
 /**
  * The driver for the editor section of the game
@@ -48,6 +50,20 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 	fun checkAllPanelHints(){
 		for (panel in panels){
 			panel.checkAndShowHint()
+		}
+	}
+
+	fun disableAllRunButtons(){
+		for (panel in panels){
+			panel.runButton.disabled = true
+			panel.runButton.addClass("disabledPanelHeaderButton")
+		}
+	}
+
+	fun enableAllRunButtons(){
+		for (panel in panels){
+			panel.runButton.disabled = false
+			panel.runButton.removeClass("disabledPanelHeaderButton")
 		}
 	}
 }

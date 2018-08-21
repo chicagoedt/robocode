@@ -105,10 +105,16 @@ fun update(e : Event){
     when (e){
         Event.LEVEL_UPDATE -> refresh()
         Event.LEVEL_VICTORY -> {
-            if (game.hasNextLevel())showPopup("Victory!", "Next Level", ::nextLevel)
-            else showPopup("Victory!", "Done", ::toEndScreen)
+            if (game.hasNextLevel()){
+                editorDriver.disableAllRunButtons()
+                showPopup("Victory!", "Next Level", ::nextLevel, false)
+            }
+            else {
+                editorDriver.disableAllRunButtons()
+                showPopup("Victory!", "Done", ::toEndScreen, false)
+            }
         }
-        Event.LEVEL_FAILURE -> showPopup("Try again!")
+        Event.LEVEL_FAILURE -> showPopup("Try again!", true)
     }
 }
 
@@ -133,6 +139,7 @@ fun setTopicListener(){
 fun nextLevel(){
     game.nextLevel()
     updateLevel()
+    editorDriver.enableAllRunButtons()
 }
 
 fun updateLevel(){
@@ -152,7 +159,7 @@ fun updateHeader(){
     header.innerHTML = game.currentLevel.properties.name
 }
 
-fun showPopup(title: String, buttonTitle: String, buttonClick: () -> Unit){
+fun showPopup(title: String, buttonTitle: String, buttonClick: () -> Unit, allowDismiss : Boolean){
     val oldPopups = document.body!!.querySelectorAll(".popup")
     for (i in 0 until oldPopups.length){
         document.body!!.removeChild(oldPopups.item(i)!!)
@@ -193,7 +200,7 @@ fun showPopup(title: String, buttonTitle: String, buttonClick: () -> Unit){
         popup.style.textAlign = "center"
     }
 
-    popup.prepend(dismissButton)
+    if (allowDismiss) popup.prepend(dismissButton)
 
     document.body!!.appendChild(popup)
 
@@ -235,10 +242,10 @@ fun checkForExpand(popup : HTMLElement) : dynamic{
     return true
 }
 
-fun showPopup(title: String){
-    showPopup(title, "", {})
+fun showPopup(title: String, allowDismiss: Boolean){
+    showPopup(title, "", {}, allowDismiss)
 }
 
 fun showActionBlockLimitPopup(){
-    showPopup("Too many blocks!")
+    showPopup("Too many blocks!", true)
 }
