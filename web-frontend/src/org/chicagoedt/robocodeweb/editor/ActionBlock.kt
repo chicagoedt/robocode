@@ -1,7 +1,6 @@
 package org.chicagoedt.robocodeweb.editor
 
 import jQuery
-import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import kotlin.browser.document
 import kotlin.dom.addClass
@@ -12,8 +11,7 @@ import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.editorDriver
 import org.chicagoedt.robocodeweb.sensorconfig.SensorBlock
 import org.chicagoedt.robocodeweb.showPopup
-import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.HTMLSelectElement
+import org.w3c.dom.*
 import kotlin.dom.removeClass
 
 /**
@@ -101,6 +99,7 @@ abstract class ActionBlock<T : Action<*>>(){
         if (parameterType != BlockParameterType.NONE){
             if (parameterType == BlockParameterType.DROPDOWN){
                 parameterElement = document.createElement("select") as HTMLSelectElement
+
             }
             else if (parameterType == BlockParameterType.NUMBER_INPUT){
                 parameterElement = document.createElement("div") as HTMLElement
@@ -135,6 +134,15 @@ abstract class ActionBlock<T : Action<*>>(){
             }
             parameterElement.addClass("actionBlockParameter")
             element.appendChild(parameterElement)
+            if (parameterType == BlockParameterType.DROPDOWN) {
+                jQuery(parameterElement).asDynamic().selectmenu()
+                val spans = element.querySelectorAll(".ui-selectmenu-button").asList()
+                for (span in spans){
+                    (span as HTMLElement).addClass("actionBlockParameter")
+                }
+
+                jQuery(parameterElement).on("selectmenuchange", {event, _ -> parameterChanged(event)})
+            }
             parameterElement.onchange = ::parameterChanged
         }
     }
@@ -377,6 +385,15 @@ abstract class ActionBlock<T : Action<*>>(){
      * @param onSelectedParameter The value that the parameter should be set to when this option is selected
      */
     fun insertDropdownParameter(s : String, onSelectedParameter: dynamic){
+        insertDropdownParameter(s, onSelectedParameter, "")
+    }
+
+    /**
+     * Inserts a parameter into the parameter list
+     * @param s The string representation of the parameter
+     * @param onSelectedParameter The value that the parameter should be set to when this option is selected
+     */
+    fun insertDropdownParameter(s : String, onSelectedParameter: dynamic, iconPath : String){
         if (parameterType == BlockParameterType.DROPDOWN){
             val option = document.createElement("option") as HTMLElement
             val firstOption = (parameterElement.childNodes.length == 0)
@@ -385,8 +402,10 @@ abstract class ActionBlock<T : Action<*>>(){
             option.setAttribute("value", s)
             parameterElement.appendChild(option)
             if (firstOption){
+                jQuery(parameterElement).`val`(s)
                 action.parameter = onSelectedParameter
             }
+            jQuery(parameterElement).asDynamic().selectmenu("refresh")
         }
     }
 

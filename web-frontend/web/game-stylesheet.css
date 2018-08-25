@@ -177,14 +177,14 @@ table{
 }
 
 .actionBlockParameter{
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	max-height:20px;
-	padding: 0;
-	width:40%;
-	z-index: 6;
-	bottom: 10px;
+	position: absolute !important;
+	right: 10px !important;
+	top: 10px !important;
+	max-height:20px !important;
+	padding: 0 !important;
+	width:40% !important;
+	z-index: 6 !important;
+	bottom: 10px !important;
 }
 
 .topicSelectorInput{

@@ -12,7 +12,7 @@ class ItemPickupActionBlock : ActionBlock<ItemPickupAction>() {
         parameterType = BlockParameterType.DROPDOWN
         blockClass = "itemsBlock"
         for (item in ItemManager.getAllItems()){
-            insertDropdownParameter(item.name, item.id)
+            insertDropdownParameter(item.name, item.id, item.graphic)
         }
     }
 }
