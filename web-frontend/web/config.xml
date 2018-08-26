@@ -12,8 +12,8 @@
 		</theme>
 	</themes>
 	<items>
-		<item name="sand" id="0" graphic="res/items/Sand.png"/>
-		<item name="water" id="1" graphic="res/items/Water.png"/>
+		<item name="Treasure" id="0" graphic="res/items/treasure.svg"/>
+		<item name="Water" id="1" graphic="res/items/water.svg"/>
 	</items>
 	<!--
 	Level options as follows:
@@ -40,7 +40,7 @@
 			<victory type="tile"/>
 
 			Example 2:
-			<victory type="tile">
+			<victory type="itemposition">
 				<inventory x="0" y="6">
 					<item name="sand" count="3"/>
 				</inventory>
@@ -283,6 +283,152 @@
 		</level>
 
 		<level name="Level 7" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   useReadSensor="false">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				Pick up the treasure by moving to it and using the "Pick Up Item" block.
+				<br/>
+				<br/>
+				Drop it off at the oasis using the "Drop Item" block
+			</instructions>
+			<victory type="itemposition">
+				<inventory x="3" y="2">
+					<item name="Treasure" count="1"/>
+				</inventory>
+			</victory>
+			<robot name="Surus" x="1" y="2" direction="right"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 8" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   useReadSensor="false">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				This one is a little tougher. Pick up and drop off the treasure again.
+			</instructions>
+			<victory type="itemposition">
+				<inventory x="3" y="3">
+					<item name="Treasure" count="1"/>
+				</inventory>
+			</victory>
+			<robot name="Surus" x="1" y="0" direction="up"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 9" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   useReadSensor="false">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				There are two different items this time. Make sure to take the treasure!
+			</instructions>
+			<victory type="itemposition">
+				<inventory x="3" y="2">
+					<item name="Treasure" count="1"/>
+				</inventory>
+			</victory>
+			<robot name="Surus" x="1" y="2" direction="right"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="1" count="1"/></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 10" difficulty="0" theme="desert"
+			   useTopic="false"
+			   useSensors="false"
+			   useReadSensor="false">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				Pick up both piles of treasure to drop off. Remember to drop them both off!
+				<br/>
+				<br/>
+				(hint: use a loop!)
+			</instructions>
+			<victory type="itemposition">
+				<inventory x="3" y="3">
+					<item name="Treasure" count="2"/>
+				</inventory>
+			</victory>
+			<robot name="Surus" x="0" y="0" direction="right" actionLimit="11"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 11" difficulty="0" theme="desert"
 			   usePickUpItem="false"
 			   useDropItem="false"
 			   useTurn="false"
@@ -304,7 +450,7 @@
 				You can use the Topic as the number in the Move block
 			</instructions>
 			<victory type="tile"/>
-			<robot name="Surus" x="1" y="0" direction="up" actionLimit="2"/>
+			<robot name="Surus" x="1" y="0" direction="up"/>
 			<grid>
 				<gridRow>
 					<gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
@@ -314,6 +460,112 @@
 				</gridRow>
 				<gridRow>
 					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 12" difficulty="0" theme="desert"
+			   usePickUpItem="false"
+			   useDropItem="false"
+			   topicOnlyForMove="true"
+			   useForLoop="false">
+			<instructions>
+				<div style="font-weight:bold">Get your robot to the oasis!</div>
+				<br/>
+				<br/>
+				You'll have to read the sensor more than once this time.
+				<br/>
+				<br/>
+				Click your robot above to add a sensor.
+				<br/>
+				<br/>
+				Your distance sensor can detect the how many spaces your robot can move before hitting the edge (or an obstacle).
+				<br/>
+				<br/>
+				Read your sensor using the "Read Sensor" block, and your sensor data will be stored in the "Topic" above
+				<br/>
+				<br/>
+				You can use the Topic as the number in the Move block
+			</instructions>
+			<victory type="tile"/>
+			<robot name="Surus" x="1" y="0" direction="up"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 13" difficulty="0" theme="desert"
+			   topicOnlyForMove="true"
+			   useForLoop="false">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				This time, you'll need your sensor to move the treasure.
+			</instructions>
+			<victory type="itemposition">
+				<inventory x="3" y="0">
+					<item name="Treasure" count="1"/>
+				</inventory>
+			</victory>
+			<robot name="Surus" x="1" y="0" direction="left"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+
+		<level name="Level 14" difficulty="0" theme="desert"
+			   topicOnlyForMove="true"
+			   useForLoop="false">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				Last level!
+				<br/>
+				<br/>
+				This one is tricky. Remember to use your sensor!
+			</instructions>
+			<victory type="itemposition">
+				<inventory x="3" y="2">
+					<item name="Treasure" count="1"/>
+				</inventory>
+			</victory>
+			<robot name="Surus" x="1" y="0" direction="left"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile>
 				</gridRow>
 				<gridRow>
 					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
