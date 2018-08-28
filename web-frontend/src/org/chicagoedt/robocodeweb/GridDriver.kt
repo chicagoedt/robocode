@@ -124,7 +124,7 @@ class GridDriver(val game: Game){
 
         val top = instructionsElement.getBoundingClientRect().top
         val windowBottom = window.innerHeight
-        val paddingString = jQuery(instructionsElement).css("padding")
+        val paddingString = jQuery(instructionsElement).css("paddingTop")
         val padding = paddingString.substring(0, paddingString.length - 2).toDouble() * 2
         instructionsElement.style.maxHeight = (windowBottom - top - padding).toString() + "px"
 
