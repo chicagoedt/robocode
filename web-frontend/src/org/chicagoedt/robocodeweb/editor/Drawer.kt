@@ -36,8 +36,9 @@ class Drawer(val parent : HTMLElement) {
      * Removes and re-adds all blocks in the drawer
      */
     fun refresh(){
-        val blockList = element.getElementsByClassName("actionBlock").asList()
-        for (block in blockList){
+        //val blockList = element.getElementsByClassName("actionBlock").asList()
+        val blocks = allBlocks
+        for (block in blocks){
             element.removeChild(block)
         }
         populate()
