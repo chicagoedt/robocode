@@ -34,6 +34,7 @@ class GridDriver(val game: Game){
             playerTile.remove()
         }
         playerTiles.clear()
+        mainTopic.value = 0
 
         for (y in 0 until level.properties.height){
             val row = arrayListOf<GridTile>()
