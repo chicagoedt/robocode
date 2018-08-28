@@ -1,6 +1,7 @@
 import kotlin.test.*
 import org.chicagoedt.robocode.*
 import org.chicagoedt.robocode.actions.Action
+import org.chicagoedt.robocode.actions.ActionMacro
 import org.chicagoedt.robocode.actions.ConditionalWithList
 import org.chicagoedt.robocode.actions.operations.TopicEqualsComparison
 import org.chicagoedt.robocode.actions.robotActions.*

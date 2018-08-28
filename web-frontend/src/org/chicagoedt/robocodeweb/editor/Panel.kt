@@ -90,13 +90,19 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         var insertBlockElement = {}
         var removeBlockElement = {}
+        var undoRemoveBlockElement = {}
 
         if (blockElement.parentElement!!.classList.contains("panel")){
             val otherPanel = blockElement.parentElement!!.asDynamic().panelObject as Panel
+            val originalPosition = otherPanel.robot.procedure.lastIndexOf(newActionBlock.action)
             removeBlockElement = {otherPanel.robot.removeAction(newActionBlock.action)}
+            undoRemoveBlockElement = {otherPanel.robot.insertAction(newActionBlock.action, originalPosition)}
         }
         else if (newActionBlock.macroParent != null){
+            val originalPosition = newActionBlock.macroParent!!.action.getMacro().lastIndexOf(newActionBlock.action)
             removeBlockElement = {newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)}
+            val oldRobotParent = newActionBlock.macroParent!!.getRobotParent(newActionBlock.macroParent!!)
+            undoRemoveBlockElement = {newActionBlock.macroParent!!.action.addToMacroAt(newActionBlock.action, originalPosition, oldRobotParent.getLimitDifference())}
         }
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
@@ -122,10 +128,12 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
 
         lastHoveredBlock = null
 
+        removeBlockElement()
         val canInsert = robot.canInsertAction(blockElement.asDynamic().block.action)
+
         if (canInsert){
             insertBlockElement()
-            removeBlockElement()
+
             robot.insertAction(blockElement.asDynamic().block.action, pos)
             if (newActionBlock is ActionBlockMacro<*>){
                 newActionBlock.panelParent = this
@@ -139,6 +147,7 @@ class Panel(val parent : HTMLElement, val robot : RobotPlayer, val drawer : Draw
         }
         else{
             showActionBlockLimitPopup()
+            undoRemoveBlockElement()
         }
 
         drawer.populate()

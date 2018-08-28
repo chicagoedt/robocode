@@ -176,16 +176,20 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
 
         var insertBlockElement = {}
         var removeBlockElement = {}
+        var undoRemoveBlockElement = {}
 
         if (blockElement.parentElement!!.classList.contains("panel")){
             val panel = blockElement.parentElement!!.asDynamic().panelObject as Panel
+            val originalPosition = panel.robot.procedure.lastIndexOf(newActionBlock.action)
             removeBlockElement = {panel.robot.removeAction(newActionBlock.action)}
+            undoRemoveBlockElement = {panel.robot.insertAction(newActionBlock.action, originalPosition)}
         }
         else if (newActionBlock.macroParent != null){
+            val originalPosition = newActionBlock.macroParent!!.action.getMacro().lastIndexOf(newActionBlock.action)
             removeBlockElement = {newActionBlock.macroParent!!.action.removeFromMacro(newActionBlock.action)}
+            val oldRobotParent = getRobotParent(newActionBlock.macroParent!!)
+            undoRemoveBlockElement = {newActionBlock.macroParent!!.action.addToMacroAt(newActionBlock.action, originalPosition, oldRobotParent.getLimitDifference())}
         }
-
-
 
         var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
         blocks = trimToDirectChildren(blocks.toMutableList())
@@ -208,28 +212,38 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
             }
         }
 
+        val robotParent = getRobotParent(this)
+
         lastHoveredBlock = null
 
+        val newAction : Action<*> = blockElement.asDynamic().block.action
+        removeBlockElement()
+        val canInsert = action.canAddToMacro(newAction, robotParent.getLimitDifference())
+        if (canInsert){
+            insertBlockElement()
+            action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
+            newActionBlock.macroParent = this
+        }
+        else {
+            showActionBlockLimitPopup()
+            undoRemoveBlockElement()
+        }
+
+        drawer.populate()
+    }
+
+    /**
+     * @return The robot that an ActionBlockMacro belongs to
+     */
+    fun getRobotParent(actionBlockMacro : ActionBlockMacro<*>) : RobotPlayer{
         var robotParent : RobotPlayer? = null
-        var currentPanelParent = panelParent
-        var currentMacroParent= macroParent
+        var currentPanelParent = actionBlockMacro.panelParent
+        var currentMacroParent= actionBlockMacro.macroParent
         while (currentPanelParent == null){
             currentPanelParent = currentMacroParent!!.panelParent
             if (currentPanelParent == null) currentMacroParent = currentMacroParent.macroParent
         }
-        robotParent = currentPanelParent.robot
-
-        val newAction : Action<*> = blockElement.asDynamic().block.action
-        val canInsert = action.canAddToMacro(newAction, robotParent.getLimitDifference())
-        if (canInsert){
-            insertBlockElement()
-            removeBlockElement()
-            action.addToMacroAt(newAction, pos, robotParent.getLimitDifference())
-            newActionBlock.macroParent = this
-        }
-        else showActionBlockLimitPopup()
-
-        drawer.populate()
+        return currentPanelParent.robot
     }
 
     /**
