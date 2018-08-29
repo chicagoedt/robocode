@@ -55,9 +55,6 @@
 			   useDropItem="false"
 			   useForLoop="false"
 			   useReadSensor="false">
-			<intro>
-				Welcome to Robocode!
-			</intro>
 			<instructions>
 				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>
@@ -101,6 +98,9 @@
 			   useDropItem="false"
 			   useForLoop="false"
 			   useReadSensor="false">
+			<intro>
+				Welcome to Robocode!
+			</intro>
 			<instructions>
 				<div style="font-weight:bold">Get your robot to the oasis!</div>
 				<br/>

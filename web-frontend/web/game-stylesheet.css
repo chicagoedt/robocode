@@ -149,6 +149,38 @@ table{
 	border-spacing: 0px;
 }
 
+#introContainer{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: none;
+	background-color: #000000AA;
+	z-index: 9999;
+}
+
+#intro{
+	margin-top: 10vh;
+	margin-bottom: 10vh;
+
+	margin-right: 10vw;
+	margin-left: 10vw;
+
+	width: 80vw;
+	height: 80vh;
+	background-color: white;
+	border-radius: 10px;
+}
+
+#closeIntro{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	left: calc(90vw - 25px);
+	top: calc(10vh + 5px);
+	cursor: pointer;
+
+}
+
 .panelTd{
 	min-width: 300px;
 }

@@ -1,5 +1,6 @@
 package org.chicagoedt.robocodeweb
 
+import jQuery
 import org.chicagoedt.robocode.*
 import org.chicagoedt.robocodeweb.editor.*
 import org.w3c.dom.*
@@ -39,9 +40,28 @@ class EditorDriver(val game : Game, val editor : HTMLElement){
 			(panel.element.parentElement!! as HTMLElement).style.width = width
 		}
 
+		if (game.currentLevel.hasIntro) showIntro()
+
 		drawer.setDroppable()
 
 		drawer.refresh()
+	}
+
+	/**
+	 * Shows the intro for the new level
+	 */
+	fun showIntro(){
+		val introArea = document.querySelector("#introContainer") as HTMLElement
+		val intro = document.querySelector("#intro") as HTMLElement
+		val closeIntro = document.querySelector("#closeIntro") as HTMLElement
+		intro.innerHTML = game.currentLevel.intro
+		jQuery(introArea).fadeIn("slow")
+
+		closeIntro.onclick = {
+			jQuery(introArea).fadeOut("fast")
+		}
+
+
 	}
 
 	/**
