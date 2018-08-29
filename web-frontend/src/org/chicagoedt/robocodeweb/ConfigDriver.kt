@@ -69,6 +69,13 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 			val themeName = levelData.attributes.getNamedItem("theme")!!.value
 			val instructions = levelData.querySelector("instructions")!!.innerHTML
 
+			var hasIntro = false
+			var intro = ""
+			val introData = levelData.querySelector("intro")
+			if (introData != null){
+				hasIntro = true
+				intro = introData.innerHTML
+			}
 
 			val gridData = levelData.querySelector("grid")!!
 			val height = gridData.querySelectorAll("gridRow").length
