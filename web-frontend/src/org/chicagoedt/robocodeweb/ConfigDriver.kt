@@ -84,6 +84,9 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 
 			val level = Level(Level.Properties(name, difficulty, instructions, width, height))
 
+			level.hasIntro = hasIntro
+			level.intro = intro
+
 			for (theme in themes){
 				if (theme.name == themeName){
 					level.theme = theme

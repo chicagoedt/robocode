@@ -16,6 +16,7 @@ enum class VictoryType{
  * A single challenge for the user to complete
  * @param properties The properties object for the level
  * @param playersList A list of all robot players in the level. The names should correspond to names of robots passed to the Game object
+ * @property hasIntro True if the level has an introduction that should be displayed before the level
  * @property grid A 2D-Arraylist of all tiles in the level
  * @property players All of the RobotPlayers in the level
  * @property victoryType The type of victory in this level
@@ -34,6 +35,9 @@ class Level(var properties: Properties) {
                           val instructions : String,
                           val width : Int,
                           val height : Int)
+
+    var hasIntro = false
+    var intro = ""
 
     /**
      * The conditions for what should be displayed in a Level
