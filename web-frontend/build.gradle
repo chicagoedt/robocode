@@ -21,7 +21,6 @@ repositories {
 dependencies {
     expectedBy project(':backend')
     compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '2.41.0'
     testCompile "org.jetbrains.kotlin:kotlin-test-js:$kotlin_version"
 }
 
@@ -49,36 +48,66 @@ task installTs2kt(type: NpmTask) {
     args = ['install', 'ts2kt']
 }
 
-task generateJQueryHeader(type: NodeTask, dependsOn: [installTs2kt]){
+//task generateJQueryHeader(dependsOn: [installTs2kt]){
+//    def folder = new File("${projectDir}/headers/")
+//    def f = new File("${projectDir}/headers/jquery.d.ts")
+//    if (!folder.exists())folder.mkdirs()
+//    if (!f.exists()) {
+//        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
+//    }
+//}
+
+task generateHeaders(dependsOn: [installTs2kt]){
+    def folder = new File("${projectDir}/headers/")
+    def jqueryFile = new File("${projectDir}/headers/jquery.d.ts")
+    def qunitFile = new File("${projectDir}/headers/qunit.d.ts")
+    if (!folder.exists())folder.mkdirs()
+    if (!jqueryFile.exists()) {
+        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> jqueryFile.withOutputStream{ it << i }}
+    }
+    if (!qunitFile.exists()){
+        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/types/qunit/index.d.ts').withInputStream{ i -> qunitFile.withOutputStream{ it << i }}
+
+    }
+
+    (new File("${projectDir}/headers/header.d.ts")).text = jqueryFile.getText() + qunitFile.getText()
+}
+
+task convertHeaders(type: NodeTask, dependsOn: [installTs2kt, generateHeaders]){
     outputs.dir file('lib/')
 
-    def folder = new File('web-frontend/headers/')
-    if (!folder.exists()) {
-        folder.mkdirs()
-        def f = new File('web-frontend/headers/jquery.d.ts')
-
-        new URL('https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/types/jquery/jquery.d.ts').withInputStream{ i -> f.withOutputStream{ it << i }}
-    }
-    
-
     script = file("${node.nodeModulesDir}/node_modules/ts2kt/ts2kt.js")
-    args = ["-d", "lib/", "headers/jquery.d.ts"]
+    args = ["-d", "lib/", "headers/header.d.ts"]
 }
 
 task generateJQueryLib{
-    outputs.dir file("web-frontend/web/js/lib/jquery/")
-    def folder = new File('web-frontend/web/js/lib/jquery/')
+    outputs.dir file("${projectDir}/web/js/lib/")
+    def folder = new File("${projectDir}/web/js/lib/")
     if (!folder.exists()) {
         folder.mkdirs()
     }
-    def f = new File('web-frontend/web/js/lib/jquery/jquery.js')
+
+    def folder2 = new File("${projectDir}/web/js/lib/jquery")
+    if (!folder2.exists()) {
+        folder2.mkdirs()
+    }
+
+    def folder3 = new File("${projectDir}/web/js/lib/qunit")
+    if (!folder3.exists()) {
+        folder3.mkdirs()
+    }
+
+    def f = new File("${projectDir}/web/js/lib/jquery/jquery.js")
     new URL('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js').withInputStream{ i -> f.withOutputStream{ it << i }}
 
-    def f2 = new File('web-frontend/web/js/lib/jquery/jqueryui.js')
+    def f2 = new File("${projectDir}/web/js/lib/jquery/jqueryui.js")
     new URL('https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js').withInputStream{ i -> f2.withOutputStream{ it << i }}
+
+    def f3 = new File("${projectDir}/web/js/lib/qunit/qunit.js")
+    new URL('https://code.jquery.com/qunit/qunit-git.js').withInputStream{ i -> f3.withOutputStream{ it << i }}
 }
 
-compileKotlin2Js.dependsOn generateJQueryHeader
+compileKotlin2Js.dependsOn convertHeaders
 
 compileKotlin2Js.doLast {
     configurations.compile.each { File file ->
