@@ -9,10 +9,17 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testCompile "io.github.bonigarcia:webdrivermanager:2.2.5"
-    testCompile "org.seleniumhq.selenium:selenium-java:2.41.0"
-    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:2.41.0"
+    testCompile "org.seleniumhq.selenium:selenium-java:3.14.0"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:3.14.0"
     testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 }
+
+task generateWeb(type: Copy){
+    from "${rootDir}/web-frontend/web"
+    into "${projectDir}/web/"
+    exclude "config.xml"
+}
+
+compileKotlin.dependsOn generateWeb

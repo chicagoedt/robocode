@@ -18,7 +18,7 @@ import org.chicagoedt.robocode.collectibles.ItemManager
 class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayList<Level>, ArrayList<Level.Theme>) -> Unit){
 	val request = XMLHttpRequest()
 
-	init{
+	fun sendConfigRequest(){
 		request.open("GET", name, true)
 		request.onreadystatechange = ::readXML
 		request.send()
@@ -32,24 +32,30 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 		if (e.target.asDynamic().readyState == 4){
 			val xml = jQuery.parseXML(e.target.asDynamic().responseText)
 
-			val game = xml.querySelector("game")!!
-			val robots = game.querySelector("robots")!!
-			val levels = game.querySelector("levels")!!
-			val themes = game.querySelector("themes")!!
-			val items = game.querySelector("items")!!
-
-			val robotsList = readRobots(robots)
-			val themesList = readThemes(themes)
-			val itemsList = readItems(items)
-
-			itemsList.forEach {item ->
-				ItemManager.addItem(item)
-			}
-
-			val levelsList = readLevels(levels, themesList)
-
-			callback.invoke(robotsList, levelsList, themesList)
+			parseXML(xml)
 		}
+	}
+
+	fun parseXML(xml : XMLDocument){
+		
+
+		val gameXML = xml.querySelector("game")!!
+		val robots = gameXML.querySelector("robots")!!
+		val levels = gameXML.querySelector("levels")!!
+		val themes = gameXML.querySelector("themes")!!
+		val items = gameXML.querySelector("items")!!
+
+		val robotsList = readRobots(robots)
+		val themesList = readThemes(themes)
+		val itemsList = readItems(items)
+
+		itemsList.forEach {item ->
+			ItemManager.addItem(item)
+		}
+
+		val levelsList = readLevels(levels, themesList)
+
+		callback.invoke(robotsList, levelsList, themesList)
 	}
 
 	/**

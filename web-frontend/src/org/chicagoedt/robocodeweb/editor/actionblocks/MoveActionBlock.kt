@@ -6,6 +6,7 @@ import org.chicagoedt.robocodeweb.currentLevelConditions
 import org.chicagoedt.robocodeweb.editor.*
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLImageElement
+import kotlin.dom.addClass
 
 /**
  * The ActionBlock representing the MoveAction
@@ -16,6 +17,7 @@ class MoveActionBlock() : ActionBlock<MoveActionMacro>(){
 	init{
 		parameterType = BlockParameterType.NUMBER_INPUT
 		blockClass = "movementBlock"
+		element.addClass("moveActionBlock")
 
 		if (currentLevelConditions.topicOnlyForMove) enableTopicOnly()
 	}

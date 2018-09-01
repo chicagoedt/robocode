@@ -14,5 +14,6 @@ class ForLoopActionBlockMacro(drawer : Drawer) : ActionBlockMacro<ForLoopAction>
         blockClass = "controlBlock"
         borderClass = "controlBlockBorder"
         addHeader()
+        element.addClass("forLoopActionBlock")
     }
 }

@@ -2,4 +2,5 @@ rootProject.name = 'robocode'
 
 include 'backend'
 include 'web-frontend'
+include 'web-frontend-tests'
 include 'jvm-frontend'

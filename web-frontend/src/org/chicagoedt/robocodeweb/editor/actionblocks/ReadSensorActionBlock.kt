@@ -5,6 +5,7 @@ import org.chicagoedt.robocode.mainTopic
 import org.chicagoedt.robocodeweb.editor.ActionBlock
 import org.chicagoedt.robocodeweb.editor.BlockParameterType
 import org.chicagoedt.robocodeweb.game
+import kotlin.dom.addClass
 
 /**
  * The ActionBlock representing the ReadSensorAction
@@ -15,5 +16,6 @@ class ReadSensorActionBlock : ActionBlock<ReadSensorAction>() {
     init{
         parameterType = BlockParameterType.SENSOR
         blockClass = "sensorActionBlock"
+        element.addClass("readSensorActionBlock")
     }
 }

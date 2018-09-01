@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<game>
+	<robots>
+		<robot name="Surus" graphic="res/robot/surus.svg"/>
+		<robot name="Hushpuppy" graphic="res/robot/hushpuppy.svg"/>
+	</robots>
+	<themes>
+		<theme name="desert">
+			<block type="victory" name="Victory" img="res/theme_desert/victory.svg"/>
+			<block type="obstacle" name="Obstacle" img="res/theme_desert/obstacle.svg"/>
+			<block type="neutral" img="res/theme_desert/neutral.svg"/>
+		</theme>
+	</themes>
+	<items>
+		<item name="Treasure" id="0" graphic="res/items/treasure.svg"/>
+		<item name="Water" id="1" graphic="res/items/water.svg"/>
+	</items>
+	<!--
+	Level options as follows:
+		Features/Block Management:
+			useTopic: True if topic features should be enabled, false otherwise. Default true.
+			useSensors: True if sensor features should be enabled, false otherwise. Default true.
+			useMove: True if the Move block should be enabled, false otherwise. Default true.
+			useTurn: True if the Turn block should be enabled, false otherwise. Default true.
+			usePickUpItem: True if the Pick Up Item block should be enabled, false otherwise. Default true.
+			useDropItem: True if the Drop Item block should be enabled, false otherwise. Default true.
+			useForLoop: True if the For Loop block should be enabled, false otherwise. Default true.
+			useReadSensor: True if the Read Sensor block should be enabled, false otherwise. Default true.
+
+			topicOnlyForMove: True if the move block can only use the topic, false if it can use numbers
+
+			Example:
+			<level name="Level 1" difficulty="1" useTopic="false" useMove="false">
+
+		Victory Management:
+			Tile: The player must be on a certain tile at the end of the code
+			ItemPosition: The item inventory on a tile must match a specified inventory at the end of the code
+
+			Example:
+			<victory type="tile"/>
+
+			Example 2:
+			<victory type="itemposition">
+				<inventory x="0" y="6">
+					<item name="sand" count="3"/>
+				</inventory>
+			</victory>
+
+	-->
+	<levels>
+		<level name="Level 14" difficulty="0" theme="desert">
+			<instructions>
+				<div style="font-weight:bold">Take the treasure to the oasis!</div>
+				<br/>
+				<br/>
+				Last level!
+				<br/>
+				<br/>
+				This one is tricky. Remember to use your sensor!
+			</instructions>
+			<victory type="tile">
+			</victory>
+			<robot name="Surus" x="1" y="0" direction="left"/>
+			<grid>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="victory"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="obstacle"></gridTile>
+				</gridRow>
+				<gridRow>
+					<gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
+				</gridRow>
+			</grid>
+		</level>
+	</levels>
+</game>

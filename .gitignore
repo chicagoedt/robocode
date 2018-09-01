@@ -63,6 +63,16 @@ backend/build/
 /web-frontend/headers/*
 /web-frontend/lib/*
 
+/web-frontend-tests/web/js/*.js
+/web-frontend-tests/web/js/*.map
+/web-frontend-tests/web/js/lib/*
+/web-frontend-tests/web/js/web-frontend/*
+/web-frontend-tests/web/js/web-frontend-test/*
+/web-frontend-tests/web/*.html
+/web-frontend-tests/web/*.css
+/web-frontend-tests/web/*.json
+/web-frontend-tests/web/res/*
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 

@@ -27,7 +27,7 @@ internal lateinit var editorDriver : EditorDriver
 /**
  * The configurator for the game
  */
-private lateinit var configDriver : ConfigDriver
+lateinit var configDriver : ConfigDriver
 
 /**
  * The conditions for the current level
@@ -94,6 +94,7 @@ fun main(args: Array<String>) {
     val windowType = js("typeof window")
     if (windowType != "undefined"){
         configDriver = ConfigDriver("config.xml", ::setup)
+        configDriver.sendConfigRequest()
     }
 }
 
