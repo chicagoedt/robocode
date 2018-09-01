@@ -1,0 +1,18 @@
+apply plugin: 'kotlin-platform-jvm'
+
+sourceSets {
+    test.kotlin.srcDirs += 'tests/'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "io.github.bonigarcia:webdrivermanager:2.2.5"
+    testCompile "org.seleniumhq.selenium:selenium-java:2.41.0"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:2.41.0"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+}
