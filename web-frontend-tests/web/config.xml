@@ -48,19 +48,13 @@
 
 	-->
 	<levels>
-		<level name="Level 14" difficulty="0" theme="desert">
+		<level name="Level 1" difficulty="0" theme="desert">
 			<instructions>
-				<div style="font-weight:bold">Take the treasure to the oasis!</div>
-				<br/>
-				<br/>
-				Last level!
-				<br/>
-				<br/>
-				This one is tricky. Remember to use your sensor!
 			</instructions>
 			<victory type="tile">
 			</victory>
 			<robot name="Surus" x="1" y="0" direction="left"/>
+			<robot name="Hushpuppy" x="2" y="1" direction="up"/>
 			<grid>
 				<gridRow>
 					<gridTile type="neutral"></gridTile><gridTile type="neutral"><item id="0" count="1"/></gridTile><gridTile type="neutral"></gridTile><gridTile type="neutral"></gridTile>
