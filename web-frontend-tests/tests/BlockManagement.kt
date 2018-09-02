@@ -114,7 +114,7 @@ class BlockManagement {
     fun insertBlockAtPosition0WithBlocks(){
         addProcedure(arrayOf(
                 Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)}),
-                Pair("turnActionBlock", {it -> })
+                Pair("turnActionBlock", {_ -> })
         ), 0)
 
         dragBlockFromDrawerToPanelToPosition("turnActionBlock", 0, 1)
@@ -127,7 +127,7 @@ class BlockManagement {
     @Test
     fun insertBlockAtLastPositionWithBlocks(){
         addProcedure(arrayOf(
-                Pair("turnActionBlock", {it -> }),
+                Pair("turnActionBlock", {_ -> }),
                 Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
         ), 0)
 
@@ -159,7 +159,7 @@ class BlockManagement {
     @Test
     fun insertBlockInPanelWithBlocks(){
         addProcedure(arrayOf(
-                Pair("turnActionBlock", {it -> }),
+                Pair("turnActionBlock", {_ -> }),
                 Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
         ), 0)
 
@@ -168,5 +168,120 @@ class BlockManagement {
         runProcedure(0)
 
         assertRobotPosition(0, 1, 1, "right")
+    }
+
+    @Test
+    fun insertBlockAfterMacroFromFooter(){
+        var forLoopBlock : WebElement? = null
+        addProcedure(arrayOf(
+                Pair("forLoopActionBlock", {it ->
+                    forLoopBlock = it
+                    setNumberParameterOnBlock(it, 2)
+                })
+        ), 0)
+
+        val footer = forLoopBlock!!.findElement(By.className("macroFooter"))
+
+        val drawer = driver.findElement(By.id("drawer"))
+        val block = drawer.findElement(By.className("turnActionBlock"))
+
+        val actions = Actions(driver)
+        actions.dragAndDrop(block, footer).build().perform()
+
+        assertBlockAtPosition(0, 2, "turnActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "up")
+    }
+
+    @Test
+    fun insertBlockAfterMacroFromSide(){
+        var forLoopBlock : WebElement? = null
+        addProcedure(arrayOf(
+                Pair("forLoopActionBlock", {it ->
+                    forLoopBlock = it
+                    setNumberParameterOnBlock(it, 2)
+                })
+        ), 0)
+
+        val footer = forLoopBlock!!.findElement(By.className("macroSide"))
+
+        val drawer = driver.findElement(By.id("drawer"))
+        val block = drawer.findElement(By.className("turnActionBlock"))
+
+        val actions = Actions(driver)
+        actions.dragAndDrop(block, footer).build().perform()
+
+        assertBlockAtPosition(0, 2, "turnActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "up")
+    }
+
+    @Test
+    fun insertBlockIntoEmptyMacro(){
+        var forLoopBlock : WebElement? = null
+        addProcedure(arrayOf(
+                Pair("forLoopActionBlock", {it ->
+                    forLoopBlock = it
+                    setNumberParameterOnBlock(it, 2)
+                })
+        ), 0)
+
+        dragBlockFromDrawerToElement("turnActionBlock", forLoopBlock!!)
+
+        assertBlockAtPosition(0, 1, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "right")
+    }
+
+    @Test
+    fun insertBlockIntoMacroWithBlocks(){
+        var forLoopBlock : WebElement? = null
+        addProcedure(arrayOf(
+                Pair("forLoopActionBlock", {it ->
+                    forLoopBlock = it
+                    setNumberParameterOnBlock(it, 2)
+                })
+        ), 0)
+
+        addProcedureToElement(arrayOf(
+                Pair("moveActionBlock", {_ ->})
+        ), forLoopBlock!!)
+
+        dragBlockFromDrawerToElement("turnActionBlock", forLoopBlock!!)
+
+        assertBlockAtPosition(0, 1, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 1, "right")
+    }
+
+    @Test
+    fun insertBlockIntoMacroWithBlocksAt0(){
+        var forLoopBlock : WebElement? = null
+        addProcedure(arrayOf(
+                Pair("forLoopActionBlock", {it ->
+                    forLoopBlock = it
+                    setNumberParameterOnBlock(it, 2)
+                })
+        ), 0)
+
+        addProcedureToElement(arrayOf(
+                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
+        ), forLoopBlock!!)
+
+        dragBlockFromDrawerToElementToPosition("turnActionBlock", forLoopBlock!!, 1)
+
+        assertBlockAtPosition(0, 1, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 2, 1, "right")
     }
 }
