@@ -101,6 +101,26 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         if (directionChanged){
             changeDirection()
         }
+
+        if (element.getAttribute("gridX") != null){
+            element.setAttribute("previousGridX", element.getAttribute("gridX")!!)
+            element.setAttribute("previousGridY", element.getAttribute("gridY")!!)
+            element.setAttribute("previousDirection", element.getAttribute("direction")!!)
+        }
+
+        element.setAttribute("gridX", player.x.toString())
+        element.setAttribute("gridY", player.y.toString())
+        val elementString : String
+        when(player.direction){
+            RobotOrientation.DIRECTION_UP -> elementString = "up"
+            RobotOrientation.DIRECTION_DOWN -> elementString = "down"
+            RobotOrientation.DIRECTION_LEFT -> elementString = "left"
+            RobotOrientation.DIRECTION_RIGHT -> elementString = "right"
+            else -> elementString = "none"
+        }
+        element.setAttribute("direction", elementString)
+
+
     }
 
     /**

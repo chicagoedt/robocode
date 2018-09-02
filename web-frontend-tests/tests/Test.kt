@@ -10,6 +10,7 @@ import org.openqa.selenium.interactions.Action
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
+import kotlin.math.roundToInt
 import kotlin.test.assertEquals
 
 private lateinit var driver : WebDriver
@@ -35,9 +36,6 @@ class Test {
     @Before
     fun startGame(){
         driver.findElement(By.id("play")).click()
-
-        assertEquals("Robocode", driver.title)
-
     }
 
     fun dragBlockFromDrawerToPanel(blockClass : String, panelNumber : Int) : WebElement{
@@ -45,10 +43,31 @@ class Test {
         val block = drawer.findElement(By.className(blockClass))
 
         val panels = driver.findElements(By.className("panel"))
-        val firstPanel = panels[panelNumber]
+        val panel = panels[panelNumber]
+
+        val blocksInPanel = panel.findElements(By.className("actionBlock"))
+        var elementToDropTo = panel
+        if (blocksInPanel.size > 0) elementToDropTo = blocksInPanel[blocksInPanel.size - 1]
 
         val actions = Actions(driver)
-        actions.dragAndDrop(block, firstPanel).build().perform()
+        actions.dragAndDrop(block, elementToDropTo).build().perform()
+
+        return block
+    }
+
+    fun dragBlockFromDrawerToPanelToPosition(blockClass : String, panelNumber : Int, position : Int) : WebElement{
+        val drawer = driver.findElement(By.id("drawer"))
+        val block = drawer.findElement(By.className(blockClass))
+
+        val panels = driver.findElements(By.className("panel"))
+        val panel = panels[panelNumber]
+
+        val blocksInPanel = panel.findElements(By.className("actionBlock"))
+        var elementToDropTo = panel.findElement(By.className("panelHeader"))
+        if (position > 1) elementToDropTo = blocksInPanel[position - 2]
+
+        val actions = Actions(driver)
+        actions.dragAndDrop(block, elementToDropTo).build().perform()
 
         return block
     }
@@ -60,35 +79,42 @@ class Test {
         parameter.sendKeys(number.toString())
     }
 
-    @Test
-    fun winLevel(){
-        dragBlockFromDrawerToPanel("turnActionBlock", 0)
+    fun addProcedure(list : Array<Pair<String, (WebElement) -> Unit>>, panelNum : Int){
+        for (pair in list){
+            val block = dragBlockFromDrawerToPanel(pair.first, panelNum)
+            pair.second(block)
+        }
+    }
 
-        val moveBlock = dragBlockFromDrawerToPanel("moveActionBlock", 0)
-        setNumberParameterOnBlock(moveBlock, 3)
+    fun runProcedure(panelNum : Int){
+        val panels = driver.findElements(By.className("panel"))
+        val panel = panels[panelNum]
 
-        dragBlockFromDrawerToPanel("turnActionBlock", 0)
-
-        val moveBlock2 = dragBlockFromDrawerToPanel("moveActionBlock", 0)
-        setNumberParameterOnBlock(moveBlock2, 2)
-
-        dragBlockFromDrawerToPanel("turnActionBlock", 0)
-
-        val moveBlock3 = dragBlockFromDrawerToPanel("moveActionBlock", 0)
-        setNumberParameterOnBlock(moveBlock3, 2)
-
-
-
-        val runButton = driver.findElement(By.className("panelHeaderButton"))
+        val runButton = panel.findElement(By.className("panelHeaderButton"))
         runButton.click()
 
         WebDriverWait(driver, 30).until(ExpectedConditions.or(
                 ExpectedConditions.elementToBeClickable(runButton),
                 ExpectedConditions.numberOfElementsToBeMoreThan(By.className("popupButton"), 0)
         ))
+    }
 
-        if (driver.findElements(By.className("popupButton")).size > 0){
-            driver.findElements(By.className("popupButton"))[0].click()
-        }
+    fun assertRobotPosition(robotNum : Int, x : Int, y : Int, direction : String){
+        val robot = driver.findElements(By.className("gridPlayer"))[robotNum]
+
+        assertEquals(0, robot.getAttribute("previousGridX").toInt())
+        assertEquals(0, robot.getAttribute("previousGridY").toInt())
+        assertEquals("left", robot.getAttribute("previousDirection"))
+    }
+
+    @Test
+    fun moveForward(){
+        addProcedure(arrayOf(
+                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
+        ), 0)
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 0, "left")
     }
 }
