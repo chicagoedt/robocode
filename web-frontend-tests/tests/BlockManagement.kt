@@ -1,16 +1,13 @@
 import io.github.bonigarcia.wdm.WebDriverManager
 import org.junit.*
 import org.junit.Test
+import org.junit.experimental.categories.Category
 import org.openqa.selenium.By
-import org.openqa.selenium.Keys
-import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.interactions.Action
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
-import kotlin.math.roundToInt
 import kotlin.test.assertEquals
 
 class BlockManagement {
@@ -54,9 +51,7 @@ class BlockManagement {
 
     @Test
     fun moveForward(){
-        addProcedure(arrayOf(
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
-        ), 0)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), getPanelWithNumber(0))
 
         runProcedure(0)
 
@@ -65,15 +60,14 @@ class BlockManagement {
 
     @Test
     fun runButtonsDisabledDuringRun(){
-        addProcedure(arrayOf(
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)}),
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)}),
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)}),
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
-        ), 0)
+        val firstPanel = getPanelWithNumber(0)
+
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
 
         val panels = driver.findElements(By.className("panel"))
-        val firstPanel = panels[0]
         val firstRunButton = firstPanel.findElement(By.className("panelHeaderButton"))
         firstRunButton.click()
 
@@ -110,178 +104,524 @@ class BlockManagement {
         }
     }
 
-    @Test
-    fun insertBlockAtPosition0WithBlocks(){
-        addProcedure(arrayOf(
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)}),
-                Pair("turnActionBlock", {_ -> })
-        ), 0)
+    //<editor-fold desc="Generic list tests">
+    /**
+     * Inserts a block into an empty procedure
+     */
+    fun insertBlockIntoEmptyList(element : WebElement, panelToRun : Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockFromDrawerToPanelToPosition("turnActionBlock", 0, 1)
+        assertBlockAtPosition(element, 0, "turnActionBlock")
 
-        runProcedure(0)
-
-        assertRobotPosition(0, 1, 1, "right")
-    }
-
-    @Test
-    fun insertBlockAtLastPositionWithBlocks(){
-        addProcedure(arrayOf(
-                Pair("turnActionBlock", {_ -> }),
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
-        ), 0)
-
-        dragBlockFromDrawerToPanelToPosition("turnActionBlock", 0, 3)
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 1, 1, "right")
-    }
-
-    @Test
-    fun insertBlockAtPosition0WithoutBlocks(){
-        dragBlockFromDrawerToPanelToPosition("turnActionBlock", 0, 1)
-
-        runProcedure(0)
+        runProcedure(panelToRun)
 
         assertRobotPosition(0, 1, 0, "up")
     }
 
-    @Test
-    fun insertBlockInPanelWithoutBlocks(){
-        dragBlockFromDrawerToPanel("turnActionBlock", 0)
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 1, 0, "up")
-    }
-
-    @Test
-    fun insertBlockInPanelWithBlocks(){
-        addProcedure(arrayOf(
-                Pair("turnActionBlock", {_ -> }),
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
-        ), 0)
-
-        dragBlockFromDrawerToPanel("turnActionBlock", 0)
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 1, 1, "right")
-    }
-
-    @Test
-    fun insertBlockAfterMacroFromFooter(){
-        var forLoopBlock : WebElement? = null
-        addProcedure(arrayOf(
-                Pair("forLoopActionBlock", {it ->
-                    forLoopBlock = it
-                    setNumberParameterOnBlock(it, 2)
-                })
-        ), 0)
-
-        val footer = forLoopBlock!!.findElement(By.className("macroFooter"))
-
-        val drawer = driver.findElement(By.id("drawer"))
-        val block = drawer.findElement(By.className("turnActionBlock"))
+    /**
+     * The same as insertBlockIntoEmptyList, except dropping the block into the list instead of into the header
+     */
+    fun insertBlockIntoEmptyListFromList(element : WebElement, panelToRun : Int){
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
 
         val actions = Actions(driver)
-        actions.dragAndDrop(block, footer).build().perform()
+        actions.dragAndDrop(moveBlock, element).build().perform()
 
-        assertBlockAtPosition(0, 2, "turnActionBlock")
+        assertBlockAtPosition(element, 0, "moveActionBlock")
 
-        runProcedure(0)
+        runProcedure(panelToRun)
 
-        assertRobotPosition(0, 1, 0, "up")
+        assertRobotPosition(0, 0, 0, "left")
+    }
+
+    /**
+     * Inserts a block at the end of a list containing one block
+     */
+    fun insertBlockAtEndOfOneBlockList(element : WebElement, panelToRun : Int){
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 1)
+
+        assertBlockAtPosition(element, 0, "moveActionBlock")
+        assertBlockAtPosition(element, 1, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 0, 0, "up")
+    }
+
+    /**
+     * Inserts a block at the end of a list containing multiple blocks
+     */
+    fun insertBlockAtEndOfMultiBlockList(element : WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 2)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "right")
+    }
+
+    /**
+     * Inserts a block at the start of a list containing one block
+     */
+    fun insertBlockAtStartOfOneBlockList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 0)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    /**
+     * Inserts a block at the start of a list containing multiple blocks
+     */
+    fun insertBlockAtStartOfMultiBlockList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 0)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "moveActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 2, "up")
+    }
+
+    /**
+     * Inserts a block in the middle of a list containing multiple blocks
+     */
+    fun insertBlockInMiddleOfMultiBlockList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 1)
+
+        assertBlockAtPosition(element, 0, "moveActionBlock")
+        assertBlockAtPosition(element, 1, "turnActionBlock")
+        assertBlockAtPosition(element, 2, "moveActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 0, 1, "up")
+    }
+
+    /**
+     * Moves a block from the start of a list to the end of a list. The list contains only two blocks
+     */
+    fun moveBlockFromStartToEndWithTwoInList(element: WebElement, panelToRun: Int){
+        val startBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(startBlock, element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+
+        dragBlockToElement(startBlock, element, 1)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    /**
+     * Moves a block from the start of a list to the end of a list. The list contains more than two blocks
+     */
+    fun moveBlockFromStartToEndWithMultipleInList(element: WebElement, panelToRun: Int){
+        val startBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(startBlock, element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+
+        dragBlockToElement(startBlock, element, 2)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "turnActionBlock")
+        assertBlockAtPosition(element, 2, "moveActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 2, 0, "right")
+    }
+
+    /**
+     * Moves a block from the end of a list to the start of a list. The list contains only two blocks
+     */
+    fun moveBlockFromEndToStartWithTwoInList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        val endBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(endBlock, element)
+
+        dragBlockToElement(endBlock, element, 0)
+
+        assertBlockAtPosition(element, 0, "moveActionBlock")
+        assertBlockAtPosition(element, 1, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 0, 0, "up")
+    }
+
+    /**
+     * Moves a block from the end of a list to the start of a list. The list contains more than two blocks
+     */
+    fun moveBlockFromEndToStartWithMultipleInList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        val endBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(endBlock, element)
+
+        dragBlockToElement(endBlock, element, 0)
+
+        assertBlockAtPosition(element, 0, "moveActionBlock")
+        assertBlockAtPosition(element, 1, "turnActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 0, 0, "right")
+    }
+
+    /**
+     * Moves a block from the start of a list to the middle of a list. The list contains only three blocks
+     */
+    fun moveBlockFromStartToMiddleWithThreeInList(element: WebElement, panelToRun: Int){
+        val startBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(startBlock, element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+
+        dragBlockToElement(startBlock, element, 1)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "right")
+    }
+
+    /**
+     * Moves a block from the start of a list to the middle of a list. The list contains more than three blocks
+     */
+    fun moveBlockFromStartToMiddleWithMultipleInList(element: WebElement, panelToRun: Int){
+        val startBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(startBlock, element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+
+        dragBlockToElement(startBlock, element, 1)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+        assertBlockAtPosition(element, 3, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "down")
+    }
+
+    /**
+     * Moves a block from the end of a list to the middle of a list. The list contains only three blocks
+     */
+    fun moveBlockFromEndToMiddleWithThreeInList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        val endBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(endBlock, element)
+
+        dragBlockToElement(endBlock, element, 1)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "right")
+    }
+
+    /**
+     * Moves a block from the end of a list to the middle of a list. The list contains more than three blocks
+     */
+    fun moveBlockFromEndToMiddleWithMultipleInList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        val endBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(endBlock, element)
+
+        dragBlockToElement(endBlock, element, 1)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+        assertBlockAtPosition(element, 3, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "down")
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Panel tests">
+    @Test
+    fun insertBlockIntoEmptyPanel(){
+        val panel = getPanelWithNumber(0)
+
+        insertBlockIntoEmptyList(panel, 0)
     }
 
     @Test
-    fun insertBlockAfterMacroFromSide(){
-        var forLoopBlock : WebElement? = null
-        addProcedure(arrayOf(
-                Pair("forLoopActionBlock", {it ->
-                    forLoopBlock = it
-                    setNumberParameterOnBlock(it, 2)
-                })
-        ), 0)
+    fun insertBlockIntoEmptyPanelFromPanel(){
+        val panel = getPanelWithNumber(0)
 
-        val footer = forLoopBlock!!.findElement(By.className("macroSide"))
-
-        val drawer = driver.findElement(By.id("drawer"))
-        val block = drawer.findElement(By.className("turnActionBlock"))
-
-        val actions = Actions(driver)
-        actions.dragAndDrop(block, footer).build().perform()
-
-        assertBlockAtPosition(0, 2, "turnActionBlock")
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 1, 0, "up")
+        insertBlockIntoEmptyListFromList(panel, 0)
     }
 
+    @Test
+    fun insertBlockAtEndOfOneBlockPanel(){
+        val panel = getPanelWithNumber(0)
+
+        insertBlockAtEndOfOneBlockList(panel, 0)
+    }
+
+    @Test
+    fun insertBlockAtEndOfMultiBlockPanel(){
+        val panel = getPanelWithNumber(0)
+
+        insertBlockAtEndOfMultiBlockList(panel, 0)
+    }
+
+    @Test
+    fun insertBlockAtStartOfOneBlockPanel(){
+        val panel = getPanelWithNumber(0)
+
+        insertBlockAtStartOfOneBlockList(panel, 0)
+    }
+
+    @Test
+    fun insertBlockAtStartOfMultiBlockPanel(){
+        val panel = getPanelWithNumber(0)
+
+        insertBlockAtStartOfMultiBlockList(panel, 0)
+    }
+
+    @Test
+    fun insertBlockInMiddleOfMultiBlockPanel(){
+        val panel = getPanelWithNumber(0)
+
+        insertBlockInMiddleOfMultiBlockList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToEndWithTwoInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromStartToEndWithTwoInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToEndWithMultipleInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromStartToEndWithMultipleInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToStartWithTwoInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromEndToStartWithTwoInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToStartWithMultipleInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromEndToStartWithMultipleInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToMiddleWithThreeInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromStartToMiddleWithThreeInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToMiddleWithMultipleInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromStartToMiddleWithMultipleInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToMiddleWithThreeInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromEndToMiddleWithThreeInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToMiddleWithMultipleInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromEndToMiddleWithMultipleInList(panel, 0)
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Macro Tests">
     @Test
     fun insertBlockIntoEmptyMacro(){
-        var forLoopBlock : WebElement? = null
-        addProcedure(arrayOf(
-                Pair("forLoopActionBlock", {it ->
-                    forLoopBlock = it
-                    setNumberParameterOnBlock(it, 2)
-                })
-        ), 0)
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
 
-        dragBlockFromDrawerToElement("turnActionBlock", forLoopBlock!!)
-
-        assertBlockAtPosition(0, 1, "forLoopActionBlock")
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 1, 0, "right")
+        insertBlockIntoEmptyList(forLoopMacro, 0)
     }
 
     @Test
-    fun insertBlockIntoMacroWithBlocks(){
-        var forLoopBlock : WebElement? = null
-        addProcedure(arrayOf(
-                Pair("forLoopActionBlock", {it ->
-                    forLoopBlock = it
-                    setNumberParameterOnBlock(it, 2)
-                })
-        ), 0)
+    fun insertBlockIntoEmptyMacroFromMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
 
-        addProcedureToElement(arrayOf(
-                Pair("moveActionBlock", {_ ->})
-        ), forLoopBlock!!)
-
-        dragBlockFromDrawerToElement("turnActionBlock", forLoopBlock!!)
-
-        assertBlockAtPosition(0, 1, "forLoopActionBlock")
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 0, 1, "right")
+        insertBlockIntoEmptyListFromList(forLoopMacro, 0)
     }
 
     @Test
-    fun insertBlockIntoMacroWithBlocksAt0(){
-        var forLoopBlock : WebElement? = null
-        addProcedure(arrayOf(
-                Pair("forLoopActionBlock", {it ->
-                    forLoopBlock = it
-                    setNumberParameterOnBlock(it, 2)
-                })
-        ), 0)
+    fun insertBlockAtEndOfOneBlockMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
 
-        addProcedureToElement(arrayOf(
-                Pair("moveActionBlock", {it -> setNumberParameterOnBlock(it, 1)})
-        ), forLoopBlock!!)
-
-        dragBlockFromDrawerToElementToPosition("turnActionBlock", forLoopBlock!!, 1)
-
-        assertBlockAtPosition(0, 1, "forLoopActionBlock")
-
-        runProcedure(0)
-
-        assertRobotPosition(0, 2, 1, "right")
+        insertBlockAtEndOfOneBlockList(forLoopMacro, 0)
     }
+
+    @Test
+    fun insertBlockAtEndOfMultiBlockMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        insertBlockAtEndOfMultiBlockList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun insertBlockAtStartOfOneBlockMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        insertBlockAtStartOfOneBlockList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun insertBlockAtStartOfMultiBlockMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        insertBlockAtStartOfMultiBlockList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun insertBlockInMiddleOfMultiBlockMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        insertBlockInMiddleOfMultiBlockList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToEndWithTwoInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromStartToEndWithTwoInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToEndWithMultipleInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromStartToEndWithMultipleInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToStartWithTwoInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromEndToStartWithTwoInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToStartWithMultipleInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromEndToStartWithMultipleInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToMiddleWithThreeInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromStartToMiddleWithThreeInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromStartToMiddleWithMultipleInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromStartToMiddleWithMultipleInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToMiddleWithThreeInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromEndToMiddleWithThreeInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromEndToMiddleWithMultipleInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromEndToMiddleWithMultipleInList(forLoopMacro, 0)
+    }
+    //</editor-fold>
 }

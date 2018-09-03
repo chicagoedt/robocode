@@ -9,71 +9,45 @@ import kotlin.test.assertEquals
 
 lateinit var driver : WebDriver
 
-fun dragBlockFromDrawerToPanel(blockClass : String, panelNumber : Int) : WebElement {
+fun getBlockFromDrawer(className : String) : WebElement{
     val drawer = driver.findElement(By.id("drawer"))
-    val block = drawer.findElement(By.className(blockClass))
-
-    val panels = driver.findElements(By.className("panel"))
-    val panel = panels[panelNumber]
-
-    var blocksInPanel = panel.findElements(By.className("actionBlock"))
-    blocksInPanel = getOnlyDirectChildren(blocksInPanel, panel)
-    var elementToDropTo = panel
-    if (blocksInPanel.size > 0) elementToDropTo = blocksInPanel[blocksInPanel.size - 1]
-
-    val actions = Actions(driver)
-    actions.dragAndDrop(block, elementToDropTo).build().perform()
-
+    val block = drawer.findElement(By.className(className))
     return block
 }
 
-fun dragBlockFromDrawerToElement(blockClass : String, element : WebElement) : WebElement {
-    val drawer = driver.findElement(By.id("drawer"))
-    val block = drawer.findElement(By.className(blockClass))
+fun getPanelWithNumber(number : Int) : WebElement{
+    val panels = driver.findElements(By.className("panel"))
+    val panel = panels[number]
 
+    return panel
+}
+
+fun dragBlockToElement(block : WebElement, element : WebElement) : WebElement {
     var blocksInPanel = element.findElements(By.className("actionBlock"))
     blocksInPanel = getOnlyDirectChildren(blocksInPanel, element)
-    var elementToDropTo = element
-    if (blocksInPanel.size > 0) elementToDropTo = blocksInPanel[blocksInPanel.size - 1]
 
-    val actions = Actions(driver)
-    actions.dragAndDrop(block, elementToDropTo).build().perform()
+    blocksInPanel.remove(block)
 
-    return block
+    return dragBlockToElement(block, element, blocksInPanel.size)
 }
 
-fun dragBlockFromDrawerToPanelToPosition(blockClass : String, panelNumber : Int, position : Int) : WebElement {
-    val drawer = driver.findElement(By.id("drawer"))
-    val block = drawer.findElement(By.className(blockClass))
-
-    val panels = driver.findElements(By.className("panel"))
-    val panel = panels[panelNumber]
-
-    var blocksInPanel = panel.findElements(By.className("actionBlock"))
-    blocksInPanel = getOnlyDirectChildren(blocksInPanel, panel)
-    var elementToDropTo = panel.findElement(By.className("panelHeader"))
-    if (position > 1) elementToDropTo = blocksInPanel[position - 2]
-
-    val actions = Actions(driver)
-    actions.dragAndDrop(block, elementToDropTo).build().perform()
-
-    return block
-}
-
-fun dragBlockFromDrawerToElementToPosition(blockClass : String, element : WebElement, position : Int) : WebElement {
-    val drawer = driver.findElement(By.id("drawer"))
-    val block = drawer.findElement(By.className(blockClass))
-
+fun dragBlockToElement(block : WebElement, element : WebElement, position : Int) : WebElement {
     var blocksInPanel = element.findElements(By.className("actionBlock"))
     blocksInPanel = getOnlyDirectChildren(blocksInPanel, element)
+
+    blocksInPanel.remove(block)
+
+    var insertPosition = position
+    if (position > blocksInPanel.size) insertPosition = blocksInPanel.size
 
     var elementToDropTo = element
     if (element.getAttribute("class").contains("actionBlockMacro"))
-        elementToDropTo = element.findElement(By.className("macroHeader "))
+        elementToDropTo = element.findElement(By.className("macroHeader"))
     else if (element.getAttribute("class").contains("panel"))
         elementToDropTo = element.findElement(By.className("panelHeader"))
 
-    if (position > 1) elementToDropTo = blocksInPanel[position - 2]
+    if (insertPosition == blocksInPanel.size && insertPosition != 0) elementToDropTo = blocksInPanel[blocksInPanel.size - 1]
+    else if (insertPosition > 0) elementToDropTo = blocksInPanel[insertPosition - 1]
 
     val actions = Actions(driver)
     actions.dragAndDrop(block, elementToDropTo).build().perform()
@@ -88,23 +62,8 @@ fun setNumberParameterOnBlock(block : WebElement, number : Int){
     parameter.sendKeys(number.toString())
 }
 
-fun addProcedure(list : Array<Pair<String, (WebElement) -> Unit>>, panelNum : Int){
-    for (pair in list){
-        val block = dragBlockFromDrawerToPanel(pair.first, panelNum)
-        pair.second(block)
-    }
-}
-
-fun addProcedureToElement(list : Array<Pair<String, (WebElement) -> Unit>>, element : WebElement){
-    for (pair in list){
-        val block = dragBlockFromDrawerToElement(pair.first, element)
-        pair.second(block)
-    }
-}
-
 fun runProcedure(panelNum : Int){
-    val panels = driver.findElements(By.className("panel"))
-    val panel = panels[panelNum]
+    val panel = getPanelWithNumber(panelNum)
 
     val runButton = panel.findElement(By.className("panelHeaderButton"))
     runButton.click()
@@ -131,7 +90,16 @@ fun assertBlockAtPosition(panelNum : Int, position : Int, className : String){
 
     blocks = getOnlyDirectChildren(blocks, panel)
 
-    assertEquals(true, blocks[position - 1].getAttribute("class").contains(className))
+    assertEquals(true, blocks[position].getAttribute("class").contains(className))
+}
+
+fun assertBlockAtPosition(element : WebElement, position : Int, className : String){
+    var blocks = element.findElements(By.className("actionBlock"))
+
+    blocks = getOnlyDirectChildren(blocks, element)
+    blocks.remove(element)
+
+    assertEquals(true, blocks[position].getAttribute("class").contains(className))
 }
 
 fun getOnlyDirectChildren(children : List<WebElement>, parent : WebElement) : ArrayList<WebElement>{
