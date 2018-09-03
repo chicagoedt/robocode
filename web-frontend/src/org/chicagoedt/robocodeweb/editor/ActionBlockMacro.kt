@@ -191,8 +191,9 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
             undoRemoveBlockElement = {newActionBlock.macroParent!!.action.addToMacroAt(newActionBlock.action, originalPosition, oldRobotParent.getLimitDifference())}
         }
 
-        var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList<Element>()
-        blocks = trimToDirectChildren(blocks.toMutableList())
+        var blocks = (element.querySelectorAll(".actionBlock") as ItemArrayLike<Element>).asList().toMutableList()
+        blocks = trimToDirectChildren(blocks)
+        blocks.remove(blockElement)
         var pos = 0
         if (hoverOverHeader){
             if (blocks.size > 0) insertBlockElement = {element.insertBefore(blockElement, blocks[0])}
@@ -271,7 +272,7 @@ abstract class ActionBlockMacro<T : ActionMacro<*>>(val drawer : Drawer) : Actio
      * @param list The list to trim
      * @return A list of elements from [list] which are direct children of [element]
      */
-    private fun trimToDirectChildren(list : MutableList<Element>) : List<Element>{
+    private fun trimToDirectChildren(list : MutableList<Element>) : MutableList<Element>{
         val toRemove = arrayListOf<Element>()
 
         for (element in list){
