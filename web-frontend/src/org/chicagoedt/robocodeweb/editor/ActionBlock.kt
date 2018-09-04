@@ -228,6 +228,19 @@ abstract class ActionBlock<T : Action<*>>(){
                 var clone : HTMLElement? = null
                 if (sensorElement.asDynamic().actionSensor == true) {
                     clone = sensorElement
+
+                    val action = sensorElement.asDynamic().action as ActionBlock<*>
+                    action.removeSensorParameter()
+
+                    val parameterElement : HTMLElement = sensorElement.parentElement!! as HTMLElement
+                    val otherToolTip : HTMLElement = parameterElement.asDynamic().toolTip
+                    parameterElement.asDynamic().sensor = null
+                    parameterElement.onmouseover = {
+                        jQuery(otherToolTip).show()
+                    }
+                    parameterElement.onmouseout = {
+                        jQuery(otherToolTip).hide()
+                    }
                 }
                 else {
                     clone = sensorElement.cloneNode(true) as HTMLElement
