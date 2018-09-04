@@ -48,7 +48,7 @@
 
 	-->
 	<levels>
-		<level name="Level 1" difficulty="0" theme="desert">
+		<level name="TEST LEVEL 1" difficulty="0" theme="desert">
 			<instructions>
 			</instructions>
 			<victory type="tile">

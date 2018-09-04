@@ -49,8 +49,22 @@ fun dragBlockToElement(block : WebElement, element : WebElement, position : Int)
     if (insertPosition == blocksInPanel.size && insertPosition != 0) elementToDropTo = blocksInPanel[blocksInPanel.size - 1]
     else if (insertPosition > 0) elementToDropTo = blocksInPanel[insertPosition - 1]
 
+    if (elementToDropTo.getAttribute("class").contains("actionBlockMacro")){
+        elementToDropTo = elementToDropTo.findElement(By.className("macroFooter"))
+    }
+
     val actions = Actions(driver)
     actions.dragAndDrop(block, elementToDropTo).build().perform()
+
+    return block
+}
+
+/**
+ * Drags a block to an element without calculating position or headers
+ */
+fun dragBlockToElementDirectly(block : WebElement, element : WebElement) : WebElement {
+    val actions = Actions(driver)
+    actions.dragAndDrop(block, element).build().perform()
 
     return block
 }

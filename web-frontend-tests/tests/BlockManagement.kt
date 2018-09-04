@@ -379,6 +379,54 @@ class BlockManagement {
 
         assertRobotPosition(0, 1, 1, "down")
     }
+
+    /**
+     * Moves a block from the middle of a list to another spot in the middle of a list. The list contains only four blocks
+     */
+    fun moveBlockFromMiddleToMiddleWithFourInList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        val endBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(endBlock, element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+
+        dragBlockToElement(endBlock, element, 1)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "moveActionBlock")
+        assertBlockAtPosition(element, 2, "turnActionBlock")
+        assertBlockAtPosition(element, 3, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 1, 1, "down")
+    }
+
+    /**
+     * Moves a block from the end of a list to the middle of a list. The list contains more than four blocks
+     */
+    fun moveBlockFromMiddleToMiddleWithMultipleInList(element: WebElement, panelToRun: Int){
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        val endBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(endBlock, element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+
+        dragBlockToElement(endBlock, element, 2)
+
+        assertBlockAtPosition(element, 0, "turnActionBlock")
+        assertBlockAtPosition(element, 1, "turnActionBlock")
+        assertBlockAtPosition(element, 2, "moveActionBlock")
+        assertBlockAtPosition(element, 3, "turnActionBlock")
+        assertBlockAtPosition(element, 4, "turnActionBlock")
+        assertBlockAtPosition(element, 5, "turnActionBlock")
+
+        runProcedure(panelToRun)
+
+        assertRobotPosition(0, 2, 0, "up")
+    }
     //</editor-fold>
 
     //<editor-fold desc="Panel tests">
@@ -485,6 +533,20 @@ class BlockManagement {
         val panel = getPanelWithNumber(0)
 
         moveBlockFromEndToMiddleWithMultipleInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromMiddleToMiddleWithFourInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromMiddleToMiddleWithFourInList(panel, 0)
+    }
+
+    @Test
+    fun moveBlockFromMiddleToMiddleWithMultipleInPanel(){
+        val panel = getPanelWithNumber(0)
+
+        moveBlockFromMiddleToMiddleWithMultipleInList(panel, 0)
     }
     //</editor-fold>
 
@@ -622,6 +684,546 @@ class BlockManagement {
         dragBlockToElement(forLoopMacro, panel)
 
         moveBlockFromEndToMiddleWithMultipleInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromMiddleToMiddleWithFourInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromMiddleToMiddleWithFourInList(forLoopMacro, 0)
+    }
+
+    @Test
+    fun moveBlockFromMiddleToMiddleWithMultipleInMacro(){
+        val panel = getPanelWithNumber(0)
+        val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopMacro, panel)
+
+        moveBlockFromMiddleToMiddleWithMultipleInList(forLoopMacro, 0)
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Panel<->Macro Tests">
+    @Test
+    fun moveBlockFromStartOfPanelToEmptyMacroUsingHeader(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromEndOfPanelToEmptyMacroUsingHeader(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelAfterMacroToEmptyMacroUsingHeader(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelBeforeMacroToEmptyMacroUsingHeader(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromStartOfPanelToEmptyMacroUsingDirectMacro(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromEndOfPanelToEmptyMacroUsingDirectMacro(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelAfterMacroToEmptyMacroUsingDirectMacro(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelBeforeMacroToEmptyMacroUsingDirectMacro(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromStartOfPanelToStartOfMacroWithOneBlock(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromEndOfPanelToStartOfMacroWithOneBlock(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelAfterMacroToStartOfMacroWithOneBlock(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 2, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelBeforeMacroToStartOfMacroWithOneBlock(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+
+
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 2, "up")
+    }
+
+    @Test
+    fun moveBlockFromStartOfPanelToEndOfMacroWithOneBlockUsingHeader(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromEndOfPanelToEndOfMacroWithOneBlockUsingHeader(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelAfterMacroToEndOfMacroWithOneBlockUsingHeader(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelBeforeMacroToEndOfMacroWithOneBlockUsingHeader(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+
+
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromStartOfPanelToEndOfMacroWithOneBlockUsingDirectMacro(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromEndOfPanelToEndOfMacroWithOneBlockUsingDirectMacro(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 0, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelAfterMacroToEndOfMacroWithOneBlockUsingDirectMacro(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelBeforeMacroToEndOfMacroWithOneBlockUsingDirectMacro(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+
+
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+
+        assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 0, 1, "up")
+    }
+
+    @Test
+    fun moveBlockFromStartOfPanelToStartOfMacroWithMultipleBlocks(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+        val moveBlock2 = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock2, forLoopBlock)
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 2, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 2, "up")
+    }
+
+    @Test
+    fun moveBlockFromEndOfPanelToStartOfMacroWithMultipleBlocks(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, forLoopBlock)
+        val moveBlock2 = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock2, forLoopBlock)
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 2, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 2, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelAfterMacroToStartOfMacroWithMultipleBlocks(){
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        val moveBlockInMacro2 = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro2, forLoopBlock)
+
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 2, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 3, "up")
+    }
+
+    @Test
+    fun moveBlockFromMiddleOfPanelBeforeMacroToStartOfMacroWithMultipleBlocks(){
+        val turnBlock = getBlockFromDrawer("turnActionBlock")
+        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+
+        val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
+        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        val moveBlockInMacro2 = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlockInMacro2, forLoopBlock)
+
+
+        val moveBlock = getBlockFromDrawer("moveActionBlock")
+        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+
+        dragBlockToElement(turnBlock, forLoopBlock, 0)
+
+        assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
+        assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
+        assertBlockAtPosition(forLoopBlock, 2, "moveActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
+        assertBlockAtPosition(getPanelWithNumber(0), 1, "moveActionBlock")
+
+        runProcedure(0)
+
+        assertRobotPosition(0, 1, 3, "up")
     }
     //</editor-fold>
 }
