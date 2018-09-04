@@ -89,17 +89,21 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
         if (player.direction != currentDirection) directionChanged = true
 
         if (positionChanged){
-            animateToNewPosition()
+            animateToNewPosition({
+                if (directionChanged){
+                    changeDirection()
+                }
+            })
         }
         else{
             val position = jQuery(grid[player.y][player.x].tableElement).position()
             jQuery(element).css("top", position.top)
             jQuery(element).css("left", position.left)
             refreshSensorConfigPosition()
-        }
 
-        if (directionChanged){
-            changeDirection()
+            if (directionChanged){
+                changeDirection()
+            }
         }
     }
 
@@ -130,7 +134,7 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
     /**
      * Moves the player to the new position with an animation
      */
-    private fun animateToNewPosition(){
+    private fun animateToNewPosition(callback : () -> Unit){
         val position = jQuery(grid[player.y][player.x].tableElement).position()
         this.currentX = player.x
         this.currentY = player.y
@@ -141,6 +145,7 @@ class PlayerTile(var player : RobotPlayer, val grid : ArrayList<ArrayList<GridTi
 
         jQuery(element).animate(properties, 100, {
             refreshSensorConfigPosition()
+            callback()
         })
     }
 
