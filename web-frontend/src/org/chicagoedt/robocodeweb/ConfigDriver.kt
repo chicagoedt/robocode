@@ -83,6 +83,14 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 				intro = introData.innerHTML
 			}
 
+			var hasError = false
+			var error = ""
+			val errorData = levelData.querySelector("error")
+			if (errorData != null){
+				hasError = true
+				error = errorData.innerHTML
+			}
+
 			val gridData = levelData.querySelector("grid")!!
 			val height = gridData.querySelectorAll("gridRow").length
 			val width = (gridData.querySelectorAll("gridRow").item(0) as Element).querySelectorAll("gridTile").length
@@ -92,6 +100,9 @@ class ConfigDriver(val name : String, val callback : (ArrayList<Robot>, ArrayLis
 
 			level.hasIntro = hasIntro
 			level.intro = intro
+
+			level.hasError = hasError
+			level.error = error
 
 			for (theme in themes){
 				if (theme.name == themeName){

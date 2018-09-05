@@ -39,6 +39,9 @@ class Level(var properties: Properties) {
     var hasIntro = false
     var intro = ""
 
+    var hasError = false
+    var error = ""
+
     /**
      * The conditions for what should be displayed in a Level
      * @param useTopic True if topic features should be used, false otherwise

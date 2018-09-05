@@ -192,6 +192,9 @@
 				<br/>
 				Use the "For Loop" block to repeat code
 			</instructions>
+			<error>
+				Try using a loop!
+			</error>
 			<victory type="tile"/>
 			<robot name="Surus" x="2" y="2" direction="up" actionLimit="3"/>
 			<grid>
@@ -234,6 +237,9 @@
 				<br/>
 				This one is a little harder. Use the "For Loop" block to repeat code
 			</instructions>
+			<error>
+				Try using a loop!
+			</error>
 			<victory type="tile"/>
 			<robot name="Surus" x="0" y="0" direction="up" actionLimit="5"/>
 			<grid>
@@ -264,6 +270,9 @@
 				<br/>
 				This one is a little harder. Use the "For Loop" block to repeat code
 			</instructions>
+			<error>
+				Try using a loop!
+			</error>
 			<victory type="tile"/>
 			<robot name="Surus" x="0" y="0" direction="up" actionLimit="7"/>
 			<grid>

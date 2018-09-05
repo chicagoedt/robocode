@@ -115,7 +115,13 @@ fun update(e : Event){
                 showPopup("Victory!", "Done", ::toEndScreen, false)
             }
         }
-        Event.LEVEL_FAILURE -> showPopup("Try again!", true)
+        Event.LEVEL_FAILURE -> {
+            var errorMessage = "Try again!"
+            if (game.currentLevel.hasError){
+                errorMessage = game.currentLevel.error
+            }
+            showPopup(errorMessage, true)
+        }
     }
 }
 
