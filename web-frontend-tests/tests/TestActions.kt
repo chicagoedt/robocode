@@ -22,16 +22,16 @@ fun getPanelWithNumber(number : Int) : WebElement{
     return panel
 }
 
-fun dragBlockToElement(block : WebElement, element : WebElement) : WebElement {
+fun dragActionBlockToElement(block : WebElement, element : WebElement) : WebElement {
     var blocksInPanel = element.findElements(By.className("actionBlock"))
     blocksInPanel = getOnlyDirectChildren(blocksInPanel, element)
 
     blocksInPanel.remove(block)
 
-    return dragBlockToElement(block, element, blocksInPanel.size)
+    return dragActionBlockToElement(block, element, blocksInPanel.size)
 }
 
-fun dragBlockToElement(block : WebElement, element : WebElement, position : Int) : WebElement {
+fun dragActionBlockToElement(block : WebElement, element : WebElement, position : Int) : WebElement {
     var blocksInPanel = element.findElements(By.className("actionBlock"))
     blocksInPanel = getOnlyDirectChildren(blocksInPanel, element)
 
@@ -62,11 +62,55 @@ fun dragBlockToElement(block : WebElement, element : WebElement, position : Int)
 /**
  * Drags a block to an element without calculating position or headers
  */
-fun dragBlockToElementDirectly(block : WebElement, element : WebElement) : WebElement {
+fun dragBlockToElement(block : WebElement, element : WebElement) : WebElement {
     val actions = Actions(driver)
     actions.dragAndDrop(block, element).build().perform()
 
     return block
+}
+
+fun openSensorConfigForRobot(robotNum: Int){
+    val grid = driver.findElement(By.id("grid"))
+    val players = grid.findElements(By.className("gridPlayer"))
+    val player = players[0]
+
+    player.click()
+}
+
+fun getSensorFromDrawerAtPosition(robotNum: Int, position: Int) : WebElement{
+    val sensorConfigs = driver.findElements(By.className("sensorConfigurator"))
+    val sensorConfig = sensorConfigs[0]
+    val drawer = sensorConfig.findElement(By.className("sensorDrawer"))
+    val sensorBlocks = drawer.findElements(By.className("sensorBlock"))
+    val sensorBlock = sensorBlocks[position]
+
+    return sensorBlock
+}
+
+fun getSensorPanelAtDirection(robotNum: Int, direction : String) : WebElement{
+    val sensorConfigs = driver.findElements(By.className("sensorConfigurator"))
+    val sensorConfig = sensorConfigs[0]
+    var panel : WebElement? = null
+    if (direction.equals("front", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("frontSensorList"))
+    }
+    else if (direction.equals("back", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("backSensorList"))
+    }
+    else if (direction.equals("left", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("leftSensorList"))
+    }
+    else if (direction.equals("right", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("rightSensorList"))
+    }
+
+    return panel!!
+}
+
+fun dragSensorToPanel(robotNum: Int, drawerPosition: Int, panelDirection: String){
+    val sensorBlock = getSensorFromDrawerAtPosition(0, drawerPosition)
+    val sensorPanel = getSensorPanelAtDirection(0, panelDirection)
+    dragBlockToElement(sensorBlock, sensorPanel)
 }
 
 fun setNumberParameterOnBlock(block : WebElement, number : Int){

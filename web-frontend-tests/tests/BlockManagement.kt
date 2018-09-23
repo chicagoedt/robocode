@@ -1,7 +1,6 @@
 import io.github.bonigarcia.wdm.WebDriverManager
 import org.junit.*
 import org.junit.Test
-import org.junit.experimental.categories.Category
 import org.openqa.selenium.By
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.chrome.ChromeDriver
@@ -51,7 +50,7 @@ class BlockManagement {
 
     @Test
     fun moveForward(){
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), getPanelWithNumber(0))
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), getPanelWithNumber(0))
 
         runProcedure(0)
 
@@ -62,10 +61,10 @@ class BlockManagement {
     fun runButtonsDisabledDuringRun(){
         val firstPanel = getPanelWithNumber(0)
 
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), firstPanel)
 
         val panels = driver.findElements(By.className("panel"))
         val firstRunButton = firstPanel.findElement(By.className("panelHeaderButton"))
@@ -109,7 +108,7 @@ class BlockManagement {
      * Inserts a block into an empty procedure
      */
     fun insertBlockIntoEmptyList(element : WebElement, panelToRun : Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
 
@@ -138,9 +137,9 @@ class BlockManagement {
      * Inserts a block at the end of a list containing one block
      */
     fun insertBlockAtEndOfOneBlockList(element : WebElement, panelToRun : Int){
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
 
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 1)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 1)
 
         assertBlockAtPosition(element, 0, "moveActionBlock")
         assertBlockAtPosition(element, 1, "turnActionBlock")
@@ -154,10 +153,10 @@ class BlockManagement {
      * Inserts a block at the end of a list containing multiple blocks
      */
     fun insertBlockAtEndOfMultiBlockList(element : WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
 
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 2)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 2)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -172,9 +171,9 @@ class BlockManagement {
      * Inserts a block at the start of a list containing one block
      */
     fun insertBlockAtStartOfOneBlockList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
 
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 0)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 0)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -188,10 +187,10 @@ class BlockManagement {
      * Inserts a block at the start of a list containing multiple blocks
      */
     fun insertBlockAtStartOfMultiBlockList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
 
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 0)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 0)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -206,10 +205,10 @@ class BlockManagement {
      * Inserts a block in the middle of a list containing multiple blocks
      */
     fun insertBlockInMiddleOfMultiBlockList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("moveActionBlock"), element)
 
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 1)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element, 1)
 
         assertBlockAtPosition(element, 0, "moveActionBlock")
         assertBlockAtPosition(element, 1, "turnActionBlock")
@@ -225,10 +224,10 @@ class BlockManagement {
      */
     fun moveBlockFromStartToEndWithTwoInList(element: WebElement, panelToRun: Int){
         val startBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(startBlock, element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(startBlock, element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockToElement(startBlock, element, 1)
+        dragActionBlockToElement(startBlock, element, 1)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -243,11 +242,11 @@ class BlockManagement {
      */
     fun moveBlockFromStartToEndWithMultipleInList(element: WebElement, panelToRun: Int){
         val startBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(startBlock, element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(startBlock, element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockToElement(startBlock, element, 2)
+        dragActionBlockToElement(startBlock, element, 2)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "turnActionBlock")
@@ -262,11 +261,11 @@ class BlockManagement {
      * Moves a block from the end of a list to the start of a list. The list contains only two blocks
      */
     fun moveBlockFromEndToStartWithTwoInList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
         val endBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(endBlock, element)
+        dragActionBlockToElement(endBlock, element)
 
-        dragBlockToElement(endBlock, element, 0)
+        dragActionBlockToElement(endBlock, element, 0)
 
         assertBlockAtPosition(element, 0, "moveActionBlock")
         assertBlockAtPosition(element, 1, "turnActionBlock")
@@ -280,12 +279,12 @@ class BlockManagement {
      * Moves a block from the end of a list to the start of a list. The list contains more than two blocks
      */
     fun moveBlockFromEndToStartWithMultipleInList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
         val endBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(endBlock, element)
+        dragActionBlockToElement(endBlock, element)
 
-        dragBlockToElement(endBlock, element, 0)
+        dragActionBlockToElement(endBlock, element, 0)
 
         assertBlockAtPosition(element, 0, "moveActionBlock")
         assertBlockAtPosition(element, 1, "turnActionBlock")
@@ -301,11 +300,11 @@ class BlockManagement {
      */
     fun moveBlockFromStartToMiddleWithThreeInList(element: WebElement, panelToRun: Int){
         val startBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(startBlock, element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(startBlock, element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockToElement(startBlock, element, 1)
+        dragActionBlockToElement(startBlock, element, 1)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -321,12 +320,12 @@ class BlockManagement {
      */
     fun moveBlockFromStartToMiddleWithMultipleInList(element: WebElement, panelToRun: Int){
         val startBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(startBlock, element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(startBlock, element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockToElement(startBlock, element, 1)
+        dragActionBlockToElement(startBlock, element, 1)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -342,12 +341,12 @@ class BlockManagement {
      * Moves a block from the end of a list to the middle of a list. The list contains only three blocks
      */
     fun moveBlockFromEndToMiddleWithThreeInList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
         val endBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(endBlock, element)
+        dragActionBlockToElement(endBlock, element)
 
-        dragBlockToElement(endBlock, element, 1)
+        dragActionBlockToElement(endBlock, element, 1)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -362,13 +361,13 @@ class BlockManagement {
      * Moves a block from the end of a list to the middle of a list. The list contains more than three blocks
      */
     fun moveBlockFromEndToMiddleWithMultipleInList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
         val endBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(endBlock, element)
+        dragActionBlockToElement(endBlock, element)
 
-        dragBlockToElement(endBlock, element, 1)
+        dragActionBlockToElement(endBlock, element, 1)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -384,13 +383,13 @@ class BlockManagement {
      * Moves a block from the middle of a list to another spot in the middle of a list. The list contains only four blocks
      */
     fun moveBlockFromMiddleToMiddleWithFourInList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
         val endBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(endBlock, element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(endBlock, element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockToElement(endBlock, element, 1)
+        dragActionBlockToElement(endBlock, element, 1)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "moveActionBlock")
@@ -406,15 +405,15 @@ class BlockManagement {
      * Moves a block from the end of a list to the middle of a list. The list contains more than four blocks
      */
     fun moveBlockFromMiddleToMiddleWithMultipleInList(element: WebElement, panelToRun: Int){
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
         val endBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(endBlock, element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
-        dragBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(endBlock, element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
+        dragActionBlockToElement(getBlockFromDrawer("turnActionBlock"), element)
 
-        dragBlockToElement(endBlock, element, 2)
+        dragActionBlockToElement(endBlock, element, 2)
 
         assertBlockAtPosition(element, 0, "turnActionBlock")
         assertBlockAtPosition(element, 1, "turnActionBlock")
@@ -555,7 +554,7 @@ class BlockManagement {
     fun insertBlockIntoEmptyMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockIntoEmptyList(forLoopMacro, 0)
     }
@@ -564,7 +563,7 @@ class BlockManagement {
     fun insertBlockIntoEmptyMacroFromMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockIntoEmptyListFromList(forLoopMacro, 0)
     }
@@ -573,7 +572,7 @@ class BlockManagement {
     fun insertBlockAtEndOfOneBlockMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockAtEndOfOneBlockList(forLoopMacro, 0)
     }
@@ -582,7 +581,7 @@ class BlockManagement {
     fun insertBlockAtEndOfMultiBlockMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockAtEndOfMultiBlockList(forLoopMacro, 0)
     }
@@ -591,7 +590,7 @@ class BlockManagement {
     fun insertBlockAtStartOfOneBlockMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockAtStartOfOneBlockList(forLoopMacro, 0)
     }
@@ -600,7 +599,7 @@ class BlockManagement {
     fun insertBlockAtStartOfMultiBlockMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockAtStartOfMultiBlockList(forLoopMacro, 0)
     }
@@ -609,7 +608,7 @@ class BlockManagement {
     fun insertBlockInMiddleOfMultiBlockMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         insertBlockInMiddleOfMultiBlockList(forLoopMacro, 0)
     }
@@ -618,7 +617,7 @@ class BlockManagement {
     fun moveBlockFromStartToEndWithTwoInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromStartToEndWithTwoInList(forLoopMacro, 0)
     }
@@ -627,7 +626,7 @@ class BlockManagement {
     fun moveBlockFromStartToEndWithMultipleInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromStartToEndWithMultipleInList(forLoopMacro, 0)
     }
@@ -636,7 +635,7 @@ class BlockManagement {
     fun moveBlockFromEndToStartWithTwoInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromEndToStartWithTwoInList(forLoopMacro, 0)
     }
@@ -645,7 +644,7 @@ class BlockManagement {
     fun moveBlockFromEndToStartWithMultipleInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromEndToStartWithMultipleInList(forLoopMacro, 0)
     }
@@ -654,7 +653,7 @@ class BlockManagement {
     fun moveBlockFromStartToMiddleWithThreeInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromStartToMiddleWithThreeInList(forLoopMacro, 0)
     }
@@ -663,7 +662,7 @@ class BlockManagement {
     fun moveBlockFromStartToMiddleWithMultipleInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromStartToMiddleWithMultipleInList(forLoopMacro, 0)
     }
@@ -672,7 +671,7 @@ class BlockManagement {
     fun moveBlockFromEndToMiddleWithThreeInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromEndToMiddleWithThreeInList(forLoopMacro, 0)
     }
@@ -681,7 +680,7 @@ class BlockManagement {
     fun moveBlockFromEndToMiddleWithMultipleInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromEndToMiddleWithMultipleInList(forLoopMacro, 0)
     }
@@ -690,7 +689,7 @@ class BlockManagement {
     fun moveBlockFromMiddleToMiddleWithFourInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromMiddleToMiddleWithFourInList(forLoopMacro, 0)
     }
@@ -699,7 +698,7 @@ class BlockManagement {
     fun moveBlockFromMiddleToMiddleWithMultipleInMacro(){
         val panel = getPanelWithNumber(0)
         val forLoopMacro = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopMacro, panel)
+        dragActionBlockToElement(forLoopMacro, panel)
 
         moveBlockFromMiddleToMiddleWithMultipleInList(forLoopMacro, 0)
     }
@@ -709,11 +708,11 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToEmptyMacroUsingHeader(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -726,11 +725,11 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToEmptyMacroUsingHeader(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -743,13 +742,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToEmptyMacroUsingHeader(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -763,13 +762,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToEmptyMacroUsingHeader(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -783,11 +782,11 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToEmptyMacroUsingDirectMacro(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -800,11 +799,11 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToEmptyMacroUsingDirectMacro(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -817,13 +816,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToEmptyMacroUsingDirectMacro(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -837,13 +836,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToEmptyMacroUsingDirectMacro(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(getPanelWithNumber(0), 0, "forLoopActionBlock")
@@ -857,13 +856,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToStartOfMacroWithOneBlock(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -877,13 +876,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToStartOfMacroWithOneBlock(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -897,16 +896,16 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToStartOfMacroWithOneBlock(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
 
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -921,18 +920,18 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToStartOfMacroWithOneBlock(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
 
 
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -947,13 +946,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToEndOfMacroWithOneBlockUsingHeader(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -967,13 +966,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToEndOfMacroWithOneBlockUsingHeader(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -987,16 +986,16 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToEndOfMacroWithOneBlockUsingHeader(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
 
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -1011,18 +1010,18 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToEndOfMacroWithOneBlockUsingHeader(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
 
 
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -1037,13 +1036,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToEndOfMacroWithOneBlockUsingDirectMacro(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -1057,13 +1056,13 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToEndOfMacroWithOneBlockUsingDirectMacro(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -1077,16 +1076,16 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToEndOfMacroWithOneBlockUsingDirectMacro(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
 
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -1101,18 +1100,18 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToEndOfMacroWithOneBlockUsingDirectMacro(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
 
 
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElementDirectly(turnBlock, forLoopBlock)
+        dragBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "turnActionBlock")
@@ -1127,15 +1126,15 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToStartOfMacroWithMultipleBlocks(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val moveBlock2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock2, forLoopBlock)
+        dragActionBlockToElement(moveBlock2, forLoopBlock)
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1150,15 +1149,15 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToStartOfMacroWithMultipleBlocks(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val moveBlock2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock2, forLoopBlock)
+        dragActionBlockToElement(moveBlock2, forLoopBlock)
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1173,18 +1172,18 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToStartOfMacroWithMultipleBlocks(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
         val moveBlockInMacro2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro2, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro2, forLoopBlock)
 
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1200,20 +1199,20 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToStartOfMacroWithMultipleBlocks(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
         val moveBlockInMacro2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro2, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro2, forLoopBlock)
 
 
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock, 0)
+        dragActionBlockToElement(turnBlock, forLoopBlock, 0)
 
         assertBlockAtPosition(forLoopBlock, 0, "turnActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1229,15 +1228,15 @@ class BlockManagement {
     @Test
     fun moveBlockFromStartOfPanelToEndOfMacroWithMultipleBlocks(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val moveBlock2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock2, forLoopBlock)
+        dragActionBlockToElement(moveBlock2, forLoopBlock)
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1252,15 +1251,15 @@ class BlockManagement {
     @Test
     fun moveBlockFromEndOfPanelToEndOfMacroWithMultipleBlocks(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, forLoopBlock)
+        dragActionBlockToElement(moveBlock, forLoopBlock)
         val moveBlock2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock2, forLoopBlock)
+        dragActionBlockToElement(moveBlock2, forLoopBlock)
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1275,18 +1274,18 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelAfterMacroToEndOfMacroWithMultipleBlocks(){
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
         val moveBlockInMacro2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro2, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro2, forLoopBlock)
 
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
@@ -1302,20 +1301,20 @@ class BlockManagement {
     @Test
     fun moveBlockFromMiddleOfPanelBeforeMacroToEndOfMacroWithMultipleBlocks(){
         val turnBlock = getBlockFromDrawer("turnActionBlock")
-        dragBlockToElement(turnBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(turnBlock, getPanelWithNumber(0))
 
         val forLoopBlock = getBlockFromDrawer("forLoopActionBlock")
-        dragBlockToElement(forLoopBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(forLoopBlock, getPanelWithNumber(0))
         val moveBlockInMacro = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro, forLoopBlock)
         val moveBlockInMacro2 = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlockInMacro2, forLoopBlock)
+        dragActionBlockToElement(moveBlockInMacro2, forLoopBlock)
 
 
         val moveBlock = getBlockFromDrawer("moveActionBlock")
-        dragBlockToElement(moveBlock, getPanelWithNumber(0))
+        dragActionBlockToElement(moveBlock, getPanelWithNumber(0))
 
-        dragBlockToElement(turnBlock, forLoopBlock)
+        dragActionBlockToElement(turnBlock, forLoopBlock)
 
         assertBlockAtPosition(forLoopBlock, 0, "moveActionBlock")
         assertBlockAtPosition(forLoopBlock, 1, "moveActionBlock")
