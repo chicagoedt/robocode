@@ -45,6 +45,12 @@ class SensorManagement{
     @Test
     fun addSensorToBlock(){
         openSensorConfigForRobot(0)
-        dragSensorToPanel(0, 0, "front")
+        val sensorBlock = dragSensorToSensorPanel(0, 0, "front")
+        val firstPanel = getPanelWithNumber(0)
+        val readSensorBlock = dragActionBlockToElement(getBlockFromDrawer("readSensorActionBlock"), firstPanel)
+        val sensorBlockInActionBlock = dragSensorToActionBlock(sensorBlock, readSensorBlock)
+
+        assertBlockAtPosition(firstPanel, 0, "readSensorActionBlock")
+        assertSensorBlockAtActionBlock(readSensorBlock, sensorBlockInActionBlock)
     }
 }

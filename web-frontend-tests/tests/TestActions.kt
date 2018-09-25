@@ -1,11 +1,9 @@
-import org.openqa.selenium.By
-import org.openqa.selenium.Keys
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.WebElement
+import org.openqa.selenium.*
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions
 import org.openqa.selenium.support.ui.WebDriverWait
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 lateinit var driver : WebDriver
 
@@ -107,10 +105,26 @@ fun getSensorPanelAtDirection(robotNum: Int, direction : String) : WebElement{
     return panel!!
 }
 
-fun dragSensorToPanel(robotNum: Int, drawerPosition: Int, panelDirection: String){
+/**
+ * @return The sensor element in the panel
+ */
+fun dragSensorToSensorPanel(robotNum: Int, drawerPosition: Int, panelDirection: String) : WebElement{
     val sensorBlock = getSensorFromDrawerAtPosition(0, drawerPosition)
     val sensorPanel = getSensorPanelAtDirection(0, panelDirection)
     dragBlockToElement(sensorBlock, sensorPanel)
+
+    val sensorsInPanel = sensorPanel.findElements(By.className("sensorBlock"))
+    return sensorsInPanel.last()
+}
+
+/**
+ * @return The sensor element in the block
+ */
+fun dragSensorToActionBlock(sensor: WebElement, actionBlock : WebElement) : WebElement{
+    val sensorDropField = actionBlock.findElement(By.className("actionSensorDrop"))
+    dragBlockToElement(sensor, sensorDropField)
+    val sensorInBlock = sensorDropField.findElement(By.className("sensorBlock"))
+    return sensorInBlock
 }
 
 fun setNumberParameterOnBlock(block : WebElement, number : Int){
@@ -158,6 +172,23 @@ fun assertBlockAtPosition(element : WebElement, position : Int, className : Stri
     blocks.remove(element)
 
     assertEquals(true, blocks[position].getAttribute("class").contains(className))
+}
+
+fun assertSensorBlockAtPosition(element : WebElement, position : Int, sensorBlock : WebElement){
+    var blocks = element.findElements(By.className("actionBlock"))
+
+    blocks = getOnlyDirectChildren(blocks, element)
+    blocks.remove(element)
+
+    val actualSensorBlock = blocks[position].findElement(By.className("sensorBlock"))
+
+    assertEquals(sensorBlock, actualSensorBlock)
+}
+
+fun assertSensorBlockAtActionBlock(actionBlock : WebElement, sensorBlock : WebElement){
+    val actualSensorBlock = actionBlock.findElement(By.className("sensorBlock"))
+
+    assertTrue(actualSensorBlock.equals(sensorBlock))
 }
 
 fun getOnlyDirectChildren(children : List<WebElement>, parent : WebElement) : ArrayList<WebElement>{
