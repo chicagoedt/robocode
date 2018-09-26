@@ -1,7 +1,10 @@
 import org.openqa.selenium.*
 import org.openqa.selenium.interactions.Actions
 import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.FluentWait
 import org.openqa.selenium.support.ui.WebDriverWait
+import java.time.Duration
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -67,17 +70,23 @@ fun dragBlockToElement(block : WebElement, element : WebElement) : WebElement {
     return block
 }
 
-fun openSensorConfigForRobot(robotNum: Int){
+/**
+ * @return the sensor configurator webelement
+ */
+fun toggleSensorConfigForRobot(robotNum: Int) : WebElement{
     val grid = driver.findElement(By.id("grid"))
     val players = grid.findElements(By.className("gridPlayer"))
     val player = players[0]
 
     player.click()
+
+    val sensorConfigs = driver.findElements(By.className("sensorConfigurator"))
+    return sensorConfigs[robotNum]
 }
 
 fun getSensorFromDrawerAtPosition(robotNum: Int, position: Int) : WebElement{
     val sensorConfigs = driver.findElements(By.className("sensorConfigurator"))
-    val sensorConfig = sensorConfigs[0]
+    val sensorConfig = sensorConfigs[robotNum]
     val drawer = sensorConfig.findElement(By.className("sensorDrawer"))
     val sensorBlocks = drawer.findElements(By.className("sensorBlock"))
     val sensorBlock = sensorBlocks[position]
@@ -127,6 +136,22 @@ fun dragSensorToActionBlock(sensor: WebElement, actionBlock : WebElement) : WebE
     return sensorInBlock
 }
 
+/**
+ * @return The action block dragged to the panel
+ */
+fun dragSensorAndReadSensorBlock(robotNum: Int, drawerPosition: Int, sensorPosition: String) : WebElement{
+    toggleSensorConfigForRobot(robotNum)
+    val sensorBlock = dragSensorToSensorPanel(robotNum, drawerPosition, sensorPosition)
+    val panel = getPanelWithNumber(robotNum)
+    val readSensorBlock = dragActionBlockToElement(getBlockFromDrawer("readSensorActionBlock"), panel)
+    dragSensorToActionBlock(sensorBlock, readSensorBlock)
+    val sensorConfig = toggleSensorConfigForRobot(robotNum)
+
+    WebDriverWait(driver, 30).until(ExpectedConditions.attributeToBe(sensorConfig, "display", "none"))
+
+    return readSensorBlock
+}
+
 fun setNumberParameterOnBlock(block : WebElement, number : Int){
     val parameter = block.findElement(By.className("actionBlockNumberInput"))
     parameter.sendKeys(Keys.CONTROL, "a")
@@ -139,6 +164,31 @@ fun runProcedure(panelNum : Int){
 
     val runButton = panel.findElement(By.className("panelHeaderButton"))
     runButton.click()
+
+    WebDriverWait(driver, 30).until(ExpectedConditions.or(
+            ExpectedConditions.elementToBeClickable(runButton),
+            ExpectedConditions.numberOfElementsToBeMoreThan(By.className("popupButton"), 0)
+    ))
+}
+
+fun runProcedureAndCheckTopic(panelNum: Int, topicVals : Array<Int>){
+    val panel = getPanelWithNumber(panelNum)
+
+    val runButton = panel.findElement(By.className("panelHeaderButton"))
+    runButton.click()
+
+    val topic = driver.findElement(By.id("topicValue"))
+
+    val wait = FluentWait<WebDriver>(driver)
+            .withTimeout(Duration.ofMillis(500))
+            .pollingEvery(Duration.ofMillis(50))
+
+    for (value in topicVals){
+        wait.until {
+            wait.withMessage("Topic with value ${value}")
+            topic.text == value.toString()
+        }
+    }
 
     WebDriverWait(driver, 30).until(ExpectedConditions.or(
             ExpectedConditions.elementToBeClickable(runButton),
