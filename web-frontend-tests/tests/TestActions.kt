@@ -114,6 +114,26 @@ fun getSensorPanelAtDirection(robotNum: Int, direction : String) : WebElement{
     return panel!!
 }
 
+fun getSensorFromSensorPanelAtDirection(robotNum: Int, direction : String, blockNum : Int) : WebElement{
+    val sensorConfigs = driver.findElements(By.className("sensorConfigurator"))
+    val sensorConfig = sensorConfigs[0]
+    var panel : WebElement? = null
+    if (direction.equals("front", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("frontSensorList"))
+    }
+    else if (direction.equals("back", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("backSensorList"))
+    }
+    else if (direction.equals("left", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("leftSensorList"))
+    }
+    else if (direction.equals("right", ignoreCase = true)){
+        panel = sensorConfig.findElement(By.className("rightSensorList"))
+    }
+
+    return panel!!.findElements(By.className("sensorBlock"))[blockNum]
+}
+
 /**
  * @return The sensor element in the panel
  */
@@ -152,6 +172,25 @@ fun dragSensorAndReadSensorBlock(robotNum: Int, drawerPosition: Int, sensorPosit
     return readSensorBlock
 }
 
+/**
+ * @return The action block dragged to the panel
+ */
+fun dragSensorAndReadSensorBlock(robotNum: Int, sensorBlock : WebElement) : WebElement{
+    toggleSensorConfigForRobot(robotNum)
+    val panel = getPanelWithNumber(robotNum)
+    val readSensorBlock = dragActionBlockToElement(getBlockFromDrawer("readSensorActionBlock"), panel)
+    dragSensorToActionBlock(sensorBlock, readSensorBlock)
+    val sensorConfig = toggleSensorConfigForRobot(robotNum)
+
+    WebDriverWait(driver, 30).until(ExpectedConditions.attributeToBe(sensorConfig, "display", "none"))
+
+    return readSensorBlock
+}
+
+fun getSensorFromActionBlock(actionBlock: WebElement) : WebElement{
+    return actionBlock.findElement(By.className("actionSensorDrop"))
+}
+
 fun setNumberParameterOnBlock(block : WebElement, number : Int){
     val parameter = block.findElement(By.className("actionBlockNumberInput"))
     parameter.sendKeys(Keys.CONTROL, "a")
@@ -171,6 +210,11 @@ fun runProcedure(panelNum : Int){
     ))
 }
 
+/**
+ * Checks the sequence of topics to be [topicVals].
+ * Does not support two consecutive values as the same value
+ * i.e. Instead of [3,2,2,3], put [3,2,3]
+ */
 fun runProcedureAndCheckTopic(panelNum: Int, topicVals : Array<Int>){
     val panel = getPanelWithNumber(panelNum)
 
@@ -180,13 +224,18 @@ fun runProcedureAndCheckTopic(panelNum: Int, topicVals : Array<Int>){
     val topic = driver.findElement(By.id("topicValue"))
 
     val wait = FluentWait<WebDriver>(driver)
-            .withTimeout(Duration.ofMillis(500))
+            .withTimeout(Duration.ofMillis(3000))
             .pollingEvery(Duration.ofMillis(50))
 
+    var prevVal = -1
     for (value in topicVals){
         wait.until {
-            wait.withMessage("Topic with value ${value}")
-            topic.text == value.toString()
+            val asserted = topic.text == value.toString() && value != prevVal
+            if (asserted) prevVal = value
+            else if (topic.text != prevVal.toString() && topic.text != value.toString()){
+                throw Exception("Expected topic with value ${value}, found topic with value ${topic.text}. Previous value was ${prevVal}")
+            }
+            asserted
         }
     }
 
